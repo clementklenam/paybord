@@ -1,0 +1,119 @@
+🎨 OthoPay Website – Front Page Design Brief
+✅ Project Title
+OthoPay – Home Page (v1)
+
+🎯 Goal
+Design and develop the front page of OthoPay’s website to:
+
+Showcase the brand as the Stripe for Africa
+
+Communicate trust, scalability, and tech-forwardness
+
+Attract developers, businesses, and partners
+
+Guide users toward exploring the product and signing up
+
+🌍 Target Audience
+Startup founders in Africa
+
+Developers integrating payments into apps
+
+E-commerce businesses
+
+Marketplaces & platforms
+
+Fintechs, SaaS tools, and agencies
+
+🎨 Design Style
+Inspiration: Stripe.com
+
+Visual Theme: Clean, modern, vibrant
+
+Illustration Style: Flat-style + Isometric + Minimal gradients (like Stripe)
+
+Typography: Clean sans-serif (e.g., Inter, Space Grotesk, or Satoshi)
+
+Animations: Subtle scroll-in fade or parallax on sections
+
+🔑 Key Sections of the Front Page
+1. Hero Section
+Headline: “One API for African Payments”
+
+Sub: “Accept payments from Mobile Money, Cards, and Bank Transfers across the continent.”
+
+CTA: [Start Now] [See the Docs]
+
+Illustration: abstract map of Africa with APIs, devices, wallets connected
+
+2. Trusted by Section
+Logos of 5–8 African businesses/partners (mock if none for now)
+
+3. How It Works
+Illustration + 3-step flow:
+
+Integrate with OthoPay
+
+Accept payments instantly
+
+Get payouts anywhere
+
+4. Developer First
+Dark section with terminal/code snippet
+
+“Easy to integrate with 3 lines of code”
+
+5. Products Section
+Cards or blocks showing:
+
+OthoLinks
+
+OthoConnect
+
+OthoPOS
+
+OthoCash
+
+OthoTax
+
+6. Why OthoPay
+Benefits grid:
+
+Unified API
+
+Fraud protection
+
+Fast settlement
+
+Cross-border-ready
+
+7. Testimonials or Quote
+One quote with user avatar or business
+
+8. Call to Action
+Big CTA: “Build your business with OthoPay”
+
+Button: [Get Started for Free]
+
+9. Footer
+Links: Docs, API Status, Support, Legal
+
+Social: Twitter, LinkedIn, GitHub
+
+🛠 Tech Stack for Development
+Frontend: React + Tailwind CSS
+
+Animation: Framer Motion
+
+Illustrations: Custom SVG or use Storyset / Blush / IconScout for inspiration
+
+Hosting: Vercel or Netlify
+
+📦 Deliverables
+Homepage UI (desktop + mobile)
+
+Fully responsive HTML/CSS/JS
+
+Assets: SVG illustrations + Favicon
+
+Deployment-ready React app
+
