@@ -7,7 +7,7 @@ export function Footer() {
       <Container className="py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
-            <div className="text-2xl font-['Space_Grotesk'] font-bold">OthoPay</div>
+            <div className="text-2xl font-['Space_Grotesk'] font-bold">Paymesa</div>
             <p className="mt-2 text-sm text-gray-400">
               The payment infrastructure for Africa
             </p>
@@ -128,7 +128,7 @@ export function Footer() {
         </div>
         <div className="mt-12 border-t border-gray-700 pt-8">
           <p className="text-sm text-gray-400 text-center">
-            &copy; {new Date().getFullYear()} OthoPay. All rights reserved.
+            &copy; {new Date().getFullYear()} Paymesa. All rights reserved.
           </p>
         </div>
       </Container>

@@ -15,7 +15,7 @@ export function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
               <div className="h-8 w-auto text-3xl font-medium text-[#6C2BFB] font-['Space_Grotesk']">
-                OthoPay
+                Paymesa
               </div>
             </Link>
             <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
@@ -35,7 +35,7 @@ export function Navbar() {
                 href="#benefits"
                 className="border-transparent text-gray-600 hover:text-[#6C2BFB] inline-flex items-center px-1 pt-1 text-sm font-medium transition duration-200"
               >
-                Why OthoPay
+                Why Paymesa
               </a>
               <a
                 href="#"
@@ -97,7 +97,7 @@ export function Navbar() {
                 className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Why OthoPay
+                Why Paymesa
               </a>
               <a
                 href="#"

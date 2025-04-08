@@ -52,7 +52,7 @@ export function AfricaMap() {
       
       <g transform="translate(340,480)">
         <rect x="-40" y="-15" width="80" height="30" rx="15" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">OthoPay</text>
+        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Paymesa</text>
       </g>
     </svg>
   );

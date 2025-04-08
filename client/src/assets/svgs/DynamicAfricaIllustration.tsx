@@ -120,7 +120,7 @@ export function DynamicAfricaIllustration() {
       <g transform="translate(400, 300)">
         <circle cx="0" cy="0" r="40" fill="#6C2BFB" />
         <circle cx="0" cy="0" r="35" fill="#5921c9" />
-        <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">OthoPay</text>
+        <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">Paymesa</text>
         <text x="0" y="25" fontFamily="Arial" fontSize="10" fill="white" textAnchor="middle">Unified API</text>
       </g>
       

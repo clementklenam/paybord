@@ -25,7 +25,7 @@ export function TestimonialSection() {
               </svg>
               <blockquote className="relative text-white">
                 <div className="text-xl font-medium">
-                  "OthoPay has transformed how we process payments at SavannaShop. Their unified API saved us months of development 
+                  "Paymesa has transformed how we process payments at SavannaShop. Their unified API saved us months of development 
                   time, and we now accept payments from customers across multiple African countries seamlessly. The settlement 
                   times are fast, and their team provides excellent support."
                 </div>

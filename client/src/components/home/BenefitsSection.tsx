@@ -41,10 +41,10 @@ export function BenefitsSection() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl font-bold font-['Space_Grotesk'] text-gray-900 sm:text-4xl">
-            Why OthoPay
+            Why Paymesa
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-500">
-            Leading businesses across Africa trust OthoPay for their payment needs
+            Leading businesses across Africa trust Paymesa for their payment needs
           </p>
         </motion.div>
 

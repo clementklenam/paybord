@@ -8,7 +8,7 @@ export function HowItWorksSection() {
   const steps = [
     {
       id: 1,
-      title: "Integrate with OthoPay",
+      title: "Integrate with Paymesa",
       description: "Add our SDK to your website or mobile app with just a few lines of code. No complicated setup required.",
       icon: IntegrateIcon,
     },
@@ -37,7 +37,7 @@ export function HowItWorksSection() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl font-bold font-['Space_Grotesk'] text-gray-900 sm:text-4xl">
-            How OthoPay Works
+            How Paymesa Works
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-500">
             Streamlined payment processing across Africa in three simple steps

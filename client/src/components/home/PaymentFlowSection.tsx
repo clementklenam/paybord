@@ -23,7 +23,7 @@ export function PaymentFlowSection() {
           >
             See Your Payments Flow with{" "}
             <span className="bg-gradient-to-r from-[#6C2BFB] to-[#0FCEA6] bg-clip-text text-transparent">
-              OthoPay
+              Paymesa
             </span>
           </motion.h2>
           

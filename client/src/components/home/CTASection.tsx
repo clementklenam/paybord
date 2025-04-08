@@ -15,10 +15,10 @@ export function CTASection() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl font-bold font-['Space_Grotesk'] text-gray-900 sm:text-4xl lg:text-5xl">
-            Build your business with OthoPay
+            Build your business with Paymesa
           </h2>
           <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
-            Join hundreds of businesses across Africa using OthoPay to power their payments infrastructure.
+            Join hundreds of businesses across Africa using Paymesa to power their payments infrastructure.
           </p>
           <motion.div 
             className="mt-10 flex justify-center"

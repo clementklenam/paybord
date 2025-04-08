@@ -61,13 +61,13 @@ export function PaymentNetworkIllustration() {
         ))}
       </g>
       
-      {/* Central OthoPay Hub */}
+      {/* Central Paymesa Hub */}
       <g filter="url(#glow)">
         <circle cx="400" cy="300" r="70" fill="url(#line-gradient)" fillOpacity="0.15" />
         <circle cx="400" cy="300" r="55" fill="url(#hub-gradient)" />
       </g>
       
-      <text x="400" y="290" fontFamily="Arial" fontSize="20" fill="white" fontWeight="bold" textAnchor="middle">OthoPay</text>
+      <text x="400" y="290" fontFamily="Arial" fontSize="20" fill="white" fontWeight="bold" textAnchor="middle">Paymesa</text>
       <text x="400" y="315" fontFamily="Arial" fontSize="14" fill="white" textAnchor="middle">Africa Hub</text>
       
       {/* Radiating pulse effect */}
@@ -107,7 +107,7 @@ export function PaymentNetworkIllustration() {
         <text x="600" y="195" fontFamily="Arial" fontSize="10" fill="white" textAnchor="middle">Pay</text>
       </g>
       
-      {/* Connection Lines from Global to OthoPay with glowing gradient effect */}
+      {/* Connection Lines from Global to Paymesa with glowing gradient effect */}
       <g className="incoming-connections">
         <path 
           d="M175 215 Q280 250 385 300" 
@@ -198,7 +198,7 @@ export function PaymentNetworkIllustration() {
         <text x="400" y="455" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">USSD</text>
       </g>
       
-      {/* Connection Lines from OthoPay to African Payment Methods */}
+      {/* Connection Lines from Paymesa to African Payment Methods */}
       <g className="outgoing-connections">
         <path 
           d="M385 335 L315 385" 

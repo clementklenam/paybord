@@ -254,7 +254,7 @@ export function PaymentFlowAnimation() {
         </circle>
       </g>
       
-      {/* 3. OthoPay Processing */}
+      {/* 3. Paymesa Processing */}
       <g transform="translate(400, 150)" filter="url(#soft-glow)">
         {/* Node highlight effect */}
         <circle r="46" fill="white" opacity="0.15" />
@@ -262,7 +262,7 @@ export function PaymentFlowAnimation() {
         <circle r="40" fill="url(#purple-glow-gradient)" />
         
         {/* Icon/Label */}
-        <text x="0" y="-8" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">OthoPay</text>
+        <text x="0" y="-8" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">Paymesa</text>
         <text x="0" y="12" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Processing</text>
         
         {/* Processing animation */}
@@ -581,7 +581,7 @@ export function PaymentFlowAnimation() {
       <set 
         xlinkHref="#status-text" 
         attributeName="textContent" 
-        to="OthoPay Processing..." 
+        to="Paymesa Processing..." 
         begin="4s; 14s; 24s; 34s; 44s; 54s" 
         dur="1.5s" 
       />

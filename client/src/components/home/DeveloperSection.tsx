@@ -58,18 +58,18 @@ export function DeveloperSection() {
                 <pre className="text-gray-300">
                   <code>
                     <span className="text-blue-400">import</span>{" "}
-                    <span className="text-green-400">OthoPay</span>{" "}
+                    <span className="text-green-400">Paymesa</span>{" "}
                     <span className="text-blue-400">from</span>{" "}
                     <span className="text-yellow-300">'@othopay/js'</span>;
                     {"\n\n"}
                     <span className="text-gray-500">
-                      // Initialize the OthoPay instance with your API key
+                      // Initialize the Paymesa instance with your API key
                     </span>
                     {"\n"}
                     <span className="text-blue-400">const</span>{" "}
                     <span className="text-green-400">othopay</span> ={" "}
                     <span className="text-blue-400">new</span>{" "}
-                    <span className="text-green-400">OthoPay</span>(
+                    <span className="text-green-400">Paymesa</span>(
                     <span className="text-yellow-300">'YOUR_API_KEY'</span>);
                     {"\n\n"}
                     <span className="text-gray-500">// Create a payment link</span>
