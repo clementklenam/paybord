@@ -5,6 +5,7 @@ import { HowItWorksSection } from "@/components/home/HowItWorksSection";
 import { PaymentFlowSection } from "@/components/home/PaymentFlowSection";
 import { DeveloperSection } from "@/components/home/DeveloperSection";
 import { ProductsSection } from "@/components/home/ProductsSection";
+import { ProductDemoSection } from "@/components/home/ProductDemoSection";
 import { BenefitsSection } from "@/components/home/BenefitsSection";
 import { TestimonialSection } from "@/components/home/TestimonialSection";
 import { CTASection } from "@/components/home/CTASection";
@@ -20,6 +21,7 @@ export default function Home() {
       <PaymentFlowSection />
       <DeveloperSection />
       <ProductsSection />
+      <ProductDemoSection />
       <BenefitsSection />
       <TestimonialSection />
       <CTASection />
