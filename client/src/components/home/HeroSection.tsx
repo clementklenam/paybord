@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { WorldToAfricaMap } from "@/assets/svgs/WorldToAfricaMap";
+import { PaymentNetworkIllustration } from "@/assets/svgs/PaymentNetworkIllustration";
 import { ArrowRight } from "lucide-react";
 
 export function HeroSection() {
@@ -49,7 +49,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <WorldToAfricaMap />
+              <PaymentNetworkIllustration />
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="absolute inset-0 bg-gradient-to-br from-[#6C2BFB]/5 to-transparent rounded-xl"></div>
