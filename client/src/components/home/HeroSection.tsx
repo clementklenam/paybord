@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section className="relative pt-28 pb-20 overflow-hidden bg-gradient-to-b from-white to-gray-50">
+    <section className="relative pt-28 pb-20 overflow-hidden">
       <Container>
         <div className="lg:grid lg:grid-cols-12 lg:gap-8">
           <motion.div 
@@ -51,19 +51,19 @@ export function HeroSection() {
             <div className="w-full h-full flex items-center justify-center">
               <PaymentNetworkIllustration />
             </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#6C2BFB]/5 to-transparent rounded-xl"></div>
-            </div>
           </motion.div>
         </div>
       </Container>
       
-      {/* Background decorative elements */}
-      <div className="hidden sm:block absolute top-1/4 right-0 -z-10 transform translate-x-1/2">
-        <div className="h-56 w-56 rounded-full bg-purple-50"></div>
+      {/* Background decorative blobs with lighter colors and more transparency */}
+      <div className="hidden sm:block absolute top-1/3 right-0 -z-10 transform translate-x-1/3 blur-3xl">
+        <div className="w-[30rem] h-[30rem] rounded-full bg-purple-100/30"></div>
       </div>
-      <div className="hidden sm:block absolute bottom-1/4 left-0 -z-10 transform -translate-x-1/2">
-        <div className="h-64 w-64 rounded-full bg-teal-50"></div>
+      <div className="hidden sm:block absolute bottom-1/3 left-0 -z-10 transform -translate-x-1/3 blur-3xl">
+        <div className="w-[35rem] h-[35rem] rounded-full bg-teal-100/20"></div>
+      </div>
+      <div className="hidden sm:block absolute top-2/3 right-1/4 -z-10 blur-3xl">
+        <div className="w-[25rem] h-[25rem] rounded-full bg-indigo-100/20"></div>
       </div>
     </section>
   );
