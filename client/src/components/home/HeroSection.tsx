@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { DynamicAfricaIllustration } from "@/assets/svgs/DynamicAfricaIllustration";
+import { WorldToAfricaPayments } from "@/assets/svgs/WorldToAfricaPayments";
 import { ArrowRight } from "lucide-react";
 
 export function HeroSection() {
@@ -26,7 +26,7 @@ export function HeroSection() {
               </span>
             </h1>
             <p className="mt-6 text-lg text-gray-500 sm:text-xl max-w-3xl">
-              Accept payments from Mobile Money, Cards, Bank Transfers, and Crypto across the continent. Scale your business with our unified payment infrastructure.
+              Connect global payment systems to African markets seamlessly. Accept payments from Mobile Money, Cards, Bank Transfers, and Crypto across the continent.
             </p>
             <div className="mt-8 sm:flex">
               <div className="rounded-md shadow">
@@ -49,7 +49,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <DynamicAfricaIllustration />
+              <WorldToAfricaPayments />
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="absolute inset-0 bg-gradient-to-br from-[#6C2BFB]/5 to-transparent rounded-xl"></div>
