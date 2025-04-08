@@ -5,7 +5,7 @@ import { Link2, Box, Terminal, CreditCard, FileText } from "lucide-react";
 export function ProductsSection() {
   const products = [
     {
-      title: "OthoLinks",
+      title: "PaymesaLinks",
       description:
         "Create instant payment links to accept payments without writing any code. Perfect for social media sellers and small businesses.",
       icon: Link2,
@@ -13,25 +13,25 @@ export function ProductsSection() {
       badgeColor: "bg-[#0FCEA6]/10 text-[#0FCEA6]",
     },
     {
-      title: "OthoConnect",
+      title: "PaymesaConnect",
       description:
         "Unified API for Mobile Money, Card, and Bank Transfer payments across all African countries. One integration, any payment method.",
       icon: Box,
     },
     {
-      title: "OthoPOS",
+      title: "PaymesaPOS",
       description:
         "Point-of-sale solution for physical stores and retailers. Accept payments in person with our mobile POS app and card readers.",
       icon: Terminal,
     },
     {
-      title: "OthoCash",
+      title: "PaymesaCash",
       description:
         "Financial management platform for businesses. Manage payouts, track revenues, and reconcile transactions in one dashboard.",
       icon: CreditCard,
     },
     {
-      title: "OthoTax",
+      title: "PaymesaTax",
       description:
         "Automated tax calculation and compliance for cross-border payments. Stay compliant with local tax regulations across Africa.",
       icon: FileText,
