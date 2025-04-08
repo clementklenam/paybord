@@ -7,10 +7,15 @@ export function PaymentFlowAnimation() {
       className="w-full h-full"
     >
       <defs>
-        {/* Gradients */}
+        {/* Gradient definitions */}
         <linearGradient id="purple-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#6C2BFB" />
+          <stop offset="0%" stopColor="#7C3AFF" />
           <stop offset="100%" stopColor="#5921c9" />
+        </linearGradient>
+        
+        <linearGradient id="purple-glow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#8F58FF" />
+          <stop offset="100%" stopColor="#6C2BFB" />
         </linearGradient>
         
         <linearGradient id="teal-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -20,32 +25,87 @@ export function PaymentFlowAnimation() {
         
         <linearGradient id="connector-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#6C2BFB" />
+          <stop offset="50%" stopColor="#9161FF" />
           <stop offset="100%" stopColor="#0FCEA6" />
         </linearGradient>
         
-        {/* Glow filter */}
+        <linearGradient id="path-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#F3F4F6" />
+          <stop offset="100%" stopColor="#E5E7EB" />
+        </linearGradient>
+        
+        {/* Background gradient for the whole visualization */}
+        <radialGradient id="bg-gradient" cx="400" cy="300" r="500" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#FFFFFF" />
+          <stop offset="100%" stopColor="#F9FAFB" />
+        </radialGradient>
+        
+        {/* Glow filters */}
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="10" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+        
+        <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+        
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.1" />
         </filter>
         
         {/* Path for payment journey */}
         <path id="payment-journey" 
           d="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300"
         />
-        
-        {/* Markers */}
-        <marker id="arrowhead" markerWidth="10" markerHeight="7" 
-          refX="0" refY="3.5" orient="auto">
-          <polygon points="0 0, 10 3.5, 0 7" fill="#6C2BFB" />
-        </marker>
       </defs>
+      
+      {/* Background */}
+      <rect width="800" height="600" fill="url(#bg-gradient)" />
+      
+      {/* Background grid pattern */}
+      <g opacity="0.08">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <line 
+            key={`h-line-${i}`}
+            x1="0" 
+            y1={30 + i * 30} 
+            x2="800" 
+            y2={30 + i * 30} 
+            stroke="#6C2BFB" 
+            strokeWidth="1"
+          />
+        ))}
+        
+        {Array.from({ length: 27 }).map((_, i) => (
+          <line 
+            key={`v-line-${i}`}
+            x1={30 + i * 30} 
+            y1="0" 
+            x2={30 + i * 30} 
+            y2="600" 
+            stroke="#6C2BFB" 
+            strokeWidth="1"
+          />
+        ))}
+      </g>
+      
+      {/* Main payment process background */}
+      <path 
+        d="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300" 
+        stroke="url(#path-gradient)" 
+        strokeWidth="20" 
+        strokeLinecap="round" 
+        filter="url(#shadow)"
+        fill="none"
+      />
       
       {/* Curved path for the payment journey */}
       <path 
         d="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300" 
         stroke="#E5E7EB" 
-        strokeWidth="8" 
+        strokeWidth="14" 
         strokeLinecap="round" 
         fill="none"
       />
@@ -54,8 +114,9 @@ export function PaymentFlowAnimation() {
       <path 
         d="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300" 
         stroke="url(#connector-gradient)" 
-        strokeWidth="8" 
+        strokeWidth="12" 
         strokeLinecap="round" 
+        filter="url(#soft-glow)"
         fill="none"
         strokeDasharray="1500"
         strokeDashoffset="1500"
@@ -71,18 +132,52 @@ export function PaymentFlowAnimation() {
         />
       </path>
       
-      {/* Payment stages */}
+      {/* Background sparkle effect */}
+      <g className="sparkles" opacity="0.5">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <g key={`sparkle-${i}`} transform={`translate(${Math.random() * 800}, ${Math.random() * 600})`}>
+            <circle r="1.5" fill="#6C2BFB" opacity={0.1 + Math.random() * 0.3}>
+              <animate 
+                attributeName="opacity" 
+                values={`${0.1 + Math.random() * 0.3};${0.3 + Math.random() * 0.5};${0.1 + Math.random() * 0.3}`} 
+                dur={`${1 + Math.random() * 3}s`} 
+                repeatCount="indefinite" 
+              />
+            </circle>
+          </g>
+        ))}
+      </g>
+      
+      {/* Connection lines between stages with better styling */}
+      <g className="connections">
+        <path d="M130,300 L220,150" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
+        <path d="M280,150 L370,150" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
+        <path d="M430,150 L520,150" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
+        <path d="M580,150 L670,300" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
+        <path d="M670,300 L580,450" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
+        <path d="M520,450 L430,450" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
+        <path d="M370,450 L280,450" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
+        <path d="M220,450 L130,300" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
+      </g>
+      
+      {/* Payment stages with improved design */}
       {/* 1. Initiation */}
-      <g transform="translate(100, 300)">
-        <circle r="30" fill="url(#purple-gradient)" />
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle" alignmentBaseline="middle">Initiate</text>
+      <g transform="translate(100, 300)" filter="url(#soft-glow)">
+        {/* Node highlight effect */}
+        <circle r="36" fill="white" opacity="0.15" />
+        <circle r="32" fill="url(#purple-gradient)" />
+        <circle r="30" fill="url(#purple-glow-gradient)" />
         
+        {/* Icon/Label */}
+        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Initiate</text>
+        
+        {/* Pulse effect */}
         <circle r="35" stroke="white" strokeWidth="2" strokeOpacity="0.5" fill="none">
           <animate attributeName="r" from="35" to="50" dur="3s" repeatCount="indefinite" />
           <animate attributeName="stroke-opacity" from="0.5" to="0" dur="3s" repeatCount="indefinite" />
         </circle>
         
-        {/* Animation of payment start */}
+        {/* Node activation animation */}
         <g>
           <circle r="10" fill="white" opacity="0">
             <animate 
@@ -101,15 +196,32 @@ export function PaymentFlowAnimation() {
             />
           </circle>
         </g>
+        
+        {/* Status indicator - always on after activated */}
+        <circle r="6" fill="#0FCEA6" opacity="0">
+          <animate 
+            attributeName="opacity" 
+            values="0;0;1;1" 
+            keyTimes="0;0.1;0.11;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+        </circle>
       </g>
       
       {/* 2. API Validation */}
-      <g transform="translate(250, 150)">
-        <circle r="30" fill="url(#purple-gradient)" />
-        <text x="0" y="-5" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle">API</text>
-        <text x="0" y="10" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle">Validation</text>
+      <g transform="translate(250, 150)" filter="url(#soft-glow)">
+        {/* Node highlight effect */}
+        <circle r="36" fill="white" opacity="0.15" />
+        <circle r="32" fill="url(#purple-gradient)" />
+        <circle r="30" fill="url(#purple-glow-gradient)" />
         
-        {/* Stage animation */}
+        {/* Icon/Label */}
+        <text x="0" y="-5" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">API</text>
+        <text x="0" y="10" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Validation</text>
+        
+        {/* Node activation animation */}
         <g>
           <circle r="10" fill="white" opacity="0">
             <animate 
@@ -128,13 +240,30 @@ export function PaymentFlowAnimation() {
             />
           </circle>
         </g>
+        
+        {/* Status indicator */}
+        <circle r="6" fill="#0FCEA6" opacity="0">
+          <animate 
+            attributeName="opacity" 
+            values="0;0;0;1;1" 
+            keyTimes="0;0.15;0.25;0.26;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+        </circle>
       </g>
       
       {/* 3. OthoPay Processing */}
-      <g transform="translate(400, 150)">
-        <circle r="40" fill="url(#purple-gradient)" />
-        <text x="0" y="-10" fontFamily="Arial" fontSize="14" fill="white" textAnchor="middle" fontWeight="bold">OthoPay</text>
-        <text x="0" y="10" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle">Processing</text>
+      <g transform="translate(400, 150)" filter="url(#soft-glow)">
+        {/* Node highlight effect */}
+        <circle r="46" fill="white" opacity="0.15" />
+        <circle r="42" fill="url(#purple-gradient)" />
+        <circle r="40" fill="url(#purple-glow-gradient)" />
+        
+        {/* Icon/Label */}
+        <text x="0" y="-8" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">OthoPay</text>
+        <text x="0" y="12" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Processing</text>
         
         {/* Processing animation */}
         <g className="processing">
@@ -165,13 +294,30 @@ export function PaymentFlowAnimation() {
             />
           </circle>
         </g>
+        
+        {/* Status indicator */}
+        <circle r="6" fill="#0FCEA6" opacity="0">
+          <animate 
+            attributeName="opacity" 
+            values="0;0;0;0;0;1;1" 
+            keyTimes="0;0.3;0.4;0.5;0.5;0.51;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+        </circle>
       </g>
       
       {/* 4. Payment Gateway */}
-      <g transform="translate(550, 150)">
-        <circle r="30" fill="url(#teal-gradient)" />
-        <text x="0" y="-5" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle">Payment</text>
-        <text x="0" y="10" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle">Gateway</text>
+      <g transform="translate(550, 150)" filter="url(#soft-glow)">
+        {/* Node highlight effect */}
+        <circle r="36" fill="white" opacity="0.15" />
+        <circle r="32" fill="url(#teal-gradient)" />
+        <circle r="30" fill="#0FCEA6" />
+        
+        {/* Icon/Label */}
+        <text x="0" y="-5" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Payment</text>
+        <text x="0" y="10" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Gateway</text>
         
         {/* Gateway activation */}
         <g>
@@ -192,12 +338,29 @@ export function PaymentFlowAnimation() {
             />
           </circle>
         </g>
+        
+        {/* Status indicator */}
+        <circle r="6" fill="#6C2BFB" opacity="0">
+          <animate 
+            attributeName="opacity" 
+            values="0;0;0;0;0;0;1;1" 
+            keyTimes="0;0.45;0.5;0.55;0.6;0.61;0.62;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+        </circle>
       </g>
       
       {/* 5. Settlement */}
-      <g transform="translate(700, 300)">
-        <circle r="30" fill="url(#teal-gradient)" />
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle" alignmentBaseline="middle">Settlement</text>
+      <g transform="translate(700, 300)" filter="url(#soft-glow)">
+        {/* Node highlight effect */}
+        <circle r="36" fill="white" opacity="0.15" />
+        <circle r="32" fill="url(#teal-gradient)" />
+        <circle r="30" fill="#0FCEA6" />
+        
+        {/* Icon/Label */}
+        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Settlement</text>
         
         {/* Settlement animation */}
         <g>
@@ -218,12 +381,29 @@ export function PaymentFlowAnimation() {
             />
           </circle>
         </g>
+        
+        {/* Status indicator */}
+        <circle r="6" fill="#6C2BFB" opacity="0">
+          <animate 
+            attributeName="opacity" 
+            values="0;0;0;0;0;0;0;0;1;1" 
+            keyTimes="0;0.55;0.6;0.65;0.7;0.75;0.76;0.77;0.78;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+        </circle>
       </g>
       
       {/* 6. Reconciliation */}
-      <g transform="translate(550, 450)">
-        <circle r="30" fill="url(#teal-gradient)" />
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle" alignmentBaseline="middle">Reconciliation</text>
+      <g transform="translate(550, 450)" filter="url(#soft-glow)">
+        {/* Node highlight effect */}
+        <circle r="36" fill="white" opacity="0.15" />
+        <circle r="32" fill="url(#teal-gradient)" />
+        <circle r="30" fill="#0FCEA6" />
+        
+        {/* Icon/Label */}
+        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Reconciliation</text>
         
         {/* Reconciliation animation */}
         <g>
@@ -244,12 +424,29 @@ export function PaymentFlowAnimation() {
             />
           </circle>
         </g>
+        
+        {/* Status indicator */}
+        <circle r="6" fill="#6C2BFB" opacity="0">
+          <animate 
+            attributeName="opacity" 
+            values="0;0;0;0;0;0;0;0;0;0;1;1" 
+            keyTimes="0;0.65;0.7;0.75;0.8;0.82;0.84;0.85;0.86;0.87;0.88;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+        </circle>
       </g>
       
       {/* 7. Confirmation */}
-      <g transform="translate(400, 450)">
-        <circle r="30" fill="url(#purple-gradient)" />
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle" alignmentBaseline="middle">Confirmation</text>
+      <g transform="translate(400, 450)" filter="url(#soft-glow)">
+        {/* Node highlight effect */}
+        <circle r="36" fill="white" opacity="0.15" />
+        <circle r="32" fill="url(#purple-gradient)" />
+        <circle r="30" fill="url(#purple-glow-gradient)" />
+        
+        {/* Icon/Label */}
+        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Confirmation</text>
         
         {/* Confirmation animation */}
         <g>
@@ -270,12 +467,29 @@ export function PaymentFlowAnimation() {
             />
           </circle>
         </g>
+        
+        {/* Status indicator */}
+        <circle r="6" fill="#0FCEA6" opacity="0">
+          <animate 
+            attributeName="opacity" 
+            values="0;0;0;0;0;0;0;0;0;0;0;0;1;1" 
+            keyTimes="0;0.7;0.75;0.8;0.85;0.9;0.91;0.92;0.93;0.94;0.95;0.96;0.97;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+        </circle>
       </g>
       
       {/* 8. Notification */}
-      <g transform="translate(250, 450)">
-        <circle r="30" fill="url(#purple-gradient)" />
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" textAnchor="middle" alignmentBaseline="middle">Notification</text>
+      <g transform="translate(250, 450)" filter="url(#soft-glow)">
+        {/* Node highlight effect */}
+        <circle r="36" fill="white" opacity="0.15" />
+        <circle r="32" fill="url(#purple-gradient)" />
+        <circle r="30" fill="url(#purple-glow-gradient)" />
+        
+        {/* Icon/Label */}
+        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Notification</text>
         
         {/* Notification animation */}
         <g>
@@ -296,22 +510,55 @@ export function PaymentFlowAnimation() {
             />
           </circle>
         </g>
+        
+        {/* Status indicator - changes color to green at completion */}
+        <circle r="6" fill="#D1D5DB" opacity="0">
+          <animate 
+            attributeName="opacity" 
+            values="0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1" 
+            keyTimes="0;0.75;0.8;0.85;0.9;0.92;0.94;0.95;0.96;0.97;0.98;0.99;0.995;0.996;0.997;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+          <animate 
+            attributeName="fill" 
+            values="#D1D5DB;#D1D5DB;#0FCEA6" 
+            keyTimes="0;0.99;1" 
+            dur="10s" 
+            repeatCount="indefinite" 
+            fill="freeze"
+          />
+        </circle>
       </g>
       
-      {/* Moving payment along the path */}
-      <circle r="8" fill="white" filter="url(#glow)">
-        <animateMotion
-          path="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300"
-          dur="10s"
-          repeatCount="indefinite"
-          rotate="auto"
+      {/* Enhanced payment status display */}
+      <g transform="translate(400, 300)" filter="url(#shadow)">
+        <rect 
+          x="-120" 
+          y="-24" 
+          width="240" 
+          height="48" 
+          rx="24" 
+          fill="white" 
+          stroke="#F3F4F6" 
+          strokeWidth="1"
         />
-      </circle>
-      
-      {/* Payment status text */}
-      <g transform="translate(400, 300)">
-        <rect x="-100" y="-20" width="200" height="40" rx="20" fill="white" filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.1))" />
-        <text id="status-text" x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">Initiating Payment...</text>
+        
+        {/* Status icon - dot animation */}
+        <g transform="translate(-95, 0)">
+          <circle r="8" fill="#6C2BFB">
+            <animate 
+              attributeName="opacity" 
+              values="0.6;1;0.6" 
+              dur="1.5s" 
+              repeatCount="indefinite" 
+            />
+          </circle>
+        </g>
+        
+        {/* Status text */}
+        <text id="status-text" x="10" y="5" fontFamily="Arial" fontSize="16" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">Initiating Payment...</text>
         
         <animate 
           attributeName="opacity" 
@@ -320,8 +567,6 @@ export function PaymentFlowAnimation() {
           dur="10s" 
           repeatCount="indefinite" 
         />
-        
-        <set attributeName="display" to="none" begin="10s" end="0s" />
       </g>
       
       {/* Animation to update the status text */}
@@ -376,20 +621,97 @@ export function PaymentFlowAnimation() {
       <set 
         xlinkHref="#status-text" 
         attributeName="textContent" 
-        to="Payment Successful!" 
+        to="Payment Successful! ✓" 
         begin="9s; 19s; 29s; 39s; 49s; 59s" 
         dur="1s" 
       />
       
-      {/* Connection lines between stages for visual effect */}
-      <path d="M130,300 L220,150" stroke="#E0E0E0" strokeWidth="1" strokeDasharray="5,5" opacity="0.5" />
-      <path d="M280,150 L370,150" stroke="#E0E0E0" strokeWidth="1" strokeDasharray="5,5" opacity="0.5" />
-      <path d="M430,150 L520,150" stroke="#E0E0E0" strokeWidth="1" strokeDasharray="5,5" opacity="0.5" />
-      <path d="M580,150 L670,300" stroke="#E0E0E0" strokeWidth="1" strokeDasharray="5,5" opacity="0.5" />
-      <path d="M670,300 L580,450" stroke="#E0E0E0" strokeWidth="1" strokeDasharray="5,5" opacity="0.5" />
-      <path d="M520,450 L430,450" stroke="#E0E0E0" strokeWidth="1" strokeDasharray="5,5" opacity="0.5" />
-      <path d="M370,450 L280,450" stroke="#E0E0E0" strokeWidth="1" strokeDasharray="5,5" opacity="0.5" />
-      <path d="M220,450 L130,300" stroke="#E0E0E0" strokeWidth="1" strokeDasharray="5,5" opacity="0.5" />
+      {/* Moving payment along the path - enhanced with trailing effect */}
+      <g filter="url(#glow)">
+        {/* Main payment dot */}
+        <circle r="8" fill="white">
+          <animateMotion
+            path="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300"
+            dur="10s"
+            repeatCount="indefinite"
+            rotate="auto"
+          />
+        </circle>
+        
+        {/* Trailing dots */}
+        <circle r="6" fill="white" opacity="0.7">
+          <animateMotion
+            path="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300"
+            dur="10s"
+            repeatCount="indefinite"
+            rotate="auto"
+            begin="-0.2s"
+          />
+        </circle>
+        
+        <circle r="4" fill="white" opacity="0.5">
+          <animateMotion
+            path="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300"
+            dur="10s"
+            repeatCount="indefinite"
+            rotate="auto"
+            begin="-0.4s"
+          />
+        </circle>
+        
+        <circle r="2" fill="white" opacity="0.3">
+          <animateMotion
+            path="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300"
+            dur="10s"
+            repeatCount="indefinite"
+            rotate="auto"
+            begin="-0.6s"
+          />
+        </circle>
+      </g>
+      
+      {/* Numbered indicators for step sequence */}
+      <g className="step-indicators">
+        <g transform="translate(85, 260)">
+          <circle r="14" fill="white" />
+          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">1</text>
+        </g>
+        
+        <g transform="translate(235, 110)">
+          <circle r="14" fill="white" />
+          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">2</text>
+        </g>
+        
+        <g transform="translate(385, 110)">
+          <circle r="14" fill="white" />
+          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">3</text>
+        </g>
+        
+        <g transform="translate(535, 110)">
+          <circle r="14" fill="white" />
+          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">4</text>
+        </g>
+        
+        <g transform="translate(715, 260)">
+          <circle r="14" fill="white" />
+          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">5</text>
+        </g>
+        
+        <g transform="translate(565, 485)">
+          <circle r="14" fill="white" />
+          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">6</text>
+        </g>
+        
+        <g transform="translate(415, 485)">
+          <circle r="14" fill="white" />
+          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">7</text>
+        </g>
+        
+        <g transform="translate(265, 485)">
+          <circle r="14" fill="white" />
+          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">8</text>
+        </g>
+      </g>
     </svg>
   );
 }
