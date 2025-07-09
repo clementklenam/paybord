@@ -14,8 +14,6 @@ import {
   Mail, 
   Phone, 
   FileText, 
-  MapPin, 
-  Globe, 
   Clock, 
   Languages, 
   CreditCard, 

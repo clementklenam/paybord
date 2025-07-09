@@ -19,10 +19,8 @@ import {
     CardTitle
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
 import {
     BusinessRegistrationData,
-    BusinessType,
     BUSINESS_TYPE_OPTIONS,
     INDUSTRY_OPTIONS,
     AFRICAN_COUNTRIES,

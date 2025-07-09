@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus, TrendingUp, TrendingDown, DollarSign, Users, ShoppingCart } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, DollarSign, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { usePaymentContext } from "@/contexts/PaymentContext";
@@ -111,16 +111,6 @@ export function DashboardOverview() {
     return `${sign}${value.toFixed(1)}%`;
   };
 
-  // Get trend icon and color
-  const getTrendIndicator = (growth: number) => {
-    if (growth > 0) {
-      return { icon: TrendingUp, color: 'text-green-600', bgColor: 'bg-green-100' };
-    } else if (growth < 0) {
-      return { icon: TrendingDown, color: 'text-red-600', bgColor: 'bg-red-100' };
-    }
-    return { icon: null, color: 'text-gray-600', bgColor: 'bg-gray-100' };
-  };
-
   // Test function to simulate a payment
   const testPaymentNotification = () => {
     console.log('[DashboardOverview] Testing payment notification...');
@@ -182,15 +172,15 @@ export function DashboardOverview() {
                   <p className="text-2xl font-semibold text-gray-900">
                     {analytics ? formatCurrency(analytics.grossVolume.amount) : '$0.00'}
                   </p>
-                  {analytics && (analytics.grossVolume.growth || 0) !== 0 && (
+                  {analytics && (analytics.grossVolume.growth ?? 0) !== 0 && (
                     <div className="flex items-center mt-1">
-                      {(analytics.grossVolume.growth || 0) > 0 ? (
+                      {(analytics.grossVolume.growth ?? 0) > 0 ? (
                         <TrendingUp className="h-4 w-4 mr-1 text-green-600" />
                       ) : (
                         <TrendingDown className="h-4 w-4 mr-1 text-red-600" />
                       )}
-                      <span className={`text-xs ${(analytics.grossVolume.growth || 0) > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {formatPercentage(analytics.grossVolume.growth || 0)}
+                      <span className={`text-xs ${(analytics.grossVolume.growth ?? 0) > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {formatPercentage(analytics.grossVolume.growth ?? 0)}
                       </span>
                     </div>
                   )}
@@ -210,15 +200,15 @@ export function DashboardOverview() {
                   <p className="text-2xl font-semibold text-gray-900">
                     {analytics ? formatCurrency(analytics.netVolume.amount) : '$0.00'}
                   </p>
-                  {analytics && (analytics.netVolume.growth || 0) !== 0 && (
+                  {analytics && (analytics.netVolume.growth ?? 0) !== 0 && (
                     <div className="flex items-center mt-1">
-                      {(analytics.netVolume.growth || 0) > 0 ? (
+                      {(analytics.netVolume.growth ?? 0) > 0 ? (
                         <TrendingUp className="h-4 w-4 mr-1 text-green-600" />
                       ) : (
                         <TrendingDown className="h-4 w-4 mr-1 text-red-600" />
                       )}
-                      <span className={`text-xs ${(analytics.netVolume.growth || 0) > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {formatPercentage(analytics.netVolume.growth || 0)}
+                      <span className={`text-xs ${(analytics.netVolume.growth ?? 0) > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {formatPercentage(analytics.netVolume.growth ?? 0)}
                       </span>
                     </div>
                   )}
@@ -238,15 +228,15 @@ export function DashboardOverview() {
                   <p className="text-2xl font-semibold text-gray-900">
                     {analytics ? analytics.newCustomers.count : 0}
                   </p>
-                  {analytics && (analytics.newCustomers.growth || 0) !== 0 && (
+                  {analytics && (analytics.newCustomers.growth ?? 0) !== 0 && (
                     <div className="flex items-center mt-1">
-                      {(analytics.newCustomers.growth || 0) > 0 ? (
+                      {(analytics.newCustomers.growth ?? 0) > 0 ? (
                         <TrendingUp className="h-4 w-4 mr-1 text-green-600" />
                       ) : (
                         <TrendingDown className="h-4 w-4 mr-1 text-red-600" />
                       )}
-                      <span className={`text-xs ${(analytics.newCustomers.growth || 0) > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {formatPercentage(analytics.newCustomers.growth || 0)}
+                      <span className={`text-xs ${(analytics.newCustomers.growth ?? 0) > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {formatPercentage(analytics.newCustomers.growth ?? 0)}
                       </span>
                     </div>
                   )}
@@ -324,7 +314,7 @@ export function DashboardOverview() {
             
             <TopCustomersWidget
               customers={analytics.topCustomers}
-              currency={analytics.grossVolume.currency || 'GHS'}
+              currency={analytics.grossVolume.currency ?? 'GHS'}
             />
           </div>
         )}

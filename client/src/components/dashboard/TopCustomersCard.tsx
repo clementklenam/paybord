@@ -1,4 +1,3 @@
-import React from 'react';
 import { Users, Crown } from "lucide-react";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { formatCurrency } from "@/lib/utils";
@@ -14,7 +13,7 @@ interface TopCustomersCardProps {
 }
 
 export function TopCustomersCard({ customers, currency: propCurrency }: TopCustomersCardProps) {
-  const { currency: contextCurrency, currencySymbol } = useCurrency();
+  const { currency: contextCurrency } = useCurrency();
   const currency = propCurrency || contextCurrency;
   
   console.log('[DEBUG] TopCustomersCard currency:', currency);

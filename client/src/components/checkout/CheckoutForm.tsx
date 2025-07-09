@@ -124,7 +124,7 @@ export function CheckoutForm({
     postalCode: "",
   });
   
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
     // Format card number with spaces
@@ -154,7 +154,7 @@ export function CheckoutForm({
     setFormData({ ...formData, [name]: value });
   };
   
-  const handleCountryChange = (value) => {
+  const handleCountryChange = (value: string) => {
     setSelectedCountry(value);
     setFormData({ ...formData, country: value });
     

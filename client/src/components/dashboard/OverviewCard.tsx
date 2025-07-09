@@ -1,4 +1,3 @@
-import React from 'react';
 import { DashboardChart } from "@/components/ui/dashboard-chart";
 import { TrendingUp, TrendingDown } from "lucide-react";
 

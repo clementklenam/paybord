@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export function CheckoutPage() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [paymentData, setPaymentData] = useState(null);
-  const [error, setError] = useState(null);
+  const [paymentData, setPaymentData] = useState<any>(null);
   
   // Mock product data
   const productData = {
@@ -15,13 +14,13 @@ export function CheckoutPage() {
     currency: "USD",
   };
   
-  const handlePaymentSuccess = (data) => {
+  const handlePaymentSuccess = (data: any) => {
     setPaymentSuccess(true);
     setPaymentData(data);
     console.log("Payment successful:", data);
   };
   
-  const handlePaymentError = (error) => {
+  const handlePaymentError = (error: any) => {
     setError(error);
     console.error("Payment failed:", error);
   };

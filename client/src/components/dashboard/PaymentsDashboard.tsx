@@ -3,7 +3,7 @@ import { DashboardLayout } from "./DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import {
   BarChart,
@@ -14,7 +14,6 @@ import {
   MoreHorizontal,
   Search,
   Users,
-  Filter,
   RefreshCcw,
   Plus,
 } from "lucide-react";
@@ -278,7 +277,7 @@ export function PaymentsDashboard() {
               
               <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                 <div className="flex h-full">
-                  {paymentsData.paymentMethodBreakdown.map((method, index) => (
+                  {paymentsData.paymentMethodBreakdown.map((method) => (
                     <div 
                       key={method.name}
                       className={`h-full ${
@@ -305,14 +304,14 @@ export function PaymentsDashboard() {
           <CardContent>
             <div className="space-y-4">
               <div className="space-y-2">
-                {paymentsData.regionalDistribution.map((region, index) => (
+                {paymentsData.regionalDistribution.map((region) => (
                   <div key={region.name} className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className={`h-3 w-3 rounded-full ${
-                        index === 0 ? "bg-gray-600" :
-                        index === 1 ? "bg-gray-800" :
-                        index === 2 ? "bg-gray-400" :
-                        index === 3 ? "bg-gray-700" :
+                        region.name === "Nigeria" ? "bg-gray-600" :
+                        region.name === "Kenya" ? "bg-gray-800" :
+                        region.name === "South Africa" ? "bg-gray-400" :
+                        region.name === "Ghana" ? "bg-gray-700" :
                         "bg-gray-300"
                       }`}></div>
                       <span className="text-sm">{region.name}</span>
@@ -324,14 +323,14 @@ export function PaymentsDashboard() {
               
               <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                 <div className="flex h-full">
-                  {paymentsData.regionalDistribution.map((region, index) => (
+                  {paymentsData.regionalDistribution.map((region) => (
                     <div 
                       key={region.name}
                       className={`h-full ${
-                        index === 0 ? "bg-gray-600" :
-                        index === 1 ? "bg-gray-800" :
-                        index === 2 ? "bg-gray-400" :
-                        index === 3 ? "bg-gray-700" :
+                        region.name === "Nigeria" ? "bg-gray-600" :
+                        region.name === "Kenya" ? "bg-gray-800" :
+                        region.name === "South Africa" ? "bg-gray-400" :
+                        region.name === "Ghana" ? "bg-gray-700" :
                         "bg-gray-300"
                       }`} 
                       style={{ width: `${region.percentage}%` }}
@@ -378,12 +377,10 @@ export function PaymentsDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {paymentsData.recentTransactions.map((tx, index) => (
+                {paymentsData.recentTransactions.map((tx) => (
                   <tr 
                     key={tx.id} 
-                    className={`hover:bg-gray-50 ${
-                      index !== paymentsData.recentTransactions.length - 1 ? "border-b border-gray-100" : ""
-                    }`}
+                    className={`hover:bg-gray-50`}
                   >
                     <td className="py-3 text-gray-900">{tx.id}</td>
                     <td className="py-3 text-gray-900">{tx.date}</td>

@@ -21,7 +21,10 @@ import {
   CheckCircle2,
   AlertTriangle,
   Globe,
-  Clock
+  Clock,
+  Eye,
+  Filter,
+  Download
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";

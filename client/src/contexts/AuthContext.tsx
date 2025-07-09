@@ -12,6 +12,8 @@ interface AuthContextType {
   submitKyc: (data: KycData) => Promise<void>;
   isKycSubmitted: boolean;
   loading: boolean;
+  verifyOtp: (params: { type: 'email' | 'phone'; otp: string }) => Promise<void>;
+  resendOtp: (type: 'email' | 'phone') => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -93,6 +95,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const verifyOtp = async ({ type, otp }: { type: 'email' | 'phone'; otp: string }) => {
+    // TODO: Implement OTP verification logic
+  };
+
+  const resendOtp = async (type: 'email' | 'phone') => {
+    // TODO: Implement resend OTP logic
+  };
+
   const value = {
     user,
     signup,
@@ -102,7 +112,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearError,
     submitKyc,
     isKycSubmitted,
-    loading
+    loading,
+    verifyOtp,
+    resendOtp
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

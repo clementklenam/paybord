@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import {
-  Calendar, DollarSign, Bank as BankIcon, CreditCard, ChevronRight
+  Calendar, DollarSign, Ban as BankIcon, CreditCard, ChevronRight
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
@@ -28,11 +28,10 @@ interface PayoutSettingsProps {
       status: string;
     };
   };
-  balanceData: any; // Using any to avoid unused variable warnings
   currency: string;
 }
 
-export function PayoutSettings({ payoutData, balanceData, currency }: PayoutSettingsProps) {
+export function PayoutSettings({ payoutData, currency }: PayoutSettingsProps) {
   const [payoutFrequency, setPayoutFrequency] = useState("automatic");
   const [payoutThreshold, setPayoutThreshold] = useState("1000");
   const [payoutDay, setPayoutDay] = useState("monday");

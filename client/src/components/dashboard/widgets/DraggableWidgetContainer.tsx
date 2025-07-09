@@ -79,7 +79,7 @@ export function DraggableWidgetContainer({
         open={false}
         onClose={() => {}}
         onAddWidget={() => {}}
-        existingWidgets={widgets.map(w => w.type)}
+        existingWidgets={widgets}
       />
     </>
   );

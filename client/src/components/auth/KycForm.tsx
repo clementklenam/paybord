@@ -27,10 +27,8 @@ export function KycForm({ onSuccess }: KycFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await submitKyc(formData as KycData);
-      if (response.success) {
-        onSuccess?.();
-      }
+      await submitKyc(formData as KycData);
+      onSuccess?.();
     } catch (error) {
       // Error is handled by AuthContext
     }

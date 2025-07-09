@@ -11,8 +11,7 @@ import {
   Mail, 
   MoreHorizontal, 
   ArrowUpDown,
-  Calendar,
-  ArrowRight
+  DollarSign
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +20,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import {
   DropdownMenu,
@@ -168,7 +166,7 @@ export function CustomersPage() {
     return 0;
   });
   
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("en-US", {
       month: "short",
@@ -177,15 +175,15 @@ export function CustomersPage() {
     }).format(date);
   };
   
-  const getInitials = (name) => {
+  const getInitials = (name: string) => {
     return name
       .split(" ")
-      .map((part) => part[0])
+      .map((part: string) => part[0])
       .join("")
       .toUpperCase();
   };
   
-  const toggleSort = (field) => {
+  const toggleSort = (field: string) => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -487,7 +485,7 @@ export function CustomersPage() {
 }
 
 // Icons that need to be imported
-const Users = (props) => (
+const Users = (props: any) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -507,7 +505,7 @@ const Users = (props) => (
   </svg>
 );
 
-const RefreshCcw = (props) => (
+const RefreshCcw = (props: any) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -527,7 +525,7 @@ const RefreshCcw = (props) => (
   </svg>
 );
 
-const User = (props) => (
+const User = (props: any) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -545,7 +543,7 @@ const User = (props) => (
   </svg>
 );
 
-const ShoppingCart = (props) => (
+const ShoppingCart = (props: any) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -564,7 +562,7 @@ const ShoppingCart = (props) => (
   </svg>
 );
 
-const Trash = (props) => (
+const Trash = (props: any) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"

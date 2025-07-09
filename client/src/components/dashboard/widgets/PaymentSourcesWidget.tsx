@@ -45,7 +45,7 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
         throw new Error('Failed to fetch transactions');
       }
       
-      const data = response.data;
+      const data = response.data as { data: Transaction[] };
       console.log('Payment sources widget - transactions:', data);
       setTransactions(data.data || []);
     } catch (err) {
