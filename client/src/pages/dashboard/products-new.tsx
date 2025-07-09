@@ -1,31 +1,14 @@
 import { useState, useEffect } from "react";
-import { ProductService, Product, ProductCreateData } from "@/services/product.service";
-import BusinessService from "@/services/business.service";
-import { useAuth } from "@/contexts/AuthContext";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { 
-  Plus, 
-  Search, 
-  MoreHorizontal, 
-  Package, 
-  X, 
-  Check, 
-  Loader2, 
-  Image, 
-  DollarSign, 
-  Tag, 
-  Info, 
-  Eye, 
-  EyeOff,
-  Pencil,
-  Trash,
-  Upload
-} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Download, Search, Filter, Package, MoreHorizontal, ChevronDown } from "lucide-react";
+import { ProductService } from "@/services/product.service";
+import BusinessService from "@/services/business.service";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Dialog,
   DialogContent,
@@ -64,16 +47,12 @@ export default function ProductsPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<any[]>([]); // Changed to any[] as Product type is removed
   const [businessId, setBusinessId] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // New product state
-  const [newProduct, setNewProduct] = useState<ProductCreateData & {
-    pricingType: 'recurring' | 'one-off';
-    billingPeriod: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'biannually' | 'yearly' | 'custom';
-    customBillingDays?: number;
-  }>({
+  const [newProduct, setNewProduct] = useState<any>({ // Changed to any as ProductCreateData is removed
     businessId: "",
     name: "",
     description: "",
@@ -189,7 +168,7 @@ export default function ProductsPage() {
       
       // Also get user-created products from localStorage
       const userProductsJSON = localStorage.getItem('user_products');
-      let userProducts: Product[] = [];
+      let userProducts: any[] = []; // Changed to any[]
       
       if (userProductsJSON) {
         try {
@@ -201,7 +180,7 @@ export default function ProductsPage() {
       }
       
       // Combine API products and local products
-      let allProducts: Product[] = [];
+      let allProducts: any[] = []; // Changed to any[]
       
       if (response && response.data) {
         allProducts = [...response.data];
@@ -601,7 +580,7 @@ export default function ProductsPage() {
       // Manually save to localStorage to ensure it's available immediately
       try {
         const userProductsJSON = localStorage.getItem('user_products');
-        let userProducts: Product[] = [];
+        let userProducts: any[] = []; // Changed to any[]
         
         if (userProductsJSON) {
           userProducts = JSON.parse(userProductsJSON);

@@ -17,9 +17,6 @@ import {
   Download,
   Settings,
   BarChart3,
-  Users,
-  CreditCard,
-  Banknote,
   Zap
 } from "lucide-react";
 import balanceService from "@/services/balance.service";

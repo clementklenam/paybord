@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,24 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-    ArrowRight,
-    Check,
-    ChevronRight,
-    Copy,
-    CreditCard,
-    ExternalLink,
-    Eye,
-    Globe,
-    Image as ImageIcon,
-    Palette,
-    Plus,
-    Settings,
-    ShoppingBag,
-    Smartphone,
-    Edit,
-    Trash2
-} from "lucide-react";
 
 // Define the step interface
 interface Step {

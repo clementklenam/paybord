@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,32 +11,6 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import {
-    ArrowRight,
-    Check,
-    ChevronRight,
-    Copy,
-    CreditCard,
-    ExternalLink,
-    Eye,
-    Globe,
-    Image as ImageIcon,
-    Palette,
-    Plus,
-    Settings,
-    ShoppingBag,
-    Smartphone,
-    Edit,
-    Trash2,
-    Loader2,
-    AlertCircle,
-    Instagram,
-    Twitter,
-    Facebook
-} from "lucide-react";
 import { StorefrontService } from "@/services/storefront.service";
 
 // Define the step interface

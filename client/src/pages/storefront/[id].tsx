@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { ArrowLeft, ShoppingBag, Search, ShoppingCart, CreditCard, Plus, Minus, Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Search, ShoppingCart, CreditCard, Plus, Minus } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from 'axios';
@@ -1125,7 +1125,7 @@ export default function StorefrontPreview() {
                             rel="noopener noreferrer"
                             className="text-white hover:text-white/80 transition-colors"
                           >
-                            <Instagram className="h-5 w-5" />
+                            {/* <Instagram className="h-5 w-5" /> */}
                           </a>
                         )}
                         {storefront.socialLinks.twitter && (
@@ -1135,7 +1135,7 @@ export default function StorefrontPreview() {
                             rel="noopener noreferrer"
                             className="text-white hover:text-white/80 transition-colors"
                           >
-                            <Twitter className="h-5 w-5" />
+                            {/* <Twitter className="h-5 w-5" /> */}
                           </a>
                         )}
                         {storefront.socialLinks.facebook && (
@@ -1145,7 +1145,7 @@ export default function StorefrontPreview() {
                             rel="noopener noreferrer"
                             className="text-white hover:text-white/80 transition-colors"
                           >
-                            <Facebook className="h-5 w-5" />
+                            {/* <Facebook className="h-5 w-5" /> */}
                           </a>
                         )}
                       </div>
@@ -1313,7 +1313,7 @@ export default function StorefrontPreview() {
                     rel="noopener noreferrer"
                     className="text-gray-500 hover:text-gray-700"
                   >
-                    <Instagram className="h-5 w-5" />
+                    {/* <Instagram className="h-5 w-5" /> */}
                   </a>
                 )}
                 {storefront.socialLinks.twitter && (
@@ -1323,7 +1323,7 @@ export default function StorefrontPreview() {
                     rel="noopener noreferrer"
                     className="text-gray-500 hover:text-gray-700"
                   >
-                    <Twitter className="h-5 w-5" />
+                    {/* <Twitter className="h-5 w-5" /> */}
                   </a>
                 )}
                 {storefront.socialLinks.facebook && (
@@ -1333,7 +1333,7 @@ export default function StorefrontPreview() {
                     rel="noopener noreferrer"
                     className="text-gray-500 hover:text-gray-700"
                   >
-                    <Facebook className="h-5 w-5" />
+                    {/* <Facebook className="h-5 w-5" /> */}
                   </a>
                 )}
               </div>

@@ -1,25 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  ArrowUpRight, 
-  ArrowDownRight, 
-  Download, 
-  Eye, 
-  ChevronLeft, 
-  ChevronRight,
-  Search,
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  XCircle,
-  Wallet,
-  Activity,
-  RotateCcw,
-  Filter
-} from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, Download, Eye, ChevronLeft, ChevronRight, Search, TrendingUp, TrendingDown, Activity, RotateCcw } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
 interface Transaction {
@@ -116,7 +98,7 @@ export function TransactionHistory({ transactions, currency }: TransactionHistor
         };
       case "payout":
         return {
-          icon: <Wallet className="h-4 w-4" />,
+          icon: <Activity className="h-4 w-4" />,
           color: "text-blue-600 dark:text-blue-400",
           label: "Payout"
         };
@@ -128,7 +110,7 @@ export function TransactionHistory({ transactions, currency }: TransactionHistor
         };
       case "dispute":
         return {
-          icon: <AlertCircle className="h-4 w-4" />,
+          icon: <Activity className="h-4 w-4" />,
           color: "text-red-600 dark:text-red-400",
           label: "Dispute"
         };
