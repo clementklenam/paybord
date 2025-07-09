@@ -829,6 +829,5 @@ export default function StorefrontPage() {
                 </CardFooter>
             </Card>
         </DashboardLayout>
-
     );
 }
