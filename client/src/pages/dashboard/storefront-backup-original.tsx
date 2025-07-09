@@ -936,111 +936,6 @@ export default function StorefrontPage() {
                             </Tabs>
                         </div>
                     )}
-                            <Select value={statusFilter} onValueChange={(value: any) => setStatusFilter(value)}>
-                                <SelectTrigger className="w-full md:w-40">
-                                    <SelectValue placeholder="All statuses" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="">All statuses</SelectItem>
-                                    <SelectItem value="active">Active</SelectItem>
-                                    <SelectItem value="inactive">Inactive</SelectItem>
-                                    <SelectItem value="draft">Draft</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="flex gap-4 w-full md:w-auto">
-                            <Select value={sortBy} onValueChange={setSortBy}>
-                                <SelectTrigger className="w-full md:w-40">
-                                    <SelectValue placeholder="Sort by" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="createdAt">Created date</SelectItem>
-                                    <SelectItem value="name">Name</SelectItem>
-                                    <SelectItem value="visits">Visits</SelectItem>
-                                    <SelectItem value="sales">Sales</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <Select value={sortOrder} onValueChange={(value: 'asc' | 'desc') => setSortOrder(value)}>
-                                <SelectTrigger className="w-full md:w-40">
-                                    <SelectValue placeholder="Sort order" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="asc">Ascending</SelectItem>
-                                    <SelectItem value="desc">Descending</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
-                )}
-
-                {/* Storefront listing */}
-                {!showCreationWizard && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {isLoading ? (
-                            // Loading skeletons
-                            Array.from({ length: 3 }).map((_, index) => (
-                                <Card key={`skeleton-${index}`} className="overflow-hidden">
-                                    <div className="h-32 bg-gray-100">
-                                        <Skeleton className="h-full w-full" />
-                                    </div>
-                                    <CardHeader>
-                                        <Skeleton className="h-6 w-3/4 mb-2" />
-                                        <Skeleton className="h-4 w-full" />
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <Skeleton className="h-10 w-full" />
-                                            <Skeleton className="h-10 w-full" />
-                                        </div>
-                                    </CardContent>
-                                    <CardFooter className="border-t pt-4">
-                                        <Skeleton className="h-9 w-full" />
-                                    </CardFooter>
-                                </Card>
-                            ))
-                        ) : storefronts.length === 0 ? (
-                            <div className="col-span-full bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
-                                <div className="flex flex-col items-center gap-3">
-                                    <Globe className="h-12 w-12 text-gray-400" />
-                                    <h3 className="text-xl font-medium">No storefronts found</h3>
-                                    <p className="text-gray-500 max-w-md">
-                                        {searchQuery || statusFilter ? 
-                                            "Try adjusting your filters or create a new storefront." : 
-                                            "Create your first storefront to start selling your products online."}
-                                    </p>
-                                    <Button 
-                                        onClick={() => {
-                                            resetStorefrontForm();
-                                            setShowCreationWizard(true);
-                                        }}
-                                        className="mt-4 bg-blue-600 hover:bg-blue-700"
-                                    >
-                                        <Plus className="h-4 w-4 mr-2" />
-                                        Create Storefront
-                                    </Button>
-                                    <Button variant="outline" className="ml-2" onClick={() => {
-                                        navigator.clipboard.writeText(previewUrl);
-                                        alert("URL copied to clipboard!");
-                                    }}>
-                                        <Copy className="h-4 w-4 mr-2" />
-                                        <span>Copy</span>
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                <div className="flex items-start">
-                                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-3" />
-                                    <div>
-                                        <h3 className="font-medium text-green-800">Ready to Launch!</h3>
-                                        <p className="text-sm text-green-700 mt-1">
-                                            Your storefront is ready to go live. Once published, customers can browse and purchase your products.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </CardContent>
                 <CardFooter className="flex justify-between">
                     {currentStep > 1 && (
@@ -1076,6 +971,5 @@ export default function StorefrontPage() {
                 </CardFooter>
             </Card>
         </DashboardLayout>
-
     );
 }
