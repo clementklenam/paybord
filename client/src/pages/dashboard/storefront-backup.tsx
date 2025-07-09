@@ -256,49 +256,54 @@ export default function StorefrontPage() {
 
     return (
         <DashboardLayout>
-            <div className="flex items-center justify-between mb-6">
-                <div>
-                    <h1 className="text-2xl font-semibold text-gray-900">Storefront</h1>
-                    <p className="text-sm text-gray-500 mt-1">
-                        Create and manage your online storefront
-                    </p>
-                </div>
-                {isStorefrontLive && (
-                    <div className="flex items-center gap-3">
-                        <Badge className="bg-green-100 text-green-800">Live</Badge>
-                        <Button size="sm" variant="outline" className="h-9">
-                            <Eye className="h-4 w-4 mr-2" />
-                            <span>View Store</span>
-                        </Button>
+            <div>
+                <div className="flex items-center justify-between mb-6">
+                    <div>
+                        <h1 className="text-2xl font-semibold text-gray-900">Storefront</h1>
+                        <p className="text-sm text-gray-500 mt-1">
+                            Create and manage your online storefront
+                        </p>
                     </div>
-                )}
-            </div>
+                    {isStorefrontLive && (
+                        <div className="flex items-center gap-3">
+                            <Badge className="bg-green-100 text-green-800">Live</Badge>
+                            <Button size="sm" variant="outline" className="h-9">
+                                <Eye className="h-4 w-4 mr-2" />
+                                <span>View Store</span>
+                            </Button>
+                        </div>
+                    )}
+                </div>
 
-            {/* Steps Progress */}
-            <div className="mb-8">
-                <div className="flex items-center justify-between">
-                    {steps.map((step, index) => (
-                        <div key={step.id} className="flex flex-1 items-center">
-                            <div
-                                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${currentStep >= step.id
-                                    ? "border-green-500 bg-green-50 text-green-600"
-                                    : "border-gray-300 bg-white text-gray-400"
-                                    } ${step.isCompleted ? "bg-green-500 text-white" : ""}`}
-                                onClick={() => setCurrentStep(step.id)}
-                                style={{ cursor: "pointer" }}
-                            >
-                                {step.isCompleted ? (
-                                    <Check className="h-5 w-5" />
-                                ) : (
-                                    <span>{step.id}</span>
+                {/* Steps Progress */}
+                <div className="mb-8">
+                    <div className="flex items-center justify-between">
+                        {steps.map((step, index) => (
+                            <div key={step.id} className="flex flex-1 items-center">
+                                <div
+                                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${currentStep >= step.id
+                                        ? "border-green-500 bg-green-50 text-green-600"
+                                        : "border-gray-300 bg-white text-gray-400"
+                                        } ${step.isCompleted ? "bg-green-500 text-white" : ""}`}
+                                    onClick={() => setCurrentStep(step.id)}
+                                    style={{ cursor: "pointer" }}
+                                >
+                                    {step.isCompleted ? (
+                                        <Check className="h-5 w-5" />
+                                    ) : (
+                                        <span>{step.id}</span>
+                                    )}
+                                </div>
+                                <div className="ml-3 flex-1">
+                                    <h3 className="text-sm font-medium">{step.title}</h3>
+                                    <p className="text-xs text-gray-500 hidden sm:block">{step.description}</p>
+                                </div>
+                                {index < steps.length - 1 && (
+                                    <div className="flex-1 h-0.5 bg-gray-200 mx-2"></div>
                                 )}
                             </div>
-                            <div className="ml-3 flex-1">
-                                <h3 className="text-sm font-medium">{step.title}</h3>
-                                <p className="text-xs text-gray-500 hidden sm:block">{step.description}</p>
-                            </div>
-                            {index < steps.length - 1 && (
-                                <div className="flex-1 h-0.5 bg-gray-200 mx-2">
+                        ))}
+                    </div>
                 </div>
 
                 {/* Step Content */}
@@ -309,9 +314,9 @@ export default function StorefrontPage() {
                                 <CardTitle>{steps[currentStep - 1].title}</CardTitle>
                                 <CardDescription>{steps[currentStep - 1].description}</CardDescription>
                             </div>
-                            <Button 
-                                variant="outline" 
-                                size="sm" 
+                            <Button
+                                variant="outline"
+                                size="sm"
                                 onClick={() => {
                                     setShowCreationWizard(false);
                                     setCurrentStep(1);
@@ -321,11 +326,11 @@ export default function StorefrontPage() {
                             </Button>
                         </div>
                     </CardHeader>
-                <CardContent>
-                    {/* Step 1: Store Information */}
-                    {currentStep === 1 && (
-                        <div className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <CardContent>
+                        {/* Step 1: Store Information */}
+                        {currentStep === 1 && (
+                            <div className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="store-name">Store Name <span className="text-red-500">*</span></Label>
                                         <Input
@@ -351,483 +356,451 @@ export default function StorefrontPage() {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="space-y-2">
-                                    <Label htmlFor="store-name">Store Name <span className="text-red-500">*</span></Label>
-                                    <Input
-                                        id="store-name"
-                                        placeholder="My Awesome Store"
-                                        value={storeInfo.name}
-                                        onChange={(e) => setStoreInfo(prev => ({ ...prev, name: e.target.value }))}
+                                    <Label htmlFor="store-description">Store Description <span className="text-red-500">*</span></Label>
+                                    <Textarea
+                                        id="store-description"
+                                        placeholder="Describe your store and what you offer..."
+                                        className="h-24"
+                                        value={storeInfo.description}
+                                        onChange={(e) => setStoreInfo(prev => ({ ...prev, description: e.target.value }))}
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="store-domain">Custom Domain (Optional)</Label>
-                                    <div className="flex">
-                                        <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                            https://
-                                        </span>
-                                        <Input
-                                            id="store-domain"
-                                            placeholder="mystore.com"
-                                            className="rounded-l-none"
-                                            value={storeInfo.domain}
-                                            onChange={(e) => setStoreInfo(prev => ({ ...prev, domain: e.target.value }))}
-                                        />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label>Store Logo</Label>
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-20 w-20 rounded-md border overflow-hidden flex items-center justify-center bg-gray-50">
+                                                {storeInfo.logo ? (
+                                                    <img
+                                                        src={storeInfo.logo}
+                                                        alt="Store Logo"
+                                                        className="h-full w-full object-contain"
+                                                    />
+                                                ) : (
+                                                    <ImageIcon className="h-8 w-8 text-gray-400" />
+                                                )}
+                                            </div>
+                                            <Input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => handleImageUpload(e, 'logo')}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Store Banner</Label>
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-20 w-40 rounded-md border overflow-hidden flex items-center justify-center bg-gray-50">
+                                                {storeInfo.banner ? (
+                                                    <img
+                                                        src={storeInfo.banner}
+                                                        alt="Store Banner"
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <ImageIcon className="h-8 w-8 text-gray-400" />
+                                                )}
+                                            </div>
+                                            <Input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => handleImageUpload(e, 'banner')}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="store-description">Store Description <span className="text-red-500">*</span></Label>
-                                <Textarea
-                                    id="store-description"
-                                    placeholder="Describe your store and what you offer..."
-                                    className="h-24"
-                                    value={storeInfo.description}
-                                    onChange={(e) => setStoreInfo(prev => ({ ...prev, description: e.target.value }))}
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label>Store Logo</Label>
-                                    <div className="flex items-center gap-4">
-                                        <div className="h-20 w-20 rounded-md border overflow-hidden flex items-center justify-center bg-gray-50">
-                                            {storeInfo.logo ? (
-                                                <img
-                                                    src={storeInfo.logo}
-                                                    alt="Store Logo"
-                                                    className="h-full w-full object-contain"
-                                                />
-                                            ) : (
-                                                <ImageIcon className="h-8 w-8 text-gray-400" />
-                                            )}
-                                        </div>
-                                        <Input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => handleImageUpload(e, 'logo')}
-                                        />
-                                    </div>
+                        )}
+                        {/* Step 2: Choose Products */}
+                        {currentStep === 2 && (
+                            <div className="space-y-6">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-lg font-medium">Select Products from Catalog</h3>
+                                    <Button variant="outline" size="sm">
+                                        <Plus className="h-4 w-4 mr-2" />
+                                        <span>Add New Product</span>
+                                    </Button>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label>Store Banner</Label>
-                                    <div className="flex items-center gap-4">
-                                        <div className="h-20 w-40 rounded-md border overflow-hidden flex items-center justify-center bg-gray-50">
-                                            {storeInfo.banner ? (
-                                                <img
-                                                    src={storeInfo.banner}
-                                                    alt="Store Banner"
-                                                    className="h-full w-full object-cover"
-                                                />
-                                            ) : (
-                                                <ImageIcon className="h-8 w-8 text-gray-400" />
-                                            )}
-                                        </div>
-                                        <Input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => handleImageUpload(e, 'banner')}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Step 2: Choose Products */}
-                    {currentStep === 2 && (
-                        <div className="space-y-6">
-                            <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-lg font-medium">Select Products from Catalog</h3>
-                                <Button variant="outline" size="sm">
-                                    <Plus className="h-4 w-4 mr-2" />
-                                    <span>Add New Product</span>
-                                </Button>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {products.map((product) => (
-                                    <div
-                                        key={product.id}
-                                        className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${product.isSelected
-                                            ? "border-green-500 ring-2 ring-green-200"
-                                            : "border-gray-200 hover:border-gray-300"
-                                            }`}
-                                        onClick={() => handleProductSelection(product.id)}
-                                    >
-                                        <div className="h-40 bg-gray-100 relative">
-                                            {product.image ? (
-                                                <img
-                                                    src={product.image}
-                                                    alt={product.name}
-                                                    className="h-full w-full object-cover"
-                                                />
-                                            ) : (
-                                                <div className="flex items-center justify-center h-full">
-                                                    <ImageIcon className="h-12 w-12 text-gray-400" />
-                                                </div>
-                                            )}
-                                            {product.isSelected && (
-                                                <div className="absolute top-2 right-2 bg-green-500 text-white rounded-full p-1">
-                                                    <Check className="h-4 w-4" />
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="p-4">
-                                            <h4 className="font-medium">{product.name}</h4>
-                                            <p className="text-sm text-gray-500 mt-1 line-clamp-2">{product.description}</p>
-                                            <div className="mt-2 font-medium text-lg">{formatCurrency(product.price)}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="bg-gray-50 p-4 rounded-lg mt-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h4 className="font-medium">Selected Products: {products.filter(p => p.isSelected).length}</h4>
-                                        <p className="text-sm text-gray-500 mt-1">
-                                            These products will be displayed on your storefront
-                                        </p>
-                                    </div>
-                                    {products.some(p => p.isSelected) && (
-                                        <Badge className="bg-green-100 text-green-800">
-                                            {products.filter(p => p.isSelected).length} Selected
-                                        </Badge>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Step 3: Customize Design */}
-                    {currentStep === 3 && (
-                        <div className="space-y-6">
-                            <Tabs defaultValue="theme">
-                                <TabsList className="mb-4">
-                                    <TabsTrigger value="theme">Theme</TabsTrigger>
-                                    <TabsTrigger value="colors">Colors</TabsTrigger>
-                                    <TabsTrigger value="layout">Layout</TabsTrigger>
-                                </TabsList>
-
-                                <TabsContent value="theme">
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {products.map((product) => (
                                         <div
-                                            className="border rounded-lg overflow-hidden cursor-pointer transition-all border-green-500 ring-2 ring-green-200"
+                                            key={product.id}
+                                            className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${product.isSelected
+                                                ? "border-green-500 ring-2 ring-green-200"
+                                                : "border-gray-200 hover:border-gray-300"
+                                                }`}
+                                            onClick={() => handleProductSelection(product.id)}
                                         >
                                             <div className="h-40 bg-gray-100 relative">
-                                                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/50"></div>
-                                                <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                                                    <div className="font-medium">Modern</div>
-                                                    <div className="text-xs opacity-80">Clean, minimal design</div>
-                                                </div>
+                                                {product.image ? (
+                                                    <img
+                                                        src={product.image}
+                                                        alt={product.name}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="flex items-center justify-center h-full">
+                                                        <ImageIcon className="h-12 w-12 text-gray-400" />
+                                                    </div>
+                                                )}
+                                                {product.isSelected && (
+                                                    <div className="absolute top-2 right-2 bg-green-500 text-white rounded-full p-1">
+                                                        <Check className="h-4 w-4" />
+                                                    </div>
+                                                )}
                                             </div>
-                                            <div className="p-3 bg-white">
-                                                <Badge className="bg-green-100 text-green-800">Active</Badge>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            className="border rounded-lg overflow-hidden cursor-pointer transition-all border-gray-200 hover:border-gray-300"
-                                        >
-                                            <div className="h-40 bg-gray-100 relative">
-                                                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/50"></div>
-                                                <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                                                    <div className="font-medium">Classic</div>
-                                                    <div className="text-xs opacity-80">Traditional e-commerce layout</div>
-                                                </div>
-                                            </div>
-                                            <div className="p-3 bg-white">
-                                                <Badge variant="outline">Select</Badge>
+                                            <div className="p-4">
+                                                <h4 className="font-medium">{product.name}</h4>
+                                                <p className="text-sm text-gray-500 mt-1 line-clamp-2">{product.description}</p>
+                                                <div className="mt-2 font-medium text-lg">{formatCurrency(product.price)}</div>
                                             </div>
                                         </div>
-
-                                        <div
-                                            className="border rounded-lg overflow-hidden cursor-pointer transition-all border-gray-200 hover:border-gray-300"
-                                        >
-                                            <div className="h-40 bg-gray-100 relative">
-                                                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/50"></div>
-                                                <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                                                    <div className="font-medium">Bold</div>
-                                                    <div className="text-xs opacity-80">Eye-catching design</div>
-                                                </div>
-                                            </div>
-                                            <div className="p-3 bg-white">
-                                                <Badge variant="outline">Select</Badge>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </TabsContent>
-
-                                <TabsContent value="colors">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="primary-color">Primary Color</Label>
-                                            <div className="flex items-center gap-3">
-                                                <div
-                                                    className="h-10 w-10 rounded-md border cursor-pointer"
-                                                    style={{ backgroundColor: storeInfo.primaryColor }}
-                                                ></div>
-                                                <Input
-                                                    id="primary-color"
-                                                    type="color"
-                                                    value={storeInfo.primaryColor}
-                                                    onChange={(e) => setStoreInfo(prev => ({ ...prev, primaryColor: e.target.value }))}
-                                                    className="w-16 h-10 p-1"
-                                                />
-                                                <Input
-                                                    value={storeInfo.primaryColor}
-                                                    onChange={(e) => setStoreInfo(prev => ({ ...prev, primaryColor: e.target.value }))}
-                                                    className="flex-1"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="accent-color">Accent Color</Label>
-                                            <div className="flex items-center gap-3">
-                                                <div
-                                                    className="h-10 w-10 rounded-md border cursor-pointer"
-                                                    style={{ backgroundColor: storeInfo.accentColor }}
-                                                ></div>
-                                                <Input
-                                                    id="accent-color"
-                                                    type="color"
-                                                    value={storeInfo.accentColor}
-                                                    onChange={(e) => setStoreInfo(prev => ({ ...prev, accentColor: e.target.value }))}
-                                                    className="w-16 h-10 p-1"
-                                                />
-                                                <Input
-                                                    value={storeInfo.accentColor}
-                                                    onChange={(e) => setStoreInfo(prev => ({ ...prev, accentColor: e.target.value }))}
-                                                    className="flex-1"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-6 p-4 border rounded-lg">
-                                        <h4 className="font-medium mb-3">Color Preview</h4>
-                                        <div className="flex flex-wrap gap-4">
-                                            <div
-                                                className="h-12 px-4 rounded-md flex items-center justify-center text-white"
-                                                style={{ backgroundColor: storeInfo.primaryColor }}
-                                            >
-                                                Primary Button
-                                            </div>
-                                            <div
-                                                className="h-12 px-4 rounded-md flex items-center justify-center text-white"
-                                                style={{ backgroundColor: storeInfo.accentColor }}
-                                            >
-                                                Secondary Button
-                                            </div>
-                                            <div
-                                                className="h-12 px-4 rounded-md border flex items-center justify-center"
-                                                style={{ color: storeInfo.primaryColor, borderColor: storeInfo.primaryColor }}
-                                            >
-                                                Outline Button
-                                            </div>
-                                            <div
-                                                className="h-6 px-2 rounded-full text-xs flex items-center justify-center text-white"
-                                                style={{ backgroundColor: storeInfo.primaryColor }}
-                                            >
-                                                Badge
-                                            </div>
-                                        </div>
-                                    </div>
-                                </TabsContent>
-
-                                <TabsContent value="layout">
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <Label className="text-base">Show Hero Banner</Label>
-                                                <p className="text-sm text-gray-500">Display a large banner at the top of your store</p>
-                                            </div>
-                                            <Switch defaultChecked />
-                                        </div>
-                                        <Separator />
-
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <Label className="text-base">Featured Products</Label>
-                                                <p className="text-sm text-gray-500">Highlight selected products at the top</p>
-                                            </div>
-                                            <Switch defaultChecked />
-                                        </div>
-                                        <Separator />
-
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <Label className="text-base">Show Product Categories</Label>
-                                                <p className="text-sm text-gray-500">Group products by categories</p>
-                                            </div>
-                                            <Switch defaultChecked />
-                                        </div>
-                                        <Separator />
-
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <Label className="text-base">Display Social Links</Label>
-                                                <p className="text-sm text-gray-500">Show your social media profiles</p>
-                                            </div>
-                                            <Switch defaultChecked />
-                                        </div>
-                                    </div>
-                                </TabsContent>
-                            </Tabs>
-                        </div>
-                    )}
-
-                    {/* Step 4: Preview & Launch */}
-                    {currentStep === 4 && (
-                        <div className="space-y-6">
-                            <div className="bg-gray-50 border rounded-lg overflow-hidden">
-                                <div className="p-4 bg-white border-b">
+                                    ))}
+                                </div>
+                                <div className="bg-gray-50 p-4 rounded-lg mt-6">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="font-medium">Storefront Preview</h3>
-                                        <Button variant="outline" size="sm" onClick={() => window.open(generatePreviewUrl(), '_blank')}>
-                                            <ExternalLink className="h-4 w-4 mr-2" />
-                                            <span>Open Preview</span>
+                                        <div>
+                                            <h4 className="font-medium">Selected Products: {products.filter(p => p.isSelected).length}</h4>
+                                            <p className="text-sm text-gray-500 mt-1">
+                                                These products will be displayed on your storefront
+                                            </p>
+                                        </div>
+                                        {products.some(p => p.isSelected) && (
+                                            <Badge className="bg-green-100 text-green-800">
+                                                {products.filter(p => p.isSelected).length} Selected
+                                            </Badge>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {/* Step 3: Customize Design */}
+                        {currentStep === 3 && (
+                            <div className="space-y-6">
+                                <Tabs defaultValue="theme">
+                                    <TabsList className="mb-4">
+                                        <TabsTrigger value="theme">Theme</TabsTrigger>
+                                        <TabsTrigger value="colors">Colors</TabsTrigger>
+                                        <TabsTrigger value="layout">Layout</TabsTrigger>
+                                    </TabsList>
+
+                                    <TabsContent value="theme">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div
+                                                className="border rounded-lg overflow-hidden cursor-pointer transition-all border-green-500 ring-2 ring-green-200"
+                                            >
+                                                <div className="h-40 bg-gray-100 relative">
+                                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/50"></div>
+                                                    <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                                                        <div className="font-medium">Modern</div>
+                                                        <div className="text-xs opacity-80">Clean, minimal design</div>
+                                                    </div>
+                                                </div>
+                                                <div className="p-3 bg-white">
+                                                    <Badge className="bg-green-100 text-green-800">Active</Badge>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                className="border rounded-lg overflow-hidden cursor-pointer transition-all border-gray-200 hover:border-gray-300"
+                                            >
+                                                <div className="h-40 bg-gray-100 relative">
+                                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/50"></div>
+                                                    <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                                                        <div className="font-medium">Classic</div>
+                                                        <div className="text-xs opacity-80">Traditional e-commerce layout</div>
+                                                    </div>
+                                                </div>
+                                                <div className="p-3 bg-white">
+                                                    <Badge variant="outline">Select</Badge>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                className="border rounded-lg overflow-hidden cursor-pointer transition-all border-gray-200 hover:border-gray-300"
+                                            >
+                                                <div className="h-40 bg-gray-100 relative">
+                                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/50"></div>
+                                                    <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                                                        <div className="font-medium">Bold</div>
+                                                        <div className="text-xs opacity-80">Eye-catching design</div>
+                                                    </div>
+                                                </div>
+                                                <div className="p-3 bg-white">
+                                                    <Badge variant="outline">Select</Badge>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </TabsContent>
+
+                                    <TabsContent value="colors">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div className="space-y-2">
+                                                <Label htmlFor="primary-color">Primary Color</Label>
+                                                <div className="flex items-center gap-3">
+                                                    <div
+                                                        className="h-10 w-10 rounded-md border cursor-pointer"
+                                                        style={{ backgroundColor: storeInfo.primaryColor }}
+                                                    ></div>
+                                                    <Input
+                                                        id="primary-color"
+                                                        type="color"
+                                                        value={storeInfo.primaryColor}
+                                                        onChange={(e) => setStoreInfo(prev => ({ ...prev, primaryColor: e.target.value }))}
+                                                        className="w-16 h-10 p-1"
+                                                    />
+                                                    <Input
+                                                        value={storeInfo.primaryColor}
+                                                        onChange={(e) => setStoreInfo(prev => ({ ...prev, primaryColor: e.target.value }))}
+                                                        className="flex-1"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <Label htmlFor="accent-color">Accent Color</Label>
+                                                <div className="flex items-center gap-3">
+                                                    <div
+                                                        className="h-10 w-10 rounded-md border cursor-pointer"
+                                                        style={{ backgroundColor: storeInfo.accentColor }}
+                                                    ></div>
+                                                    <Input
+                                                        id="accent-color"
+                                                        type="color"
+                                                        value={storeInfo.accentColor}
+                                                        onChange={(e) => setStoreInfo(prev => ({ ...prev, accentColor: e.target.value }))}
+                                                        className="w-16 h-10 p-1"
+                                                    />
+                                                    <Input
+                                                        value={storeInfo.accentColor}
+                                                        onChange={(e) => setStoreInfo(prev => ({ ...prev, accentColor: e.target.value }))}
+                                                        className="flex-1"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-6 p-4 border rounded-lg">
+                                            <h4 className="font-medium mb-3">Color Preview</h4>
+                                            <div className="flex flex-wrap gap-4">
+                                                <div
+                                                    className="h-12 px-4 rounded-md flex items-center justify-center text-white"
+                                                    style={{ backgroundColor: storeInfo.primaryColor }}
+                                                >
+                                                    Primary Button
+                                                </div>
+                                                <div
+                                                    className="h-12 px-4 rounded-md flex items-center justify-center text-white"
+                                                    style={{ backgroundColor: storeInfo.accentColor }}
+                                                >
+                                                    Secondary Button
+                                                </div>
+                                                <div
+                                                    className="h-12 px-4 rounded-md border flex items-center justify-center"
+                                                    style={{ color: storeInfo.primaryColor, borderColor: storeInfo.primaryColor }}
+                                                >
+                                                    Outline Button
+                                                </div>
+                                                <div
+                                                    className="h-6 px-2 rounded-full text-xs flex items-center justify-center text-white"
+                                                    style={{ backgroundColor: storeInfo.primaryColor }}
+                                                >
+                                                    Badge
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </TabsContent>
+
+                                    <TabsContent value="layout">
+                                        <div className="space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <Label className="text-base">Show Hero Banner</Label>
+                                                    <p className="text-sm text-gray-500">Display a large banner at the top of your store</p>
+                                                </div>
+                                                <Switch defaultChecked />
+                                            </div>
+                                            <Separator />
+
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <Label className="text-base">Featured Products</Label>
+                                                    <p className="text-sm text-gray-500">Highlight selected products at the top</p>
+                                                </div>
+                                                <Switch defaultChecked />
+                                            </div>
+                                            <Separator />
+
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <Label className="text-base">Show Product Categories</Label>
+                                                    <p className="text-sm text-gray-500">Group products by categories</p>
+                                                </div>
+                                                <Switch defaultChecked />
+                                            </div>
+                                            <Separator />
+
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <Label className="text-base">Display Social Links</Label>
+                                                    <p className="text-sm text-gray-500">Show your social media profiles</p>
+                                                </div>
+                                                <Switch defaultChecked />
+                                            </div>
+                                        </div>
+                                    </TabsContent>
+                                </Tabs>
+                            </div>
+                        )}
+                        {/* Step 4: Preview & Launch */}
+                        {currentStep === 4 && (
+                            <div className="space-y-6">
+                                <div className="bg-gray-50 border rounded-lg overflow-hidden">
+                                    <div className="p-4 bg-white border-b">
+                                        <div className="flex items-center justify-between">
+                                            <h3 className="font-medium">Storefront Preview</h3>
+                                            <Button variant="outline" size="sm" onClick={() => window.open(generatePreviewUrl(), '_blank')}>
+                                                <ExternalLink className="h-4 w-4 mr-2" />
+                                                <span>Open Preview</span>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className="p-6">
+                                        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden border">
+                                            {/* Store Header */}
+                                            <div
+                                                className="h-32 bg-cover bg-center relative"
+                                                style={{
+                                                    backgroundColor: storeInfo.primaryColor,
+                                                    backgroundImage: storeInfo.banner ? `url(${storeInfo.banner})` : 'none'
+                                                }}
+                                            >
+                                                <div className="absolute inset-0 bg-black/20"></div>
+                                                <div className="absolute bottom-0 left-0 right-0 p-4 text-white flex items-end">
+                                                    {storeInfo.logo && (
+                                                        <div className="h-16 w-16 rounded-full bg-white p-1 mr-3 overflow-hidden">
+                                                            <img
+                                                                src={storeInfo.logo}
+                                                                alt="Logo"
+                                                                className="h-full w-full object-contain"
+                                                            />
+                                                        </div>
+                                                    )}
+                                                    <div>
+                                                        <h2 className="text-xl font-bold">{storeInfo.name || "Your Store Name"}</h2>
+                                                        <p className="text-sm opacity-90 line-clamp-1">{storeInfo.description || "Your store description"}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Featured Products */}
+                                            <div className="p-4">
+                                                <h3 className="font-medium mb-3">Featured Products</h3>
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    {products.filter(p => p.isSelected).slice(0, 2).map((product) => (
+                                                        <div key={product.id} className="border rounded-md overflow-hidden">
+                                                            <div className="h-24 bg-gray-100">
+                                                                {product.image && (
+                                                                    <img
+                                                                        src={product.image}
+                                                                        alt={product.name}
+                                                                        className="h-full w-full object-cover"
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                            <div className="p-2">
+                                                                <h4 className="font-medium text-sm">{product.name}</h4>
+                                                                <div className="text-sm font-medium mt-1">{formatCurrency(product.price)}</div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Payment Methods */}
+                                            <div className="p-4 border-t">
+                                                <div className="flex items-center justify-between text-sm text-gray-500">
+                                                    <div className="flex items-center gap-2">
+                                                        <CreditCard className="h-4 w-4" />
+                                                        <span>Credit Card</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <Smartphone className="h-4 w-4" />
+                                                        <span>Mobile Money</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white border rounded-lg p-4">
+                                    <h3 className="font-medium mb-3">Storefront URL</h3>
+                                    <div className="flex items-center">
+                                        <Input
+                                            value={previewUrl || generatePreviewUrl()}
+                                            readOnly
+                                            className="flex-1"
+                                        />
+                                        <Button variant="outline" className="ml-2" onClick={() => {
+                                            navigator.clipboard.writeText(previewUrl);
+                                            alert("URL copied to clipboard!");
+                                        }}>
+                                            <Copy className="h-4 w-4 mr-2" />
+                                            <span>Copy</span>
                                         </Button>
                                     </div>
                                 </div>
-                                <div className="p-6">
-                                    <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden border">
-                                        {/* Store Header */}
-                                        <div
-                                            className="h-32 bg-cover bg-center relative"
-                                            style={{
-                                                backgroundColor: storeInfo.primaryColor,
-                                                backgroundImage: storeInfo.banner ? `url(${storeInfo.banner})` : 'none'
-                                            }}
-                                        >
-                                            <div className="absolute inset-0 bg-black/20"></div>
-                                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white flex items-end">
-                                                {storeInfo.logo && (
-                                                    <div className="h-16 w-16 rounded-full bg-white p-1 mr-3 overflow-hidden">
-                                                        <img
-                                                            src={storeInfo.logo}
-                                                            alt="Logo"
-                                                            className="h-full w-full object-contain"
-                                                        />
-                                                    </div>
-                                                )}
-                                                <div>
-                                                    <h2 className="text-xl font-bold">{storeInfo.name || "Your Store Name"}</h2>
-                                                    <p className="text-sm opacity-90 line-clamp-1">{storeInfo.description || "Your store description"}</p>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        {/* Featured Products */}
-                                        <div className="p-4">
-                                            <h3 className="font-medium mb-3">Featured Products</h3>
-                                            <div className="grid grid-cols-2 gap-3">
-                                                {products.filter(p => p.isSelected).slice(0, 2).map((product) => (
-                                                    <div key={product.id} className="border rounded-md overflow-hidden">
-                                                        <div className="h-24 bg-gray-100">
-                                                            {product.image && (
-                                                                <img
-                                                                    src={product.image}
-                                                                    alt={product.name}
-                                                                    className="h-full w-full object-cover"
-                                                                />
-                                                            )}
-                                                        </div>
-                                                        <div className="p-2">
-                                                            <h4 className="font-medium text-sm">{product.name}</h4>
-                                                            <div className="text-sm font-medium mt-1">{formatCurrency(product.price)}</div>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* Payment Methods */}
-                                        <div className="p-4 border-t">
-                                            <div className="flex items-center justify-between text-sm text-gray-500">
-                                                <div className="flex items-center gap-2">
-                                                    <CreditCard className="h-4 w-4" />
-                                                    <span>Credit Card</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <Smartphone className="h-4 w-4" />
-                                                    <span>Mobile Money</span>
-                                                </div>
-                                            </div>
+                                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                                    <div className="flex items-start">
+                                        <Check className="h-5 w-5 text-green-500 mt-0.5 mr-3" />
+                                        <div>
+                                            <h3 className="font-medium text-green-800">Ready to Launch!</h3>
+                                            <p className="text-sm text-green-700 mt-1">
+                                                Your storefront is ready to go live. Once published, customers can browse and purchase your products.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="bg-white border rounded-lg p-4">
-                                <h3 className="font-medium mb-3">Storefront URL</h3>
-                                <div className="flex items-center">
-                                    <Input
-                                        value={previewUrl || generatePreviewUrl()}
-                                        readOnly
-                                        className="flex-1"
-                                    />
-                                    <Button variant="outline" className="ml-2" onClick={() => {
-                                        navigator.clipboard.writeText(previewUrl);
-                                        alert("URL copied to clipboard!");
-                                    }}>
-                                        <Copy className="h-4 w-4 mr-2" />
-                                        <span>Copy</span>
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                <div className="flex items-start">
-                                    <Check className="h-5 w-5 text-green-500 mt-0.5 mr-3" />
-                                    <div>
-                                        <h3 className="font-medium text-green-800">Ready to Launch!</h3>
-                                        <p className="text-sm text-green-700 mt-1">
-                                            Your storefront is ready to go live. Once published, customers can browse and purchase your products.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                    {currentStep > 1 && (
-                        <Button
-                            variant="outline"
-                            onClick={() => setCurrentStep(currentStep - 1)}
-                        >
-                            Back
-                        </Button>
-                    )}
-                    {currentStep < steps.length && (
-                        <Button
-                            onClick={() => setCurrentStep(currentStep + 1)}
-                            disabled={
-                                (currentStep === 1 && (!storeInfo.name || !storeInfo.description)) ||
-                                (currentStep === 2 && !products.some(p => p.isSelected))
-                            }
-                            className="ml-auto"
-                        >
-                            Continue
-                            <ArrowRight className="h-4 w-4 ml-2" />
-                        </Button>
-                    )}
-                    {currentStep === steps.length && (
-                        <Button
-                            onClick={launchStorefront}
-                            disabled={isStorefrontLive}
-                            className="ml-auto bg-green-600 hover:bg-green-700"
-                        >
-                            {isStorefrontLive ? "Storefront Live" : "Launch Storefront"}
-                        </Button>
-                    )}
-                </CardFooter>
-            </Card>
+                        )}
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                        {currentStep > 1 && (
+                            <Button
+                                variant="outline"
+                                onClick={() => setCurrentStep(currentStep - 1)}
+                            >
+                                Back
+                            </Button>
+                        )}
+                        {currentStep < steps.length && (
+                            <Button
+                                onClick={() => setCurrentStep(currentStep + 1)}
+                                disabled={
+                                    (currentStep === 1 && (!storeInfo.name || !storeInfo.description)) ||
+                                    (currentStep === 2 && !products.some(p => p.isSelected))
+                                }
+                                className="ml-auto"
+                            >
+                                Continue
+                                <ArrowRight className="h-4 w-4 ml-2" />
+                            </Button>
+                        )}
+                        {currentStep === steps.length && (
+                            <Button
+                                onClick={launchStorefront}
+                                disabled={isStorefrontLive}
+                                className="ml-auto bg-green-600 hover:bg-green-700"
+                            >
+                                {isStorefrontLive ? "Storefront Live" : "Launch Storefront"}
+                            </Button>
+                        )}
+                    </CardFooter>
+                </Card>
+            </div>
         </DashboardLayout>
     );
 }
