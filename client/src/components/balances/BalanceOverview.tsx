@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowUpRight, TrendingUp, TrendingDown, Clock, AlertCircle, DollarSign, Calendar } from "lucide-react";
+import { ArrowUpRight, TrendingUp, TrendingDown, Clock, AlertCircle, Calendar, DollarSign } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { useState } from "react";
 

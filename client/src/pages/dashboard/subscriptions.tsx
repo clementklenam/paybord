@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Download, Info, ArrowRight } from "lucide-react";
 import { CreateSubscriptionDrawer } from "@/components/subscriptions/CreateSubscriptionDrawer";
 import SubscriptionService, { Subscription } from '@/services/subscription.service';
-import { useEffect } from 'react';
 
 export default function SubscriptionsPage() {
   const [activeTab, setActiveTab] = useState("all");

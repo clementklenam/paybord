@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -201,7 +201,7 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
     };
 
     // Handle image upload
-    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>, type: 'logo' | 'banner') => {
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'banner') => {
         const file = e.target.files?.[0];
         if (!file) return;
 

@@ -1,4 +1,4 @@
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import SigninPage from "@/pages/signin";
 import SignupPage from "@/pages/signup";
@@ -20,7 +20,6 @@ import Home from "@/pages/Home";
 import PaymentPage from "@/pages/payment/[id]";
 import PaymentLinkViewPage from "@/pages/payment-link/[id]";
 import TestTopCustomersPage from "@/pages/test-top-customers";
-import { Redirect } from "wouter";
 
 // Component to handle the redirect from /pl_:id to /payment/:id
 function PaymentLinkRedirect({ params }: { params: { id: string } }) {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, ChangeEvent } from "react";
+import { useState, useEffect, useRef } from "react";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,6 @@ import {
     Facebook
 } from "lucide-react";
 import { StorefrontService } from "@/services/storefront.service";
-import type { ChangeEvent } from "react";
 
 // Define the step interface
 interface Step {

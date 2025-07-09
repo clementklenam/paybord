@@ -15,7 +15,6 @@ import {
   CheckCircle,
   AlertCircle,
   XCircle,
-  CreditCard,
   Wallet,
   Activity,
   RotateCcw,

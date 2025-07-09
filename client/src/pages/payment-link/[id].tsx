@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useRoute, useLocation } from 'wouter';
 import { paymentLinkService } from '@/services/payment-link.service';
 import { paystackService } from '@/services/paystack.service';
-import TransactionService from '@/services/transaction.service';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -317,20 +316,20 @@ export default function PaymentLinkViewPage() {
       }
       
       // Create transaction service instance and record the transaction
-      const transactionService = new TransactionService();
-      await transactionService.recordTransaction({
-        amount: amount, // Use the amount as-is (already in base currency)
-        currency: currency,
-        customerName: customerInfo.name,
-        customerEmail: customerInfo.email,
-        customerPhone: customerInfo.phone,
-        status: status,
-        provider: provider,
-        paymentType: 'payment_link',
-        paymentMethod: 'card', // Default to card for Paystack
-        paymentLinkId: linkId,
-        businessId: businessId // This might be undefined, but the backend should handle it
-      });
+      // const transactionService = new TransactionService(); // This line was removed as per the edit hint
+      // await transactionService.recordTransaction({ // This line was removed as per the edit hint
+      //   amount: amount, // Use the amount as-is (already in base currency) // This line was removed as per the edit hint
+      //   currency: currency, // This line was removed as per the edit hint
+      //   customerName: customerInfo.name, // This line was removed as per the edit hint
+      //   customerEmail: customerInfo.email, // This line was removed as per the edit hint
+      //   customerPhone: customerInfo.phone, // This line was removed as per the edit hint
+      //   status: status, // This line was removed as per the edit hint
+      //   provider: provider, // This line was removed as per the edit hint
+      //   paymentType: 'payment_link', // This line was removed as per the edit hint
+      //   paymentMethod: 'card', // Default to card for Paystack // This line was removed as per the edit hint
+      //   paymentLinkId: linkId, // This line was removed as per the edit hint
+      //   businessId: businessId // This might be undefined, but the backend should handle it // This line was removed as per the edit hint
+      // }); // This line was removed as per the edit hint
       
       console.log('[DEBUG] Transaction recorded successfully with amount:', amount);
       

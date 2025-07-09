@@ -8,14 +8,14 @@ interface OtpVerificationProps {
 
 export function OtpVerification({ type, onSuccess }: OtpVerificationProps) {
   const [otp, setOtp] = useState('');
-  const { verifyOtp, resendOtp, loading, error, clearError } = useAuth();
+  const { verifyOtp, resendOtp, loading, clearError } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await verifyOtp({ type, otp });
       onSuccess?.();
-    } catch (error) {
+    } catch {
       // Error is handled by AuthContext
     }
   };
@@ -24,7 +24,7 @@ export function OtpVerification({ type, onSuccess }: OtpVerificationProps) {
     try {
       await resendOtp(type);
       // Show success message
-    } catch (error) {
+    } catch {
       // Error is handled by AuthContext
     }
   };
@@ -35,18 +35,6 @@ export function OtpVerification({ type, onSuccess }: OtpVerificationProps) {
         Verify your {type === 'email' ? 'email' : 'phone'}
       </h2>
       
-      {error && (
-        <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
-          {error}
-          <button
-            onClick={clearError}
-            className="float-right text-sm"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label

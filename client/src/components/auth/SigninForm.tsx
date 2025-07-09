@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { useAuth } from "../../contexts/AuthContext";
 import { LoginData } from "@/types/auth";
 
@@ -40,7 +40,7 @@ export function SigninForm() {
         // Redirect to dashboard
         window.location.href = '/dashboard';
       }, 100);
-    } catch (err) {
+    } catch {
       toast({
         title: "Error",
         description: error || "Invalid email or password.",

@@ -29,7 +29,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { usePaymentContext } from "@/contexts/PaymentContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { TransactionHistory } from "@/components/balances/TransactionHistory";
-import TransactionService, { Transaction } from "@/services/transaction.service";
+import TransactionService from "@/services/transaction.service";
 import { ShopifyHeader } from "@/components/dashboard/ShopifyHeader";
 import { ShopifyStatsCard } from "@/components/dashboard/ShopifyStatsCard";
 

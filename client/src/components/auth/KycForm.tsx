@@ -7,7 +7,7 @@ interface KycFormProps {
 }
 
 export function KycForm({ onSuccess }: KycFormProps) {
-  const { submitKyc, loading, error, clearError } = useAuth();
+  const { submitKyc, loading } = useAuth();
   const [formData, setFormData] = useState<Partial<KycData>>({
     idType: 'national_id',
   });
@@ -29,7 +29,7 @@ export function KycForm({ onSuccess }: KycFormProps) {
     try {
       await submitKyc(formData as KycData);
       onSuccess?.();
-    } catch (error) {
+    } catch {
       // Error is handled by AuthContext
     }
   };
@@ -39,15 +39,6 @@ export function KycForm({ onSuccess }: KycFormProps) {
       <h2 className="text-2xl font-bold mb-6 text-center">
         Complete Your KYC Verification
       </h2>
-
-      {error && (
-        <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
-          {error}
-          <button onClick={clearError} className="float-right text-sm">
-            ✕
-          </button>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
