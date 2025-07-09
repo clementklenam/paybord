@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, TrendingUp, TrendingDown, Clock, AlertCircle, Calendar, DollarSign } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
-import { useState } from "react";
 
 interface BalanceOverviewProps {
   balanceData: {

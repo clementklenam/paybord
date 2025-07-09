@@ -33,7 +33,10 @@ import { Check, ChevronRight, Building2, CreditCard, Shield, Upload, Landmark } 
 const initialFormData: BusinessRegistrationData = {
     businessName: "",
     businessType: "sole_proprietorship",
+    registrationNumber: undefined,
+    taxId: undefined,
     industry: "",
+    website: undefined,
     email: "",
     phone: "",
     address: {
@@ -43,6 +46,7 @@ const initialFormData: BusinessRegistrationData = {
         postalCode: "",
         country: "nigeria"
     },
+    complianceInfo: undefined,
     bankingInfo: {
         bankName: "",
         accountNumber: "",
@@ -50,6 +54,7 @@ const initialFormData: BusinessRegistrationData = {
         swiftCode: "",
         routingNumber: ""
     },
+    mobileMoneyInfo: undefined,
     currency: "USD"
 };
 

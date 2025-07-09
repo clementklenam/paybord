@@ -8,7 +8,7 @@ interface OtpVerificationProps {
 
  type, onSuccess }: OtpVerificationProps) {
   const [otp, setOtp] = useState('');
-  const { verifyOtp, resendOtp, loading, clearError } = useAuth();
+  const { verifyOtp, resendOtp, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
