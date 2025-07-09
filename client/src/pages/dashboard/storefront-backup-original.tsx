@@ -232,7 +232,7 @@ export default function StorefrontPage() {
             title: "Choose Products",
             description: "Select products to display in your storefront",
             icon: <ShoppingBag className="h-5 w-5" />,
-            isCompleted: products.some(p => p.isSelected)
+            isCompleted: availableProducts.some(p => p.isSelected)
         },
         {
             id: 3,
@@ -704,7 +704,7 @@ export default function StorefrontPage() {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {products.map((product) => (
+                                {availableProducts.map((product) => (
                                     <div
                                         key={product.id}
                                         className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${product.isSelected
@@ -743,14 +743,14 @@ export default function StorefrontPage() {
                             <div className="bg-gray-50 p-4 rounded-lg mt-6">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <h4 className="font-medium">Selected Products: {products.filter(p => p.isSelected).length}</h4>
+                                        <h4 className="font-medium">Selected Products: {availableProducts.filter(p => p.isSelected).length}</h4>
                                         <p className="text-sm text-gray-500 mt-1">
                                             These products will be displayed on your storefront
                                         </p>
                                     </div>
-                                    {products.some(p => p.isSelected) && (
+                                    {availableProducts.some(p => p.isSelected) && (
                                         <Badge className="bg-green-100 text-green-800">
-                                            {products.filter(p => p.isSelected).length} Selected
+                                            {availableProducts.filter(p => p.isSelected).length} Selected
                                         </Badge>
                                     )}
                                 </div>
@@ -1017,7 +1017,7 @@ export default function StorefrontPage() {
                                     >
                                         <Plus className="h-4 w-4 mr-2" />
                                         Create Storefront
-                                    />
+                                    </Button>
                                     <Button variant="outline" className="ml-2" onClick={() => {
                                         navigator.clipboard.writeText(previewUrl);
                                         alert("URL copied to clipboard!");
@@ -1056,7 +1056,7 @@ export default function StorefrontPage() {
                             onClick={() => setCurrentStep(currentStep + 1)}
                             disabled={
                                 (currentStep === 1 && (!storeInfo.name || !storeInfo.description)) ||
-                                (currentStep === 2 && !products.some(p => p.isSelected))
+                                (currentStep === 2 && !availableProducts.some(p => p.isSelected))
                             }
                             className="ml-auto"
                         >
