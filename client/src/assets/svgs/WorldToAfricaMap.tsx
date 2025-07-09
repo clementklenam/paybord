@@ -70,11 +70,11 @@ export function WorldToAfricaMap() {
       />
       
       {/* Payment Hub Central Circle in Africa */}
-      <circle cx="380" cy="300" r="35" fill="#6C2BFB" />
-      <circle cx="380" cy="300" r="30" fill="#5921c9" />
-      <text x="380" y="305" fontFamily="Arial" fontSize="13" fill="white" fontWeight="bold" textAnchor="middle">Paymesa</text>
+      <circle cx="380" cy="300" r="35" fill="#1e8449" />
+      <circle cx="380" cy="300" r="30" fill="#196f3d" />
+      <text x="380" y="305" fontFamily="Arial" fontSize="13" fill="white" fontWeight="bold" textAnchor="middle">PayAfric</text>
       
-      {/* Animated pulse rings around Paymesa hub */}
+      {/* Animated pulse rings around PayAfric hub */}
       <circle cx="380" cy="300" r="40" stroke="white" strokeWidth="2" strokeOpacity="0.3" fill="none">
         <animate attributeName="r" from="40" to="70" dur="3s" repeatCount="indefinite" />
         <animate attributeName="stroke-opacity" from="0.3" to="0" dur="3s" repeatCount="indefinite" />
@@ -106,7 +106,7 @@ export function WorldToAfricaMap() {
       <circle cx="210" cy="300" r="15" fill="#0FCEA6" />
       <text x="210" y="305" fontFamily="Arial" fontSize="10" fill="white" fontWeight="bold" textAnchor="middle">SAO</text>
       
-      {/* Connection paths from global hubs to Paymesa */}
+      {/* Connection paths from global hubs to PayAfric */}
       <path 
         d="M190 190 Q285 245 370 295" 
         stroke="#0FCEA6" 
@@ -200,35 +200,37 @@ export function WorldToAfricaMap() {
       
       {/* African Payment Nodes */}
       {/* North Africa */}
-      <circle cx="370" cy="240" r="8" fill="#6C2BFB" fillOpacity="0.7" />
+      <circle cx="370" cy="240" r="8" fill="#1e8449" fillOpacity="0.7" />
       
       {/* West Africa */}
-      <circle cx="320" cy="320" r="8" fill="#6C2BFB" fillOpacity="0.7" />
+      <circle cx="300" cy="300" r="8" fill="#1e8449" fillOpacity="0.7" />
       
       {/* East Africa */}
-      <circle cx="440" cy="320" r="8" fill="#6C2BFB" fillOpacity="0.7" />
+      <circle cx="450" cy="320" r="8" fill="#1e8449" fillOpacity="0.7" />
       
       {/* Southern Africa */}
-      <circle cx="380" cy="400" r="8" fill="#6C2BFB" fillOpacity="0.7" />
+      <circle cx="400" cy="400" r="8" fill="#1e8449" fillOpacity="0.7" />
       
       {/* Central Africa */}
-      <circle cx="380" cy="350" r="8" fill="#6C2BFB" fillOpacity="0.7" />
+      <circle cx="380" cy="350" r="8" fill="#1e8449" fillOpacity="0.7" />
       
-      {/* Distribution paths from Paymesa to African payment points */}
+      {/* Distribution paths from PayAfric to African payment points */}
       <path 
         d="M380 300 L370 240" 
-        stroke="#6C2BFB" 
+        stroke="#1e8449" 
         strokeWidth="2" 
-        strokeDasharray="4 2"
-      >
+        strokeDasharray="2,2"
+        opacity="0.7"
+      >  
         <animate attributeName="stroke-dashoffset" from="0" to="12" dur="1.5s" repeatCount="indefinite" />
       </path>
       
       <path 
         d="M380 300 L320 320" 
-        stroke="#6C2BFB" 
+        stroke="#1e8449" 
         strokeWidth="2" 
-        strokeDasharray="4 2"
+        strokeDasharray="2,2"
+        opacity="0.7"
       >
         <animate attributeName="stroke-dashoffset" from="0" to="12" dur="1.5s" repeatCount="indefinite" />
       </path>

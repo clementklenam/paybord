@@ -1,30 +1,22 @@
 import { Navbar } from "@/components/home/Navbar";
 import { HeroSection } from "@/components/home/HeroSection";
-import { TrustedBySection } from "@/components/home/TrustedBySection";
-import { HowItWorksSection } from "@/components/home/HowItWorksSection";
-import { PaymentFlowSection } from "@/components/home/PaymentFlowSection";
-import { DeveloperSection } from "@/components/home/DeveloperSection";
-import { ProductsSection } from "@/components/home/ProductsSection";
-import { ProductDemoSection } from "@/components/home/ProductDemoSection";
-import { BenefitsSection } from "@/components/home/BenefitsSection";
-import { TestimonialSection } from "@/components/home/TestimonialSection";
+import { FeaturesSection } from "@/components/home/FeaturesSection";
+import { UseCasesSection } from "@/components/home/UseCasesSection";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CTASection } from "@/components/home/CTASection";
 import { Footer } from "@/components/home/Footer";
 
 export default function Home() {
   return (
-    <div className="bg-white">
+    <div className="min-h-screen bg-black">
       <Navbar />
-      <HeroSection />
-      <TrustedBySection />
-      <HowItWorksSection />
-      <PaymentFlowSection />
-      <DeveloperSection />
-      <ProductsSection />
-      <ProductDemoSection />
-      <BenefitsSection />
-      <TestimonialSection />
-      <CTASection />
+      <main>
+        <HeroSection />
+        <FeaturesSection />
+        <UseCasesSection />
+        <TestimonialsSection />
+        <CTASection />
+      </main>
       <Footer />
     </div>
   );

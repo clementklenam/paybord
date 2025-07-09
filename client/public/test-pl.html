@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Payment Link</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    h1 {
+      color: #1e8449;
+      margin-top: 0;
+    }
+    .info {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #1e8449;
+    }
+    .btn {
+      background: #1e8449;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .payment-methods {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .method {
+      flex: 1;
+      border: 1px solid #ddd;
+      padding: 1rem;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .method.selected {
+      border-color: #1e8449;
+      background: rgba(30, 132, 73, 0.1);
+    }
+    .method-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    #debug {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #f5f5f5;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Test Payment Page</h1>
+    <div class="info">
+      <p id="payment-id">Payment Link ID: Loading...</p>
+      <p>This is a test page to verify that the URL routing works properly.</p>
+    </div>
+    
+    <div>
+      <h3>Amount</h3>
+      <p class="price">$100.00</p>
+    </div>
+    
+    <div>
+      <h3>Select Payment Method</h3>
+      <div class="payment-methods">
+        <div class="method selected" onclick="selectMethod(this, 'card')">
+          <div class="method-icon">💳</div>
+          <div>Card</div>
+        </div>
+        <div class="method" onclick="selectMethod(this, 'mobile')">
+          <div class="method-icon">📱</div>
+          <div>Mobile Money</div>
+        </div>
+        <div class="method" onclick="selectMethod(this, 'bank')">
+          <div class="method-icon">🏦</div>
+          <div>Bank Transfer</div>
+        </div>
+      </div>
+    </div>
+    
+    <button class="btn" onclick="pay()">Pay $100.00</button>
+  </div>
+  
+  <div id="debug">
+    <h3>Debug Information</h3>
+    <div id="debug-output"></div>
+  </div>
+  
+  <script>
+    // Extract payment ID from URL
+    function getPaymentId() {
+      const path = window.location.pathname;
+      let id = 'Unknown';
+      
+      if (path.includes('/pl_')) {
+        id = path.split('/pl_')[1];
+      } else if (path.includes('/payment/')) {
+        id = path.split('/payment/')[1];
+      } else if (path.includes('/test-pl.html')) {
+        id = 'test-page-direct-access';
+      }
+      
+      return id;
+    }
+    
+    // Update UI with payment ID
+    document.getElementById('payment-id').textContent = `Payment Link ID: ${getPaymentId()}`;
+    
+    // Debug info
+    const debugOutput = document.getElementById('debug-output');
+    debugOutput.innerHTML = `
+      <p>URL: ${window.location.href}</p>
+      <p>Path: ${window.location.pathname}</p>
+      <p>Payment ID: ${getPaymentId()}</p>
+    `;
+    
+    // Handle payment method selection
+    function selectMethod(element, method) {
+      // Remove selected class from all methods
+      document.querySelectorAll('.method').forEach(el => {
+        el.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked method
+      element.classList.add('selected');
+      
+      // Debug
+      debugOutput.innerHTML += `<p>Selected method: ${method}</p>`;
+    }
+    
+    // Handle payment
+    function pay() {
+      const selectedMethod = document.querySelector('.method.selected');
+      const method = selectedMethod.textContent.trim();
+      
+      alert(`Payment processed with ${method}`);
+      
+      // Debug
+      debugOutput.innerHTML += `<p>Payment processed with: ${method}</p>`;
+    }
+  </script>
+</body>
+</html> 

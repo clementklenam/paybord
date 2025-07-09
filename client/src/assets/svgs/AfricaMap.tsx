@@ -12,9 +12,9 @@ export function AfricaMap() {
       />
       <path 
         d="M365 195L390 170L425 185L460 170L485 185L500 215L485 245L470 260L465 290L440 320L435 350L405 380L390 405L405 435L390 465L360 480L330 465L300 480L275 460L250 435L235 405L250 375L275 350L285 320L270 290L275 260L290 235L310 215L335 200L365 195Z" 
-        fill="#6C2BFB" 
+        fill="#1e8449" 
         fillOpacity="0.15" 
-        stroke="#6C2BFB" 
+        stroke="#1e8449" 
         strokeWidth="4"
       />
       <circle cx="330" cy="230" r="10" fill="#0FCEA6" />
@@ -24,35 +24,35 @@ export function AfricaMap() {
       <circle cx="380" cy="450" r="10" fill="#0FCEA6" />
       
       {/* Connection lines */}
-      <line x1="330" y1="230" x2="450" y2="280" stroke="#6C2BFB" strokeWidth="2" strokeDasharray="5 5" />
-      <line x1="450" y1="280" x2="380" y2="350" stroke="#6C2BFB" strokeWidth="2" strokeDasharray="5 5" />
-      <line x1="380" y1="350" x2="290" y2="400" stroke="#6C2BFB" strokeWidth="2" strokeDasharray="5 5" />
-      <line x1="290" y1="400" x2="380" y2="450" stroke="#6C2BFB" strokeWidth="2" strokeDasharray="5 5" />
+      <line x1="330" y1="230" x2="450" y2="280" stroke="#1e8449" strokeWidth="2" strokeDasharray="5 5" />
+      <line x1="450" y1="280" x2="380" y2="350" stroke="#1e8449" strokeWidth="2" strokeDasharray="5 5" />
+      <line x1="380" y1="350" x2="290" y2="400" stroke="#1e8449" strokeWidth="2" strokeDasharray="5 5" />
+      <line x1="290" y1="400" x2="380" y2="450" stroke="#1e8449" strokeWidth="2" strokeDasharray="5 5" />
 
       {/* API Nodes */}
       <g transform="translate(290,180)">
-        <rect x="-40" y="-15" width="80" height="30" rx="15" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">API</text>
+        <rect x="-40" y="-15" width="80" height="30" rx="15" fill="white" stroke="#1e8449" strokeWidth="2" />
+        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">API</text>
       </g>
       
       <g transform="translate(480,250)">
-        <rect x="-45" y="-15" width="90" height="30" rx="15" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Mobile Money</text>
+        <rect x="-45" y="-15" width="90" height="30" rx="15" fill="white" stroke="#1e8449" strokeWidth="2" />
+        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">Mobile Money</text>
       </g>
       
       <g transform="translate(420,380)">
-        <rect x="-35" y="-15" width="70" height="30" rx="15" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Cards</text>
+        <rect x="-35" y="-15" width="70" height="30" rx="15" fill="white" stroke="#1e8449" strokeWidth="2" />
+        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">Cards</text>
       </g>
       
       <g transform="translate(250,380)">
-        <rect x="-45" y="-15" width="90" height="30" rx="15" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Bank Transfer</text>
+        <rect x="-45" y="-15" width="90" height="30" rx="15" fill="white" stroke="#1e8449" strokeWidth="2" />
+        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">Bank Transfer</text>
       </g>
       
       <g transform="translate(340,480)">
-        <rect x="-40" y="-15" width="80" height="30" rx="15" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Paymesa</text>
+        <rect x="-40" y="-15" width="80" height="30" rx="15" fill="white" stroke="#1e8449" strokeWidth="2" />
+        <text x="0" y="5" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">PayAfric</text>
       </g>
     </svg>
   );

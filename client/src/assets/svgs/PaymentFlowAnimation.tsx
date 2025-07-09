@@ -1,79 +1,77 @@
 export function PaymentFlowAnimation() {
   return (
-    <svg 
-      viewBox="0 0 800 600" 
-      fill="none" 
+    <svg
+      viewBox="0 0 1200 700"
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="w-full h-full"
     >
       <defs>
-        {/* Gradient definitions */}
-        <linearGradient id="purple-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#7C3AFF" />
-          <stop offset="100%" stopColor="#5921c9" />
+        {/* Gradients */}
+        <linearGradient id="green-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#1e8449" />
+          <stop offset="100%" stopColor="#196f3d" />
         </linearGradient>
-        
-        <linearGradient id="purple-glow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#8F58FF" />
-          <stop offset="100%" stopColor="#6C2BFB" />
+
+        <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f1c40f" />
+          <stop offset="100%" stopColor="#f39c12" />
         </linearGradient>
-        
-        <linearGradient id="teal-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#0FCEA6" />
-          <stop offset="100%" stopColor="#0D9B8A" />
+
+        <linearGradient id="flow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#1e8449" />
+          <stop offset="100%" stopColor="#f1c40f" />
         </linearGradient>
-        
-        <linearGradient id="connector-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#6C2BFB" />
-          <stop offset="50%" stopColor="#9161FF" />
-          <stop offset="100%" stopColor="#0FCEA6" />
+
+        {/* Background */}
+        <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f8f9fe" />
+          <stop offset="100%" stopColor="#f1f5f9" />
         </linearGradient>
-        
-        <linearGradient id="path-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#F3F4F6" />
-          <stop offset="100%" stopColor="#E5E7EB" />
-        </linearGradient>
-        
-        {/* Background gradient for the whole visualization */}
-        <radialGradient id="bg-gradient" cx="400" cy="300" r="500" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="100%" stopColor="#F9FAFB" />
-        </radialGradient>
-        
+
         {/* Glow filters */}
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="10" result="blur" />
+        <filter id="glow-sm" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
         </filter>
-        
-        <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
+
+        <filter id="glow-md" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="5" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
         </filter>
-        
-        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+
+        <filter id="glow-lg" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="10" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+
+        {/* Shadow */}
+        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
           <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.1" />
         </filter>
-        
-        {/* Path for payment journey */}
-        <path id="payment-journey" 
-          d="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300"
-        />
+
+        {/* Clip paths */}
+        <clipPath id="circle-mask">
+          <circle cx="600" cy="350" r="300" />
+        </clipPath>
       </defs>
-      
+
       {/* Background */}
-      <rect width="800" height="600" fill="url(#bg-gradient)" />
-      
-      {/* Background grid pattern */}
-      <g opacity="0.08">
-        {Array.from({ length: 20 }).map((_, i) => (
+      {/* <rect width="1200" height="700" fill="white" /> */}
+
+      {/* Background pattern with soft gradient */}
+      {/* <rect width="1200" height="700" fill="url(#bg-gradient)" /> */}
+
+      {/* Subtle grid pattern */}
+      {/* <g opacity="0.04">
+        {Array.from({ length: 15 }).map((_, i) => (
           <line 
             key={`h-line-${i}`}
             x1="0" 
-            y1={30 + i * 30} 
-            x2="800" 
-            y2={30 + i * 30} 
-            stroke="#6C2BFB" 
+            y1={50 + i * 45} 
+            x2="1200" 
+            y2={50 + i * 45} 
+            stroke="#1e8449" 
             strokeWidth="1"
           />
         ))}
@@ -81,636 +79,505 @@ export function PaymentFlowAnimation() {
         {Array.from({ length: 27 }).map((_, i) => (
           <line 
             key={`v-line-${i}`}
-            x1={30 + i * 30} 
+            x1={50 + i * 45} 
             y1="0" 
-            x2={30 + i * 30} 
-            y2="600" 
-            stroke="#6C2BFB" 
+            x2={50 + i * 45} 
+            y2="700" 
+            stroke="#1e8449" 
             strokeWidth="1"
           />
         ))}
-      </g>
-      
-      {/* Main payment process background */}
-      <path 
-        d="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300" 
-        stroke="url(#path-gradient)" 
-        strokeWidth="20" 
-        strokeLinecap="round" 
-        filter="url(#shadow)"
-        fill="none"
-      />
-      
-      {/* Curved path for the payment journey */}
-      <path 
-        d="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300" 
-        stroke="#E5E7EB" 
-        strokeWidth="14" 
-        strokeLinecap="round" 
-        fill="none"
-      />
-      
-      {/* Animated progress line */}
-      <path 
-        d="M100,300 C150,300 150,150 250,150 S350,150 400,150 S500,150 550,150 S650,150 700,300 S650,450 550,450 S450,450 400,450 S300,450 250,450 S150,450 100,300" 
-        stroke="url(#connector-gradient)" 
-        strokeWidth="12" 
-        strokeLinecap="round" 
-        filter="url(#soft-glow)"
-        fill="none"
-        strokeDasharray="1500"
-        strokeDashoffset="1500"
-      >
-        <animate
-          attributeName="stroke-dashoffset"
-          from="1500"
-          to="0"
-          dur="10s"
-          begin="0s"
-          fill="freeze"
-          repeatCount="indefinite"
-        />
-      </path>
-      
-      {/* Background sparkle effect */}
-      <g className="sparkles" opacity="0.5">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <g key={`sparkle-${i}`} transform={`translate(${Math.random() * 800}, ${Math.random() * 600})`}>
-            <circle r="1.5" fill="#6C2BFB" opacity={0.1 + Math.random() * 0.3}>
-              <animate 
-                attributeName="opacity" 
-                values={`${0.1 + Math.random() * 0.3};${0.3 + Math.random() * 0.5};${0.1 + Math.random() * 0.3}`} 
-                dur={`${1 + Math.random() * 3}s`} 
-                repeatCount="indefinite" 
-              />
+      </g> */}
+
+      {/* Orbital visualization */}
+      <g transform="translate(600, 350)">
+        {/* Main central circle */}
+        <circle r="55" fill="#1e8449" opacity="0.05" />
+        <circle r="50" fill="#1e8449" opacity="0.1" />
+        <circle r="45" fill="white" stroke="#1e8449" strokeWidth="2" filter="url(#glow-sm)" />
+
+        {/* PayAfric logo in center */}
+        <text x="0" y="5" fontFamily="'Inter', sans-serif" fontSize="13" fontWeight="700" fill="#1e8449" textAnchor="middle">PAYAFRIC</text>
+
+        {/* Orbital tracks */}
+        <circle r="130" fill="none" stroke="#E5E7EB" strokeWidth="1" strokeDasharray="3 3" />
+        <circle r="220" fill="none" stroke="#E5E7EB" strokeWidth="1" strokeDasharray="3 3" />
+        <circle r="310" fill="none" stroke="#E5E7EB" strokeWidth="1" strokeDasharray="3 3" />
+
+        {/* Inner orbit elements - Authentication & Security */}
+        <g>
+          {/* Node 1 - Authentication */}
+          <g transform="rotate(0)">
+            <circle cx="120" cy="0" r="25" fill="white" stroke="#1e8449" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="120" cy="0" r="20" fill="white" stroke="url(#green-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="18;20;18" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(120, 0)">
+              <rect x="-10" y="-10" width="20" height="20" rx="2" fill="none" stroke="#1e8449" strokeWidth="1.5" />
+              <path d="M-4,0 L0,4 L4,0" stroke="#1e8449" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </g>
+            <text x="120" y="-35" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Authentication</text>
+
+            {/* Connection to center */}
+            <line x1="45" y1="0" x2="95" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="70" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L50,0" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" dur="2s" repeatCount="indefinite" />
             </circle>
           </g>
+
+          {/* Node 2 - Security */}
+          <g transform="rotate(90)">
+            <circle cx="120" cy="0" r="25" fill="white" stroke="#1e8449" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="120" cy="0" r="20" fill="white" stroke="url(#green-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="18;20;18" begin="0.5s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(120, 0)">
+              <path d="M0,-8 L-8,0 L0,8 L8,0 Z" stroke="#1e8449" strokeWidth="1.5" fill="none" />
+              <circle cx="0" cy="0" r="3" fill="#1e8449" />
+            </g>
+            <text x="120" y="-35" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Security</text>
+
+            {/* Connection to center */}
+            <line x1="45" y1="0" x2="95" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="0.3s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="70" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L50,0" begin="0.3s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="0.3s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="0.3s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Node 3 - Fraud Detection */}
+          <g transform="rotate(180)">
+            <circle cx="120" cy="0" r="25" fill="white" stroke="#1e8449" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="120" cy="0" r="20" fill="white" stroke="url(#green-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="18;20;18" begin="1s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(120, 0)">
+              <circle cx="0" cy="0" r="8" fill="none" stroke="#1e8449" strokeWidth="1.5" />
+              <path d="M-4,-4 L4,4 M-4,4 L4,-4" stroke="#1e8449" strokeWidth="1.5" strokeLinecap="round" />
+            </g>
+            <text x="120" y="-35" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Fraud Detection</text>
+
+            {/* Connection to center */}
+            <line x1="45" y1="0" x2="95" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="0.6s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="70" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L50,0" begin="0.6s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="0.6s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="0.6s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Node 4 - Validation */}
+          <g transform="rotate(270)">
+            <circle cx="120" cy="0" r="25" fill="white" stroke="#1e8449" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="120" cy="0" r="20" fill="white" stroke="url(#green-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="18;20;18" begin="1.5s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(120, 0)">
+              <path d="M-6,-2 L-2,2 L6,-6" stroke="#1e8449" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </g>
+            <text x="120" y="-35" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Validation</text>
+
+            {/* Connection to center */}
+            <line x1="45" y1="0" x2="95" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="0.9s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="70" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L50,0" begin="0.9s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="0.9s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="0.9s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+        </g>
+
+        {/* Middle orbit elements - Processing */}
+        <g>
+          {/* Node 1 - Routing */}
+          <g transform="rotate(45)">
+            <circle cx="200" cy="0" r="30" fill="white" stroke="#f1c40f" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="200" cy="0" r="25" fill="white" stroke="url(#gold-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="22;25;22" begin="0.3s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(200, 0)">
+              <path d="M-8,0 L8,0 M0,-8 L0,8" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M-5,-5 L-8,-8 M5,-5 L8,-8 M-5,5 L-8,8 M5,5 L8,8" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+            </g>
+            <text x="200" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Intelligent Routing</text>
+
+            {/* Connection to center */}
+            <line x1="55" y1="0" x2="170" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="0.1s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="110" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L115,0" begin="0.1s" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="0.1s" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="0.1s" dur="3s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Node 2 - Processing */}
+          <g transform="rotate(135)">
+            <circle cx="200" cy="0" r="30" fill="white" stroke="#f1c40f" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="200" cy="0" r="25" fill="white" stroke="url(#gold-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="22;25;22" begin="0.8s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(200, 0)">
+              <circle cx="0" cy="0" r="4" fill="#f1c40f" />
+              <circle cx="0" cy="0" r="10" fill="none" stroke="#f1c40f" strokeWidth="1.5" strokeDasharray="2 2">
+                <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="6s" repeatCount="indefinite" />
+              </circle>
+            </g>
+            <text x="200" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Processing</text>
+
+            {/* Connection to center */}
+            <line x1="55" y1="0" x2="170" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="0.6s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="110" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L115,0" begin="0.6s" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="0.6s" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="0.6s" dur="3s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Node 3 - Optimization */}
+          <g transform="rotate(225)">
+            <circle cx="200" cy="0" r="30" fill="white" stroke="#f1c40f" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="200" cy="0" r="25" fill="white" stroke="url(#gold-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="22;25;22" begin="1.3s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(200, 0)">
+              <rect x="-7" y="-7" width="14" height="14" rx="2" fill="none" stroke="#f1c40f" strokeWidth="1.5" />
+              <line x1="-3" y1="0" x2="3" y2="0" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+              <line x1="0" y1="-3" x2="0" y2="3" stroke="#f1c40f" strokeWidth="1.5" strokeLinecap="round" />
+            </g>
+            <text x="200" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Optimization</text>
+
+            {/* Connection to center */}
+            <line x1="55" y1="0" x2="170" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="1.1s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="110" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L115,0" begin="1.1s" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="1.1s" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="1.1s" dur="3s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Node 4 - Gateway */}
+          <g transform="rotate(315)">
+            <circle cx="200" cy="0" r="30" fill="white" stroke="#f1c40f" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="200" cy="0" r="25" fill="white" stroke="url(#gold-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="22;25;22" begin="1.8s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(200, 0)">
+              <rect x="-8" y="-5" width="16" height="10" rx="1" fill="none" stroke="#f1c40f" strokeWidth="1.5" />
+              <line x1="0" y1="-5" x2="0" y2="5" stroke="#f1c40f" strokeWidth="1" />
+            </g>
+            <text x="200" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Gateway</text>
+
+            {/* Connection to center */}
+            <line x1="55" y1="0" x2="170" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="1.6s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="110" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L115,0" begin="1.6s" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="1.6s" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="1.6s" dur="3s" repeatCount="indefinite" />
+            </circle>
+          </g>
+        </g>
+
+        {/* Outer orbit elements - Markets & Payment Methods */}
+        <g>
+          {/* Payment Method 1 - Cards */}
+          <g transform="rotate(0)">
+            <circle cx="310" cy="0" r="35" fill="white" stroke="#1e8449" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="310" cy="0" r="30" fill="white" stroke="url(#green-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="28;30;28" begin="0.2s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(310, 0)">
+              <rect x="-12" y="-8" width="24" height="16" rx="2" fill="none" stroke="#1e8449" strokeWidth="1.5" />
+              <line x1="-8" y1="-2" x2="8" y2="-2" stroke="#1e8449" strokeWidth="1.5" strokeLinecap="round" />
+              <line x1="-8" y1="2" x2="0" y2="2" stroke="#1e8449" strokeWidth="1.5" strokeLinecap="round" />
+            </g>
+            <text x="310" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Cards</text>
+
+            {/* Connection to processing layer */}
+            <line x1="230" y1="0" x2="275" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="0.2s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="250" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L45,0" begin="0.2s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="0.2s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="0.2s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Payment Method 2 - Mobile */}
+          <g transform="rotate(45)">
+            <circle cx="280" cy="0" r="35" fill="white" stroke="#1e8449" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="280" cy="0" r="30" fill="white" stroke="url(#green-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="28;30;28" begin="0.5s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(280, 0)">
+              <rect x="-7" y="-12" width="14" height="24" rx="2" fill="none" stroke="#1e8449" strokeWidth="1.5" />
+              <circle cx="0" cy="8" r="2" fill="#1e8449" />
+            </g>
+            <text x="280" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Mobile Money</text>
+
+            {/* Connection to processing layer */}
+            <line x1="210" y1="0" x2="245" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="0.5s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="225" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L35,0" begin="0.5s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="0.5s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="0.5s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Payment Method 3 - Crypto */}
+          <g transform="rotate(90)">
+            <circle cx="280" cy="0" r="35" fill="white" stroke="#1e8449" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="280" cy="0" r="30" fill="white" stroke="url(#green-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="28;30;28" begin="0.8s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(280, 0)">
+              <circle cx="0" cy="0" r="10" fill="none" stroke="#1e8449" strokeWidth="1.5" />
+              <text x="0" y="3" fontFamily="'Inter', sans-serif" fontSize="10" fontWeight="700" fill="#1e8449" textAnchor="middle">₿</text>
+            </g>
+            <text x="280" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Crypto</text>
+
+            {/* Connection to processing layer */}
+            <line x1="210" y1="0" x2="245" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="0.8s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="225" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L35,0" begin="0.8s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="0.8s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="0.8s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Region 1 - Nigeria */}
+          <g transform="rotate(135)">
+            <circle cx="280" cy="0" r="35" fill="white" stroke="#f1c40f" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="280" cy="0" r="30" fill="white" stroke="url(#gold-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="28;30;28" begin="1.1s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(280, 0)">
+              <text x="0" y="5" fontFamily="'Inter', sans-serif" fontSize="14" fontWeight="700" fill="#f1c40f" textAnchor="middle">NG</text>
+            </g>
+            <text x="280" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Nigeria</text>
+
+            {/* Connection to processing layer */}
+            <line x1="210" y1="0" x2="245" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="1.1s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="225" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L35,0" begin="1.1s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="1.1s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="1.1s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Region 2 - South Africa */}
+          <g transform="rotate(180)">
+            <circle cx="280" cy="0" r="35" fill="white" stroke="#f1c40f" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="280" cy="0" r="30" fill="white" stroke="url(#gold-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="28;30;28" begin="1.4s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(280, 0)">
+              <text x="0" y="5" fontFamily="'Inter', sans-serif" fontSize="14" fontWeight="700" fill="#f1c40f" textAnchor="middle">ZA</text>
+            </g>
+            <text x="280" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">South Africa</text>
+
+            {/* Connection to processing layer */}
+            <line x1="210" y1="0" x2="245" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="1.4s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="225" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L35,0" begin="1.4s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="1.4s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="1.4s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Region 3 - Kenya */}
+          <g transform="rotate(225)">
+            <circle cx="280" cy="0" r="35" fill="white" stroke="#f1c40f" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="280" cy="0" r="30" fill="white" stroke="url(#gold-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="28;30;28" begin="1.7s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(280, 0)">
+              <text x="0" y="5" fontFamily="'Inter', sans-serif" fontSize="14" fontWeight="700" fill="#f1c40f" textAnchor="middle">KE</text>
+            </g>
+            <text x="280" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Kenya</text>
+
+            {/* Connection to processing layer */}
+            <line x1="210" y1="0" x2="245" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="1.7s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="225" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L35,0" begin="1.7s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="1.7s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="1.7s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Payment Method 4 - Bank */}
+          <g transform="rotate(270)">
+            <circle cx="280" cy="0" r="35" fill="white" stroke="#1e8449" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="280" cy="0" r="30" fill="white" stroke="url(#green-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="28;30;28" begin="2s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(280, 0)">
+              <rect x="-10" y="-6" width="20" height="12" rx="1" fill="none" stroke="#1e8449" strokeWidth="1.5" />
+              <rect x="-10" y="-10" width="20" height="4" rx="1" fill="none" stroke="#1e8449" strokeWidth="1.5" />
+            </g>
+            <text x="280" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Bank</text>
+
+            {/* Connection to processing layer */}
+            <line x1="210" y1="0" x2="245" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="2s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="225" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L35,0" begin="2s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="2s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="2s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+
+          {/* Region 4 - Ghana */}
+          <g transform="rotate(315)">
+            <circle cx="280" cy="0" r="35" fill="white" stroke="#f1c40f" strokeWidth="1.5" filter="url(#shadow)" />
+            <circle cx="280" cy="0" r="30" fill="white" stroke="url(#gold-gradient)" strokeWidth="2" filter="url(#glow-sm)">
+              <animate attributeName="r" values="28;30;28" begin="2.3s" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <g transform="translate(280, 0)">
+              <text x="0" y="5" fontFamily="'Inter', sans-serif" fontSize="14" fontWeight="700" fill="#f1c40f" textAnchor="middle">GH</text>
+            </g>
+            <text x="280" y="-45" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="600" fill="#4B5563" textAnchor="middle">Ghana</text>
+
+            {/* Connection to processing layer */}
+            <line x1="210" y1="0" x2="245" y2="0" stroke="url(#flow-gradient)" strokeWidth="1.5" opacity="0.5" strokeDasharray="5 3">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" begin="2.3s" dur="4s" repeatCount="indefinite" />
+            </line>
+
+            {/* Moving pulse */}
+            <circle cx="225" cy="0" r="3" fill="url(#flow-gradient)" opacity="0.7">
+              <animateMotion path="M0,0 L35,0" begin="2.3s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0;0.7;0" begin="2.3s" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="r" values="1;3;1" begin="2.3s" dur="2s" repeatCount="indefinite" />
+            </circle>
+          </g>
+        </g>
+      </g>
+
+      {/* Label overlay - moved to the top center */}
+      <g transform="translate(600,0.5)">
+        <rect x="-140" y="-30" width="280" height="60" rx="8" fill="white" fillOpacity="0.95" filter="url(#shadow)" />
+        <text x="0" y="-5" fontFamily="'Inter', sans-serif" fontSize="14" fontWeight="600" fill="#111827" textAnchor="middle">PayAfric Payment Network</text>
+        <text x="0" y="15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="400" fill="#6B7280" textAnchor="middle">Connected to 17 payment methods across 12 regions</text>
+      </g>
+
+      {/* Stats overlay - repositioned to avoid overlapping */}
+      <g transform="translate(180, 170)">
+        <rect x="-120" y="-40" width="240" height="80" rx="8" fill="white" fillOpacity="0.95" filter="url(#shadow)" />
+        <text x="-100" y="-15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="500" fill="#6B7280">Monthly Transactions</text>
+        <text x="-100" y="10" fontFamily="'Inter', sans-serif" fontSize="18" fontWeight="700" fill="#111827">1.4M+</text>
+        <text x="20" y="-15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="500" fill="#6B7280">Success Rate</text>
+        <text x="20" y="10" fontFamily="'Inter', sans-serif" fontSize="18" fontWeight="700" fill="#111827">99.3%</text>
+      </g>
+
+      <g transform="translate(1020, 170)">
+        <rect x="-120" y="-40" width="240" height="80" rx="8" fill="white" fillOpacity="0.95" filter="url(#shadow)" />
+        <text x="-100" y="-15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="500" fill="#6B7280">Processing Time</text>
+        <text x="-100" y="10" fontFamily="'Inter', sans-serif" fontSize="18" fontWeight="700" fill="#111827">1.24s</text>
+        <text x="20" y="-15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="500" fill="#6B7280">Active Gateways</text>
+        <text x="20" y="10" fontFamily="'Inter', sans-serif" fontSize="18" fontWeight="700" fill="#111827">12/12</text>
+      </g>
+
+      <g transform="translate(180, 530)">
+        <rect x="-120" y="-40" width="240" height="80" rx="8" fill="white" fillOpacity="0.95" filter="url(#shadow)" />
+        <text x="-100" y="-15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="500" fill="#6B7280">Card Payments</text>
+        <text x="-100" y="10" fontFamily="'Inter', sans-serif" fontSize="18" fontWeight="700" fill="#111827">68%</text>
+        <text x="20" y="-15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="500" fill="#6B7280">Mobile Payments</text>
+        <text x="20" y="10" fontFamily="'Inter', sans-serif" fontSize="18" fontWeight="700" fill="#111827">22%</text>
+      </g>
+
+      <g transform="translate(1020, 530)">
+        <rect x="-120" y="-40" width="240" height="80" rx="8" fill="white" fillOpacity="0.95" filter="url(#shadow)" />
+        <text x="-100" y="-15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="500" fill="#6B7280">Bank Transfers</text>
+        <text x="-100" y="10" fontFamily="'Inter', sans-serif" fontSize="18" fontWeight="700" fill="#111827">9%</text>
+        <text x="20" y="-15" fontFamily="'Inter', sans-serif" fontSize="12" fontWeight="500" fill="#6B7280">Other Methods</text>
+        <text x="20" y="10" fontFamily="'Inter', sans-serif" fontSize="18" fontWeight="700" fill="#111827">1%</text>
+      </g>
+
+      {/* Floating particles */}
+      <g>
+        {Array.from({ length: 30 }).map((_, i) => (
+          <circle
+            key={`particle-${i}`}
+            cx={300 + (Math.random() * 600)}
+            cy={200 + (Math.random() * 300)}
+            r={1 + (Math.random() * 2)}
+            fill="url(#flow-gradient)"
+            opacity={0.3 + (Math.random() * 0.4)}
+          >
+            <animate
+              attributeName="opacity"
+              values={`${0.3 + Math.random() * 0.4};${0.5 + Math.random() * 0.5};${0.3 + Math.random() * 0.4}`}
+              dur={`${2 + Math.random() * 4}s`}
+              repeatCount="indefinite"
+            />
+            <animate
+              attributeName="r"
+              values={`${1 + Math.random() * 2};${1.5 + Math.random() * 2.5};${1 + Math.random() * 2}`}
+              dur={`${2 + Math.random() * 4}s`}
+              repeatCount="indefinite"
+            />
+          </circle>
         ))}
-      </g>
-      
-      {/* Connection lines between stages with better styling */}
-      <g className="connections">
-        <path d="M130,300 L220,150" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
-        <path d="M280,150 L370,150" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
-        <path d="M430,150 L520,150" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
-        <path d="M580,150 L670,300" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
-        <path d="M670,300 L580,450" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
-        <path d="M520,450 L430,450" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
-        <path d="M370,450 L280,450" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
-        <path d="M220,450 L130,300" stroke="#E0E0E0" strokeWidth="2" strokeDasharray="4,6" opacity="0.3" />
-      </g>
-      
-      {/* Payment stages with improved design */}
-      {/* 1. Initiation */}
-      <g transform="translate(100, 300)" filter="url(#soft-glow)">
-        {/* Node highlight effect */}
-        <circle r="36" fill="white" opacity="0.15" />
-        <circle r="32" fill="url(#purple-gradient)" />
-        <circle r="30" fill="url(#purple-glow-gradient)" />
-        
-        {/* Icon/Label */}
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Initiate</text>
-        
-        {/* Pulse effect */}
-        <circle r="35" stroke="white" strokeWidth="2" strokeOpacity="0.5" fill="none">
-          <animate attributeName="r" from="35" to="50" dur="3s" repeatCount="indefinite" />
-          <animate attributeName="stroke-opacity" from="0.5" to="0" dur="3s" repeatCount="indefinite" />
-        </circle>
-        
-        {/* Node activation animation */}
-        <g>
-          <circle r="10" fill="white" opacity="0">
-            <animate 
-              attributeName="opacity" 
-              values="0;0.8;0" 
-              keyTimes="0;0.1;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-            <animate 
-              attributeName="r" 
-              values="10;15;10" 
-              keyTimes="0;0.1;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status indicator - always on after activated */}
-        <circle r="6" fill="#0FCEA6" opacity="0">
-          <animate 
-            attributeName="opacity" 
-            values="0;0;1;1" 
-            keyTimes="0;0.1;0.11;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-        </circle>
-      </g>
-      
-      {/* 2. API Validation */}
-      <g transform="translate(250, 150)" filter="url(#soft-glow)">
-        {/* Node highlight effect */}
-        <circle r="36" fill="white" opacity="0.15" />
-        <circle r="32" fill="url(#purple-gradient)" />
-        <circle r="30" fill="url(#purple-glow-gradient)" />
-        
-        {/* Icon/Label */}
-        <text x="0" y="-5" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">API</text>
-        <text x="0" y="10" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Validation</text>
-        
-        {/* Node activation animation */}
-        <g>
-          <circle r="10" fill="white" opacity="0">
-            <animate 
-              attributeName="opacity" 
-              values="0;0;0.8;0" 
-              keyTimes="0;0.15;0.25;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-            <animate 
-              attributeName="r" 
-              values="10;10;15;10" 
-              keyTimes="0;0.15;0.25;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status indicator */}
-        <circle r="6" fill="#0FCEA6" opacity="0">
-          <animate 
-            attributeName="opacity" 
-            values="0;0;0;1;1" 
-            keyTimes="0;0.15;0.25;0.26;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-        </circle>
-      </g>
-      
-      {/* 3. Paymesa Processing */}
-      <g transform="translate(400, 150)" filter="url(#soft-glow)">
-        {/* Node highlight effect */}
-        <circle r="46" fill="white" opacity="0.15" />
-        <circle r="42" fill="url(#purple-gradient)" />
-        <circle r="40" fill="url(#purple-glow-gradient)" />
-        
-        {/* Icon/Label */}
-        <text x="0" y="-8" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">Paymesa</text>
-        <text x="0" y="12" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Processing</text>
-        
-        {/* Processing animation */}
-        <g className="processing">
-          <circle r="45" stroke="white" strokeWidth="3" strokeOpacity="0.5" fill="none">
-            <animate 
-              attributeName="stroke-opacity" 
-              values="0;0;0.5;0.5;0" 
-              keyTimes="0;0.3;0.4;0.5;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-          
-          <circle r="55" stroke="white" strokeWidth="2" strokeOpacity="0" fill="none">
-            <animate 
-              attributeName="stroke-opacity" 
-              values="0;0;0.3;0.3;0" 
-              keyTimes="0;0.3;0.4;0.6;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-            <animate 
-              attributeName="r" 
-              values="45;45;55;55;45" 
-              keyTimes="0;0.3;0.4;0.6;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status indicator */}
-        <circle r="6" fill="#0FCEA6" opacity="0">
-          <animate 
-            attributeName="opacity" 
-            values="0;0;0;0;0;1;1" 
-            keyTimes="0;0.3;0.4;0.5;0.5;0.51;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-        </circle>
-      </g>
-      
-      {/* 4. Payment Gateway */}
-      <g transform="translate(550, 150)" filter="url(#soft-glow)">
-        {/* Node highlight effect */}
-        <circle r="36" fill="white" opacity="0.15" />
-        <circle r="32" fill="url(#teal-gradient)" />
-        <circle r="30" fill="#0FCEA6" />
-        
-        {/* Icon/Label */}
-        <text x="0" y="-5" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Payment</text>
-        <text x="0" y="10" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle">Gateway</text>
-        
-        {/* Gateway activation */}
-        <g>
-          <circle r="10" fill="white" opacity="0">
-            <animate 
-              attributeName="opacity" 
-              values="0;0;0;0.8;0" 
-              keyTimes="0;0.45;0.5;0.6;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-            <animate 
-              attributeName="r" 
-              values="10;10;10;15;10" 
-              keyTimes="0;0.45;0.5;0.6;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status indicator */}
-        <circle r="6" fill="#6C2BFB" opacity="0">
-          <animate 
-            attributeName="opacity" 
-            values="0;0;0;0;0;0;1;1" 
-            keyTimes="0;0.45;0.5;0.55;0.6;0.61;0.62;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-        </circle>
-      </g>
-      
-      {/* 5. Settlement */}
-      <g transform="translate(700, 300)" filter="url(#soft-glow)">
-        {/* Node highlight effect */}
-        <circle r="36" fill="white" opacity="0.15" />
-        <circle r="32" fill="url(#teal-gradient)" />
-        <circle r="30" fill="#0FCEA6" />
-        
-        {/* Icon/Label */}
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Settlement</text>
-        
-        {/* Settlement animation */}
-        <g>
-          <circle r="10" fill="white" opacity="0">
-            <animate 
-              attributeName="opacity" 
-              values="0;0;0;0;0.8;0" 
-              keyTimes="0;0.55;0.6;0.65;0.75;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-            <animate 
-              attributeName="r" 
-              values="10;10;10;10;15;10" 
-              keyTimes="0;0.55;0.6;0.65;0.75;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status indicator */}
-        <circle r="6" fill="#6C2BFB" opacity="0">
-          <animate 
-            attributeName="opacity" 
-            values="0;0;0;0;0;0;0;0;1;1" 
-            keyTimes="0;0.55;0.6;0.65;0.7;0.75;0.76;0.77;0.78;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-        </circle>
-      </g>
-      
-      {/* 6. Reconciliation */}
-      <g transform="translate(550, 450)" filter="url(#soft-glow)">
-        {/* Node highlight effect */}
-        <circle r="36" fill="white" opacity="0.15" />
-        <circle r="32" fill="url(#teal-gradient)" />
-        <circle r="30" fill="#0FCEA6" />
-        
-        {/* Icon/Label */}
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Reconciliation</text>
-        
-        {/* Reconciliation animation */}
-        <g>
-          <circle r="10" fill="white" opacity="0">
-            <animate 
-              attributeName="opacity" 
-              values="0;0;0;0;0;0.8;0" 
-              keyTimes="0;0.65;0.7;0.75;0.8;0.85;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-            <animate 
-              attributeName="r" 
-              values="10;10;10;10;10;15;10" 
-              keyTimes="0;0.65;0.7;0.75;0.8;0.85;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status indicator */}
-        <circle r="6" fill="#6C2BFB" opacity="0">
-          <animate 
-            attributeName="opacity" 
-            values="0;0;0;0;0;0;0;0;0;0;1;1" 
-            keyTimes="0;0.65;0.7;0.75;0.8;0.82;0.84;0.85;0.86;0.87;0.88;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-        </circle>
-      </g>
-      
-      {/* 7. Confirmation */}
-      <g transform="translate(400, 450)" filter="url(#soft-glow)">
-        {/* Node highlight effect */}
-        <circle r="36" fill="white" opacity="0.15" />
-        <circle r="32" fill="url(#purple-gradient)" />
-        <circle r="30" fill="url(#purple-glow-gradient)" />
-        
-        {/* Icon/Label */}
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Confirmation</text>
-        
-        {/* Confirmation animation */}
-        <g>
-          <circle r="10" fill="white" opacity="0">
-            <animate 
-              attributeName="opacity" 
-              values="0;0;0;0;0;0;0.8;0" 
-              keyTimes="0;0.7;0.75;0.8;0.85;0.9;0.95;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-            <animate 
-              attributeName="r" 
-              values="10;10;10;10;10;10;15;10" 
-              keyTimes="0;0.7;0.75;0.8;0.85;0.9;0.95;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status indicator */}
-        <circle r="6" fill="#0FCEA6" opacity="0">
-          <animate 
-            attributeName="opacity" 
-            values="0;0;0;0;0;0;0;0;0;0;0;0;1;1" 
-            keyTimes="0;0.7;0.75;0.8;0.85;0.9;0.91;0.92;0.93;0.94;0.95;0.96;0.97;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-        </circle>
-      </g>
-      
-      {/* 8. Notification */}
-      <g transform="translate(250, 450)" filter="url(#soft-glow)">
-        {/* Node highlight effect */}
-        <circle r="36" fill="white" opacity="0.15" />
-        <circle r="32" fill="url(#purple-gradient)" />
-        <circle r="30" fill="url(#purple-glow-gradient)" />
-        
-        {/* Icon/Label */}
-        <text x="0" y="0" fontFamily="Arial" fontSize="12" fill="white" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">Notification</text>
-        
-        {/* Notification animation */}
-        <g>
-          <circle r="10" fill="white" opacity="0">
-            <animate 
-              attributeName="opacity" 
-              values="0;0;0;0;0;0;0;0.8;0.8;0" 
-              keyTimes="0;0.75;0.8;0.85;0.9;0.92;0.94;0.96;0.98;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-            <animate 
-              attributeName="r" 
-              values="10;10;10;10;10;10;10;15;10;10" 
-              keyTimes="0;0.75;0.8;0.85;0.9;0.92;0.94;0.96;0.98;1" 
-              dur="10s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status indicator - changes color to green at completion */}
-        <circle r="6" fill="#D1D5DB" opacity="0">
-          <animate 
-            attributeName="opacity" 
-            values="0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1" 
-            keyTimes="0;0.75;0.8;0.85;0.9;0.92;0.94;0.95;0.96;0.97;0.98;0.99;0.995;0.996;0.997;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-          <animate 
-            attributeName="fill" 
-            values="#D1D5DB;#D1D5DB;#0FCEA6" 
-            keyTimes="0;0.99;1" 
-            dur="10s" 
-            repeatCount="indefinite" 
-            fill="freeze"
-          />
-        </circle>
-      </g>
-      
-      {/* Enhanced payment status display */}
-      <g transform="translate(400, 300)" filter="url(#shadow)">
-        <rect 
-          x="-120" 
-          y="-24" 
-          width="240" 
-          height="48" 
-          rx="24" 
-          fill="white" 
-          stroke="#F3F4F6" 
-          strokeWidth="1"
-        />
-        
-        {/* Status icon - dot animation */}
-        <g transform="translate(-95, 0)">
-          <circle r="8" fill="#6C2BFB">
-            <animate 
-              attributeName="opacity" 
-              values="0.6;1;0.6" 
-              dur="1.5s" 
-              repeatCount="indefinite" 
-            />
-          </circle>
-        </g>
-        
-        {/* Status text */}
-        <text id="status-text" x="10" y="5" fontFamily="Arial" fontSize="16" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">Initiating Payment...</text>
-        
-        <animate 
-          attributeName="opacity" 
-          values="0;1;1;1;1;1;1;1;1;0" 
-          keyTimes="0;0.1;0.25;0.4;0.55;0.7;0.85;0.95;0.98;1" 
-          dur="10s" 
-          repeatCount="indefinite" 
-        />
-      </g>
-      
-      {/* Animation to update the status text */}
-      <set 
-        xlinkHref="#status-text" 
-        attributeName="textContent" 
-        to="Validating Request..." 
-        begin="1.5s; 11.5s; 21.5s; 31.5s; 41.5s; 51.5s" 
-        dur="2.5s" 
-      />
-      
-      <set 
-        xlinkHref="#status-text" 
-        attributeName="textContent" 
-        to="Paymesa Processing..." 
-        begin="4s; 14s; 24s; 34s; 44s; 54s" 
-        dur="1.5s" 
-      />
-      
-      <set 
-        xlinkHref="#status-text" 
-        attributeName="textContent" 
-        to="Connecting to Gateway..." 
-        begin="5.5s; 15.5s; 25.5s; 35.5s; 45.5s; 55.5s" 
-        dur="1s" 
-      />
-      
-      <set 
-        xlinkHref="#status-text" 
-        attributeName="textContent" 
-        to="Settling Transaction..." 
-        begin="6.5s; 16.5s; 26.5s; 36.5s; 46.5s; 56.5s" 
-        dur="1s" 
-      />
-      
-      <set 
-        xlinkHref="#status-text" 
-        attributeName="textContent" 
-        to="Reconciling Funds..." 
-        begin="7.5s; 17.5s; 27.5s; 37.5s; 47.5s; 57.5s" 
-        dur="1s" 
-      />
-      
-      <set 
-        xlinkHref="#status-text" 
-        attributeName="textContent" 
-        to="Confirming Payment..." 
-        begin="8.5s; 18.5s; 28.5s; 38.5s; 48.5s; 58.5s" 
-        dur="0.5s" 
-      />
-      
-      <set 
-        xlinkHref="#status-text" 
-        attributeName="textContent" 
-        to="Payment Successful! ✓" 
-        begin="9s; 19s; 29s; 39s; 49s; 59s" 
-        dur="1s" 
-      />
-      
-      {/* Moving payment along the path - enhanced with trailing effect */}
-      <g filter="url(#glow)">
-        {/* Main payment dot */}
-        <circle r="8" fill="white">
-          <animateMotion
-            path="M100,300 C150,300 170,150 250,150 C330,150 370,150 400,150 C430,150 470,150 550,150 C630,150 650,300 700,300 C650,300 630,450 550,450 C470,450 430,450 400,450 C370,450 330,450 250,450 C170,450 150,300 100,300"
-            dur="10s"
-            repeatCount="indefinite"
-            rotate="auto"
-          />
-        </circle>
-        
-        {/* Trailing dots */}
-        <circle r="6" fill="white" opacity="0.7">
-          <animateMotion
-            path="M100,300 C150,300 170,150 250,150 C330,150 370,150 400,150 C430,150 470,150 550,150 C630,150 650,300 700,300 C650,300 630,450 550,450 C470,450 430,450 400,450 C370,450 330,450 250,450 C170,450 150,300 100,300"
-            dur="10s"
-            repeatCount="indefinite"
-            rotate="auto"
-            begin="-0.2s"
-          />
-        </circle>
-        
-        <circle r="4" fill="white" opacity="0.5">
-          <animateMotion
-            path="M100,300 C150,300 170,150 250,150 C330,150 370,150 400,150 C430,150 470,150 550,150 C630,150 650,300 700,300 C650,300 630,450 550,450 C470,450 430,450 400,450 C370,450 330,450 250,450 C170,450 150,300 100,300"
-            dur="10s"
-            repeatCount="indefinite"
-            rotate="auto"
-            begin="-0.4s"
-          />
-        </circle>
-        
-        <circle r="2" fill="white" opacity="0.3">
-          <animateMotion
-            path="M100,300 C150,300 170,150 250,150 C330,150 370,150 400,150 C430,150 470,150 550,150 C630,150 650,300 700,300 C650,300 630,450 550,450 C470,450 430,450 400,450 C370,450 330,450 250,450 C170,450 150,300 100,300"
-            dur="10s"
-            repeatCount="indefinite"
-            rotate="auto"
-            begin="-0.6s"
-          />
-        </circle>
-      </g>
-      
-      {/* Numbered indicators for step sequence */}
-      <g className="step-indicators">
-        <g transform="translate(85, 260)">
-          <circle r="14" fill="white" />
-          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">1</text>
-        </g>
-        
-        <g transform="translate(235, 110)">
-          <circle r="14" fill="white" />
-          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">2</text>
-        </g>
-        
-        <g transform="translate(385, 110)">
-          <circle r="14" fill="white" />
-          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">3</text>
-        </g>
-        
-        <g transform="translate(535, 110)">
-          <circle r="14" fill="white" />
-          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">4</text>
-        </g>
-        
-        <g transform="translate(715, 260)">
-          <circle r="14" fill="white" />
-          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">5</text>
-        </g>
-        
-        <g transform="translate(565, 485)">
-          <circle r="14" fill="white" />
-          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">6</text>
-        </g>
-        
-        <g transform="translate(415, 485)">
-          <circle r="14" fill="white" />
-          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">7</text>
-        </g>
-        
-        <g transform="translate(265, 485)">
-          <circle r="14" fill="white" />
-          <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="#6C2BFB" fontWeight="bold" textAnchor="middle">8</text>
-        </g>
       </g>
     </svg>
   );

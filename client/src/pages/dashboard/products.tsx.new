@@ -1,0 +1,644 @@
+import { useState } from "react";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Plus, 
+  Download, 
+  Search, 
+  Filter, 
+  Package, 
+  MoreHorizontal, 
+  DollarSign, 
+  Check, 
+  X, 
+  Image as ImageIcon,
+  ChevronDown,
+  ArrowLeft,
+  ArrowRight,
+  ShoppingCart,
+  Shield,
+  Star,
+  CreditCard,
+  Smartphone,
+  Copy,
+  Share2,
+  Percent
+} from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  billingPeriod: "monthly" | "yearly" | "one-time" | null;
+  category: string;
+  status: "active" | "draft" | "archived";
+  imageUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface NewProductType {
+  name: string;
+  description: string;
+  imageUrl: string | null;
+  price: string;
+  billingPeriod: "monthly" | "yearly" | "one-time" | null;
+  category: string;
+  status: "active" | "draft" | "archived";
+}
+
+interface CustomerInfo {
+  name: string;
+  email: string;
+  phone: string;
+  discountCode: string;
+}
+
+const mockProducts: Product[] = [
+  {
+    id: "prod_1",
+    name: "Basic Plan",
+    description: "Perfect for startups and small businesses",
+    price: 29.99,
+    billingPeriod: "monthly",
+    category: "Subscription",
+    status: "active",
+    imageUrl: "",
+    createdAt: new Date(2023, 5, 15).toISOString(),
+    updatedAt: new Date(2023, 6, 20).toISOString(),
+  },
+  {
+    id: "prod_2",
+    name: "Premium Plan",
+    description: "Advanced features for growing businesses",
+    price: 99.99,
+    billingPeriod: "monthly",
+    category: "Subscription",
+    status: "active",
+    imageUrl: "",
+    createdAt: new Date(2023, 4, 10).toISOString(),
+    updatedAt: new Date(2023, 6, 5).toISOString(),
+  },
+  {
+    id: "prod_3",
+    name: "Enterprise Solution",
+    description: "Complete solution for large enterprises",
+    price: 299.99,
+    billingPeriod: "monthly",
+    category: "Subscription",
+    status: "active",
+    imageUrl: "",
+    createdAt: new Date(2023, 3, 20).toISOString(),
+    updatedAt: new Date(2023, 5, 25).toISOString(),
+  },
+  {
+    id: "prod_4",
+    name: "Consulting Package",
+    description: "One-time consulting service",
+    price: 499.99,
+    billingPeriod: "one-time",
+    category: "Service",
+    status: "draft",
+    imageUrl: "",
+    createdAt: new Date(2023, 6, 5).toISOString(),
+    updatedAt: new Date(2023, 6, 5).toISOString(),
+  },
+  {
+    id: "prod_5",
+    name: "Data Analysis Tool",
+    description: "Advanced analytics software",
+    price: 149.99,
+    billingPeriod: "yearly",
+    category: "Software",
+    status: "archived",
+    imageUrl: "",
+    createdAt: new Date(2023, 2, 12).toISOString(),
+    updatedAt: new Date(2023, 4, 18).toISOString(),
+  },
+];
+
+// Helper functions
+const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(amount);
+};
+
+const formatDate = (dateString: string): string => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+};
+
+const getBillingPeriodText = (period: string | null): string => {
+  switch (period) {
+    case "monthly":
+      return "/ month";
+    case "yearly":
+      return "/ year";
+    case "one-time":
+      return "one-time";
+    default:
+      return "";
+  }
+};
+
+const getStatusBadge = (status: string) => {
+  switch (status) {
+    case "active":
+      return (
+        <Badge className="bg-green-100 text-green-800">
+          <Check className="h-3 w-3 mr-1" />
+          Active
+        </Badge>
+      );
+    case "draft":
+      return (
+        <Badge className="bg-yellow-100 text-yellow-800">
+          Draft
+        </Badge>
+      );
+    case "archived":
+      return (
+        <Badge className="bg-gray-100 text-gray-800">
+          Archived
+        </Badge>
+      );
+    default:
+      return (
+        <Badge className="bg-gray-100 text-gray-800">
+          {status}
+        </Badge>
+      );
+  }
+};
+
+function ProductsPage() {
+  // State management
+  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
+
+  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [newProduct, setNewProduct] = useState<NewProductType>({
+    name: "",
+    description: "",
+    imageUrl: null,
+    price: "",
+    billingPeriod: "monthly",
+    category: "Subscription",
+    status: "active"
+  });
+  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
+    name: "",
+    email: "",
+    phone: "",
+    discountCode: ""
+  });
+  const [paymentMethod, setPaymentMethod] = useState<"card" | "mobile">("card");
+
+  // Pagination settings
+  const itemsPerPage = 5;
+  const totalItems = products.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // Event handlers
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewProduct(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setNewProduct(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const handleCustomerInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCustomerInfo(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const handlePaymentMethodChange = (method: "card" | "mobile") => {
+    setPaymentMethod(method);
+  };
+  // Calculate discount based on discount code
+  const calculateDiscount = (price: number, discountCode: string): number => {
+    if (discountCode.toUpperCase() === "WELCOME10") {
+      return price * 0.9; // 10% discount
+    }
+    return price;
+  };
+
+  const handleSubmit = () => {
+    setIsPaymentProcessing(true);
+    
+    // Simulate payment processing
+    setTimeout(() => {
+      // Create the new product
+      const productToAdd: Product = {
+        id: `prod_${Date.now()}`,
+        name: newProduct.name,
+        description: newProduct.description,
+        price: parseFloat(newProduct.price),
+        billingPeriod: newProduct.billingPeriod,
+        category: newProduct.category,
+        status: newProduct.status,
+        imageUrl: newProduct.imageUrl || "",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Add product to the list
+      setProducts(prev => [productToAdd, ...prev]);
+      
+      // Reset states
+      setIsPaymentProcessing(false);
+      setIsCreateModalOpen(false);
+      resetForm();
+      
+      // Show success message (in a real app, you'd use a toast notification)
+      alert("Product added and payment link created successfully!");
+    }, 2000);
+  };
+
+  const resetForm = () => {
+    setNewProduct({
+      name: "",
+      description: "",
+      imageUrl: null,
+      price: "",
+      billingPeriod: "monthly",
+      category: "Subscription",
+      status: "active"
+    });
+    setCustomerInfo({
+      name: "",
+      email: "",
+      phone: "",
+      discountCode: ""
+    });
+    setPaymentMethod("card");
+    setIsPreviewMode(false);
+    setIsPaymentProcessing(false);
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        const result = event.target?.result;
+        if (result && typeof result === 'string') {
+          // Use the data URL as the image source
+          setNewProduct(prev => ({
+            ...prev,
+            imageUrl: result
+          }));
+        }
+      };
+      
+      // Read the file as a data URL
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Filter products based on search query
+  const filteredProducts = products.filter((product) => {
+    if (searchQuery && 
+        !product.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
+        !product.description.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+    return true;
+  });
+
+  // Get current page products
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredProducts.length);
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+  return (
+    <DashboardLayout>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Products</h1>
+          <p className="text-muted-foreground">
+            Manage your products and services
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setIsCreateModalOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Product
+          </Button>
+          <Button variant="outline">
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+        </div>
+      </div>
+
+      <Card className="mt-6">
+        <CardHeader className="pb-1">
+          <CardTitle>Product Catalog</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center py-4 gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search products..."
+                className="pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <Button variant="outline" size="sm" className="h-9">
+              <Filter className="h-4 w-4 mr-2" />
+              Filter
+              <ChevronDown className="h-4 w-4 ml-2" />
+            </Button>
+          </div>
+
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Product</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead>Updated</TableHead>
+                  <TableHead className="w-[50px]"></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {currentProducts.length === 0 ? (
+          </div>
+          <div className="text-sm text-muted-foreground">
+            {getBillingPeriodText(newProduct.billingPeriod)}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {/* Main Content - 3 Column Layout */}
+    <div className="grid grid-cols-3 gap-6">
+      {/* Left Column: Product Image */}
+      <div>
+        <h3 className="text-lg font-medium mb-3">Product Image</h3>
+        <div className="border rounded-md overflow-hidden bg-white p-2 h-[300px] flex items-center justify-center">
+          {newProduct.imageUrl ? (
+            <img 
+              src={newProduct.imageUrl} 
+              alt={newProduct.name} 
+              className="max-w-full max-h-full object-contain"
+            />
+            </div>
+          ) : (
+            <div className="grid gap-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-sm font-medium">
+                    Product Name <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    placeholder="Enter product name"
+                    value={newProduct.name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="category" className="text-sm font-medium">
+                    Category
+                  </Label>
+                  <Select 
+                    value={newProduct.category} 
+                    onValueChange={(value) => handleSelectChange("category", value)}
+                  >
+                    <SelectTrigger id="category">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Subscription">Subscription</SelectItem>
+                      <SelectItem value="Service">Service</SelectItem>
+                      <SelectItem value="Software">Software</SelectItem>
+                      <SelectItem value="Hardware">Hardware</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description" className="text-sm font-medium">
+                  Description
+                </Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  placeholder="Enter product description"
+                  value={newProduct.description}
+                  onChange={handleInputChange}
+                  rows={3}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Product Image</Label>
+                <div className="flex items-center gap-4">
+                  <div className="h-24 w-24 rounded-md bg-muted flex items-center justify-center relative overflow-hidden">
+                    {newProduct.imageUrl ? (
+                      <img 
+                        src={newProduct.imageUrl} 
+                        alt="Product preview" 
+                        className="object-cover w-full h-full" 
+                      />
+                    ) : (
+                      <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="sm" 
+                        className="mr-2"
+                        onClick={() => document.getElementById('image-upload')?.click()}
+                      >
+                        Upload Image
+                      </Button>
+                      <Input
+                        id="image-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageUpload}
+                      />
+                    </div>
+                    <span className="text-sm text-muted-foreground">
+                      Recommended size: 800x800px
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Pricing Details</h3>
+                
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    Pricing Type
+                  </Label>
+                  <RadioGroup 
+                    value={newProduct.billingPeriod ? "recurring" : "one-time"} 
+                    onValueChange={(value) => {
+                      if (value === "one-time") {
+                        handleSelectChange("billingPeriod", "one-time");
+                      } else if (value === "recurring" && !newProduct.billingPeriod) {
+                        handleSelectChange("billingPeriod", "monthly");
+                      }
+                    }}
+                    className="flex gap-4 mt-2"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="one-time" id="one-time" />
+                      <Label htmlFor="one-time">One-time</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="recurring" id="recurring" />
+                      <Label htmlFor="recurring">Recurring</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="price" className="text-sm font-medium">
+                      Price <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="relative mt-1">
+                      <DollarSign className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                      <Input
+                        id="price"
+                        name="price"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="0.00"
+                        value={newProduct.price}
+                        onChange={handleInputChange}
+                        className="pl-8"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  {newProduct.billingPeriod !== "one-time" && (
+                    <div>
+                      <Label htmlFor="billingPeriod" className="text-sm font-medium">
+                        Billing Period
+                      </Label>
+                      <Select 
+                        value={newProduct.billingPeriod || "monthly"} 
+                        onValueChange={(value) => handleSelectChange("billingPeriod", value)}
+                      >
+                        <SelectTrigger id="billingPeriod" className="mt-1">
+                          <SelectValue placeholder="Select period" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                          <SelectItem value="yearly">Yearly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter>
+            {isPreviewMode ? (
+              <>
+                <Button variant="outline" onClick={() => setIsPreviewMode(false)}>
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  <span>Back to Edit</span>
+                </Button>
+                <Button 
+                  onClick={handleSubmit}
+                  disabled={isPaymentProcessing}
+                >
+                  {isPaymentProcessing ? (
+                    <>
+                      <span className="animate-spin mr-2">⏳</span>
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Check className="h-4 w-4 mr-2" />
+                      <span>Add Product & Save</span>
+                    </>
+                  )}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={() => setIsCreateModalOpen(false)}>
+                  <X className="h-4 w-4 mr-2" />
+                  <span>Cancel</span>
+                </Button>
+                <Button 
+                  onClick={() => setIsPreviewMode(true)}
+                  disabled={!newProduct.name || !newProduct.price}
+                >
+                  <span>Preview & Payment</span>
+                </Button>
+              </>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+
+    </DashboardLayout>
+  );
+}
+
+export default ProductsPage;

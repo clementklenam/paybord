@@ -13,9 +13,9 @@ export function DynamicAfricaIllustration() {
       {/* Africa continent stylized */}
       <path 
         d="M365 195L390 170L425 185L460 170L485 185L500 215L485 245L470 260L465 290L440 320L435 350L405 380L390 405L405 435L390 465L360 480L330 465L300 480L275 460L250 435L235 405L250 375L275 350L285 320L270 290L275 260L290 235L310 215L335 200L365 195Z" 
-        fill="#6C2BFB" 
+        fill="#1e8449" 
         fillOpacity="0.1" 
-        stroke="#6C2BFB" 
+        stroke="#1e8449" 
         strokeWidth="3"
       />
       
@@ -58,29 +58,29 @@ export function DynamicAfricaIllustration() {
       {/* Animated transaction flows */}
       <g className="transaction-flows">
         {/* Connection lines */}
-        <path d="M330 230L450 280" stroke="#6C2BFB" strokeWidth="2" strokeDasharray="5 5">
+        <path d="M330 230L450 280" stroke="#1e8449" strokeWidth="2" strokeDasharray="5 5">
           <animate attributeName="stroke-dashoffset" from="0" to="20" dur="1.5s" repeatCount="indefinite" />
         </path>
-        <path d="M450 280L380 350" stroke="#6C2BFB" strokeWidth="2" strokeDasharray="5 5">
+        <path d="M450 280L380 350" stroke="#1e8449" strokeWidth="2" strokeDasharray="5 5">
           <animate attributeName="stroke-dashoffset" from="0" to="20" dur="1.5s" repeatCount="indefinite" />
         </path>
-        <path d="M380 350L290 400" stroke="#6C2BFB" strokeWidth="2" strokeDasharray="5 5">
+        <path d="M380 350L290 400" stroke="#1e8449" strokeWidth="2" strokeDasharray="5 5">
           <animate attributeName="stroke-dashoffset" from="0" to="20" dur="1.5s" repeatCount="indefinite" />
         </path>
-        <path d="M290 400L380 450" stroke="#6C2BFB" strokeWidth="2" strokeDasharray="5 5">
+        <path d="M290 400L380 450" stroke="#1e8449" strokeWidth="2" strokeDasharray="5 5">
           <animate attributeName="stroke-dashoffset" from="0" to="20" dur="1.5s" repeatCount="indefinite" />
         </path>
         
         {/* Moving transaction dots */}
-        <circle cx="330" cy="230" r="6" fill="#6C2BFB">
+        <circle cx="330" cy="230" r="6" fill="#1e8449">
           <animateMotion path="M0 0 L120 50 L-70 70 L-90 50 L90 50" dur="5s" repeatCount="indefinite" />
         </circle>
         
-        <circle cx="450" cy="280" r="6" fill="#6C2BFB" opacity="0.8">
+        <circle cx="450" cy="280" r="6" fill="#1e8449" opacity="0.8">
           <animateMotion path="M0 0 L-70 70 L-90 50 L90 50 L120 50" dur="5s" begin="1s" repeatCount="indefinite" />
         </circle>
         
-        <circle cx="380" cy="350" r="6" fill="#6C2BFB" opacity="0.6">
+        <circle cx="380" cy="350" r="6" fill="#1e8449" opacity="0.6">
           <animateMotion path="M0 0 L-90 50 L90 50 L120 50 L-70 70" dur="5s" begin="2s" repeatCount="indefinite" />
         </circle>
       </g>
@@ -88,29 +88,29 @@ export function DynamicAfricaIllustration() {
       {/* Payment method floating labels */}
       <g className="payment-methods">
         <g transform="translate(300, 210)">
-          <rect x="-50" y="-20" width="100" height="40" rx="20" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-          <text x="0" y="7" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Mobile Money</text>
+          <rect x="-50" y="-20" width="100" height="40" rx="20" fill="white" stroke="#1e8449" strokeWidth="2" />
+          <text x="0" y="7" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">Mobile Money</text>
           <animateTransform attributeName="transform" type="translate" additive="sum" 
             values="0,-3; 0,3; 0,-3" dur="4s" repeatCount="indefinite" />
         </g>
         
         <g transform="translate(475, 280)">
-          <rect x="-40" y="-20" width="80" height="40" rx="20" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-          <text x="0" y="7" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Cards</text>
+          <rect x="-40" y="-20" width="80" height="40" rx="20" fill="white" stroke="#1e8449" strokeWidth="2" />
+          <text x="0" y="7" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">Cards</text>
           <animateTransform attributeName="transform" type="translate" additive="sum" 
             values="0,-3; 0,3; 0,-3" dur="4s" begin="0.5s" repeatCount="indefinite" />
         </g>
         
         <g transform="translate(380, 390)">
-          <rect x="-55" y="-20" width="110" height="40" rx="20" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-          <text x="0" y="7" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Bank Transfers</text>
+          <rect x="-55" y="-20" width="110" height="40" rx="20" fill="white" stroke="#1e8449" strokeWidth="2" />
+          <text x="0" y="7" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">Bank Transfers</text>
           <animateTransform attributeName="transform" type="translate" additive="sum" 
             values="0,-3; 0,3; 0,-3" dur="4s" begin="1s" repeatCount="indefinite" />
         </g>
         
         <g transform="translate(260, 420)">
-          <rect x="-40" y="-20" width="80" height="40" rx="20" fill="white" stroke="#6C2BFB" strokeWidth="2" />
-          <text x="0" y="7" fontFamily="Arial" fontSize="12" fill="#6C2BFB" textAnchor="middle">Crypto</text>
+          <rect x="-40" y="-20" width="80" height="40" rx="20" fill="white" stroke="#1e8449" strokeWidth="2" />
+          <text x="0" y="7" fontFamily="Arial" fontSize="12" fill="#1e8449" textAnchor="middle">Crypto</text>
           <animateTransform attributeName="transform" type="translate" additive="sum" 
             values="0,-3; 0,3; 0,-3" dur="4s" begin="1.5s" repeatCount="indefinite" />
         </g>
@@ -118,9 +118,9 @@ export function DynamicAfricaIllustration() {
       
       {/* Central API hub */}
       <g transform="translate(400, 300)">
-        <circle cx="0" cy="0" r="40" fill="#6C2BFB" />
-        <circle cx="0" cy="0" r="35" fill="#5921c9" />
-        <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">Paymesa</text>
+        <circle cx="0" cy="0" r="40" fill="#1e8449" />
+        <circle cx="0" cy="0" r="35" fill="#196f3d" />
+        <text x="0" y="5" fontFamily="Arial" fontSize="14" fill="white" fontWeight="bold" textAnchor="middle">PayAfric</text>
         <text x="0" y="25" fontFamily="Arial" fontSize="10" fill="white" textAnchor="middle">Unified API</text>
       </g>
       
@@ -145,10 +145,10 @@ export function DynamicAfricaIllustration() {
       <path d="M600 250 L620 230 L640 250" stroke="#0FCEA6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M500 450 L520 430 L540 450" stroke="#0FCEA6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       
-      <circle cx="220" cy="200" r="8" fill="#6C2BFB" fillOpacity="0.2" />
-      <circle cx="580" cy="300" r="8" fill="#6C2BFB" fillOpacity="0.2" />
-      <circle cx="250" cy="450" r="8" fill="#6C2BFB" fillOpacity="0.2" />
-      <circle cx="550" cy="200" r="8" fill="#6C2BFB" fillOpacity="0.2" />
+      <circle cx="220" cy="200" r="8" fill="#1e8449" fillOpacity="0.2" />
+      <circle cx="580" cy="300" r="8" fill="#1e8449" fillOpacity="0.2" />
+      <circle cx="250" cy="450" r="8" fill="#1e8449" fillOpacity="0.2" />
+      <circle cx="550" cy="200" r="8" fill="#1e8449" fillOpacity="0.2" />
     </svg>
   );
 }

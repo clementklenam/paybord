@@ -1,0 +1,675 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'wouter';
+import { StorefrontService, Storefront, Product } from '@/services/storefront.service';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { ArrowLeft, ShoppingBag, Search, Heart, ShoppingCart, CreditCard, Star, Plus, Minus } from 'lucide-react';
+
+export default function StorefrontPreview() {
+  const { id } = useParams<{ id: string }>();
+  const [storefront, setStorefront] = useState<Storefront | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [cart, setCart] = useState<{product: Product; quantity: number}[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showCart, setShowCart] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  
+  const { toast } = useToast();
+  const storefrontService = new StorefrontService();
+  
+  useEffect(() => {
+    async function fetchStorefront() {
+      if (!id) {
+        console.log('No storefront ID provided');
+        return;
+      }
+      
+      console.log('Fetching storefront with ID:', id);
+      
+      try {
+        setLoading(true);
+        const data = await storefrontService.getStorefrontById(id);
+        console.log('Storefront data received:', data);
+        setStorefront(data);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching storefront:', err);
+        setError('Failed to load storefront. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchStorefront();
+  }, [id]);
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <Skeleton className="h-12 w-64 mb-8" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="md:col-span-2">
+              <Skeleton className="h-64 w-full mb-6" />
+              <Skeleton className="h-8 w-3/4 mb-4" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-full mb-2" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+            <div>
+              <Skeleton className="h-48 w-full mb-4" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  if (error || !storefront) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center p-8 max-w-md">
+          <div className="bg-red-100 text-red-600 p-4 rounded-full inline-flex mb-4">
+            <ShoppingBag size={24} />
+          </div>
+          <h1 className="text-2xl font-bold mb-2">Storefront Not Found</h1>
+          <p className="text-gray-600 mb-6">{error || "We couldn't find the storefront you're looking for."}</p>
+          <Button onClick={() => window.history.back()}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Go Back
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  
+  // Set the document title and apply theme colors - these hooks must be called unconditionally
+  useEffect(() => {
+    if (storefront) {
+      document.title = `${storefront.name} | Paymesa Storefront`;
+    }
+  }, [storefront]);
+  
+  // Apply storefront theme colors
+  useEffect(() => {
+    if (storefront) {
+      const root = document.documentElement;
+      root.style.setProperty('--primary-color', storefront.primaryColor);
+      root.style.setProperty('--accent-color', storefront.accentColor || '#27ae60');
+      
+      // Clean up when component unmounts
+      return () => {
+        root.style.removeProperty('--primary-color');
+        root.style.removeProperty('--accent-color');
+      };
+    }
+  }, [storefront]);
+  
+  // Add to cart function
+  const addToCart = (product: Product, quantity: number = 1) => {
+    setCart(prevCart => {
+      // Check if product is already in cart
+      const existingItem = prevCart.find(item => item.product.id === product.id);
+      
+      if (existingItem) {
+        // Update quantity if product already exists
+        return prevCart.map(item =>
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      } else {
+        // Add new product to cart
+        return [...prevCart, { product, quantity }];
+      }
+    });
+    
+    toast({
+      title: "Added to cart",
+      description: `${product.name} has been added to your cart`,
+      variant: "default"
+    });
+  };
+  
+  // Remove from cart function
+  const removeFromCart = (productId: string) => {
+    setCart(prevCart => prevCart.filter(item => item.product.id !== productId));
+  };
+  
+  // Update quantity function
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    if (newQuantity < 1) return;
+    
+    setCart(prevCart => 
+      prevCart.map(item => 
+        item.product.id === productId
+          ? { ...item, quantity: newQuantity }
+          : item
+      )
+    );
+  };
+  
+  // Calculate cart total
+  const cartTotal = cart.reduce((total, item) => {
+    return total + (item.product.price * item.quantity);
+  }, 0);
+  
+  // Filter products based on search query - moved to useEffect to avoid conditional hook issues
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  
+  // Update filtered products whenever storefront or searchQuery changes
+  useEffect(() => {
+    if (storefront?.products) {
+      const filtered = storefront.products.filter(product => {
+        if (!searchQuery) return true;
+        const query = searchQuery.toLowerCase();
+        return (
+          product.name.toLowerCase().includes(query) ||
+          product.description.toLowerCase().includes(query)
+        );
+      });
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]);
+    }
+  }, [storefront, searchQuery]);
+  
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header 
+        className="sticky top-0 z-50 bg-white shadow-sm" 
+        style={{ borderBottom: `3px solid ${storefront?.primaryColor || '#4f46e5'}` }}
+      >
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center">
+              {storefront.logo ? (
+                <img 
+                  src={storefront.logo} 
+                  alt={`${storefront.name} logo`} 
+                  className="h-10 w-10 rounded-full mr-3"
+                />
+              ) : (
+                <div 
+                  className="h-10 w-10 rounded-full mr-3 flex items-center justify-center"
+                  style={{ backgroundColor: storefront.primaryColor }}
+                >
+                  <span className="text-white font-bold">
+                    {storefront.name.charAt(0)}
+                  </span>
+                </div>
+              )}
+              <h1 className="text-xl font-bold">{storefront.name}</h1>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <Button 
+                variant="outline" 
+                size="icon"
+                className="relative"
+                onClick={() => setShowCart(!showCart)}
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {cart.length > 0 && (
+                  <span 
+                    className="absolute -top-2 -right-2 h-5 w-5 rounded-full text-xs flex items-center justify-center text-white"
+                    style={{ backgroundColor: storefront.primaryColor }}
+                  >
+                    {cart.reduce((total, item) => total + item.quantity, 0)}
+                  </span>
+                )}
+              </Button>
+              
+              <Button onClick={() => window.history.back()}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Dashboard
+              </Button>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input 
+              placeholder="Search products..." 
+              className="pl-9"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+      </header>
+      
+      {/* Shopping Cart Sidebar */}
+      {showCart && (
+        <div className="fixed inset-0 z-50 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={() => setShowCart(false)}></div>
+            <div className="fixed inset-y-0 right-0 max-w-full flex">
+              <div className="w-screen max-w-md">
+                <div className="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
+                  <div className="flex-1 py-6 overflow-y-auto px-4 sm:px-6">
+                    <div className="flex items-start justify-between">
+                      <h2 className="text-lg font-medium text-gray-900">Shopping cart</h2>
+                      <button 
+                        type="button" 
+                        className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                        onClick={() => setShowCart(false)}
+                      >
+                        <span className="sr-only">Close panel</span>
+                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div className="mt-8">
+                      <div className="flow-root">
+                        {cart.length === 0 ? (
+                          <div className="text-center py-12">
+                            <ShoppingCart className="h-12 w-12 mx-auto text-gray-400" />
+                            <h3 className="mt-2 text-sm font-medium text-gray-900">Your cart is empty</h3>
+                            <p className="mt-1 text-sm text-gray-500">Start adding some products to your cart!</p>
+                            <div className="mt-6">
+                              <Button 
+                                onClick={() => setShowCart(false)}
+                                style={{ backgroundColor: storefront.primaryColor }}
+                              >
+                                Continue Shopping
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <ul className="-my-6 divide-y divide-gray-200">
+                            {cart.map((item) => (
+                              <li key={item.product.id} className="py-6 flex">
+                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                  {item.product.image && (
+                                    <img
+                                      src={item.product.image}
+                                      alt={item.product.name}
+                                      className="h-full w-full object-cover object-center"
+                                    />
+                                  )}
+                                </div>
+
+                                <div className="ml-4 flex-1 flex flex-col">
+                                  <div>
+                                    <div className="flex justify-between text-base font-medium text-gray-900">
+                                      <h3>{item.product.name}</h3>
+                                      <p className="ml-4">${(item.product.price * item.quantity).toFixed(2)}</p>
+                                    </div>
+                                    <p className="mt-1 text-sm text-gray-500 line-clamp-1">{item.product.description}</p>
+                                  </div>
+                                  <div className="flex-1 flex items-end justify-between text-sm">
+                                    <div className="flex items-center">
+                                      <button 
+                                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                                        className="p-1 rounded-full border border-gray-300"
+                                      >
+                                        <Minus className="h-3 w-3" />
+                                      </button>
+                                      <span className="mx-2 text-gray-500">Qty {item.quantity}</span>
+                                      <button 
+                                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                                        className="p-1 rounded-full border border-gray-300"
+                                      >
+                                        <Plus className="h-3 w-3" />
+                                      </button>
+                                    </div>
+
+                                    <div className="flex">
+                                      <button 
+                                        type="button" 
+                                        className="font-medium text-red-600 hover:text-red-500"
+                                        onClick={() => removeFromCart(item.product.id)}
+                                      >
+                                        Remove
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {cart.length > 0 && (
+                    <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
+                      <div className="flex justify-between text-base font-medium text-gray-900">
+                        <p>Subtotal</p>
+                        <p>${cartTotal.toFixed(2)}</p>
+                      </div>
+                      <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                      <div className="mt-6">
+                        <Button 
+                          className="w-full" 
+                          style={{ backgroundColor: storefront.primaryColor }}
+                          onClick={() => {
+                            toast({
+                              title: "Checkout initiated",
+                              description: "This is a demo checkout process",
+                              variant: "default"
+                            });
+                          }}
+                        >
+                          <CreditCard className="mr-2 h-4 w-4" />
+                          Checkout
+                        </Button>
+                      </div>
+                      <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
+                        <p>
+                          or{' '}
+                          <button
+                            type="button"
+                            className="font-medium"
+                            style={{ color: storefront.primaryColor }}
+                            onClick={() => setShowCart(false)}
+                          >
+                            Continue Shopping<span aria-hidden="true"> &rarr;</span>
+                          </button>
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Product Detail Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={() => setSelectedProduct(null)}></div>
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+              <div className="bg-white rounded-lg shadow-xl overflow-hidden max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                  <div className="h-64 md:h-auto bg-gray-100">
+                    {selectedProduct.image ? (
+                      <img 
+                        src={selectedProduct.image} 
+                        alt={selectedProduct.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <ShoppingBag className="h-16 w-16 text-gray-300" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <div className="flex justify-between items-start">
+                      <h2 className="text-2xl font-bold">{selectedProduct.name}</h2>
+                      <button 
+                        onClick={() => setSelectedProduct(null)}
+                        className="text-gray-400 hover:text-gray-500"
+                      >
+                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                    
+                    <div className="flex items-center mt-2 mb-4">
+                      <div className="flex">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star 
+                            key={star} 
+                            className="h-4 w-4" 
+                            fill={star <= 4 ? "#FFD700" : "none"} 
+                            stroke={star <= 4 ? "#FFD700" : "#D1D5DB"}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-sm text-gray-500 ml-2">4.0 (12 reviews)</span>
+                    </div>
+                    
+                    <div 
+                      className="text-2xl font-bold mb-4"
+                      style={{ color: storefront.primaryColor }}
+                    >
+                      ${selectedProduct.price.toFixed(2)}
+                    </div>
+                    
+                    <p className="text-gray-600 mb-6">{selectedProduct.description}</p>
+                    
+                    <div className="mt-6">
+                      <Button 
+                        className="w-full"
+                        style={{ backgroundColor: storefront.primaryColor }}
+                        onClick={() => {
+                          addToCart(selectedProduct);
+                          setSelectedProduct(null);
+                        }}
+                      >
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        Add to Cart
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Main content */}
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {/* Banner */}
+        {storefront?.banner && (
+          <div className="h-64 md:h-80 rounded-lg overflow-hidden mb-8 relative">
+            <img 
+              src={storefront?.banner} 
+              alt={`${storefront?.name || 'Store'} banner`} 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+              <div className="p-6 text-white">
+                <h2 className="text-3xl font-bold mb-2">{storefront?.name || 'Store'}</h2>
+                <p className="text-white/80 max-w-xl">{storefront?.description || 'Welcome to our store'}</p>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-3">
+            {!storefront?.banner && (
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold mb-2">Welcome to {storefront?.name || 'Store'}</h2>
+                <p className="text-gray-700">{storefront?.description || 'Welcome to our store'}</p>
+              </div>
+            )}
+            
+            {/* Products */}
+            <div className="mb-8">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold" style={{ color: storefront?.primaryColor || '#4f46e5' }}>
+                  Our Products
+                </h3>
+                <Badge variant="outline" className="text-xs">
+                  {filteredProducts.length} products
+                </Badge>
+              </div>
+              
+              {filteredProducts.length === 0 ? (
+                <div className="bg-gray-100 rounded-lg p-6 text-center">
+                  <ShoppingBag className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                  <p className="text-gray-600">No products available yet.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredProducts.map(product => (
+                    <div 
+                      key={product.id} 
+                      className="border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-200"
+                    >
+                      <div 
+                        className="h-48 bg-gray-100 relative cursor-pointer"
+                        onClick={() => setSelectedProduct(product)}
+                      >
+                        {product.image ? (
+                          <img 
+                            src={product.image} 
+                            alt={product.name} 
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <ShoppingBag className="h-12 w-12 text-gray-300" />
+                          </div>
+                        )}
+                        <button 
+                          className="absolute top-2 right-2 p-1.5 rounded-full bg-white/80 hover:bg-white text-gray-600 hover:text-red-500 transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toast({
+                              title: "Added to wishlist",
+                              description: `${product.name} has been added to your wishlist`,
+                              variant: "default"
+                            });
+                          }}
+                        >
+                          <Heart className="h-4 w-4" />
+                        </button>
+                      </div>
+                      <div className="p-4">
+                        <h4 
+                          className="font-bold mb-1 cursor-pointer hover:text-blue-600 transition-colors"
+                          onClick={() => setSelectedProduct(product)}
+                        >
+                          {product.name}
+                        </h4>
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-lg" style={{ color: storefront.primaryColor }}>
+                            ${product.price.toFixed(2)}
+                          </span>
+                          <Button 
+                            size="sm"
+                            style={{ 
+                              backgroundColor: storefront.primaryColor,
+                              color: 'white'
+                            }}
+                            onClick={() => addToCart(product)}
+                          >
+                            <ShoppingCart className="h-4 w-4 mr-1" />
+                            Add
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          
+          {/* Sidebar */}
+          <div className="md:col-span-1">
+            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+              <h3 className="text-lg font-bold mb-4">Contact Information</h3>
+              <p className="text-gray-600 mb-2">
+                For inquiries, please contact us:
+              </p>
+              <p className="text-gray-800 mb-4">support@paymesa.com</p>
+              
+              {/* Social links */}
+              {storefront.socialLinks && (
+                <div className="mt-4">
+                  <h4 className="text-sm font-bold text-gray-500 mb-2">FOLLOW US</h4>
+                  <div className="flex gap-2">
+                    {storefront.socialLinks.instagram && (
+                      <a 
+                        href={`https://instagram.com/${storefront.socialLinks.instagram}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full bg-gray-100 hover:bg-gray-200"
+                      >
+                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                      </a>
+                    )}
+                    
+                    {storefront.socialLinks.twitter && (
+                      <a 
+                        href={`https://twitter.com/${storefront.socialLinks.twitter}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full bg-gray-100 hover:bg-gray-200"
+                      >
+                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                        </svg>
+                      </a>
+                    )}
+                    
+                    {storefront.socialLinks.facebook && (
+                      <a 
+                        href={`https://facebook.com/${storefront.socialLinks.facebook}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full bg-gray-100 hover:bg-gray-200"
+                      >
+                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Payment methods */}
+            {storefront.paymentMethods && storefront.paymentMethods.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h3 className="text-lg font-bold mb-4">Payment Methods</h3>
+                <div className="flex flex-wrap gap-2">
+                  {storefront.paymentMethods.includes('card') && (
+                    <div className="bg-gray-100 px-3 py-2 rounded text-sm">
+                      Credit/Debit Card
+                    </div>
+                  )}
+                  {storefront.paymentMethods.includes('bank_transfer') && (
+                    <div className="bg-gray-100 px-3 py-2 rounded text-sm">
+                      Bank Transfer
+                    </div>
+                  )}
+                  {storefront.paymentMethods.includes('mobile_money') && (
+                    <div className="bg-gray-100 px-3 py-2 rounded text-sm">
+                      Mobile Money
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+      
+      {/* Footer */}
+      <footer className="bg-gray-100 mt-12 py-8">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center text-gray-500 text-sm">
+            <p>© {new Date().getFullYear()} {storefront?.name || 'Store'}. All rights reserved.</p>
+            <p className="mt-2">Powered by <span className="font-medium">Paymesa</span></p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

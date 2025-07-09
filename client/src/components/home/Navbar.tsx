@@ -1,131 +1,188 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ChevronDown } from "lucide-react";
+import { Link as WouterLink } from "wouter";
+
+const navigation = [
+  { name: "Home", href: "#" },
+  { name: "Features", href: "#features" },
+  { name: "Pricing", href: "#pricing" },
+  { name: "API Docs", href: "#api" },
+  { name: "Contact", href: "#contact" }
+];
+
+const solutions = [
+  {
+    name: "E-commerce",
+    description: "Complete online store solution",
+    href: "#",
+    icon: "🛒"
+  },
+  {
+    name: "Payment Links",
+    description: "Generate viral payment links",
+    href: "#",
+    icon: "🔗"
+  },
+  {
+    name: "Global Payments",
+    description: "Accept payments worldwide",
+    href: "#",
+    icon: "🌍"
+  },
+  {
+    name: "Analytics",
+    description: "Advanced business insights",
+    href: "#",
+    icon: "📊"
+  }
+];
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-gray-100">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled 
+        ? "bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-lg" 
+        : "bg-transparent"
+    }`}>
       <Container>
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0 flex items-center">
-              <div className="h-8 w-auto text-3xl font-medium text-[#6C2BFB] font-['Space_Grotesk']">
-                Paymesa
+        <nav className="flex items-center justify-between py-4" aria-label="Global">
+          {/* Logo */}
+          <div className="flex lg:flex-1">
+            <WouterLink to="/" className="-m-1.5 p-1.5">
+              <span className="sr-only">Paybord</span>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-black to-gray-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-xl font-bold text-white">P</span>
+                </div>
+                <span className={`text-2xl font-bold ${scrolled ? 'text-black' : 'text-black'}`}>
+                  Paybord
+                </span>
               </div>
-            </Link>
-            <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
-              <a
-                href="#products"
-                className="border-transparent text-gray-600 hover:text-[#6C2BFB] inline-flex items-center px-1 pt-1 text-sm font-medium transition duration-200"
-              >
-                Products
-              </a>
-              <a
-                href="#developers"
-                className="border-transparent text-gray-600 hover:text-[#6C2BFB] inline-flex items-center px-1 pt-1 text-sm font-medium transition duration-200"
-              >
-                Developers
-              </a>
-              <a
-                href="#benefits"
-                className="border-transparent text-gray-600 hover:text-[#6C2BFB] inline-flex items-center px-1 pt-1 text-sm font-medium transition duration-200"
-              >
-                Why Paymesa
-              </a>
-              <a
-                href="#"
-                className="border-transparent text-gray-600 hover:text-[#6C2BFB] inline-flex items-center px-1 pt-1 text-sm font-medium transition duration-200"
-              >
-                Pricing
-              </a>
-            </div>
+            </WouterLink>
           </div>
-          <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-            <a
-              href="#"
-              className="text-gray-600 hover:text-[#6C2BFB] px-3 py-2 rounded-md text-sm font-medium transition duration-200"
-            >
-              Sign in
-            </a>
-            <Button className="bg-[#6C2BFB] hover:bg-[#5921c9]">Start now</Button>
-          </div>
-          <div className="-mr-2 flex items-center sm:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#6C2BFB]"
-              aria-expanded="false"
+          
+          {/* Mobile menu button */}
+          <div className="flex lg:hidden">
+            <button
+              type="button"
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-600"
+              onClick={() => setMobileMenuOpen(true)}
             >
               <span className="sr-only">Open main menu</span>
-              {mobileMenuOpen ? <X className="block h-6 w-6" /> : <Menu className="block h-6 w-6" />}
-            </Button>
+              <Menu className="h-6 w-6" aria-hidden="true" />
+            </button>
           </div>
-        </div>
+          
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex lg:gap-x-8">
+            {navigation.map((item) => (
+              <WouterLink 
+                key={item.name} 
+                to={item.href} 
+                className={`text-sm font-medium transition-colors duration-200 ${
+                  scrolled 
+                    ? 'text-gray-700 hover:text-black' 
+                    : 'text-gray-700 hover:text-black'
+                }`}
+              >
+                {item.name}
+              </WouterLink>
+            ))}
+          </div>
+
+          {/* CTA Button */}
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <WouterLink to="/signup">
+              <Button className={`px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${
+                scrolled 
+                  ? 'bg-black text-white hover:bg-gray-800' 
+                  : 'bg-black text-white hover:bg-gray-800'
+              }`}>
+                Get Started
+              </Button>
+            </WouterLink>
+          </div>
+        </nav>
       </Container>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="sm:hidden bg-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="lg:hidden"
           >
-            <div className="pt-2 pb-4 space-y-1">
-              <a
-                href="#products"
-                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Products
-              </a>
-              <a
-                href="#developers"
-                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Developers
-              </a>
-              <a
-                href="#benefits"
-                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Why Paymesa
-              </a>
-              <a
-                href="#"
-                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Pricing
-              </a>
-              <div className="pt-4 pb-3 border-t border-gray-200">
-                <div className="flex items-center px-4">
-                  <a
-                    href="#"
-                    className="block text-base font-medium text-gray-600 hover:text-gray-800"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Sign in
-                  </a>
-                </div>
-                <div className="mt-3 px-2 space-y-1">
-                  <Button className="w-full bg-[#6C2BFB] hover:bg-[#5921c9]" onClick={() => setMobileMenuOpen(false)}>
-                    Start now
-                  </Button>
+            <div className="fixed inset-0 z-50" />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white/95 backdrop-blur-xl px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-200"
+            >
+              <div className="flex items-center justify-between">
+                <WouterLink to="/" className="-m-1.5 p-1.5">
+                  <span className="sr-only">Paybord</span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-black to-gray-600 rounded-lg flex items-center justify-center">
+                      <span className="text-lg font-bold text-white">P</span>
+                    </div>
+                    <span className="text-xl font-bold text-black">Paybord</span>
+                  </div>
+                </WouterLink>
+                <button
+                  type="button"
+                  className="-m-2.5 rounded-md p-2.5 text-gray-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="sr-only">Close menu</span>
+                  <X className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
+              <div className="mt-6 flow-root">
+                <div className="-my-6 divide-y divide-gray-200">
+                  <div className="space-y-2 py-6">
+                    {navigation.map((item) => (
+                      <WouterLink
+                        key={item.name}
+                        to={item.href}
+                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-black transition-colors duration-200"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </WouterLink>
+                    ))}
+                  </div>
+                  <div className="py-6">
+                    <WouterLink to="/signup" onClick={() => setMobileMenuOpen(false)}>
+                      <Button className="w-full bg-black text-white hover:bg-gray-800 px-6 py-3 text-base font-semibold rounded-full transition-all duration-300">
+                        Get Started
+                      </Button>
+                    </WouterLink>
+                  </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 }
