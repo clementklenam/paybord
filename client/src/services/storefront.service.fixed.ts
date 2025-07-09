@@ -69,6 +69,11 @@ export interface StorefrontCreateData {
     paymentMethods?: string[];
 }
 
+// Add demo mode check function
+const isDemoMode = (): boolean => {
+    return import.meta.env.VITE_DEMO_MODE === 'true' || false;
+};
+
 // Generate demo data for storefronts
 const generateDemoStorefronts = (filters: StorefrontFilters = {}): StorefrontListResponse => {
     const demoStorefronts: Storefront[] = [
@@ -259,7 +264,8 @@ const generateDemoStorefront = (id: string): Storefront => {
     };
 };
 
-
+// Storefront service class
+export class StorefrontService {
     /**
      * Get all storefronts with optional filtering
      */
@@ -640,3 +646,9 @@ const generateDemoStorefront = (id: string): Storefront => {
         }
     }
 }
+
+// Export a singleton instance
+export const storefrontService = new StorefrontService();
+
+// Export default for backward compatibility
+export default storefrontService;
