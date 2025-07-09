@@ -11,7 +11,7 @@ interface StatsCardProps {
   color: string;
 }
 
-export function StatsCard({ title, value, change, changeLabel, icon, color }: StatsCardProps) {
+ title, value, change, changeLabel, icon, color }: StatsCardProps) {
   const isPositive = change >= 0;
   
   return (

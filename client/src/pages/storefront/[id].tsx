@@ -19,7 +19,7 @@ import { paystackService } from "@/services/paystack.service";
 import TransactionService from "@/services/transaction.service";
 
 // @ts-ignore
-// eslint-disable-next-line
+ 
 declare global {
   interface Window {
     PaystackPop?: any;

@@ -51,7 +51,7 @@ export interface StorefrontTheme {
   isPopular?: boolean;
 }
 
-export interface ThemePreset {
+
   id: string;
   name: string;
   category: string;

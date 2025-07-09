@@ -12,7 +12,7 @@ interface ProductGridProps {
   onAddToCart?: (product: Product) => void;
 }
 
-export function ProductGrid({ products, theme, onProductClick, onAddToCart }: ProductGridProps) {
+ products, theme, onProductClick, onAddToCart }: ProductGridProps) {
   const layout = theme.layout;
   
   // Determine grid columns based on theme

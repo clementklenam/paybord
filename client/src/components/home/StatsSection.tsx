@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { TrendingUp, Users, Globe, Shield } from "lucide-react";
 
-export function StatsSection() {
+
   const stats = [
     {
       name: "Transaction Volume",

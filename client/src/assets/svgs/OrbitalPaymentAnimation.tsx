@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function OrbitalPaymentAnimation(props: React.SVGProps<SVGSVGElement>) {
+
   const orbitRadius = 140;
   const paymentMethods = [
     { id: 1, name: 'Mobile Money', angle: 0 },

@@ -146,7 +146,7 @@ export const generateDemoCustomer = (customData?: Partial<Customer>): Customer =
 };
 
 // Generate a list of demo customers
-export const generateDemoCustomers = (filters: CustomerFilters = {}): CustomerListResponse => {
+}): CustomerListResponse => {
   // Default pagination
   const page = filters.page || 1;
   const limit = filters.limit || 10;

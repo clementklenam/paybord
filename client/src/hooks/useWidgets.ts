@@ -6,7 +6,7 @@ export interface Widget {
   type: string;
 }
 
-export function useWidgets(initialWidgets: Widget[] = []) {
+
   const [widgets, setWidgets] = useState<Widget[]>(initialWidgets);
   const [isAddingWidget, setIsAddingWidget] = useState(false);
 

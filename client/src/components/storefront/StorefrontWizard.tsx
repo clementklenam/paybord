@@ -284,7 +284,7 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
             console.log('Full response from onSubmit:', response);
 
             // Handle both direct storefront object and API response formats
-            let createdStorefront = response?.data || response;
+            const createdStorefront = response?.data || response;
             // Defensive: if only _id is present, use it as id
             if (createdStorefront && !createdStorefront.id && createdStorefront._id) {
                 createdStorefront.id = createdStorefront._id;

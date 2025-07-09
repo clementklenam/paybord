@@ -259,7 +259,7 @@ const generateDemoStorefront = (id: string): Storefront => {
     };
 };
 
-export class StorefrontService {
+
     /**
      * Get all storefronts with optional filtering
      */

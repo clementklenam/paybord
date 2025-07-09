@@ -12,7 +12,7 @@ interface DocumentUploadStepProps {
   handleRemoveFile: (field: keyof KycData) => void;
 }
 
-export function DocumentUploadStep({
+
   onNext,
   onBack,
   previewUrls,

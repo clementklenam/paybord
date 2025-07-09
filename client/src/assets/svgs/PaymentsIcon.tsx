@@ -1,4 +1,4 @@
-export function PaymentsIcon(props: React.SVGProps<SVGSVGElement>) {
+
   return (
     <svg 
       viewBox="0 0 200 160" 

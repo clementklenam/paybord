@@ -64,7 +64,7 @@ const benefits = [
   }
 ];
 
-export function HowItWorksSection() {
+
   return (
     <section className="relative py-24 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden">
       {/* Background Elements */}

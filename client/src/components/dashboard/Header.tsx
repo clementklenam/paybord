@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocation } from "wouter";
 
-export function Header() {
+
   const { user, signout } = useAuth();
   const [, setLocation] = useLocation();
   

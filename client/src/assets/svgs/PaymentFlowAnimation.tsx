@@ -1,4 +1,4 @@
-export function PaymentFlowAnimation() {
+
   return (
     <svg
       viewBox="0 0 1200 700"

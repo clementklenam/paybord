@@ -1,0 +1,311 @@
+server/storage.ts:6 - IStorage (used in module)
+server/storage.ts:12 - MemStorage (used in module)
+shared/schema.ts:11 - insertUserSchema (used in module)
+client/src/hooks/use-toast.ts:74 - reducer (used in module)
+client/src/hooks/use-toast.ts:191 - toast (used in module)
+client/src/hooks/useBusinesses.ts:8 - Business (used in module)
+client/src/hooks/useProducts.ts:8 - Product (used in module)
+client/src/hooks/useWidgets.ts:9 - useWidgets
+client/src/hooks/useWidgets.ts:4 - Widget (used in module)
+client/src/lib/api.ts:49 - default
+client/src/lib/queryClient.ts:10 - apiRequest
+client/src/lib/queryClient.ts:27 - getQueryFn (used in module)
+client/src/pages/not-found.tsx:4 - default
+client/src/services/analytics.service.ts:228 - PaymentAnalyticsResponse (used in module)
+client/src/services/analytics.service.ts:233 - ProductAnalyticsResponse (used in module)
+client/src/services/analytics.service.ts:271 - CustomerAnalyticsResponse (used in module)
+client/src/services/customer.demo.ts:91 - generateDemoCustomer (used in module)
+client/src/services/customer.demo.ts:149 - generateDemoCustomers
+client/src/services/dashboard.service.ts:5 - DashboardSummary (used in module)
+client/src/services/dashboard.service.ts:41 - default
+client/src/services/paystack.service.ts:3 - PaystackInitializeRequest (used in module)
+client/src/services/paystack.service.ts:18 - PaystackInitializeResponse (used in module)
+client/src/services/paystack.service.ts:29 - PaystackVerifyResponse (used in module)
+client/src/services/paystack.service.ts:42 - Bank (used in module)
+client/src/services/paystack.service.ts:52 - BanksResponse (used in module)
+client/src/services/paystack.service.ts:57 - AccountResolutionRequest (used in module)
+client/src/services/paystack.service.ts:62 - AccountResolutionResponse (used in module)
+client/src/services/product.service.ts:32 - ProductFilters (used in module)
+client/src/services/product.service.ts:200 - generateDemoProducts (used in module)
+client/src/services/storefront.service.fixed.ts:6 - Product (used in module)
+client/src/services/storefront.service.fixed.ts:15 - Storefront (used in module)
+client/src/services/storefront.service.fixed.ts:39 - StorefrontFilters (used in module)
+client/src/services/storefront.service.fixed.ts:48 - StorefrontListResponse (used in module)
+client/src/services/storefront.service.fixed.ts:56 - StorefrontCreateData (used in module)
+client/src/services/storefront.service.fixed.ts:262 - StorefrontService
+client/src/services/storefront.service.ts:54 - StorefrontListResponse (used in module)
+client/src/services/subscription.service.ts:22 - SubscriptionService (used in module)
+client/src/services/transaction.service.ts:30 - TransactionListResponse (used in module)
+client/src/types/auth.ts:28 - SigninData
+client/src/types/auth.ts:55 - KycStatus
+client/src/types/auth.ts:60 - KycSubmissionResponse
+client/src/types/business.ts:25 - BusinessType (used in module)
+client/src/types/business.ts:27 - VerificationStatus (used in module)
+client/src/types/business.ts:29 - BusinessStatus (used in module)
+client/src/types/business.ts:31 - PciDssLevel (used in module)
+client/src/types/business.ts:33 - DocumentType (used in module)
+client/src/types/business.ts:35 - DocumentStatus (used in module)
+client/src/types/business.ts:37 - Address (used in module)
+client/src/types/business.ts:45 - ComplianceInfo (used in module)
+client/src/types/business.ts:59 - BankingInfo (used in module)
+client/src/types/business.ts:67 - MobileMoneyInfo (used in module)
+client/src/types/business.ts:98 - IndustryOption (used in module)
+client/src/types/theme.ts:1 - ThemeColors (used in module)
+client/src/types/theme.ts:15 - ThemeLayout (used in module)
+client/src/types/theme.ts:27 - ThemeTypography (used in module)
+client/src/types/theme.ts:34 - ThemeSpacing (used in module)
+client/src/types/theme.ts:54 - ThemePreset
+client/src/utils/api-utils.ts:14 - debounce
+client/src/utils/api-utils.ts:98 - delay (used in module)
+client/src/assets/svgs/AfricaMap.tsx:1 - AfricaMap
+client/src/assets/svgs/DynamicAfricaIllustration.tsx:1 - DynamicAfricaIllustration
+client/src/assets/svgs/IntegrateIcon.tsx:1 - IntegrateIcon
+client/src/assets/svgs/OrbitalPaymentAnimation.tsx:3 - OrbitalPaymentAnimation
+client/src/assets/svgs/PaymentFlowAnimation.tsx:1 - PaymentFlowAnimation
+client/src/assets/svgs/PaymentNetworkIllustration.tsx:1 - PaymentNetworkIllustration
+client/src/assets/svgs/PaymentsIcon.tsx:1 - PaymentsIcon
+client/src/assets/svgs/PayoutsIcon.tsx:1 - PayoutsIcon
+client/src/assets/svgs/StorefrontIcon.tsx:1 - StorefrontIcon
+client/src/assets/svgs/WorldToAfricaMap.tsx:1 - WorldToAfricaMap
+client/src/assets/svgs/WorldToAfricaPayments.tsx:1 - WorldToAfricaPayments
+client/src/components/auth/KycForm.tsx:9 - KycForm
+client/src/components/auth/OtpVerification.tsx:9 - OtpVerification
+client/src/components/balances/BalanceOverview.tsx:44 - BalanceOverview
+client/src/components/balances/PayoutSettings.tsx:34 - PayoutSettings
+client/src/components/balances/ReserveDetails.tsx:21 - ReserveDetails
+client/src/components/checkout/CheckoutForm.tsx:66 - CheckoutFormProps (used in module)
+client/src/components/checkout/CheckoutPage.tsx:5 - CheckoutPage
+client/src/components/dashboard/AnimatedBanner.tsx:10 - AnimatedBanner
+client/src/components/dashboard/ApiKeysPage.tsx:32 - ApiKeysPage
+client/src/components/dashboard/CustomersPage.tsx:118 - CustomersPage
+client/src/components/dashboard/DashboardOverview.tsx:19 - DashboardOverview
+client/src/components/dashboard/Header.tsx:9 - Header
+client/src/components/dashboard/PaymentsDashboard.tsx:84 - PaymentsDashboard
+client/src/components/dashboard/StatsCard.tsx:14 - StatsCard
+client/src/components/home/BenefitsSection.tsx:5 - BenefitsSection
+client/src/components/home/DeveloperSection.tsx:7 - DeveloperSection
+client/src/components/home/Header.tsx:74 - Header
+client/src/components/home/HowItWorksSection.tsx:67 - HowItWorksSection
+client/src/components/home/PaymentFlowSection.tsx:6 - PaymentFlowSection
+client/src/components/home/ProductDemoSection.tsx:404 - ProductDemoSection
+client/src/components/home/ProductsSection.tsx:5 - ProductsSection
+client/src/components/home/StatsSection.tsx:5 - StatsSection
+client/src/components/home/TestimonialSection.tsx:5 - TestimonialSection
+client/src/components/home/TrustedBySection.tsx:5 - TrustedBySection
+client/src/components/kyc/DocumentUploadStep.tsx:15 - DocumentUploadStep
+client/src/components/kyc/PersonalInfoStep.tsx:20 - PersonalInfoStep
+client/src/components/kyc/ReviewStep.tsx:12 - ReviewStep
+client/src/components/kyc/StepIndicator.tsx:12 - StepIndicator
+client/src/components/storefront/ThemeLayouts.tsx:15 - ProductGrid
+client/src/components/subscriptions/CreateSubscriptionWizard.tsx:22 - CreateSubscriptionWizard
+client/src/components/ui/accordion.tsx:56 - Accordion (used in module)
+client/src/components/ui/accordion.tsx:56 - AccordionItem (used in module)
+client/src/components/ui/accordion.tsx:56 - AccordionTrigger (used in module)
+client/src/components/ui/accordion.tsx:56 - AccordionContent (used in module)
+client/src/components/ui/alert-dialog.tsx:129 - AlertDialogPortal (used in module)
+client/src/components/ui/alert-dialog.tsx:130 - AlertDialogOverlay (used in module)
+client/src/components/ui/alert-dialog.tsx:131 - AlertDialogTrigger (used in module)
+client/src/components/ui/aspect-ratio.tsx:5 - AspectRatio (used in module)
+client/src/components/ui/badge.tsx:26 - BadgeProps (used in module)
+client/src/components/ui/badge.tsx:36 - badgeVariants (used in module)
+client/src/components/ui/breadcrumb.tsx:108 - Breadcrumb (used in module)
+client/src/components/ui/breadcrumb.tsx:109 - BreadcrumbList (used in module)
+client/src/components/ui/breadcrumb.tsx:110 - BreadcrumbItem (used in module)
+client/src/components/ui/breadcrumb.tsx:111 - BreadcrumbLink (used in module)
+client/src/components/ui/breadcrumb.tsx:112 - BreadcrumbPage (used in module)
+client/src/components/ui/breadcrumb.tsx:113 - BreadcrumbSeparator (used in module)
+client/src/components/ui/breadcrumb.tsx:114 - BreadcrumbEllipsis (used in module)
+client/src/components/ui/button.tsx:36 - ButtonProps (used in module)
+client/src/components/ui/calendar.tsx:8 - CalendarProps (used in module)
+client/src/components/ui/carousel.tsx:254 - CarouselApi (used in module)
+client/src/components/ui/carousel.tsx:255 - Carousel (used in module)
+client/src/components/ui/carousel.tsx:256 - CarouselContent (used in module)
+client/src/components/ui/carousel.tsx:257 - CarouselItem (used in module)
+client/src/components/ui/carousel.tsx:258 - CarouselPrevious (used in module)
+client/src/components/ui/carousel.tsx:259 - CarouselNext (used in module)
+client/src/components/ui/chart.tsx:9 - ChartConfig (used in module)
+client/src/components/ui/chart.tsx:357 - ChartContainer (used in module)
+client/src/components/ui/chart.tsx:358 - ChartTooltip (used in module)
+client/src/components/ui/chart.tsx:359 - ChartTooltipContent (used in module)
+client/src/components/ui/chart.tsx:360 - ChartLegend (used in module)
+client/src/components/ui/chart.tsx:361 - ChartLegendContent (used in module)
+client/src/components/ui/chart.tsx:362 - ChartStyle (used in module)
+client/src/components/ui/collapsible.tsx:9 - Collapsible (used in module)
+client/src/components/ui/collapsible.tsx:9 - CollapsibleTrigger (used in module)
+client/src/components/ui/collapsible.tsx:9 - CollapsibleContent (used in module)
+client/src/components/ui/command.tsx:144 - Command (used in module)
+client/src/components/ui/command.tsx:145 - CommandDialog (used in module)
+client/src/components/ui/command.tsx:146 - CommandInput (used in module)
+client/src/components/ui/command.tsx:147 - CommandList (used in module)
+client/src/components/ui/command.tsx:148 - CommandEmpty (used in module)
+client/src/components/ui/command.tsx:149 - CommandGroup (used in module)
+client/src/components/ui/command.tsx:150 - CommandItem (used in module)
+client/src/components/ui/command.tsx:151 - CommandShortcut (used in module)
+client/src/components/ui/command.tsx:152 - CommandSeparator (used in module)
+client/src/components/ui/context-menu.tsx:183 - ContextMenu (used in module)
+client/src/components/ui/context-menu.tsx:184 - ContextMenuTrigger (used in module)
+client/src/components/ui/context-menu.tsx:185 - ContextMenuContent (used in module)
+client/src/components/ui/context-menu.tsx:186 - ContextMenuItem (used in module)
+client/src/components/ui/context-menu.tsx:187 - ContextMenuCheckboxItem (used in module)
+client/src/components/ui/context-menu.tsx:188 - ContextMenuRadioItem (used in module)
+client/src/components/ui/context-menu.tsx:189 - ContextMenuLabel (used in module)
+client/src/components/ui/context-menu.tsx:190 - ContextMenuSeparator (used in module)
+client/src/components/ui/context-menu.tsx:191 - ContextMenuShortcut (used in module)
+client/src/components/ui/context-menu.tsx:192 - ContextMenuGroup (used in module)
+client/src/components/ui/context-menu.tsx:193 - ContextMenuPortal (used in module)
+client/src/components/ui/context-menu.tsx:194 - ContextMenuSub (used in module)
+client/src/components/ui/context-menu.tsx:195 - ContextMenuSubContent (used in module)
+client/src/components/ui/context-menu.tsx:196 - ContextMenuSubTrigger (used in module)
+client/src/components/ui/context-menu.tsx:197 - ContextMenuRadioGroup (used in module)
+client/src/components/ui/dialog.tsx:111 - DialogPortal (used in module)
+client/src/components/ui/dialog.tsx:112 - DialogOverlay (used in module)
+client/src/components/ui/dialog.tsx:113 - DialogClose (used in module)
+client/src/components/ui/drawer.tsx:106 - Drawer (used in module)
+client/src/components/ui/drawer.tsx:107 - DrawerPortal (used in module)
+client/src/components/ui/drawer.tsx:108 - DrawerOverlay (used in module)
+client/src/components/ui/drawer.tsx:109 - DrawerTrigger (used in module)
+client/src/components/ui/drawer.tsx:110 - DrawerClose (used in module)
+client/src/components/ui/drawer.tsx:111 - DrawerContent (used in module)
+client/src/components/ui/drawer.tsx:112 - DrawerHeader (used in module)
+client/src/components/ui/drawer.tsx:113 - DrawerFooter (used in module)
+client/src/components/ui/drawer.tsx:114 - DrawerTitle (used in module)
+client/src/components/ui/drawer.tsx:115 - DrawerDescription (used in module)
+client/src/components/ui/dropdown-menu.tsx:187 - DropdownMenuCheckboxItem (used in module)
+client/src/components/ui/dropdown-menu.tsx:188 - DropdownMenuRadioItem (used in module)
+client/src/components/ui/dropdown-menu.tsx:191 - DropdownMenuShortcut (used in module)
+client/src/components/ui/dropdown-menu.tsx:192 - DropdownMenuGroup (used in module)
+client/src/components/ui/dropdown-menu.tsx:193 - DropdownMenuPortal (used in module)
+client/src/components/ui/dropdown-menu.tsx:194 - DropdownMenuSub (used in module)
+client/src/components/ui/dropdown-menu.tsx:195 - DropdownMenuSubContent (used in module)
+client/src/components/ui/dropdown-menu.tsx:196 - DropdownMenuSubTrigger (used in module)
+client/src/components/ui/dropdown-menu.tsx:197 - DropdownMenuRadioGroup (used in module)
+client/src/components/ui/enhanced-chart.tsx:49 - EnhancedChart
+client/src/components/ui/form.tsx:168 - useFormField (used in module)
+client/src/components/ui/form.tsx:169 - Form (used in module)
+client/src/components/ui/form.tsx:170 - FormItem (used in module)
+client/src/components/ui/form.tsx:171 - FormLabel (used in module)
+client/src/components/ui/form.tsx:172 - FormControl (used in module)
+client/src/components/ui/form.tsx:173 - FormDescription (used in module)
+client/src/components/ui/form.tsx:174 - FormMessage (used in module)
+client/src/components/ui/form.tsx:175 - FormField (used in module)
+client/src/components/ui/hover-card.tsx:27 - HoverCard (used in module)
+client/src/components/ui/hover-card.tsx:27 - HoverCardTrigger (used in module)
+client/src/components/ui/hover-card.tsx:27 - HoverCardContent (used in module)
+client/src/components/ui/input-otp.tsx:69 - InputOTP (used in module)
+client/src/components/ui/input-otp.tsx:69 - InputOTPGroup (used in module)
+client/src/components/ui/input-otp.tsx:69 - InputOTPSlot (used in module)
+client/src/components/ui/input-otp.tsx:69 - InputOTPSeparator (used in module)
+client/src/components/ui/input.tsx:5 - InputProps (used in module)
+client/src/components/ui/menubar.tsx:218 - Menubar (used in module)
+client/src/components/ui/menubar.tsx:219 - MenubarMenu (used in module)
+client/src/components/ui/menubar.tsx:220 - MenubarTrigger (used in module)
+client/src/components/ui/menubar.tsx:221 - MenubarContent (used in module)
+client/src/components/ui/menubar.tsx:222 - MenubarItem (used in module)
+client/src/components/ui/menubar.tsx:223 - MenubarSeparator (used in module)
+client/src/components/ui/menubar.tsx:224 - MenubarLabel (used in module)
+client/src/components/ui/menubar.tsx:225 - MenubarCheckboxItem (used in module)
+client/src/components/ui/menubar.tsx:226 - MenubarRadioGroup (used in module)
+client/src/components/ui/menubar.tsx:227 - MenubarRadioItem (used in module)
+client/src/components/ui/menubar.tsx:228 - MenubarPortal (used in module)
+client/src/components/ui/menubar.tsx:229 - MenubarSubContent (used in module)
+client/src/components/ui/menubar.tsx:230 - MenubarSubTrigger (used in module)
+client/src/components/ui/menubar.tsx:231 - MenubarGroup (used in module)
+client/src/components/ui/menubar.tsx:232 - MenubarSub (used in module)
+client/src/components/ui/menubar.tsx:233 - MenubarShortcut (used in module)
+client/src/components/ui/navigation-menu.tsx:119 - navigationMenuTriggerStyle (used in module)
+client/src/components/ui/navigation-menu.tsx:120 - NavigationMenu (used in module)
+client/src/components/ui/navigation-menu.tsx:121 - NavigationMenuList (used in module)
+client/src/components/ui/navigation-menu.tsx:122 - NavigationMenuItem (used in module)
+client/src/components/ui/navigation-menu.tsx:123 - NavigationMenuContent (used in module)
+client/src/components/ui/navigation-menu.tsx:124 - NavigationMenuTrigger (used in module)
+client/src/components/ui/navigation-menu.tsx:125 - NavigationMenuLink (used in module)
+client/src/components/ui/navigation-menu.tsx:126 - NavigationMenuIndicator (used in module)
+client/src/components/ui/navigation-menu.tsx:127 - NavigationMenuViewport (used in module)
+client/src/components/ui/popover.tsx:29 - PopoverTrigger (used in module)
+client/src/components/ui/resizable.tsx:43 - ResizablePanelGroup (used in module)
+client/src/components/ui/resizable.tsx:43 - ResizablePanel (used in module)
+client/src/components/ui/resizable.tsx:43 - ResizableHandle (used in module)
+client/src/components/ui/scroll-area.tsx:46 - ScrollBar (used in module)
+client/src/components/ui/select.tsx:149 - SelectGroup (used in module)
+client/src/components/ui/select.tsx:153 - SelectLabel (used in module)
+client/src/components/ui/select.tsx:155 - SelectSeparator (used in module)
+client/src/components/ui/select.tsx:156 - SelectScrollUpButton (used in module)
+client/src/components/ui/select.tsx:157 - SelectScrollDownButton (used in module)
+client/src/components/ui/sheet.tsx:129 - SheetPortal (used in module)
+client/src/components/ui/sheet.tsx:130 - SheetOverlay (used in module)
+client/src/components/ui/sheet.tsx:131 - SheetTrigger (used in module)
+client/src/components/ui/sheet.tsx:132 - SheetClose (used in module)
+client/src/components/ui/sheet.tsx:134 - SheetHeader (used in module)
+client/src/components/ui/sheet.tsx:135 - SheetFooter (used in module)
+client/src/components/ui/sheet.tsx:136 - SheetTitle (used in module)
+client/src/components/ui/sheet.tsx:137 - SheetDescription (used in module)
+client/src/components/ui/sidebar.tsx:738 - Sidebar (used in module)
+client/src/components/ui/sidebar.tsx:739 - SidebarContent (used in module)
+client/src/components/ui/sidebar.tsx:740 - SidebarFooter (used in module)
+client/src/components/ui/sidebar.tsx:741 - SidebarGroup (used in module)
+client/src/components/ui/sidebar.tsx:742 - SidebarGroupAction (used in module)
+client/src/components/ui/sidebar.tsx:743 - SidebarGroupContent (used in module)
+client/src/components/ui/sidebar.tsx:744 - SidebarGroupLabel (used in module)
+client/src/components/ui/sidebar.tsx:745 - SidebarHeader (used in module)
+client/src/components/ui/sidebar.tsx:746 - SidebarInput (used in module)
+client/src/components/ui/sidebar.tsx:747 - SidebarInset (used in module)
+client/src/components/ui/sidebar.tsx:748 - SidebarMenu (used in module)
+client/src/components/ui/sidebar.tsx:749 - SidebarMenuAction (used in module)
+client/src/components/ui/sidebar.tsx:750 - SidebarMenuBadge (used in module)
+client/src/components/ui/sidebar.tsx:751 - SidebarMenuButton (used in module)
+client/src/components/ui/sidebar.tsx:752 - SidebarMenuItem (used in module)
+client/src/components/ui/sidebar.tsx:753 - SidebarMenuSkeleton (used in module)
+client/src/components/ui/sidebar.tsx:754 - SidebarMenuSub (used in module)
+client/src/components/ui/sidebar.tsx:755 - SidebarMenuSubButton (used in module)
+client/src/components/ui/sidebar.tsx:756 - SidebarMenuSubItem (used in module)
+client/src/components/ui/sidebar.tsx:757 - SidebarProvider (used in module)
+client/src/components/ui/sidebar.tsx:758 - SidebarRail (used in module)
+client/src/components/ui/sidebar.tsx:759 - SidebarSeparator (used in module)
+client/src/components/ui/sidebar.tsx:760 - SidebarTrigger (used in module)
+client/src/components/ui/sidebar.tsx:761 - useSidebar (used in module)
+client/src/components/ui/skeletons.tsx:4 - CardSkeleton
+client/src/components/ui/skeletons.tsx:17 - CustomerSkeleton
+client/src/components/ui/table.tsx:112 - TableFooter (used in module)
+client/src/components/ui/table.tsx:116 - TableCaption (used in module)
+client/src/components/ui/textarea.tsx:5 - TextareaProps (used in module)
+client/src/components/ui/toast.tsx:126 - ToastAction (used in module)
+client/src/components/ui/toggle-group.tsx:59 - ToggleGroup (used in module)
+client/src/components/ui/toggle-group.tsx:59 - ToggleGroupItem (used in module)
+client/src/components/ui/toggle.tsx:43 - Toggle (used in module)
+client/src/components/ui/use-toast.ts:75 - reducer (used in module)
+client/src/lib/utils/date.ts:1 - formatDate
+client/src/pages/dashboard/payment-links-backup-1746967990.tsx:113 - default
+client/src/pages/dashboard/products-fixed.tsx:10 - default
+client/src/pages/dashboard/products.tsx:42 - default
+client/src/pages/dashboard/storefront-backup-original.tsx:34 - default
+client/src/pages/dashboard/storefront-backup.tsx:49 - default
+client/src/pages/dashboard/storefront-fixed.tsx:14 - default
+client/src/pages/dashboard/storefront-new.tsx:34 - default
+client/src/pages/dashboard/transactions-fixed.tsx:46 - default
+client/src/pages/store/index.tsx:17 - default
+client/src/components/dashboard/widgets/AddWidgetDialog.tsx:16 - WIDGET_TYPES (used in module)
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:54 - DisputeActivityWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:64 - DisputeCountWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:74 - DisputedPaymentsWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:84 - NetVolumeSalesWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:94 - CustomersWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:104 - NewCustomersWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:114 - SpendPerCustomerWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:124 - TopCustomersWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:146 - HighRiskPaymentsWidget
+client/src/components/dashboard/widgets/DashboardWidgets.tsx:156 - SuccessfulPaymentsWidget
+client/src/components/dashboard/widgets/DisputeCountWidget.tsx:34 - DisputeCountWidget
+client/src/components/dashboard/widgets/DraggableWidgetContainer.tsx:20 - Widget (used in module)
+client/src/components/dashboard/widgets/DraggableWidgetContainer.tsx:25 - DraggableWidgetContainerProps (used in module)
+client/src/components/dashboard/widgets/index.ts:1 - PaymentOverviewWidget
+client/src/components/dashboard/widgets/index.ts:2 - GrossVolumeWidget
+client/src/components/dashboard/widgets/index.ts:3 - NetVolumeWidget
+client/src/components/dashboard/widgets/index.ts:4 - FailedPaymentsWidget
+client/src/components/dashboard/widgets/index.ts:5 - NewCustomersWidget
+client/src/components/dashboard/widgets/index.ts:6 - TopCustomersWidget
+client/src/components/dashboard/widgets/index.ts:7 - AddWidgetDialog
+client/src/components/dashboard/widgets/index.ts:8 - DraggableWidgetContainer
+client/src/components/dashboard/widgets/index.ts:9 - PaymentSourcesWidget
+client/src/components/dashboard/widgets/PaymentWidget.tsx:13 - PaymentWidget
+client/src/components/dashboard/widgets/WidgetPicker.tsx:29 - WidgetPicker
+client/src/components/dashboard/widgets/WidgetPicker.tsx:10 - WidgetType (used in module)

@@ -26,7 +26,7 @@ interface WidgetPickerProps {
   availableWidgets: WidgetType[];
 }
 
-export function WidgetPicker({ onAddWidget, availableWidgets }: WidgetPickerProps) {
+ onAddWidget, availableWidgets }: WidgetPickerProps) {
   const filteredOptions = WIDGET_OPTIONS.filter(
     (option) => availableWidgets.includes(option.type)
   );

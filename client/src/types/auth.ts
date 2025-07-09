@@ -25,7 +25,7 @@ export interface SignupData {
   username?: string;
 }
 
-export interface SigninData {
+
   email: string;
   password: string;
 }
@@ -52,12 +52,12 @@ export interface KycData {
   proofOfAddress: File | null;
 }
 
-export interface KycStatus {
+
   status: string;
   message: string;
 }
 
-export interface KycSubmissionResponse {
+
   success: boolean;
   message: string;
 }

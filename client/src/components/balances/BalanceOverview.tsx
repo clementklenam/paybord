@@ -41,7 +41,7 @@ interface BalanceOverviewProps {
   currency: string;
 }
 
-export function BalanceOverview({ balanceData, currency }: BalanceOverviewProps) {
+ balanceData, currency }: BalanceOverviewProps) {
   const totalBalance = balanceData.available.amount + balanceData.pending.amount + balanceData.reserved.amount;
   const availablePercentage = (balanceData.available.amount / totalBalance) * 100;
   const pendingPercentage = (balanceData.pending.amount / totalBalance) * 100;

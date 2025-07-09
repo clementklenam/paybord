@@ -46,7 +46,7 @@ const COLORS = {
   teal: '#14B8A6',
 };
 
-export function EnhancedChart({ 
+ 
   data, 
   type = 'line', 
   height = 200, 

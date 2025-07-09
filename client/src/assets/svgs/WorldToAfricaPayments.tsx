@@ -1,4 +1,4 @@
-export function WorldToAfricaPayments() {
+
   return (
     <svg 
       viewBox="0 0 800 600" 

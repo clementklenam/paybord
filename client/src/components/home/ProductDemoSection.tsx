@@ -401,7 +401,7 @@ function AnalyticsDemo() {
   );
 }
 
-export function ProductDemoSection() {
+
   return (
     <section className="py-24 bg-gradient-to-b from-slate-950 to-black overflow-hidden" id="product-demos">
       {/* Background Elements */}

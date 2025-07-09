@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { SiAirbnb, SiSlack, SiNetflix, SiAmazon, SiShopify } from "react-icons/si";
 
-export function TrustedBySection() {
+
   const logos = [
     { icon: SiAirbnb, name: "AfriTech" },
     { icon: SiSlack, name: "PayConnect" },

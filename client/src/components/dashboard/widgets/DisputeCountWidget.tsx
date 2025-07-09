@@ -31,7 +31,7 @@ const mockData: DisputeCountData = {
   lastUpdated: "2025-04-10"
 };
 
-export function DisputeCountWidget() {
+
   const data = mockData;
 
   return (

@@ -7,7 +7,7 @@ interface AnimatedBannerProps {
   children?: React.ReactNode;
 }
 
-export function AnimatedBanner({ title, subtitle, children }: AnimatedBannerProps) {
+ title, subtitle, children }: AnimatedBannerProps) {
   return (
     <div className="relative overflow-hidden bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 rounded-2xl mb-8">
       {/* Animated background pattern */}

@@ -1,4 +1,4 @@
-export function StorefrontIcon(props: React.SVGProps<SVGSVGElement>) {
+
   return (
     <svg
       viewBox="0 0 64 64"

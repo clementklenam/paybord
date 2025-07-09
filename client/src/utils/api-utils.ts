@@ -1,59 +1,5 @@
 // API utilities for handling rate limiting and debouncing
 
-interface DebouncedFunction<T extends (...args: any[]) => any> {
-  (...args: Parameters<T>): Promise<ReturnType<T>>;
-  cancel: () => void;
-}
-
-/**
- * Creates a debounced version of an async function
- * @param func The function to debounce
- * @param delay The delay in milliseconds
- * @returns A debounced version of the function
- */
-export function debounce<T extends (...args: any[]) => Promise<any>>(
-  func: T,
-  delay: number
-): DebouncedFunction<T> {
-  let timeoutId: NodeJS.Timeout | null = null;
-  let pendingPromise: Promise<ReturnType<T>> | null = null;
-
-  const debounced = (...args: Parameters<T>): Promise<ReturnType<T>> => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    if (pendingPromise) {
-      return pendingPromise;
-    }
-
-    pendingPromise = new Promise((resolve, reject) => {
-      timeoutId = setTimeout(async () => {
-        try {
-          const result = await func(...args);
-          resolve(result);
-        } catch (error) {
-          reject(error);
-        } finally {
-          pendingPromise = null;
-        }
-      }, delay);
-    });
-
-    return pendingPromise;
-  };
-
-  debounced.cancel = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      timeoutId = null;
-    }
-    pendingPromise = null;
-  };
-
-  return debounced;
-}
-
 /**
  * Retry function with exponential backoff
  * @param fn The function to retry

@@ -31,7 +31,7 @@ interface PayoutSettingsProps {
   currency: string;
 }
 
-export function PayoutSettings({ payoutData, currency }: PayoutSettingsProps) {
+ payoutData, currency }: PayoutSettingsProps) {
   const [payoutFrequency, setPayoutFrequency] = useState("automatic");
   const [payoutThreshold, setPayoutThreshold] = useState("1000");
   const [payoutDay, setPayoutDay] = useState("monday");

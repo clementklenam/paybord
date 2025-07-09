@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Check, Copy, Terminal, Zap, Shield, Globe } from "lucide-react";
 import { useState } from "react";
 
-export function DeveloperSection() {
+
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {

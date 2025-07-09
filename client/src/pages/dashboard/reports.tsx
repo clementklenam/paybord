@@ -147,7 +147,7 @@ export default function ReportsPage() {
   // Debug: Print raw analytics data to help trace inconsistencies
   useEffect(() => {
     if (analytics) {
-      // eslint-disable-next-line no-console
+       
       console.log('[ReportsPage] Raw analytics data:', analytics);
     }
   }, [analytics]);

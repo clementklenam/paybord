@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CheckoutForm } from "./CheckoutForm";
 import { Button } from "@/components/ui/button";
 
-export function CheckoutPage() {
+
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentData, setPaymentData] = useState<any>(null);
   

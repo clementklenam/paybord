@@ -1,7 +1,7 @@
 import { Skeleton } from "./skeleton";
 import { Card, CardContent, CardHeader } from "./card";
 
-export function CardSkeleton() {
+
   return (
     <Card>
       <CardHeader className="gap-2">
@@ -14,7 +14,7 @@ export function CardSkeleton() {
   );
 }
 
-export function CustomerSkeleton() {
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">

@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { Shield, Zap, Globe, CreditCard, BarChart3, Smartphone, Lock, Users, TrendingUp, Database, Cpu, Network } from "lucide-react";
 
-export function BenefitsSection() {
+
   const benefits = [
     {
       icon: Shield,

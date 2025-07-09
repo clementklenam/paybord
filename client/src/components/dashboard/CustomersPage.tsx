@@ -115,7 +115,7 @@ const customerStats = {
   retentionRate: 93.5
 };
 
-export function CustomersPage() {
+
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortField, setSortField] = useState("lastActive");

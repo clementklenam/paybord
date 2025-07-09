@@ -6,7 +6,7 @@ interface OtpVerificationProps {
   onSuccess?: () => void;
 }
 
-export function OtpVerification({ type, onSuccess }: OtpVerificationProps) {
+ type, onSuccess }: OtpVerificationProps) {
   const [otp, setOtp] = useState('');
   const { verifyOtp, resendOtp, loading, clearError } = useAuth();
 

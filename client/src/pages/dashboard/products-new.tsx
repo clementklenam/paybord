@@ -506,7 +506,7 @@ export default function ProductsPage() {
       console.log('Validation passed, proceeding with product creation');
       
       // Use the current business ID
-      let productData = { ...newProduct };
+      const productData = { ...newProduct };
       productData.businessId = currentBusinessId;
       
       console.log('Using current business ID:', currentBusinessId);

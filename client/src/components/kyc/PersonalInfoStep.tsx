@@ -17,7 +17,7 @@ interface PersonalInfoStepProps {
   setDate: (date: Date | undefined) => void;
 }
 
-export function PersonalInfoStep({ form, onNext, date, setDate }: PersonalInfoStepProps) {
+ form, onNext, date, setDate }: PersonalInfoStepProps) {
   const [open, setOpen] = useState(false);
   const { register, formState: { errors }, setValue } = form;
 

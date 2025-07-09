@@ -6,7 +6,7 @@ interface KycFormProps {
   onSuccess?: () => void;
 }
 
-export function KycForm({ onSuccess }: KycFormProps) {
+ onSuccess }: KycFormProps) {
   const { submitKyc, loading } = useAuth();
   const [formData, setFormData] = useState<Partial<KycData>>({
     idType: 'national_id',

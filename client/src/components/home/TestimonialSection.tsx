@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function TestimonialSection() {
+
   return (
     <section className="py-24 bg-[var(--background)]">
       <Container>

@@ -19,7 +19,7 @@ const demoPlans = [
   { id: "plan_enterprise", name: "Enterprise", price: 999, currency: "USD", billingCycle: "monthly" },
 ];
 
-export function CreateSubscriptionWizard({ open, onOpenChange, onComplete }: { open: boolean; onOpenChange: (open: boolean) => void; onComplete: (data: any) => void; }) {
+ open, onOpenChange, onComplete }: { open: boolean; onOpenChange: (open: boolean) => void; onComplete: (data: any) => void; }) {
   const [step, setStep] = useState(0);
   const [selectedCustomer, setSelectedCustomer] = useState<string>("");
   const [selectedPlan, setSelectedPlan] = useState<string>("");
