@@ -197,7 +197,6 @@ export default function PaymentLinksPage() {
                           onChange={(e) => setNewLinkTitle(e.target.value)}
                         />
                       </div>
-                      
                       <div className="space-y-2">
                         <Label htmlFor="description">Description (optional)</Label>
                         <Textarea 
@@ -208,7 +207,6 @@ export default function PaymentLinksPage() {
                           className="min-h-[80px]"
                         />
                       </div>
-                      
                       <div className="space-y-2">
                         <div className="flex justify-between items-center">
                           <Label htmlFor="product-select" className="text-sm font-medium">Product</Label>
@@ -224,116 +222,108 @@ export default function PaymentLinksPage() {
                             Clear
                           </Button>
                         </div>
-                          <Select
-                            value={selectedProduct !== null ? selectedProduct.toString() : ""}
-                            onValueChange={(value) => setSelectedProduct(parseInt(value))}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a product" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {products.map((product, index) => (
-                                <SelectItem key={index} value={index.toString()}>
-                                  {product.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          
-                          {/* Product Image Upload */}
-                          <div className="space-y-2">
-                            <Label className="text-sm font-medium">Product Image</Label>
-                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                              {uploadedImage ? (
-                                <div className="space-y-2">
-                                  <img 
-                                    src={uploadedImage} 
-                                    alt="Uploaded product" 
-                                    className="max-h-40 mx-auto rounded-md"
-                                  />
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm"
-                                    onClick={() => setUploadedImage(null)}
-                                  >
-                                    Remove Image
-                                  </Button>
+                        <Select
+                          value={selectedProduct !== null ? selectedProduct.toString() : ""}
+                          onValueChange={(value) => setSelectedProduct(parseInt(value))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a product" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {products.map((product, index) => (
+                              <SelectItem key={index} value={index.toString()}>
+                                {product.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {/* Product Image Upload */}
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Product Image</Label>
+                          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                            {uploadedImage ? (
+                              <div className="space-y-2">
+                                <img 
+                                  src={uploadedImage} 
+                                  alt="Uploaded product" 
+                                  className="max-h-40 mx-auto rounded-md"
+                                />
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => setUploadedImage(null)}
+                                >
+                                  Remove Image
+                                </Button>
+                              </div>
+                            ) : (
+                              <div className="space-y-2">
+                                <div className="text-gray-500 text-sm">
+                                  Drag & drop an image or click to browse
                                 </div>
-                              ) : (
-                                <div className="space-y-2">
-                                  <div className="text-gray-500 text-sm">
-                                    Drag & drop an image or click to browse
-                                  </div>
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm"
-                                    onClick={() => {
-                                      // In a real app, this would open a file picker
-                                      // For demo purposes, we'll use a placeholder image
-                                      setUploadedImage("https://source.unsplash.com/random/800x600?product");
-                                    }}
-                                  >
-                                    Upload Image
-                                  </Button>
-                                </div>
-                              )}
-                            </div>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => {
+                                    setUploadedImage("https://source.unsplash.com/random/800x600?product");
+                                  }}
+                                >
+                                  Upload Image
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="amount">Amount*</Label>
-                          <Input 
-                            id="amount" 
-                            type="number" 
-                            placeholder="0.00" 
-                            value={newLinkAmount}
-                            onChange={(e) => setNewLinkAmount(e.target.value)}
-                            disabled={selectedProduct !== null}
-                          />
-                        </div>
                       </div>
-                      
                       <div className="space-y-2">
-                        <Label htmlFor="email">Customer Email (optional)</Label>
+                        <Label htmlFor="amount">Amount*</Label>
                         <Input 
-                          id="email" 
-                          type="email" 
-                          placeholder="customer@example.com" 
-                          value={newLinkEmail}
-                          onChange={(e) => setNewLinkEmail(e.target.value)}
+                          id="amount" 
+                          type="number" 
+                          placeholder="0.00" 
+                          value={newLinkAmount}
+                          onChange={(e) => setNewLinkAmount(e.target.value)}
+                          disabled={selectedProduct !== null}
                         />
                       </div>
-                      
-                      <div className="space-y-2">
-                        <Label>Select a Product (optional)</Label>
-                        <div className="grid grid-cols-1 gap-2">
-                          {products.map((product) => (
-                            <div 
-                              key={product.id}
-                              className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                                selectedProduct === product.id - 1 
-                                  ? "border-[#1e8449] bg-[#1e8449]/5" 
-                                  : "border-gray-200 hover:border-[#1e8449]/50"
-                              }`}
-                              onClick={() => handleProductSelect(product.id - 1)}
-                            >
-                              <div className="flex justify-between items-center">
-                                <div>
-                                  <div className="font-medium">{product.name}</div>
-                                  <div className="text-sm text-gray-500">{product.description}</div>
-                                </div>
-                                <div className="font-semibold">
-                                  {formatCurrency(product.price, product.currency)}
-                                </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Customer Email (optional)</Label>
+                      <Input 
+                        id="email" 
+                        type="email" 
+                        placeholder="customer@example.com" 
+                        value={newLinkEmail}
+                        onChange={(e) => setNewLinkEmail(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Select a Product (optional)</Label>
+                      <div className="grid grid-cols-1 gap-2">
+                        {products.map((product) => (
+                          <div 
+                            key={product.id}
+                            className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                              selectedProduct === product.id - 1 
+                                ? "border-[#1e8449] bg-[#1e8449]/5" 
+                                : "border-gray-200 hover:border-[#1e8449]/50"
+                            }`}
+                            onClick={() => handleProductSelect(product.id - 1)}
+                          >
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <div className="font-medium">{product.name}</div>
+                                <div className="text-sm text-gray-500">{product.description}</div>
+                              </div>
+                              <div className="font-semibold">
+                                {formatCurrency(product.price, product.currency)}
                               </div>
                             </div>
-                          ))}
-                        </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
-                  
                   <div className="space-y-4 md:col-span-3">
                     <div className="flex items-center justify-between mb-2">
                       <Label className="text-base font-medium">Payment Preview</Label>
@@ -354,7 +344,6 @@ export default function PaymentLinksPage() {
                         </button>
                       </div>
                     </div>
-                    
                     {/* Payment Preview Container */}
                     <div className={previewDevice === "mobile" ? "max-w-md mx-auto" : "w-full max-w-4xl mx-auto"}>
                       {/* Main Payment Card */}
@@ -369,14 +358,12 @@ export default function PaymentLinksPage() {
                           </div>
                           <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full">TEST MODE</span>
                         </div>
-
                         {/* Main Content */}
                         <div className={`${previewDevice === "mobile" ? "flex flex-col" : "grid grid-cols-5 gap-0"}`}>
                           {/* Left Column - Product Info */}
                           <div className={`${previewDevice === "mobile" ? "" : "col-span-2 border-r border-gray-200"} p-6`}>
                             {/* Payment Title */}
                             <h3 className="text-xl font-medium text-gray-900 mb-4">{newLinkTitle || "Payment"}</h3>
-                            
                             {/* Product Display */}
                             {selectedProduct !== null ? (
                               <div className="space-y-4">
@@ -410,7 +397,6 @@ export default function PaymentLinksPage() {
                               </div>
                             )}
                           </div>
-
                           {/* Right Column - Payment Methods */}
                           <div className={`${previewDevice === "mobile" ? "border-t border-gray-200" : "col-span-3"} p-6 bg-gray-50`}>
                             {/* Email Field */}
@@ -423,12 +409,10 @@ export default function PaymentLinksPage() {
                                 className="bg-white border-gray-300" 
                               />
                             </div>
-                            
                             {/* Payment Method Title */}
                             <div className="mb-4">
                               <Label className="text-sm font-medium text-gray-700">Payment method</Label>
                             </div>
-                            
                             {/* Apple Pay */}
                             <div className="mb-4">
                               <Button className="w-full bg-black hover:bg-gray-900 text-white py-3 flex items-center justify-center rounded-md">
@@ -439,9 +423,7 @@ export default function PaymentLinksPage() {
                                 <span>Pay</span>
                               </Button>
                             </div>
-                            
                             <div className="text-center text-sm text-gray-500 my-4">Or</div>
-                            
                             {/* Card Option */}
                             <div className="mb-2">
                               <div className="border border-gray-200 rounded-md overflow-hidden bg-white">
@@ -477,7 +459,6 @@ export default function PaymentLinksPage() {
                                     </div>
                                   </label>
                                 </div>
-                                
                                 {/* Card Form */}
                                 {showCardForm && (
                                   <div className="p-3 border-t border-gray-200 bg-gray-50">
@@ -513,7 +494,6 @@ export default function PaymentLinksPage() {
                                 )}
                               </div>
                             </div>
-                            
                             {/* Mobile Money Option */}
                             <div className="mb-6">
                               <div className="border border-gray-200 rounded-md overflow-hidden bg-white">
@@ -541,7 +521,6 @@ export default function PaymentLinksPage() {
                                     <span className="text-sm font-medium text-gray-900">Mobile Money</span>
                                   </label>
                                 </div>
-                                
                                 {/* Mobile Money Form */}
                                 {showMobileForm && (
                                   <div className="p-3 border-t border-gray-200 bg-gray-50">
@@ -572,14 +551,12 @@ export default function PaymentLinksPage() {
                                 )}
                               </div>
                             </div>
-                            
                             {/* Pay Button */}
                             <Button className="w-full bg-blue-600 hover:bg-blue-700 py-3 text-base font-medium rounded-md mb-4">
                               Pay
                             </Button>
                           </div>
                         </div>
-                        
                         {/* Footer */}
                         <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">
                           <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
