@@ -1,46 +1,46 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link as WouterLink } from "wouter";
 
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "Features", href: "#features" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "API Docs", href: "#api" },
-  { name: "Contact", href: "#contact" }
-];
+function Navbar() {
+  const navigation = [
+    { name: "Home", href: "#" },
+    { name: "Features", href: "#features" },
+    { name: "Pricing", href: "#pricing" },
+    { name: "API Docs", href: "#api" },
+    { name: "Contact", href: "#contact" }
+  ];
 
-const solutions = [
-  {
-    name: "E-commerce",
-    description: "Complete online store solution",
-    href: "#",
-    icon: "🛒"
-  },
-  {
-    name: "Payment Links",
-    description: "Generate viral payment links",
-    href: "#",
-    icon: "🔗"
-  },
-  {
-    name: "Global Payments",
-    description: "Accept payments worldwide",
-    href: "#",
-    icon: "🌍"
-  },
-  {
-    name: "Analytics",
-    description: "Advanced business insights",
-    href: "#",
-    icon: "📊"
-  }
-];
+  const solutions = [
+    {
+      name: "E-commerce",
+      description: "Complete online store solution",
+      href: "#",
+      icon: "🛒"
+    },
+    {
+      name: "Payment Links",
+      description: "Generate viral payment links",
+      href: "#",
+      icon: "🔗"
+    },
+    {
+      name: "Global Payments",
+      description: "Accept payments worldwide",
+      href: "#",
+      icon: "🌍"
+    },
+    {
+      name: "Analytics",
+      description: "Advanced business insights",
+      href: "#",
+      icon: "📊"
+    }
+  ];
 
-export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -186,3 +186,5 @@ export function Navbar() {
     </header>
   );
 }
+
+export default Navbar;

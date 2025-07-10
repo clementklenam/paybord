@@ -1,8 +1,9 @@
+import React from 'react';
 import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { Shield, Zap, Globe, CreditCard, BarChart3, Smartphone, Lock, Users, TrendingUp, Database, Cpu, Network } from "lucide-react";
 
-
+function BenefitsSection() {
   const benefits = [
     {
       icon: Shield,
@@ -43,7 +44,6 @@ import { Shield, Zap, Globe, CreditCard, BarChart3, Smartphone, Lock, Users, Tre
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl"></div>
       </div>
-
       <Container>
         <div className="relative z-10">
           <motion.div
@@ -67,7 +67,6 @@ import { Shield, Zap, Globe, CreditCard, BarChart3, Smartphone, Lock, Users, Tre
               Join thousands of businesses that trust Paybord to process billions in payments with unmatched reliability and security.
             </p>
           </motion.div>
-
           <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {benefits.map((benefit, index) => (
               <motion.div
@@ -90,7 +89,6 @@ import { Shield, Zap, Globe, CreditCard, BarChart3, Smartphone, Lock, Users, Tre
               </motion.div>
             ))}
           </div>
-
           {/* Stats Section */}
           <motion.div
             className="mt-20 grid grid-cols-1 md:grid-cols-4 gap-8 pt-16 border-t border-white/10"
@@ -116,7 +114,6 @@ import { Shield, Zap, Globe, CreditCard, BarChart3, Smartphone, Lock, Users, Tre
               <div className="text-gray-300">Currencies Supported</div>
             </div>
           </motion.div>
-
           {/* Enterprise Features */}
           <motion.div
             className="mt-20 text-center"
@@ -147,3 +144,5 @@ import { Shield, Zap, Globe, CreditCard, BarChart3, Smartphone, Lock, Users, Tre
     </section>
   );
 }
+
+export default BenefitsSection;
