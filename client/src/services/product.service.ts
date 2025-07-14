@@ -390,7 +390,10 @@ export class ProductService {
                 } else {
                     console.error('PRODUCT FETCH: Error setting up request:', error.message);
                 }
-            } else {
+            } else if (error && typeof error === 'object' && 'request' in error) {
+                console.error('No response received from API');
+                console.error('Request details:', (error as any).request);
+            } else if (error instanceof Error) {
                 console.error('PRODUCT FETCH: Error setting up request:', error.message);
             }
 
@@ -558,11 +561,11 @@ export class ProductService {
                     console.error('API error response data:', error.response.data);
                 } else if (error.request) {
                     console.error('No response received from API');
-                    console.error('Request details:', error.request);
+                    console.error('Request details:', (error as any).request);
                 } else {
                     console.error('Error setting up request:', error.message);
                 }
-            } else {
+            } else if (error instanceof Error) {
                 console.error('Error setting up request:', error.message);
             }
 

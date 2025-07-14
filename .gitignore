@@ -57,7 +57,8 @@ vite.config.ts.*
 *.tar.gz
 
 # MongoDB data (if any)
-data/
+/data/
+!/client/src/data/
 
 # Uploads (if any)
 uploads/

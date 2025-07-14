@@ -1,8 +1,6 @@
 import api from './api';
 import {AuthResponse, SignupData, LoginData, OtpVerificationData, KycData} from '../types/auth';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
 export default class AuthService {
   private setToken(token: string) {
     localStorage.setItem('token', token);

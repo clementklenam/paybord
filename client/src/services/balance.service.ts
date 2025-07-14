@@ -26,7 +26,12 @@ class BalanceService {
       return response.data;
     } catch (error: unknown) {
       console.error('Error fetching balance and payout:', error);
-      console.error('Error details:', error.response?.data || 'No response data');
+      if (error && typeof error === 'object' && 'response' in error) {
+        console.error('Error details:', (error as any).response?.data || 'No response data');
+      }
+      if (error instanceof Error) {
+        // You can access error.message or other Error properties here
+      }
       throw error;
     }
   }
