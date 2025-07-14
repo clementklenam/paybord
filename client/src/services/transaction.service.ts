@@ -64,7 +64,7 @@ export default class TransactionService {
             }
         });
 
-        const response = await axios.get(`${API_URL}/payments`, { 
+        const response = await axios.get<TransactionListResponse>(`${API_URL}/payments`, { 
             params,
             headers: {
                 ...getAuthHeader(),
@@ -76,7 +76,7 @@ export default class TransactionService {
 
     async getTransactionById(id: string): Promise<Transaction> {
         // Fetch real data from the API
-        const response = await axios.get(`${API_URL}/payments/intent/${id}`, {
+        const response = await axios.get<Transaction>(`${API_URL}/payments/intent/${id}`, {
             headers: {
                 ...getAuthHeader(),
                 ...(API_KEY ? { 'x-api-key': API_KEY } : {})
@@ -87,7 +87,7 @@ export default class TransactionService {
 
     async refundTransaction(id: string, amount?: number): Promise<Transaction> {
         const data = amount ? { amount } : {};
-        const response = await axios.post(`${API_URL}/payments/intent/${id}/refund`, data, {
+        const response = await axios.post<Transaction>(`${API_URL}/payments/intent/${id}/refund`, data, {
             headers: {
                 ...(API_KEY ? { 'x-api-key': API_KEY } : {})
             }
@@ -102,7 +102,7 @@ export default class TransactionService {
         description?: string;
         metadata?: Record<string, string>;
     }): Promise<Transaction> {
-        const response = await axios.post(`${API_URL}/payments/intent`, data, {
+        const response = await axios.post<Transaction>(`${API_URL}/payments/intent`, data, {
             headers: {
                 ...(API_KEY ? { 'x-api-key': API_KEY } : {})
             }
@@ -111,7 +111,7 @@ export default class TransactionService {
     }
 
     async confirmPaymentIntent(id: string, paymentMethod: string): Promise<Transaction> {
-        const response = await axios.post(`${API_URL}/payments/intent/${id}/confirm`, { paymentMethod }, {
+        const response = await axios.post<Transaction>(`${API_URL}/payments/intent/${id}/confirm`, { paymentMethod }, {
             headers: {
                 ...(API_KEY ? { 'x-api-key': API_KEY } : {})
             }
@@ -120,7 +120,7 @@ export default class TransactionService {
     }
 
     async cancelPaymentIntent(id: string): Promise<Transaction> {
-        const response = await axios.post(`${API_URL}/payments/intent/${id}/cancel`, {}, {
+        const response = await axios.post<Transaction>(`${API_URL}/payments/intent/${id}/cancel`, {}, {
             headers: {
                 ...(API_KEY ? { 'x-api-key': API_KEY } : {})
             }
@@ -141,7 +141,7 @@ export default class TransactionService {
         paymentMethod?: string;
         paymentType?: string;
     }): Promise<Transaction> {
-        const response = await axios.post(`${API_URL}/payments`, data, {
+        const response = await axios.post<Transaction>(`${API_URL}/payments`, data, {
             headers: {
                 ...getAuthHeader(),
                 ...(API_KEY ? { 'x-api-key': API_KEY } : {})

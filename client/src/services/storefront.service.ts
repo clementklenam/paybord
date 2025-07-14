@@ -423,8 +423,8 @@ export class StorefrontService {
             console.log('API Response:', response.data);
 
             // Handle the API response structure
-            const apiData = response.data;
-            let storefronts = [];
+            const apiData = response.data as ApiResponse<Storefront[]>;
+            let storefronts: Storefront[] = [];
             let total = 0;
             let pages = 1;
             let page = 1;
@@ -433,17 +433,17 @@ export class StorefrontService {
             if (apiData.success && apiData.data) {
                 // API returned success with data
                 storefronts = apiData.data;
-                total = apiData.total || 0;
-                pages = apiData.pages || 1;
-                page = apiData.page || 1;
-                limit = apiData.limit || 6;
+                total = (apiData as any).total || 0;
+                pages = (apiData as any).pages || 1;
+                page = (apiData as any).page || 1;
+                limit = (apiData as any).limit || 6;
             } else if (apiData.data) {
                 // API returned data directly (without success wrapper)
                 storefronts = apiData.data;
-                total = apiData.total || 0;
-                pages = apiData.pages || 1;
-                page = apiData.page || 1;
-                limit = apiData.limit || 6;
+                total = (apiData as any).total || 0;
+                pages = (apiData as any).pages || 1;
+                page = (apiData as any).page || 1;
+                limit = (apiData as any).limit || 6;
             } else {
                 // Fallback to empty data
                 storefronts = [];
@@ -528,7 +528,7 @@ export class StorefrontService {
         
         // Use retry utility for rate limiting
         const storefront = await retryWithBackoff(async () => {
-            const response = await axios.get(`${API_URL}/storefronts/${id}`, {
+            const response = await axios.get<ApiResponse<Storefront>>(`${API_URL}/storefronts/${id}`, {
                 headers: getAuthHeader(),
                 validateStatus: (status) => status < 500, // Don't throw on 4xx errors
                 timeout: 10000 // 10 second timeout
@@ -542,11 +542,8 @@ export class StorefrontService {
                 throw new Error(response.data?.message || 'Failed to fetch storefront');
             }
             
-            let storefront = response.data;
+            let storefront = response.data.data;
             if (storefront && typeof storefront === 'object') {
-                if (storefront.data) {
-                    storefront = storefront.data;
-                }
                 if (!storefront.id && storefront._id) {
                     storefront.id = storefront._id;
                 } else if (!storefront.id) {
@@ -651,7 +648,7 @@ export class StorefrontService {
     async addProductsToStorefront(id: string, productIds: string[]): Promise<Storefront> {
         try {
             console.log(`Adding ${productIds.length} products to storefront ${id}`);
-            const response = await axios.post(
+            const response = await axios.post<ApiResponse<Storefront>>(
                 `${API_URL}/storefronts/${id}/products`,
                 { productIds },
                 {
@@ -662,12 +659,7 @@ export class StorefrontService {
 
             console.log('Products added to storefront:', response.data);
 
-            // Handle different response formats
-            let result = response.data;
-            if (result.data) {
-                result = result.data;
-            }
-
+            let result = response.data.data;
             // Ensure the storefront has an id field
             if (!result.id && result._id) {
                 result.id = result._id;
@@ -687,11 +679,14 @@ export class StorefrontService {
      */
     async removeProductsFromStorefront(id: string, productIds: string[]): Promise<Storefront> {
         try {
-            const response = await axios.delete(`${API_URL}/storefronts/${id}/products`, {
-                headers: getAuthHeader(),
-                data: { productIds }
-            });
-            return response.data;
+            const response = await axios.delete<ApiResponse<Storefront>>(
+                `${API_URL}/storefronts/${id}/products`,
+                {
+                    headers: getAuthHeader(),
+                    data: { productIds }
+                } as any
+            );
+            return response.data.data;
         } catch (error) {
             console.error(`Error removing products from storefront with ID ${id}:`, error);
             throw error;
@@ -703,10 +698,10 @@ export class StorefrontService {
      */
     async updateStorefrontStatus(id: string, status: 'active' | 'inactive' | 'draft'): Promise<Storefront> {
         try {
-            const response = await axios.patch(`${API_URL}/storefronts/${id}/status`, { status }, {
+            const response = await axios.patch<ApiResponse<Storefront>>(`${API_URL}/storefronts/${id}/status`, { status }, {
                 headers: getAuthHeader()
             });
-            return response.data;
+            return response.data.data;
         } catch (error) {
             console.error(`Error updating status of storefront with ID ${id}:`, error);
             throw error;

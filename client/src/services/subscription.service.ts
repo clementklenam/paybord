@@ -21,7 +21,7 @@ export interface Subscription {
 
 export class SubscriptionService {
   async createSubscription(data: Partial<Subscription>): Promise<Subscription> {
-    const response = await axios.post(`${API_URL}/subscriptions`, data, {
+    const response = await axios.post<Subscription>(`${API_URL}/subscriptions`, data, {
       headers: getAuthHeader()
     });
     return response.data;
@@ -29,7 +29,7 @@ export class SubscriptionService {
 
   async listSubscriptions(customer?: string): Promise<Subscription[]> {
     const params = customer ? { customer } : undefined;
-    const response = await axios.get(`${API_URL}/subscriptions`, {
+    const response = await axios.get<Subscription[]>(`${API_URL}/subscriptions`, {
       headers: getAuthHeader(),
       params
     });
@@ -37,7 +37,7 @@ export class SubscriptionService {
   }
 
   async getSubscription(id: string): Promise<Subscription> {
-    const response = await axios.get(`${API_URL}/subscriptions/${id}`, {
+    const response = await axios.get<Subscription>(`${API_URL}/subscriptions/${id}`, {
       headers: getAuthHeader()
     });
     return response.data;
