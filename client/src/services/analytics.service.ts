@@ -282,7 +282,7 @@ export async function getPaymentAnalytics(timeRange: string = 'last7days'): Prom
     console.log('Auth header:', authHeader);
     console.log('Token exists:', !!localStorage.getItem('token'));
     
-    const response = await axios.get(`${API_URL}/analytics/payment-analytics?timeRange=${timeRange}`, {
+    const response = await axios.get<PaymentAnalyticsResponse>(`${API_URL}/analytics/payment-analytics?timeRange=${timeRange}`, {
       headers: {
         ...authHeader,
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -310,7 +310,7 @@ export async function getProductAnalytics(timeRange: string = 'last30days'): Pro
     const authHeader = getAuthHeader();
     console.log('Fetching product analytics for timeRange:', timeRange);
     
-    const response = await axios.get(`${API_URL}/analytics/product-analytics?timeRange=${timeRange}`, {
+    const response = await axios.get<ProductAnalyticsResponse>(`${API_URL}/analytics/product-analytics?timeRange=${timeRange}`, {
       headers: {
         ...authHeader,
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -338,7 +338,7 @@ export async function getCustomerAnalytics(timeRange: string = 'last30days'): Pr
     const authHeader = getAuthHeader();
     console.log('Fetching customer analytics for timeRange:', timeRange);
     
-    const response = await axios.get(`${API_URL}/analytics/customer-analytics?timeRange=${timeRange}`, {
+    const response = await axios.get<CustomerAnalyticsResponse>(`${API_URL}/analytics/customer-analytics?timeRange=${timeRange}`, {
       headers: {
         ...authHeader,
         'Cache-Control': 'no-cache, no-store, must-revalidate',

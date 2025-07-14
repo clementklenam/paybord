@@ -18,12 +18,13 @@ export default class AuthService {
       username: data.username
     });
 
-    if (response.data.token) {
-      this.setToken(response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data));
+    const responseData = response.data as AuthResponse;
+    if (responseData.token) {
+      this.setToken(responseData.token);
+      localStorage.setItem('user', JSON.stringify(responseData));
     }
 
-    return response.data;
+    return responseData;
   }
 
   async login(data: LoginData): Promise<AuthResponse> {
@@ -32,22 +33,23 @@ export default class AuthService {
       password: data.password
     });
 
-    if (response.data.token) {
-      this.setToken(response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data));
+    const responseData = response.data as AuthResponse;
+    if (responseData.token) {
+      this.setToken(responseData.token);
+      localStorage.setItem('user', JSON.stringify(responseData));
     }
 
-    return response.data;
+    return responseData;
   }
 
   async verifyOtp(data: OtpVerificationData): Promise<{ success: boolean }> {
     const response = await api.post('/auth/verify-otp', data);
-    return response.data;
+    return response.data as { success: boolean };
   }
 
   async resendOtp(type: 'email' | 'phone'): Promise<{ success: boolean }> {
     const response = await api.post('/auth/resend-otp', { type });
-    return response.data;
+    return response.data as { success: boolean };
   }
 
   async submitKyc(data: KycData): Promise<{ success: boolean; message: string }> {
@@ -65,17 +67,17 @@ export default class AuthService {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data;
+    return response.data as { success: boolean; message: string };
   }
 
   async checkKycStatus(): Promise<{ status: string; message: string }> {
     const response = await api.get('/auth/kyc/status');
-    return response.data;
+    return response.data as { status: string; message: string };
   }
 
   async getUserProfile(): Promise<AuthResponse> {
     const response = await api.get('/auth/profile');
-    return response.data;
+    return response.data as AuthResponse;
   }
 
   logout() {

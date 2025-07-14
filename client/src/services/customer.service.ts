@@ -87,11 +87,11 @@ export default class CustomerService {
             params,
             headers: getAuthHeader()
         });
-        return response.data;
+        return response.data as CustomerListResponse;
     }
 
     async getCustomerById(id: string): Promise<Customer> {
-        const response = await axios.get(`${API_URL}/customers/${id}`, {
+        const response = await axios.get<Customer>(`${API_URL}/customers/${id}`, {
             headers: getAuthHeader()
         });
         return response.data;
@@ -106,7 +106,7 @@ export default class CustomerService {
         billingAddress?: Address;
         shippingAddress?: Address;
     }): Promise<Customer> {
-        const response = await axios.post(`${API_URL}/customers`, data, {
+        const response = await axios.post<Customer>(`${API_URL}/customers`, data, {
             headers: getAuthHeader()
         });
         return response.data;
@@ -121,14 +121,14 @@ export default class CustomerService {
         billingAddress?: Address;
         shippingAddress?: Address;
     }): Promise<Customer> {
-        const response = await axios.put(`${API_URL}/customers/${id}`, data, {
+        const response = await axios.put<Customer>(`${API_URL}/customers/${id}`, data, {
             headers: getAuthHeader()
         });
         return response.data;
     }
 
     async deleteCustomer(id: string): Promise<{ message: string }> {
-        const response = await axios.delete(`${API_URL}/customers/${id}`, {
+        const response = await axios.delete<{ message: string }>(`${API_URL}/customers/${id}`, {
             headers: getAuthHeader()
         });
         return response.data;
@@ -139,14 +139,14 @@ export default class CustomerService {
         details: any;
         isDefault?: boolean;
     }): Promise<{ paymentMethod: PaymentMethod; customer: Customer }> {
-        const response = await axios.post(`${API_URL}/customers/${customerId}/payment-methods`, data, {
+        const response = await axios.post<{ paymentMethod: PaymentMethod; customer: Customer }>(`${API_URL}/customers/${customerId}/payment-methods`, data, {
             headers: getAuthHeader()
         });
         return response.data;
     }
     
     async getCustomersByBusiness(businessId: string): Promise<Customer[]> {
-        const response = await axios.get(`${API_URL}/customers/business/${businessId}`, {
+        const response = await axios.get<{ customers: Customer[] }>(`${API_URL}/customers/business/${businessId}`, {
             headers: getAuthHeader()
         });
         return response.data.customers;

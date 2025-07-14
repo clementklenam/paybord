@@ -331,7 +331,7 @@ export class ProductService {
 
             try {
                 // Make API request with axios
-                const response = await axios.get(`${API_URL}/products?${queryParams.toString()}`, {
+                const response = await axios.get<ProductListResponse>(`${API_URL}/products?${queryParams.toString()}`, {
                     headers: authHeaders
                 });
 
@@ -368,7 +368,7 @@ export class ProductService {
                     throw new Error(`API error: ${fetchResponse.status} - ${errorText}`);
                 }
 
-                const responseData = await fetchResponse.json();
+                const responseData = await fetchResponse.json() as ProductListResponse;
                 console.log('Fetch response data:', JSON.stringify(responseData, null, 2));
 
                 return responseData;
@@ -417,9 +417,9 @@ export class ProductService {
                             const bValue = b[sortBy as keyof Product];
 
                             if (sortOrder === 'asc') {
-                                return aValue > bValue ? 1 : -1;
+                                return (aValue ?? '') > (bValue ?? '') ? 1 : -1;
                             } else {
-                                return aValue < bValue ? 1 : -1;
+                                return (aValue ?? '') < (bValue ?? '') ? 1 : -1;
                             }
                         });
 
@@ -479,7 +479,7 @@ export class ProductService {
 
         // Otherwise, try to fetch from the API
         try {
-            const response = await axios.get(`${API_URL}/products/${id}`, {
+            const response = await axios.get<Product>(`${API_URL}/products/${id}`, {
                 headers: getAuthHeader()
             });
             return response.data;
@@ -527,61 +527,18 @@ export class ProductService {
 
             // Try to create the product via API
             console.log('Sending API request...');
+            const response = await axios.post<Product>(`${API_URL}/products`, productData, {
+                headers: authHeaders
+            });
 
-            // First try with axios for better error handling
-            try {
-                const response = await axios.post('products', productData, {
-                    headers: authHeaders
-                });
+            console.log('===== PRODUCT CREATION: API RESPONSE =====');
+            console.log('Status:', response.status);
+            console.log('Data:', JSON.stringify(response.data, null, 2));
 
-                console.log('API response status:', response.status);
-                console.log('API response data:', JSON.stringify(response.data, null, 2));
+            const createdProduct = response.data;
+            saveUserProduct(createdProduct);
 
-                // Save the API-created product to localStorage as well
-                const createdProduct = response.data;
-                saveUserProduct(createdProduct);
-
-                return createdProduct;
-            } catch (axiosError: any) {
-                console.error('Axios request failed, trying fetch as fallback');
-                console.error('Axios error:', axiosError);
-
-                // If axios fails, try with fetch as a fallback
-                const fullUrl = `${API_URL}/products`;
-
-                // Create headers with consistent typing
-                const headers: Record<string, string> = {
-                    'Content-Type': 'application/json'
-                };
-
-                // Only add Authorization if token exists
-                if (token) {
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
-
-                const fetchResponse = await fetch(fullUrl, {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify(productData)
-                });
-
-                console.log('Fetch response status:', fetchResponse.status);
-
-                if (!fetchResponse.ok) {
-                    const errorText = await fetchResponse.text();
-                    console.error('API error response:', errorText);
-                    throw new Error(`API error: ${fetchResponse.status} - ${errorText}`);
-                }
-
-                const responseData = await fetchResponse.json();
-                console.log('API response data:', JSON.stringify(responseData, null, 2));
-
-                // Save the API-created product to localStorage as well
-                const createdProduct = responseData;
-                saveUserProduct(createdProduct);
-
-                return createdProduct;
-            }
+            return createdProduct;
         } catch (error: any) {
             console.error('===== PRODUCT CREATION ERROR =====');
             console.error('Error object:', error);
@@ -629,7 +586,7 @@ export class ProductService {
      */
     async updateProduct(id: string, data: Partial<ProductCreateData>): Promise<Product> {
         try {
-            const response = await axios.put(`${API_URL}/products/${id}`, data, {
+            const response = await axios.put<Product>(`${API_URL}/products/${id}`, data, {
                 headers: getAuthHeader()
             });
 
@@ -702,7 +659,7 @@ export class ProductService {
      */
     async updateProductStatus(id: string, active: boolean): Promise<Product> {
         try {
-            const response = await axios.patch(`${API_URL}/products/${id}/status`, { active }, {
+            const response = await axios.patch<Product>(`${API_URL}/products/${id}/status`, { active }, {
                 headers: getAuthHeader()
             });
 
@@ -747,7 +704,7 @@ export class ProductService {
      */
     async getProductCategories(): Promise<string[]> {
         try {
-            const response = await axios.get(`${API_URL}/products/categories`, {
+            const response = await axios.get<string[]>(`${API_URL}/products/categories`, {
                 headers: getAuthHeader()
             });
             return response.data;

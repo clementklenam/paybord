@@ -53,7 +53,7 @@ class PaymentLinkService {
         }
       );
 
-      return response.data.data;
+      return (response.data as any).data as PaymentLink;
     } catch (error: any) {
       console.error('Error creating payment link:', error);
       throw error.response?.data || error.message || 'Error creating payment link';
@@ -89,7 +89,15 @@ class PaymentLinkService {
         },
       });
 
-      return response.data;
+      return (response.data as any) as {
+        data: PaymentLink[];
+        pagination: {
+          page: number;
+          limit: number;
+          total: number;
+          totalPages: number;
+        };
+      };
     } catch (error: any) {
       console.error('Error fetching payment links:', error);
       throw error.response?.data || error.message || 'Error fetching payment links';
@@ -112,7 +120,7 @@ class PaymentLinkService {
         },
       });
 
-      return response.data.data;
+      return (response.data as any).data as PaymentLink;
     } catch (error: any) {
       console.error('Error fetching payment link:', error);
       throw error.response?.data || error.message || 'Error fetching payment link';
@@ -140,7 +148,7 @@ class PaymentLinkService {
         }
       );
 
-      return response.data.data;
+      return (response.data as any).data as PaymentLink;
     } catch (error: any) {
       console.error('Error updating payment link:', error);
       throw error.response?.data || error.message || 'Error updating payment link';
@@ -188,7 +196,7 @@ class PaymentLinkService {
       }
       
       const response = await axios.get(`${API_URL}/payment-links/public/${id}`);
-      return response.data.data;
+      return (response.data as any).data as PaymentLink;
     } catch (error: any) {
       console.error('Error fetching public payment link:', error);
       throw error.response?.data || error.message || 'Error fetching public payment link';

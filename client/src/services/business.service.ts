@@ -21,7 +21,7 @@ export default class BusinessService {
         const response = await api.post('/business/register', data);
         // Update cache after successful registration using the public method
         BusinessService.updateBusinessCache(true);
-        return response.data;
+        return response.data as { success: boolean; business: Business };
     }
 
     /**
@@ -32,7 +32,7 @@ export default class BusinessService {
         await new Promise(resolve => setTimeout(resolve, 100));
         
         const response = await api.get('/business/profile');
-        return response.data;
+        return response.data as Business;
     }
 
     /**
@@ -41,7 +41,7 @@ export default class BusinessService {
      */
     async updateBusinessProfile(data: Partial<BusinessRegistrationData>): Promise<{ success: boolean; business: Business }> {
         const response = await api.put('/business/profile', data);
-        return response.data;
+        return response.data as { success: boolean; business: Business };
     }
 
     /**
@@ -82,7 +82,7 @@ export default class BusinessService {
             }
             
             const data = await response.json();
-            return data;
+            return data as { success: boolean; document: VerificationDocument };
         } catch (error) {
             console.error('Error uploading document:', error);
             throw error;
@@ -97,7 +97,10 @@ export default class BusinessService {
         documents: VerificationDocument[]
     }> {
         const response = await api.get('/business/verification-status');
-        return response.data;
+        return response.data as {
+            verificationStatus: string;
+            documents: VerificationDocument[]
+        };
     }
 
     /**
@@ -149,5 +152,5 @@ export default class BusinessService {
 export async function getBusinessesForUser(): Promise<Business[]> {
     const response = await api.get('/business'); // Adjust endpoint if needed
     // Expecting response.data.data to be an array of businesses
-    return response.data.data || response.data;
+    return ((response.data as any).data || response.data) as Business[];
 }

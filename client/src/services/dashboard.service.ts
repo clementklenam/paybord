@@ -40,7 +40,7 @@ export interface DashboardSummary {
 
 export default class DashboardService {
     async getDashboardSummary(timeRange: string = 'last7days'): Promise<DashboardSummary> {
-        const response = await axios.get(`${API_URL}/dashboard/summary`, {
+        const response = await axios.get<DashboardSummary>(`${API_URL}/dashboard/summary`, {
             params: { timeRange }
         });
         return response.data;
@@ -51,7 +51,11 @@ export default class DashboardService {
         total: number;
         change: number;
     }> {
-        const response = await axios.get(`${API_URL}/dashboard/revenue`, {
+        const response = await axios.get<{
+            data: Array<{ date: string; amount: number }>;
+            total: number;
+            change: number;
+        }>(`${API_URL}/dashboard/revenue`, {
             params: { timeRange }
         });
         return response.data;
@@ -62,7 +66,11 @@ export default class DashboardService {
         total: number;
         change: number;
     }> {
-        const response = await axios.get(`${API_URL}/dashboard/customers`, {
+        const response = await axios.get<{
+            data: Array<{ date: string; count: number }>;
+            total: number;
+            change: number;
+        }>(`${API_URL}/dashboard/customers`, {
             params: { timeRange }
         });
         return response.data;
@@ -76,7 +84,12 @@ export default class DashboardService {
             revenue: number;
         }>
     > {
-        const response = await axios.get(`${API_URL}/dashboard/top-products`, {
+        const response = await axios.get<Array<{
+            id: string;
+            name: string;
+            sales: number;
+            revenue: number;
+        }>>(`${API_URL}/dashboard/top-products`, {
             params: { timeRange, limit }
         });
         return response.data;
@@ -89,7 +102,11 @@ export default class DashboardService {
             spend: number;
         }>
     > {
-        const response = await axios.get(`${API_URL}/dashboard/top-customers`, {
+        const response = await axios.get<Array<{
+            id: string;
+            name: string;
+            spend: number;
+        }>>(`${API_URL}/dashboard/top-customers`, {
             params: { timeRange, limit }
         });
         return response.data;
