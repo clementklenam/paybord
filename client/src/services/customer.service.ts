@@ -44,6 +44,10 @@ export interface CustomerListResponse {
         page: number;
         limit: number;
     };
+    total: number;
+    pages: number;
+    page: number;
+    limit: number;
 }
 
 export interface CustomerFilters {

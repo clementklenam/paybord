@@ -640,6 +640,37 @@ export class StorefrontService {
     }
 
     /**
+     * Update an existing storefront
+     * @param id - The ID of the storefront to update
+     * @param data - The data to update the storefront with
+     * @returns The updated storefront
+     */
+    async updateStorefront(id: string, data: Partial<StorefrontCreateData>): Promise<Storefront> {
+        try {
+            console.log(`Updating storefront ${id} with data:`, data);
+            
+            const response = await axios.put<ApiResponse<Storefront>>(`${API_URL}/storefronts/${id}`, data, {
+                headers: getAuthHeader()
+            });
+
+            console.log('Storefront updated:', response.data);
+
+            const result = response.data.data;
+            // Ensure the storefront has an id field
+            if (!result.id && result._id) {
+                result.id = result._id;
+            } else if (!result.id) {
+                result.id = id; // Fallback to the provided ID
+            }
+
+            return result;
+        } catch (error: unknown) {
+            console.error(`Error updating storefront with ID ${id}:`, error);
+            throw error;
+        }
+    }
+
+    /**
      * Add products to a storefront
      * @param id - The ID of the storefront to add products to
      * @param productIds - Array of product IDs to add to the storefront
@@ -780,3 +811,7 @@ export class StorefrontService {
         }
     }
 }
+
+// Create and export a default instance
+export const storefrontService = new StorefrontService();
+export default storefrontService;
