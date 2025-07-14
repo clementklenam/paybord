@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { getAuthHeader } from './auth-header';
-import { StorefrontTheme } from '@/types/theme';
-import { retryWithBackoff } from '@/utils/api-utils';
-import { getThemeById } from '@/data/themePresets';
+import { StorefrontTheme } from '../types/theme';
+import { retryWithBackoff } from '../utils/api-utils';
+import { getThemeById } from '../data/themePresets';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5002/api';
 

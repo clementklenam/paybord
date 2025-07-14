@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from '@/components/ui/use-toast';
 import { ThemeSelector } from './ThemeSelector';
 import { StorefrontTheme } from '@/types/theme';
-import { getThemeById } from '@/data/themePresets';
+import { getThemeById } from '../../data/themePresets';
 import { Badge } from "@/components/ui/badge";
 
 interface Step {
