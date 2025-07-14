@@ -1,3 +1,4 @@
+import React from 'react';
 import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { 
@@ -65,6 +66,7 @@ const benefits = [
 ];
 
 
+function HowItWorksSection() {
   return (
     <section className="relative py-24 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden">
       {/* Background Elements */}
@@ -200,3 +202,5 @@ const benefits = [
     </section>
   );
 }
+
+export default HowItWorksSection;

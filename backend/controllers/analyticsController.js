@@ -165,7 +165,7 @@ exports.getDashboardOverview = async (req, res) => {
     // Get successful transactions for the current period from all user's businesses
     const successfulTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: startDate, $lte: endDate }
     });
 
@@ -224,7 +224,7 @@ exports.getDashboardOverview = async (req, res) => {
     // Get successful transactions for the previous period
     const previousSuccessfulTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: previousStartDate, $lte: previousEndDate }
     });
 
@@ -301,7 +301,7 @@ exports.getDashboardOverview = async (req, res) => {
       {
         $match: {
           businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-          status: 'success',
+          status: { $in: ['success', 'succeeded'] },
           createdAt: { $gte: startDate, $lte: endDate }
         }
       },
@@ -614,7 +614,7 @@ exports.getGrossVolume = async (req, res) => {
     // Get successful transactions for the current period from all user's businesses
     const successfulTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: startDate, $lte: endDate }
     });
 
@@ -711,7 +711,7 @@ exports.getBalanceAndPayout = async (req, res) => {
     // Get all successful transactions from all user's businesses
     const successfulTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-      status: 'success'
+      status: { $in: ['success', 'succeeded'] }
     });
 
     console.log(`[DEBUG] Found ${successfulTransactions.length} successful transactions for businessIds:`, businessIds.map(id => id.toString()));
@@ -880,7 +880,7 @@ exports.getTopCustomers = async (req, res) => {
       {
         $match: {
           businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-          status: 'success',
+          status: { $in: ['success', 'succeeded'] },
           createdAt: { $gte: startDate, $lte: endDate }
         }
       },
@@ -1151,8 +1151,8 @@ exports.getPaymentAnalytics = async (req, res) => {
         previousEndDate.setDate(previousEndDate.getDate() - 7);
     }
     
-    const successfulTransactions = await Transaction.find({ businessId: { $in: businessIds }, status: 'success', createdAt: { $gte: startDate, $lte: endDate } });
-    const previousSuccessfulTransactions = await Transaction.find({ businessId: { $in: businessIds }, status: 'success', createdAt: { $gte: previousStartDate, $lte: previousEndDate } });
+    const successfulTransactions = await Transaction.find({ businessId: { $in: businessIds }, status: { $in: ['success', 'succeeded'] }, createdAt: { $gte: startDate, $lte: endDate } });
+    const previousSuccessfulTransactions = await Transaction.find({ businessId: { $in: businessIds }, status: { $in: ['success', 'succeeded'] }, createdAt: { $gte: previousStartDate, $lte: previousEndDate } });
     const failedTransactions = await Transaction.find({ businessId: { $in: businessIds }, status: 'failed', createdAt: { $gte: startDate, $lte: endDate } });
     
     const grossVolume = successfulTransactions.reduce((total, t) => total + t.amount, 0);
@@ -1189,7 +1189,7 @@ exports.getPaymentAnalytics = async (req, res) => {
     });
 
     const topCustomers = await Transaction.aggregate([
-        { $match: { businessId: { $in: businessIds }, status: 'success', createdAt: { $gte: startDate, $lte: endDate } } },
+        { $match: { businessId: { $in: businessIds }, status: { $in: ['success', 'succeeded'] }, createdAt: { $gte: startDate, $lte: endDate } } },
         { $group: { _id: "$customerEmail", name: { $first: "$customerName" }, spend: { $sum: "$amount" }, transactions: { $sum: 1 } } },
         { $sort: { spend: -1 } },
         { $limit: 10 },
@@ -1201,7 +1201,7 @@ exports.getPaymentAnalytics = async (req, res) => {
       {
         $match: {
           businessId: { $in: businessIds },
-          status: 'success',
+          status: { $in: ['success', 'succeeded'] },
           createdAt: { $gte: startDate, $lte: endDate }
         }
       },
@@ -1631,7 +1631,7 @@ exports.testMainDashboard = async (req, res) => {
     // Get successful transactions
     const successfulTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: startDate, $lte: endDate }
     });
 
@@ -1642,7 +1642,7 @@ exports.testMainDashboard = async (req, res) => {
       {
         $match: {
           businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-          status: 'success',
+          status: { $in: ['success', 'succeeded'] },
           createdAt: { $gte: startDate, $lte: endDate }
         }
       },
@@ -1730,7 +1730,7 @@ exports.testDashboardOverview = async (req, res) => {
     // Get successful transactions for this business
     const successfulTransactions = await Transaction.find({
       businessId: businessId,
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: startDate, $lte: endDate }
     });
 
@@ -1741,7 +1741,7 @@ exports.testDashboardOverview = async (req, res) => {
       {
         $match: {
           businessId: businessId,
-          status: 'success',
+          status: { $in: ['success', 'succeeded'] },
           createdAt: { $gte: startDate, $lte: endDate }
         }
       },
@@ -1857,7 +1857,7 @@ exports.getFreshDashboardData = async (req, res) => {
     // Get successful transactions
     const successfulTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: startDate, $lte: endDate }
     });
 
@@ -1868,7 +1868,7 @@ exports.getFreshDashboardData = async (req, res) => {
       {
         $match: {
           businessId: { $in: businessIds.map(id => id.toString()), $exists: true, $ne: null },
-          status: 'success',
+          status: { $in: ['success', 'succeeded'] },
           createdAt: { $gte: startDate, $lte: endDate }
         }
       },
@@ -2024,7 +2024,7 @@ exports.getProductAnalytics = async (req, res) => {
     // Get transactions that include product information
     const transactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()) },
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: startDate, $lte: endDate }
     });
 
@@ -2240,21 +2240,21 @@ exports.getCustomerAnalytics = async (req, res) => {
     // Get all transactions for the current period
     const currentTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()) },
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: startDate, $lte: endDate }
     });
 
     // Get all transactions for the previous period
     const previousTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()) },
-      status: 'success',
+      status: { $in: ['success', 'succeeded'] },
       createdAt: { $gte: previousStartDate, $lte: previousEndDate }
     });
 
     // Get all historical transactions for customer analysis
     const allTransactions = await Transaction.find({
       businessId: { $in: businessIds.map(id => id.toString()) },
-      status: 'success'
+      status: { $in: ['success', 'succeeded'] }
     });
 
     // Analyze customer data

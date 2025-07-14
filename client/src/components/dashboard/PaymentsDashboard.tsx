@@ -421,3 +421,5 @@ const paymentsData = {
     </DashboardLayout>
   );
 }
+
+export default PaymentsDashboard;

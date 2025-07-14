@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Download, Search, Filter, Package, MoreHorizontal, ChevronDown } from "lucide-react";
+import { Plus, Download, Search, Filter, Package, MoreHorizontal, ChevronDown, Loader2, X, Pencil, Trash, Eye, EyeOff, Upload } from "lucide-react";
 import { ProductService } from "@/services/product.service";
 import BusinessService from "@/services/business.service";
 import { useAuth } from "@/contexts/AuthContext";
@@ -186,10 +186,12 @@ export default function ProductsPage() {
         allProducts = [...response.data];
       }
       
-      // Add local products that aren't already in the API response
-      if (userProducts.length > 0) {
+      // Only add local products that match the current businessId
+      if (userProducts.length > 0 && businessId) {
         const apiProductIds = new Set(allProducts.map(p => p.id || p._id));
-        const filteredUserProducts = userProducts.filter(p => !apiProductIds.has(p.id || p._id || ''));
+        const filteredUserProducts = userProducts.filter(
+          p => (p.businessId === businessId || p.business === businessId) && !apiProductIds.has(p.id || p._id || '')
+        );
         allProducts = [...allProducts, ...filteredUserProducts];
       }
       
@@ -649,10 +651,18 @@ export default function ProductsPage() {
 
   // Utility functions
   const formatCurrency = (amount: number, currency: string = 'USD') => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-    }).format(amount);
+    try {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency,
+      }).format(amount);
+    } catch (e) {
+      // Fallback to USD if currency code is invalid
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(amount) + (currency ? ` (${currency})` : '');
+    }
   };
 
   const formatDate = (dateString?: string) => {

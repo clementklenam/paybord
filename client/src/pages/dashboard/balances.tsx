@@ -29,6 +29,7 @@ import { TransactionHistory } from "@/components/balances/TransactionHistory";
 import TransactionService from "@/services/transaction.service";
 import { ShopifyHeader } from "@/components/dashboard/ShopifyHeader";
 import { ShopifyStatsCard } from "@/components/dashboard/ShopifyStatsCard";
+import { useSocket } from '@/hooks/useSocket';
 
 // Local type for TransactionHistory
 interface TransactionHistoryItem {
@@ -203,6 +204,13 @@ export default function BalancesPage() {
       fetchTransactions();
     }
   }, [activeView]);
+
+  useSocket((data) => {
+    if (data.type === 'new_payment') {
+      fetchBalanceData();
+      fetchTransactions();
+    }
+  });
 
   if (loading || !balanceData) {
     return null;

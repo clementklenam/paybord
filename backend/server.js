@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+dotenv.config();
+console.log('Loaded PAYSTACK_SECRET_KEY:', process.env.PAYSTACK_SECRET_KEY);
 const morgan = require('morgan');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -19,9 +21,8 @@ const paymentLinkRoutes = require('./routes/paymentLinkRoutes');
 const paystackRoutes = require('./routes/paystackRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const couponRoutes = require('./routes/couponRoutes');
-
-// Load environment variables
-dotenv.config();
+const http = require('http');
+const { Server } = require('socket.io');
 
 // Initialize Express app
 const app = express();
@@ -132,10 +133,20 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Create HTTP server and Socket.IO server
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: '*', // Adjust for production
+    methods: ['GET', 'POST']
+  }
+});
+app.set('io', io);
+
 // Start server
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-    console.log(`✅ Paymesa Payment Service API running on port ${PORT}`);
+server.listen(PORT, () => {
+    console.log(`✅ Paybord Payment Service API running on port ${PORT}`);
     console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 server.setTimeout(30000); // 30 seconds
@@ -143,6 +154,5 @@ server.setTimeout(30000); // 30 seconds
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
     console.error('Unhandled Promise Rejection:', err);
-    // In production, we might want to exit the process and let a process manager restart it
     // process.exit(1);
 });

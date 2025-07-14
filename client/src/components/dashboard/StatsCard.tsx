@@ -11,9 +11,8 @@ interface StatsCardProps {
   color: string;
 }
 
- title, value, change, changeLabel, icon, color }: StatsCardProps) {
+function StatsCard({ title, value, change, changeLabel, icon, color }: StatsCardProps) {
   const isPositive = change >= 0;
-  
   return (
     <motion.div
       className="relative group cursor-pointer"
@@ -52,4 +51,6 @@ interface StatsCardProps {
       </div>
     </motion.div>
   );
-} 
+}
+
+export default StatsCard; 

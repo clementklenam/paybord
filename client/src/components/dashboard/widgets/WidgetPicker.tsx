@@ -26,7 +26,7 @@ interface WidgetPickerProps {
   availableWidgets: WidgetType[];
 }
 
- onAddWidget, availableWidgets }: WidgetPickerProps) {
+function WidgetPicker({ onAddWidget, availableWidgets }: WidgetPickerProps) {
   const filteredOptions = WIDGET_OPTIONS.filter(
     (option) => availableWidgets.includes(option.type)
   );
@@ -54,3 +54,5 @@ interface WidgetPickerProps {
     </DropdownMenu>
   );
 }
+
+export default WidgetPicker;

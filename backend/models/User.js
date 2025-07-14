@@ -69,6 +69,11 @@ userSchema.pre('save', async function (next) {
         console.log('Password not modified, skipping hash');
         return next();
     }
+    // Only hash if not already hashed (bcrypt hashes are 60 chars and start with $2)
+    if (this.password && this.password.startsWith('$2') && this.password.length === 60) {
+        console.log('Password already hashed, skipping re-hash');
+        return next();
+    }
     try {
         const salt = await bcrypt.genSalt(10);
         console.log('Salt generated for user:', this.email);

@@ -1,12 +1,3 @@
-// Initialize Paystack with error handling
-let Paystack;
-try {
-    Paystack = require('paystack')(process.env.PAYSTACK_SECRET_KEY);
-} catch (error) {
-    console.error('Failed to initialize Paystack SDK:', error);
-    Paystack = null;
-}
-
 const Transaction = require('../models/Transaction');
 const PaymentLink = require('../models/PaymentLink');
 const Business = require('../models/Business');
@@ -19,6 +10,7 @@ const { convertFromSmallestUnit } = require('../utils/currency');
  * @access Public
  */
 exports.initializePayment = async (req, res) => {
+    const Paystack = require('paystack')(process.env.PAYSTACK_SECRET_KEY);
     try {
         const {
             amount,
@@ -41,8 +33,7 @@ exports.initializePayment = async (req, res) => {
 
         // Check if Paystack API key is configured or SDK failed to initialize
         if (!process.env.PAYSTACK_SECRET_KEY || 
-            process.env.PAYSTACK_SECRET_KEY === 'sk_test_1234567890abcdef1234567890abcdef12345678' ||
-            !Paystack) {
+            process.env.PAYSTACK_SECRET_KEY === 'sk_test_1234567890abcdef1234567890abcdef12345678') {
             console.log('⚠️ Paystack API key not configured or SDK failed to initialize, using mock response for development');
             
             // Return mock response for development
@@ -100,16 +91,7 @@ exports.initializePayment = async (req, res) => {
             metadata
         };
 
-        console.log('Initializing Paystack payment:', {
-            amount: paystackData.amount,
-            email,
-            currency,
-            reference,
-            businessId,
-            paymentLinkId
-        });
-
-        // Initialize payment with Paystack
+        console.log('About to call Paystack.transaction.initialize');
         const response = await Paystack.transaction.initialize(paystackData);
 
         if (response.status && response.data) {
@@ -130,6 +112,7 @@ exports.initializePayment = async (req, res) => {
                 }
             });
         } else {
+            console.error('Paystack API error:', response); // Log the full error response
             throw new Error('Failed to initialize payment with Paystack');
         }
 
@@ -149,6 +132,7 @@ exports.initializePayment = async (req, res) => {
  * @access Public
  */
 exports.verifyPayment = async (req, res) => {
+    const Paystack = require('paystack')(process.env.PAYSTACK_SECRET_KEY);
     try {
         const { reference } = req.params;
 
@@ -163,8 +147,7 @@ exports.verifyPayment = async (req, res) => {
 
         // Check if Paystack API key is configured or SDK failed to initialize
         if (!process.env.PAYSTACK_SECRET_KEY || 
-            process.env.PAYSTACK_SECRET_KEY === 'sk_test_1234567890abcdef1234567890abcdef12345678' ||
-            !Paystack) {
+            process.env.PAYSTACK_SECRET_KEY === 'sk_test_1234567890abcdef1234567890abcdef12345678') {
             console.log('⚠️ Paystack API key not configured or SDK failed to initialize, using mock verification for development');
             
             // Return mock successful verification for development
@@ -235,11 +218,27 @@ exports.verifyPayment = async (req, res) => {
             if (transactionData.status === 'success') {
                 // Extract metadata
                 const metadata = transactionData.metadata || {};
-                const businessId = metadata.business_id;
+                let businessId = metadata.business_id;
                 const paymentLinkId = metadata.payment_link_id;
                 const customerName = metadata.customer_name || transactionData.customer?.first_name || 'Anonymous';
                 const customerPhone = metadata.customer_phone || transactionData.customer?.phone;
                 const customerAddress = metadata.customer_address;
+
+                // Fallback: If businessId is missing but paymentLinkId is present, fetch from DB
+                if (!businessId && paymentLinkId) {
+                  try {
+                    const PaymentLink = require('../models/PaymentLink');
+                    const paymentLink = await PaymentLink.findOne({ linkId: paymentLinkId });
+                    if (paymentLink && paymentLink.businessId) {
+                      businessId = paymentLink.businessId.toString();
+                      console.log('[Paystack VERIFY] Fetched businessId from PaymentLink:', businessId);
+                    } else {
+                      console.warn('[Paystack VERIFY] Could not find businessId for paymentLinkId:', paymentLinkId);
+                    }
+                  } catch (err) {
+                    console.error('[Paystack VERIFY] Error fetching businessId from PaymentLink:', err);
+                  }
+                }
 
                 // Determine payment method
                 let paymentMethod = 'card';
@@ -248,6 +247,16 @@ exports.verifyPayment = async (req, res) => {
 
                 // Create transaction record
                 const transactionId = `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                console.log('[Paystack VERIFY] About to save transaction:', {
+                  transactionId,
+                  businessId,
+                  paymentLinkId,
+                  metadata,
+                  customerName,
+                  customerEmail: transactionData.customer?.email,
+                  amount: convertFromSmallestUnit(transactionData.amount, transactionData.currency),
+                  currency: transactionData.currency
+                });
                 const transaction = new Transaction({
                     transactionId,
                     amount: convertFromSmallestUnit(transactionData.amount, transactionData.currency), // Convert from smallest unit to base unit
@@ -315,6 +324,7 @@ exports.verifyPayment = async (req, res) => {
  * @access Public
  */
 exports.getBanks = async (req, res) => {
+    const Paystack = require('paystack')(process.env.PAYSTACK_SECRET_KEY);
     try {
         // Check if Paystack API key is configured
         if (!process.env.PAYSTACK_SECRET_KEY || process.env.PAYSTACK_SECRET_KEY === 'sk_test_1234567890abcdef1234567890abcdef12345678') {
@@ -362,6 +372,7 @@ exports.getBanks = async (req, res) => {
  * @access Public
  */
 exports.resolveAccount = async (req, res) => {
+    const Paystack = require('paystack')(process.env.PAYSTACK_SECRET_KEY);
     try {
         const { account_number, bank_code } = req.body;
 

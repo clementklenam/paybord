@@ -1,3 +1,4 @@
+import React from 'react';
 import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { TrendingUp, Users, Globe, Shield } from "lucide-react";
@@ -89,4 +90,6 @@ import { TrendingUp, Users, Globe, Shield } from "lucide-react";
       </Container>
     </section>
   );
-} 
+}
+
+export default StatsSection; 

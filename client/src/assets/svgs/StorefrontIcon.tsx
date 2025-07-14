@@ -1,4 +1,6 @@
+import React from "react";
 
+const StorefrontIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
       viewBox="0 0 64 64"
@@ -25,4 +27,6 @@
       <rect x="40" y="36" width="8" height="8" rx="1" fill="#f1c40f" fillOpacity="0.3" />
     </svg>
   );
-} 
+};
+
+export default StorefrontIcon; 

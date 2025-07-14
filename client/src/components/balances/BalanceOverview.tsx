@@ -40,7 +40,7 @@ interface BalanceOverviewProps {
   currency: string;
 }
 
- balanceData, currency }: BalanceOverviewProps) {
+const BalanceOverview: React.FC<BalanceOverviewProps> = ({ balanceData, currency }) => {
   const totalBalance = balanceData.available.amount + balanceData.pending.amount + balanceData.reserved.amount;
   const availablePercentage = (balanceData.available.amount / totalBalance) * 100;
   const pendingPercentage = (balanceData.pending.amount / totalBalance) * 100;
@@ -312,3 +312,5 @@ interface BalanceOverviewProps {
     </div>
   );
 }
+
+export default BalanceOverview;

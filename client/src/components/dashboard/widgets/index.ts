@@ -1,9 +1,9 @@
-from './PaymentOverviewWidget';
-from './GrossVolumeWidget';
-from './NetVolumeWidget';
-from './FailedPaymentsWidget';
-from './NewCustomersWidget';
-from './TopCustomersWidget';
-from './AddWidgetDialog';
-from './DraggableWidgetContainer';
-from './PaymentSourcesWidget';
+export { default as PaymentOverviewWidget } from './PaymentOverviewWidget';
+export { default as GrossVolumeWidget } from './GrossVolumeWidget';
+export { default as NetVolumeWidget } from './NetVolumeWidget';
+export { default as FailedPaymentsWidget } from './FailedPaymentsWidget';
+export { default as NewCustomersWidget } from './NewCustomersWidget';
+export { default as TopCustomersWidget } from './TopCustomersWidget';
+export { default as AddWidgetDialog } from './AddWidgetDialog';
+export { default as DraggableWidgetContainer } from './DraggableWidgetContainer';
+export { default as PaymentSourcesWidget } from './PaymentSourcesWidget';

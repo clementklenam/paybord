@@ -6,7 +6,7 @@ interface OtpVerificationProps {
   onSuccess?: () => void;
 }
 
- type, onSuccess }: OtpVerificationProps) {
+const OtpVerification: React.FC<OtpVerificationProps> = ({ type, onSuccess }) => {
   const [otp, setOtp] = useState('');
   const { verifyOtp, resendOtp, loading } = useAuth();
 
@@ -75,3 +75,5 @@ interface OtpVerificationProps {
     </div>
   );
 }
+
+export default OtpVerification;

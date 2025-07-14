@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -402,6 +403,7 @@ function AnalyticsDemo() {
 }
 
 
+function ProductDemoSection() {
   return (
     <section className="py-24 bg-gradient-to-b from-slate-950 to-black overflow-hidden" id="product-demos">
       {/* Background Elements */}
@@ -469,3 +471,5 @@ function AnalyticsDemo() {
     </section>
   );
 }
+
+export default ProductDemoSection;

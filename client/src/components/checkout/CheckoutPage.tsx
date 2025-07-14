@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CheckoutForm } from "./CheckoutForm";
 import { Button } from "@/components/ui/button";
 
-
+function CheckoutPage() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [paymentData, setPaymentData] = useState<any>(null);
   
@@ -154,3 +154,5 @@ import { Button } from "@/components/ui/button";
     </div>
   );
 }
+
+export default CheckoutPage;

@@ -192,6 +192,7 @@ const customerStats = {
     }
   };
 
+function CustomersPage() {
   return (
     <DashboardLayout>
       {/* Header */}
@@ -483,6 +484,8 @@ const customerStats = {
     </DashboardLayout>
   );
 }
+
+export default CustomersPage;
 
 // Icons that need to be imported
 const Users = (props: any) => (

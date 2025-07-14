@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator');
 const crypto = require('crypto');
 const Storefront = require('../models/Storefront');
 const PaymentLink = require('../models/PaymentLink');
+const Business = require('../models/Business');
 
 const currenciesWithCents = [
   'GHS', 'NGN', 'KES', 'ZAR', 'USD', 'EUR', 'GBP', 'XOF', 'XAF', 'MAD', 'EGP'
@@ -271,6 +272,11 @@ const confirmPaymentIntent = async (req, res) => {
         });
         await transaction.save();
 
+        const io = req.app.get('io');
+        if (io) {
+          io.emit('payment_update', { type: 'new_payment', transaction });
+        }
+
         res.json({
             id: updatedIntent.paymentIntentId,
             amount: updatedIntent.amount,
@@ -390,8 +396,12 @@ const getAllTransactions = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const skip = (page - 1) * limit;
 
-        // You can add filters here if needed
-        const filter = {};
+        // Find all businesses owned by the current user
+        const businesses = await Business.find({ user: req.user._id }).select('_id');
+        const businessIds = businesses.map(b => b._id.toString());
+
+        // Only show transactions for the user's businesses
+        const filter = { businessId: { $in: businessIds }, status: { $in: ['success', 'succeeded'] } };
 
         const total = await Transaction.countDocuments(filter);
         const transactions = await Transaction.find(filter)
@@ -514,6 +524,10 @@ const createTransaction = async (req, res) => {
         });
 
         await transaction.save();
+        const io = req.app.get('io');
+        if (io) {
+          io.emit('payment_update', { type: 'new_payment', transaction });
+        }
         console.log('[DEBUG] Transaction created successfully:', { id: transaction._id, amount: transaction.amount, currency: transaction.currency });
 
         // Add a small delay to ensure the transaction is saved before responding

@@ -29,7 +29,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-
+function ApiKeysPage() {
   const [activeTab, setActiveTab] = useState("api-keys");
   const [showSecretKey, setShowSecretKey] = useState(false);
   const [copiedPublicKey, setCopiedPublicKey] = useState(false);
@@ -431,3 +431,5 @@ import { Label } from "@/components/ui/label";
     </DashboardLayout>
   );
 }
+
+export default ApiKeysPage;

@@ -66,7 +66,7 @@ router.get('/intents', listPaymentIntents);
 // @route   GET /api/payments
 // @desc    Get all transactions
 // @access  Private (API key or user auth)
-router.get('/', getAllTransactions);
+router.get('/', protect, getAllTransactions);
 
 // @route   POST /api/payments
 // @desc    Create a new transaction

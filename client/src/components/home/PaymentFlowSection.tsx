@@ -1,9 +1,11 @@
+import React from 'react';
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ExternalLink, CheckCircle, Clock, ShieldCheck, ArrowRightCircle, Globe, CreditCard, Zap, Database, Cpu, Network } from "lucide-react";
 
 
+function PaymentFlowSection() {
   return (
     <section className="py-32 px-4 overflow-hidden bg-gradient-to-b from-slate-950 to-black relative">
       {/* Background Elements */}
@@ -180,3 +182,5 @@ import { ExternalLink, CheckCircle, Clock, ShieldCheck, ArrowRightCircle, Globe,
     </section>
   );
 }
+
+export default PaymentFlowSection;

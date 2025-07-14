@@ -18,7 +18,7 @@ interface ReserveDetailsProps {
   currency: string;
 }
 
- reserveData, currency }: ReserveDetailsProps) {
+function ReserveDetails({ reserveData, currency }: ReserveDetailsProps) {
   const [activeTab, setActiveTab] = useState("overview");
   
   // Mock reserve release schedule
@@ -440,3 +440,5 @@ interface ReserveDetailsProps {
     </div>
   );
 }
+
+export default ReserveDetails;

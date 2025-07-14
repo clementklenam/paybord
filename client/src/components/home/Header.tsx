@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
@@ -251,4 +252,6 @@ const solutionsDropdown = [
       </Container>
     </header>
   );
-} 
+}
+
+export default Header; 

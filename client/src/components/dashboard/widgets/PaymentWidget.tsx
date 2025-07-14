@@ -10,7 +10,7 @@ interface PaymentWidgetProps {
   };
 }
 
- data }: PaymentWidgetProps) {
+function PaymentWidget({ data }: PaymentWidgetProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -40,3 +40,5 @@ interface PaymentWidgetProps {
     </Card>
   );
 }
+
+export default PaymentWidget;

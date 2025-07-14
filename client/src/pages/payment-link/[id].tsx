@@ -35,6 +35,7 @@ function PaystackCheckoutModal({
   customerInfo,
   onSuccess = () => {},
   paymentLinkId,
+  businessId, // <-- add this prop
   recordTransaction = async () => {},
 }: {
   open: boolean;
@@ -45,6 +46,7 @@ function PaystackCheckoutModal({
   customerInfo: { name: string; email: string; phone: string; address: string };
   onSuccess?: () => void;
   paymentLinkId?: string;
+  businessId?: string; // <-- add this prop
   recordTransaction?: (args: any) => Promise<void>;
 }) {
   const [paystackReady, setPaystackReady] = useState(false);
@@ -113,6 +115,8 @@ function PaystackCheckoutModal({
         currency: currency,
         ref: paymentIntent.data.reference,
         metadata: {
+          payment_link_id: paymentLinkId,
+          business_id: businessId,
           custom_fields: [
             { display_name: 'Full Name', variable_name: 'full_name', value: customerInfo.name },
             { display_name: 'Phone', variable_name: 'phone', value: customerInfo.phone },
@@ -122,18 +126,33 @@ function PaystackCheckoutModal({
         },
         callback: function(response: any) {
           console.log('[DEBUG] Paystack callback triggered:', response);
-          console.log('[DEBUG] Paystack response amount:', response.amount);
           paymentResponseRef.current = response;
-          onSuccess();
-          // Record transaction immediately after successful payment
-          recordTransaction({
-            amount: amount, // Use the original base currency amount, not Paystack's kobo amount
-            currency,
-            customerInfo,
-            provider: 'paystack',
-            status: 'success',
-          });
-          onClose();
+          (async () => {
+            try {
+              // Call backend to verify payment and record transaction
+              const verifyResult = await paystackService.verifyPayment(response.reference);
+              if (verifyResult.success && verifyResult.data.status === 'success') {
+                onSuccess();
+                // Optionally, pass transaction data to onSuccess if needed
+                // Notify payment context that a payment was successful
+                // notifyPaymentSuccess(); // This line was removed as per the edit hint
+              } else {
+                toast({
+                  title: 'Payment Verification Failed',
+                  description: (verifyResult.data && 'message' in verifyResult.data && typeof verifyResult.data.message === 'string') ? verifyResult.data.message : 'Could not verify payment. Please contact support.',
+                  variant: 'destructive',
+                });
+              }
+            } catch (err) {
+              console.error('Error verifying payment:', err);
+              toast({
+                title: 'Payment Verification Error',
+                description: 'Could not verify payment. Please contact support.',
+                variant: 'destructive',
+              });
+            }
+            onClose();
+          })();
         },
         onClose: function() {
           console.log('[DEBUG] Paystack onClose triggered, paymentResponseRef:', paymentResponseRef.current);
@@ -630,6 +649,7 @@ export default function PaymentLinkViewPage() {
           setShowPaystackModal(false);
         }}
         paymentLinkId={linkId}
+        businessId={paymentLink?.businessId || paymentLink?.business?._id} // <-- pass businessId
         recordTransaction={recordTransaction}
       />
     </div>

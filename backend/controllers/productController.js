@@ -157,7 +157,7 @@ exports.getProducts = async (req, res) => {
         // Get total count for pagination
         const total = await Product.countDocuments(query);
 
-        res.json({
+        return res.json({
             data: products,
             total,
             page: parseInt(page),
@@ -166,7 +166,7 @@ exports.getProducts = async (req, res) => {
         });
     } catch (error) {
         console.error('Error fetching products:', error);
-        res.status(500).json({ message: 'Server error', error: error.message });
+        return res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 

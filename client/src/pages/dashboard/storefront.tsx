@@ -64,6 +64,25 @@ export default function StorefrontPage() {
         fetchBusinesses();
     }, []);
 
+    // Enhanced fetchBusinesses with auto-retry logic
+    const fetchBusinesses = async (retries = 3) => {
+        setBusinessesLoading(true);
+        try {
+            const result = await getBusinessesForUser();
+            if (Array.isArray(result) && result.length === 0 && retries > 0) {
+                // Wait 1 second and retry
+                setTimeout(() => fetchBusinesses(retries - 1), 1000);
+                return;
+            }
+            setBusinesses(result);
+            setBusinessesError(null);
+        } catch (err) {
+            setBusinessesError('Failed to load businesses.');
+        } finally {
+            setBusinessesLoading(false);
+        }
+    };
+
     // Fetch storefronts from API with server-side filtering and pagination
     const fetchStorefronts = async () => {
         setIsLoading(true);
@@ -157,6 +176,12 @@ export default function StorefrontPage() {
         }
     };
 
+    // When opening the creation wizard, always fetch latest businesses
+    const handleOpenCreationWizard = async () => {
+        await fetchBusinesses();
+        setShowCreationWizard(true);
+    };
+
     // Handle deleting a storefront
     const handleDeleteStorefront = async (id: string) => {
         try {
@@ -217,7 +242,7 @@ export default function StorefrontPage() {
                     </div>
                     {!showCreationWizard && (
                         <Button
-                            onClick={() => setShowCreationWizard(true)}
+                            onClick={handleOpenCreationWizard}
                             className="w-full md:w-auto"
                         >
                             <Plus className="h-4 w-4 mr-2" />
@@ -228,12 +253,34 @@ export default function StorefrontPage() {
 
                 {/* Creation Wizard */}
                 {showCreationWizard ? (
-                    <StorefrontWizard
-                        onSubmit={handleCreateStorefront}
-                        onCancel={() => setShowCreationWizard(false)}
-                        isSubmitting={isCreating}
-                        businesses={businesses}
-                    />
+                    businesses.length === 0 ? (
+                        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 max-w-lg mx-auto mt-8">
+                            <CardContent className="flex flex-col items-center justify-center py-12">
+                                <div className="rounded-full bg-yellow-100 dark:bg-yellow-900/20 p-4 mb-4">
+                                    <Filter className="h-8 w-8 text-yellow-400 dark:text-yellow-500" />
+                                </div>
+                                <CardTitle className="mb-2 text-gray-900 dark:text-gray-100">No business found</CardTitle>
+                                <CardDescription className="text-center max-w-md mb-6 text-gray-500 dark:text-gray-400">
+                                    You must create a business profile before you can create a storefront.<br />
+                                    If you just registered, please wait a moment and retry.
+                                </CardDescription>
+                                <Button onClick={fetchBusinesses} disabled={businessesLoading}>
+                                    {businessesLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Filter className="h-4 w-4 mr-2" />}
+                                    Retry
+                                </Button>
+                                <Button variant="outline" className="mt-2" onClick={() => setShowCreationWizard(false)}>
+                                    Cancel
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <StorefrontWizard
+                            onSubmit={handleCreateStorefront}
+                            onCancel={() => setShowCreationWizard(false)}
+                            isSubmitting={isCreating}
+                            businesses={businesses}
+                        />
+                    )
                 ) : (
                     <>
                         {/* Filters */}
@@ -275,7 +322,7 @@ export default function StorefrontPage() {
                 )}
 
                 {/* Storefronts Grid */}
-                {!showCreationWizard && (
+                {!showCreationWizard && totalStorefronts > 0 && (
                     <div>
                         {isLoading ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

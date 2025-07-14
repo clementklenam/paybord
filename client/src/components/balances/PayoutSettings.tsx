@@ -31,7 +31,7 @@ interface PayoutSettingsProps {
   currency: string;
 }
 
- payoutData, currency }: PayoutSettingsProps) {
+const PayoutSettings: React.FC<PayoutSettingsProps> = ({ payoutData, currency }) => {
   const [payoutFrequency, setPayoutFrequency] = useState("automatic");
   const [payoutThreshold, setPayoutThreshold] = useState("1000");
   const [payoutDay, setPayoutDay] = useState("monday");
@@ -383,3 +383,5 @@ interface PayoutSettingsProps {
     </div>
   );
 }
+
+export default PayoutSettings;

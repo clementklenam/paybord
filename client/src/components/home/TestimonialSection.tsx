@@ -1,8 +1,9 @@
+import React from 'react';
 import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-
+function TestimonialSection() {
   return (
     <section className="py-24 bg-[var(--background)]">
       <Container>
@@ -55,3 +56,5 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
     </section>
   );
 }
+
+export default TestimonialSection;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -180,3 +181,5 @@ console.log('Payment successful:', payment.id);`;
     </section>
   );
 }
+
+export default DeveloperSection;

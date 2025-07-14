@@ -1,3 +1,4 @@
+import React from 'react';
 import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { SiAirbnb, SiSlack, SiNetflix, SiAmazon, SiShopify } from "react-icons/si";
@@ -51,3 +52,5 @@ import { SiAirbnb, SiSlack, SiNetflix, SiAmazon, SiShopify } from "react-icons/s
     </section>
   );
 }
+
+export default TrustedBySection;

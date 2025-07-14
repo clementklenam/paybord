@@ -31,9 +31,8 @@ const mockData: DisputeCountData = {
   lastUpdated: "2025-04-10"
 };
 
-
+function DisputeCountWidget() {
   const data = mockData;
-
   return (
     <Card className="bg-gradient-to-br from-green-500/10 to-yellow-500/10 hover:from-green-500/20 hover:to-yellow-500/20 transition-all">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -101,3 +100,5 @@ const mockData: DisputeCountData = {
     </Card>
   );
 }
+
+export default DisputeCountWidget;

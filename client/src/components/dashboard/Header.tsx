@@ -6,15 +6,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocation } from "wouter";
 
-
+function Header() {
   const { user, signout } = useAuth();
   const [, setLocation] = useLocation();
-  
   const handleLogout = () => {
     signout();
     setLocation("/signin");
   };
-  
   return (
     <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
       <div className="flex h-16 items-center justify-between px-6">
@@ -75,3 +73,5 @@ import { useLocation } from "wouter";
     </header>
   );
 }
+
+export default Header;

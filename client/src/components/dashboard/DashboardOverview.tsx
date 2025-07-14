@@ -16,7 +16,7 @@ import {
 } from "./widgets";
 import { getPaymentAnalytics, PaymentAnalytics } from "@/services/analytics.service";
 
-
+function DashboardOverview() {
   const [timeRange, setTimeRange] = useState("last7days");
   const [isAddingWidget, setIsAddingWidget] = useState(false);
   const [customWidgets, setCustomWidgets] = useState<Array<{ id: string; type: string }>>([]);
@@ -377,3 +377,5 @@ import { getPaymentAnalytics, PaymentAnalytics } from "@/services/analytics.serv
     </div>
   );
 }
+
+export default DashboardOverview;

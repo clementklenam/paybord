@@ -50,6 +50,7 @@ const processWebhook = async (req, res) => {
         // Handle Paystack event
         if (event.event === 'charge.success') {
             const data = event.data;
+            console.log('[WEBHOOK] Paystack charge.success event received. Data:', JSON.stringify(data, null, 2));
             // Extract payment method
             let paymentMethod = 'other';
             if (data.channel === 'mobile_money') paymentMethod = 'mobile_money';
@@ -66,44 +67,50 @@ const processWebhook = async (req, res) => {
                     if (field.variable_name === 'payment_link_id') paymentLinkId = field.value;
                 }
             }
-            
             // Also check direct metadata properties
             if (data.metadata) {
                 if (data.metadata.business_id) businessId = data.metadata.business_id;
                 if (data.metadata.storefront_id) storefrontId = data.metadata.storefront_id;
                 if (data.metadata.payment_link_id) paymentLinkId = data.metadata.payment_link_id;
             }
-            
             // If paymentLinkId is provided, get businessId from PaymentLink
             if (paymentLinkId && !businessId) {
                 try {
                     const paymentLink = await PaymentLink.findOne({ linkId: paymentLinkId });
                     if (paymentLink) {
                         businessId = paymentLink.businessId.toString();
-                        console.log('Fetched businessId from PaymentLink:', businessId);
+                        console.log('[WEBHOOK] Fetched businessId from PaymentLink:', businessId);
                     } else {
-                        console.warn('Could not find businessId for paymentLinkId:', paymentLinkId);
+                        console.warn('[WEBHOOK] Could not find businessId for paymentLinkId:', paymentLinkId);
                     }
                 } catch (err) {
-                    console.error('Error fetching businessId from PaymentLink:', err);
+                    console.error('[WEBHOOK] Error fetching businessId from PaymentLink:', err);
                 }
             }
-            
             // If businessId is missing but storefrontId is present, fetch businessId from Storefront
             if (!businessId && storefrontId) {
                 try {
                     const storefront = await Storefront.findById(storefrontId).select('business');
                     if (storefront && storefront.business) {
                         businessId = storefront.business.toString();
-                        console.log('Fetched businessId from Storefront:', businessId);
+                        console.log('[WEBHOOK] Fetched businessId from Storefront:', businessId);
                     } else {
-                        console.warn('Could not find businessId for storefrontId:', storefrontId);
+                        console.warn('[WEBHOOK] Could not find businessId for storefrontId:', storefrontId);
                     }
                 } catch (err) {
-                    console.error('Error fetching businessId from Storefront:', err);
+                    console.error('[WEBHOOK] Error fetching businessId from Storefront:', err);
                 }
             }
-            
+            // ENFORCE: If businessId is still missing, log error and do not create transaction
+            if (!businessId) {
+                console.error('[WEBHOOK ERROR] Payment link transaction missing businessId. Data:', {
+                    paymentLinkId,
+                    storefrontId,
+                    metadata: data.metadata,
+                    custom_fields: data.metadata && data.metadata.custom_fields
+                });
+                return res.status(400).json({ error: 'Payment link transaction missing businessId. Transaction not recorded.' });
+            }
             // Determine payment type based on what's available
             let paymentType = 'other';
             if (storefrontId) {
@@ -111,14 +118,13 @@ const processWebhook = async (req, res) => {
             } else if (paymentLinkId) {
                 paymentType = 'payment_link';
             }
-            // Always set paymentType
             paymentType = paymentType || 'storefront_purchase';
             // Create transaction
             try {
                 const transactionId = `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-                const transaction = new Transaction({
+                const transactionData = {
                     transactionId,
-                    amount: convertFromSmallestUnit(data.amount, data.currency || 'NGN'), // Convert from smallest unit to base unit
+                    amount: convertFromSmallestUnit(data.amount, data.currency || 'NGN'),
                     currency: data.currency || 'NGN',
                     status: 'success',
                     customerName: (data.metadata && data.metadata.custom_fields && data.metadata.custom_fields.find(f => f.variable_name === 'full_name')) ? data.metadata.custom_fields.find(f => f.variable_name === 'full_name').value : (data.customer && data.customer.first_name ? data.customer.first_name : 'Anonymous'),
@@ -137,14 +143,20 @@ const processWebhook = async (req, res) => {
                         payment_link_id: paymentLinkId,
                         storefront_id: storefrontId
                     }
-                });
-                console.log('Creating transaction with data:', transaction.toObject());
+                };
+                console.log('[WEBHOOK] Creating transaction with data:', transactionData);
+                const transaction = new Transaction(transactionData);
                 await transaction.save();
-                console.log('Paystack transaction saved:', transactionId);
+                console.log('[WEBHOOK] Paystack transaction saved:', transactionId);
+                const io = req.app.get('io');
+                if (io) {
+                    io.emit('payment_update', { type: 'new_payment', transaction });
+                }
             } catch (err) {
-                console.error('Error saving Paystack transaction:', err);
+                console.error('[WEBHOOK ERROR] Error saving Paystack transaction:', err);
                 return res.status(500).json({ error: 'Failed to save Paystack transaction', details: err.message });
             }
+            return res.status(200).json({ received: true });
         }
         // You can add more detailed event handling here if needed
         return res.status(200).json({ received: true });
@@ -400,3 +412,4 @@ const handlePaymentMethodAttached = async (data) => {
 module.exports = {
     processWebhook
 };
+

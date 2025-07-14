@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 
 interface PaymentContextType {
   refreshDashboard: () => void;
@@ -61,16 +61,14 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const subscribeToPaymentEvents = (callback: () => void) => {
-    console.log('[PaymentContext] New subscriber added, total subscribers:', subscribers.length + 1);
+  // Memoize subscribeToPaymentEvents to prevent infinite update loops
+  const subscribeToPaymentEvents = useCallback((callback: () => void) => {
     setSubscribers(prev => [...prev, callback]);
-    
     // Return unsubscribe function
     return () => {
-      console.log('[PaymentContext] Subscriber removed, total subscribers:', subscribers.length - 1);
       setSubscribers(prev => prev.filter(sub => sub !== callback));
     };
-  };
+  }, []);
 
   const notifyPaymentSuccess = () => {
     console.log('[PaymentContext] Payment success notified, storing event and refreshing dashboard...');

@@ -740,6 +740,8 @@ function PaystackCheckoutModal({
       currency: currency,
       ref: `PSK-${Date.now()}`,
       metadata: {
+        business_id: businessId,
+        storefront_id: storefrontId,
         custom_fields: [
           { display_name: 'Full Name', variable_name: 'full_name', value: customerInfo.fullName },
           { display_name: 'Phone', variable_name: 'phone', value: customerInfo.phone },
