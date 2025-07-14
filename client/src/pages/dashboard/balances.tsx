@@ -42,6 +42,23 @@ interface TransactionHistoryItem {
   description: string;
 }
 
+interface BalanceData {
+  available: number;
+  pending: number;
+  reserved: number;
+  currency: string;
+  nextPayout: {
+    amount: number;
+    date: string;
+  };
+  lastPayout: {
+    amount: number;
+    date: string;
+    status: string;
+  };
+  lastUpdated: string;
+}
+
 export default function BalancesPage() {
   const [activeView, setActiveView] = useState("overview");
   const [loading, setLoading] = useState(true);
@@ -70,7 +87,7 @@ export default function BalancesPage() {
   };
 
   // Balance data state - start as null, only set real data when loaded
-  const [balanceData, setBalanceData] = useState<unknown>(null);
+  const [balanceData, setBalanceData] = useState<BalanceData | null>(null);
 
   // Transaction history state
   const [transactions, setTransactions] = useState<TransactionHistoryItem[]>([]);
@@ -94,22 +111,31 @@ export default function BalancesPage() {
 
       // Check if we have valid data
       if (data && typeof data === 'object' && 'availableBalance' in data) {
+        const typedData = data as {
+          availableBalance: number;
+          pendingBalance: number;
+          reservedBalance: number;
+          currency: string;
+          nextPayout?: { amount?: number; date?: string };
+          lastPayout?: { amount?: number; date?: string; status?: string };
+          lastUpdated?: string;
+        };
         // Set real data from backend
         setBalanceData({
-          available: data.availableBalance,
-          pending: data.pendingBalance,
-          reserved: data.reservedBalance,
-          currency: data.currency || currency,
+          available: typedData.availableBalance,
+          pending: typedData.pendingBalance,
+          reserved: typedData.reservedBalance,
+          currency: typedData.currency || currency,
           nextPayout: {
-            amount: data.nextPayout?.amount || 0,
-            date: data.nextPayout?.date || ''
+            amount: typedData.nextPayout?.amount || 0,
+            date: typedData.nextPayout?.date || ''
           },
           lastPayout: {
-            amount: data.lastPayout?.amount || 0,
-            date: data.lastPayout?.date || '',
-            status: data.lastPayout?.status || ''
+            amount: typedData.lastPayout?.amount || 0,
+            date: typedData.lastPayout?.date || '',
+            status: typedData.lastPayout?.status || ''
           },
-          lastUpdated: data.lastUpdated || new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+          lastUpdated: typedData.lastUpdated || new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
         });
 
         setError(null);
@@ -122,7 +148,9 @@ export default function BalancesPage() {
       }
     } catch (err: unknown) {
       console.error('Error fetching balance data:', err);
-      setError(`Failed to load real data: ${err.message || 'Unknown error'}. Using demo data instead.`);
+      let errMsg = 'Unknown error';
+      if (err instanceof Error) errMsg = err.message;
+      setError(`Failed to load real data: ${errMsg}. Using demo data instead.`);
       setBalanceData(demoBalanceData); // Only use demo data if API fails
       // Show toast notification
       toast({
@@ -184,15 +212,30 @@ export default function BalancesPage() {
       try {
         const response = await transactionService.getTransactions({ limit: 20 });
         // Map to TransactionHistory type
-        const mapped: TransactionHistoryItem[] = response.data.map((t: unknown) => ({
-          id: t.transactionId || t._id || t.id || t.created,
-          type: t.paymentMethod || 'charge', // fallback if type missing
-          amount: t.amount,
-          currency: t.currency,
-          status: t.status,
-          created: t.date || t.created || new Date().toISOString(),
-          description: t.description || '',
-        }));
+        const mapped: TransactionHistoryItem[] = response.data.map((t: unknown) => {
+          if (t && typeof t === 'object') {
+            const tx = t as any;
+            return {
+              id: tx.transactionId || tx._id || tx.id || tx.created,
+              type: tx.paymentMethod || 'charge',
+              amount: tx.amount,
+              currency: tx.currency,
+              status: tx.status,
+              created: tx.date || tx.created || new Date().toISOString(),
+              description: tx.description || '',
+            };
+          }
+          // fallback for unexpected structure
+          return {
+            id: '',
+            type: '',
+            amount: 0,
+            currency: '',
+            status: '',
+            created: '',
+            description: '',
+          };
+        });
         setTransactions(mapped);
       } catch (err) {
         console.error('Error fetching transactions:', err);
