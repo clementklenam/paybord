@@ -9,7 +9,9 @@ interface ReviewStepProps {
   isSubmitting: boolean;
 }
 
- form, onBack, isSubmitting }: ReviewStepProps) {
+const ReviewStep = ({
+  form, onBack, isSubmitting
+}: ReviewStepProps) => {
   const { watch } = form;
 
   return (
@@ -105,3 +107,5 @@ interface ReviewStepProps {
     </div>
   );
 }
+
+export default ReviewStep;

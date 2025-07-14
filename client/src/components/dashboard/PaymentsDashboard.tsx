@@ -81,7 +81,7 @@ const paymentsData = {
   ]
 };
 
-
+function PaymentsDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [timeRange, setTimeRange] = useState("30d");
 

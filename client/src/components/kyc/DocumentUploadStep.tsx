@@ -12,13 +12,13 @@ interface DocumentUploadStepProps {
   handleRemoveFile: (field: keyof KycData) => void;
 }
 
-
+const DocumentUploadStep = ({
   onNext,
   onBack,
   previewUrls,
   handleFileChange,
   handleRemoveFile,
-}: DocumentUploadStepProps) {
+}: DocumentUploadStepProps) => {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
@@ -159,4 +159,6 @@ interface DocumentUploadStepProps {
       </div>
     </div>
   );
-}
+};
+
+export default DocumentUploadStep;

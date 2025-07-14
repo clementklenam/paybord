@@ -72,7 +72,7 @@ const solutionsDropdown = [
   }
 ];
 
-
+function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);

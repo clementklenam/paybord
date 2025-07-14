@@ -9,7 +9,9 @@ interface StepIndicatorProps {
   }>;
 }
 
- currentStep, steps }: StepIndicatorProps) {
+const StepIndicator = ({
+  currentStep, steps
+}: StepIndicatorProps) => {
   return (
     <nav aria-label="Progress" className="mb-12">
       <ol role="list" className="space-y-4 md:flex md:space-x-8 md:space-y-0">
@@ -70,3 +72,5 @@ interface StepIndicatorProps {
     </nav>
   );
 }
+
+export default StepIndicator;

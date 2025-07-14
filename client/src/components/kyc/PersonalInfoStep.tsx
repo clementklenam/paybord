@@ -17,7 +17,9 @@ interface PersonalInfoStepProps {
   setDate: (date: Date | undefined) => void;
 }
 
- form, onNext, date, setDate }: PersonalInfoStepProps) {
+const PersonalInfoStep = ({
+  form, onNext, date, setDate
+}: PersonalInfoStepProps) => {
   const [open, setOpen] = useState(false);
   const { register, formState: { errors }, setValue } = form;
 
@@ -203,3 +205,5 @@ interface PersonalInfoStepProps {
     </div>
   );
 }
+
+export default PersonalInfoStep;

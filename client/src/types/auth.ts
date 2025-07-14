@@ -25,11 +25,6 @@ export interface SignupData {
   username?: string;
 }
 
-
-  email: string;
-  password: string;
-}
-
 export interface LoginData {
   email: string;
   password: string;
@@ -50,14 +45,4 @@ export interface KycData {
   idNumber: string;
   idDocument: File | null;
   proofOfAddress: File | null;
-}
-
-
-  status: string;
-  message: string;
-}
-
-
-  success: boolean;
-  message: string;
 }

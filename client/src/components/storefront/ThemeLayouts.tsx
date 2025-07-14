@@ -12,7 +12,9 @@ interface ProductGridProps {
   onAddToCart?: (product: Product) => void;
 }
 
- products, theme, onProductClick, onAddToCart }: ProductGridProps) {
+const ProductGrid = ({
+  products, theme, onProductClick, onAddToCart
+}: ProductGridProps) => {
   const layout = theme.layout;
   
   // Determine grid columns based on theme
@@ -115,6 +117,8 @@ interface ProductGridProps {
       );
   }
 }
+
+export default ProductGrid;
 
 interface ProductCardProps {
   product: Product;

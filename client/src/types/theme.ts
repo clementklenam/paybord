@@ -49,16 +49,4 @@ export interface StorefrontTheme {
   spacing: ThemeSpacing;
   features: string[];
   isPopular?: boolean;
-}
-
-
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  preview: string;
-  colors: Partial<ThemeColors>;
-  layout: Partial<ThemeLayout>;
-  typography: Partial<ThemeTypography>;
-  spacing: Partial<ThemeSpacing>;
 } 

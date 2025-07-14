@@ -45,13 +45,12 @@ const WidgetCard = ({
             </span>
           )}
         </div>
-
       </div>
     </CardContent>
   </Card>
 );
 
- data, className }: WidgetProps) => (
+export const DisputeActivityWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="Dispute Activity"
     value={data?.total || 0}
@@ -61,7 +60,7 @@ const WidgetCard = ({
   />
 );
 
- data, className }: WidgetProps) => (
+export const DisputeCountWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="Dispute Count"
     value={data?.count || 0}
@@ -71,7 +70,7 @@ const WidgetCard = ({
   />
 );
 
- data, className }: WidgetProps) => (
+export const DisputedPaymentsWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="Disputed Payments"
     value={data?.amount ? `$${data.amount.toLocaleString()}` : '$0'}
@@ -81,7 +80,7 @@ const WidgetCard = ({
   />
 );
 
- data, className }: WidgetProps) => (
+export const NetVolumeSalesWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="Net Volume Sales"
     value={data?.amount ? `$${data.amount.toLocaleString()}` : '$0'}
@@ -91,7 +90,7 @@ const WidgetCard = ({
   />
 );
 
- data, className }: WidgetProps) => (
+export const CustomersWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="Customers"
     value={data?.total || 0}
@@ -101,7 +100,7 @@ const WidgetCard = ({
   />
 );
 
- data, className }: WidgetProps) => (
+export const NewCustomersWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="New Customers"
     value={data?.count || 0}
@@ -111,7 +110,7 @@ const WidgetCard = ({
   />
 );
 
- data, className }: WidgetProps) => (
+export const SpendPerCustomerWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="Spend per Customer"
     value={data?.amount ? `$${data.amount.toLocaleString()}` : '$0'}
@@ -121,7 +120,7 @@ const WidgetCard = ({
   />
 );
 
- data, className }: WidgetProps) => (
+export const TopCustomersWidget = ({ data, className }: WidgetProps) => (
   <Card className={`bg-gradient-to-br from-gray-50/50 to-gray-100/30 hover:from-gray-100/50 hover:to-gray-200/40 transition-all border-gray-200 hover:border-gray-300 ${className}`}>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-medium text-gray-700">Top Customers</CardTitle>
@@ -143,7 +142,7 @@ const WidgetCard = ({
   </Card>
 );
 
- data, className }: WidgetProps) => (
+export const HighRiskPaymentsWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="High Risk Payments"
     value={data?.count || 0}
@@ -153,7 +152,7 @@ const WidgetCard = ({
   />
 );
 
- data, className }: WidgetProps) => (
+export const SuccessfulPaymentsWidget = ({ data, className }: WidgetProps) => (
   <WidgetCard
     title="Successful Payments"
     value={data?.count || 0}

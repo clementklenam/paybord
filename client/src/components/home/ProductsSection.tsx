@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import { Store, Link, Globe, BarChart3, Smartphone, Zap, Users, Sparkles, DollarSign, Rocket } from "lucide-react";
 
-
+function ProductsSection() {
   const products = [
     {
       title: "Viral Storefronts",
