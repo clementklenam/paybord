@@ -15,6 +15,22 @@ const formatCurrency = (amount: number, currency: string = "USD") => {
   }).format(amount);
 };
 
+interface PaymentLink {
+  imageUrl?: string;
+  title?: string;
+  description?: string;
+  amount?: number;
+  currency?: string;
+  requiredFields?: {
+    customerName?: boolean;
+    customerEmail?: boolean;
+    customerPhone?: boolean;
+    shippingAddress?: boolean;
+  };
+  paymentMethodTypes?: string[];
+  // Add any other fields you expect
+}
+
 export default function PaymentPage() {
   const [paymentMatch, paymentParams] = useRoute('/payment/:id');
   const [plMatch, plParams] = useRoute('/pl_:id');
@@ -23,7 +39,7 @@ export default function PaymentPage() {
   // Get link ID from either route pattern
   const linkId = paymentParams?.id || plParams?.id || location[0].substring(4); // Handle both route formats
   
-  const [paymentLink, setPaymentLink] = useState<unknown>(null);
+  const [paymentLink, setPaymentLink] = useState<PaymentLink | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [customerInfo, setCustomerInfo] = useState({
