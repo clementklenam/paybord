@@ -84,11 +84,11 @@ export default class BusinessService {
             const data = await response.json();
             return data as { success: boolean; document: VerificationDocument };
         } catch (error) {
-            console.error('Error uploading document:', error);
             if (error instanceof Error) {
-                // handle error.message or other properties
+                console.error('Error uploading document:', error.message);
+            } else {
+                console.error('Error uploading document:', error);
             }
-            // Do not access properties of error unless type is known
             throw error;
         }
     }

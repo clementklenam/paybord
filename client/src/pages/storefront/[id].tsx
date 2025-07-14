@@ -995,8 +995,8 @@ export default function StorefrontPreview() {
     ? (cart[0].product.currency || 'NGN')
     : 'NGN';
 
-  const recordTransaction = async ({ amount, currency, customerInfo, provider, status }: unknown) => {
-    console.log('recordTransaction called with:', { amount, currency, customerInfo, provider, status });
+  const recordTransaction = async (arg: unknown) => {
+    console.log('recordTransaction called with:', arg);
     try {
       if (!storefront) return;
       const businessId = storefront.businessId || (storefront as any).business;
@@ -1010,12 +1010,12 @@ export default function StorefrontPreview() {
         return;
       }
       const payload: unknown = {
-        amount,
-        currency,
-        customerName: customerInfo.fullName,
-        customerEmail: customerInfo.email,
-        status,
-        provider,
+        amount: (arg as any).amount,
+        currency: (arg as any).currency,
+        customerName: (arg as any).customerInfo.fullName,
+        customerEmail: (arg as any).customerInfo.email,
+        status: (arg as any).status,
+        provider: (arg as any).provider,
         storefrontId: storefront?.id,
         businessId,
         paymentType: 'storefront_purchase',
