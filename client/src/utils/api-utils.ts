@@ -1,5 +1,10 @@
 // API utilities for handling rate limiting and debouncing
 
+// Type guard for axios errors
+function isAxiosError(error: unknown): error is { response?: { status?: number }; code?: string; message?: string } {
+    return typeof error === 'object' && error !== null && 'response' in error;
+}
+
 /**
  * Retry function with exponential backoff
  * @param fn The function to retry
@@ -21,7 +26,7 @@ export async function retryWithBackoff<T>(
       lastError = error;
 
       // If it's a rate limit error and we haven't exceeded max retries, continue
-      if (error.response?.status === 429 && attempt < maxRetries) {
+      if (isAxiosError(error) && error.response?.status === 429 && attempt < maxRetries) {
         const delay = baseDelay * Math.pow(2, attempt - 1);
         console.log(`Rate limited, retrying in ${delay}ms... (attempt ${attempt}/${maxRetries})`);
         await new Promise(resolve => setTimeout(resolve, delay));

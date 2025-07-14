@@ -1,7 +1,12 @@
 import axios from 'axios';
 import AuthService from './auth.service';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5002/api';
+
+// Type guard for axios errors
+function isAxiosError(error: unknown): error is { response?: { data?: any; status?: number }; code?: string; message?: string } {
+    return typeof error === 'object' && error !== null && 'response' in error;
+}
 
 export interface PaymentLink {
   _id?: string;
@@ -52,10 +57,13 @@ class PaymentLinkService {
         }
       );
 
-      return (response.data as unknown).data as PaymentLink;
+      return (response.data as { data: PaymentLink }).data;
     } catch (error: unknown) {
       console.error('Error creating payment link:', error);
-      throw error.response?.data || error.message || 'Error creating payment link';
+      if (isAxiosError(error)) {
+        throw error.response?.data || error.message || 'Error creating payment link';
+      }
+      throw (error as any)?.message || 'Error creating payment link';
     }
   }
 
@@ -88,7 +96,7 @@ class PaymentLinkService {
         },
       });
 
-      return (response.data as unknown) as {
+      return (response.data as {
         data: PaymentLink[];
         pagination: {
           page: number;
@@ -96,10 +104,13 @@ class PaymentLinkService {
           total: number;
           totalPages: number;
         };
-      };
+      });
     } catch (error: unknown) {
       console.error('Error fetching payment links:', error);
-      throw error.response?.data || error.message || 'Error fetching payment links';
+      if (isAxiosError(error)) {
+        throw error.response?.data || error.message || 'Error fetching payment links';
+      }
+      throw (error as any)?.message || 'Error fetching payment links';
     }
   }
 
@@ -119,10 +130,13 @@ class PaymentLinkService {
         },
       });
 
-      return (response.data as unknown).data as PaymentLink;
+      return (response.data as { data: PaymentLink }).data;
     } catch (error: unknown) {
       console.error('Error fetching payment link:', error);
-      throw error.response?.data || error.message || 'Error fetching payment link';
+      if (isAxiosError(error)) {
+        throw error.response?.data || error.message || 'Error fetching payment link';
+      }
+      throw (error as any)?.message || 'Error fetching payment link';
     }
   }
 
@@ -147,10 +161,13 @@ class PaymentLinkService {
         }
       );
 
-      return (response.data as unknown).data as PaymentLink;
+      return (response.data as { data: PaymentLink }).data;
     } catch (error: unknown) {
       console.error('Error updating payment link:', error);
-      throw error.response?.data || error.message || 'Error updating payment link';
+      if (isAxiosError(error)) {
+        throw error.response?.data || error.message || 'Error updating payment link';
+      }
+      throw (error as any)?.message || 'Error updating payment link';
     }
   }
 
@@ -171,7 +188,10 @@ class PaymentLinkService {
       });
     } catch (error: unknown) {
       console.error('Error deleting payment link:', error);
-      throw error.response?.data || error.message || 'Error deleting payment link';
+      if (isAxiosError(error)) {
+        throw error.response?.data || error.message || 'Error deleting payment link';
+      }
+      throw (error as any)?.message || 'Error deleting payment link';
     }
   }
 
@@ -195,10 +215,13 @@ class PaymentLinkService {
       }
       
       const response = await axios.get(`${API_URL}/payment-links/public/${id}`);
-      return (response.data as unknown).data as PaymentLink;
+      return (response.data as { data: PaymentLink }).data;
     } catch (error: unknown) {
       console.error('Error fetching public payment link:', error);
-      throw error.response?.data || error.message || 'Error fetching public payment link';
+      if (isAxiosError(error)) {
+        throw error.response?.data || error.message || 'Error fetching public payment link';
+      }
+      throw (error as any)?.message || 'Error fetching public payment link';
     }
   }
 

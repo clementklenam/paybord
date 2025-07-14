@@ -3,6 +3,11 @@ import {getAuthHeader} from './auth-header';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Type guard for axios errors
+function isAxiosError(error: unknown): error is { response?: { data?: any; status?: number }; code?: string; message?: string } {
+    return typeof error === 'object' && error !== null && 'response' in error;
+}
+
 export interface Product {
     _id?: string;
     id?: string;
@@ -199,65 +204,65 @@ const generateDemoProducts = (filters: ProductFilters = {}): ProductListResponse
 
 export { generateDemoProducts };
 
-// Generate a single demo product
-const generateDemoProduct = (id: string): Product => {
-    const product = [
-        {
-            id: 'prod_1',
-            name: 'Basic Plan',
-            description: 'Essential features for small businesses',
-            price: 49.99,
-            image: 'https://images.unsplash.com/photo-1586892478025-2b5472316bf4?q=80&w=1974',
-            category: 'Subscription',
-            currency: 'USD',
-            active: true,
-            businessId: 'bus_1',
-            createdAt: '2023-11-15T10:30:00Z'
-        },
-        {
-            id: 'prod_2',
-            name: 'Premium Plan',
-            description: 'Advanced features with priority support',
-            price: 99.99,
-            image: 'https://images.unsplash.com/photo-1661956602868-6ae368943878?q=80&w=2070',
-            category: 'Subscription',
-            currency: 'USD',
-            active: true,
-            businessId: 'bus_1',
-            createdAt: '2023-11-16T11:20:00Z'
-        },
-        {
-            id: 'prod_3',
-            name: 'Enterprise Plan',
-            description: 'Comprehensive solution for large organizations',
-            price: 199.99,
-            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015',
-            category: 'Subscription',
-            currency: 'USD',
-            active: true,
-            businessId: 'bus_1',
-            createdAt: '2023-11-17T14:45:00Z'
-        }
-    ].find(p => p.id === id);
+// Generate a single demo product (commented out to avoid unused variable warnings)
+// const generateDemoProduct = (id: string): Product => {
+//     const product = [
+//         {
+//             id: 'prod_1',
+//             name: 'Basic Plan',
+//             description: 'Essential features for small businesses',
+//             price: 49.99,
+//             image: 'https://images.unsplash.com/photo-1586892478025-2b5472316bf4?q=80&w=1974',
+//             category: 'Subscription',
+//             currency: 'USD',
+//             active: true,
+//             businessId: 'bus_1',
+//             createdAt: '2023-11-15T10:30:00Z'
+//         },
+//         {
+//             id: 'prod_2',
+//             name: 'Premium Plan',
+//             description: 'Advanced features with priority support',
+//             price: 99.99,
+//             image: 'https://images.unsplash.com/photo-1661956602868-6ae368943878?q=80&w=2070',
+//             category: 'Subscription',
+//             currency: 'USD',
+//             active: true,
+//             businessId: 'bus_1',
+//             createdAt: '2023-11-16T11:20:00Z'
+//         },
+//         {
+//             id: 'prod_3',
+//             name: 'Enterprise Plan',
+//             description: 'Comprehensive solution for large organizations',
+//             price: 199.99,
+//             image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015',
+//             category: 'Subscription',
+//             currency: 'USD',
+//             active: true,
+//             businessId: 'bus_1',
+//             createdAt: '2023-11-17T14:45:00Z'
+//         }
+//     ].find(p => p.id === id);
 
-    if (product) {
-        return product;
-    }
+//     if (product) {
+//         return product;
+//     }
 
-    // Return a default product if ID not found
-    return {
-        id,
-        name: 'Sample Product',
-        description: 'This is a sample product description',
-        price: 29.99,
-        image: `https://picsum.photos/seed/${id}/800/600`,
-        category: 'Other',
-        currency: 'USD',
-        active: true,
-        businessId: 'bus_1',
-        createdAt: new Date().toISOString()
-    };
-};
+//     // Return a default product if ID not found
+//     return {
+//         id,
+//         name: 'Sample Product',
+//         description: 'This is a sample product description',
+//         price: 29.99,
+//         image: `https://picsum.photos/seed/${id}/800/600`,
+//         category: 'Other',
+//         currency: 'USD',
+//         active: true,
+//         businessId: 'bus_1',
+//         createdAt: new Date().toISOString()
+//     };
+// };
 
 /**
  * Helper method to save a user-created product to localStorage
@@ -376,11 +381,15 @@ export class ProductService {
         } catch (error: unknown) {
             console.error('PRODUCT FETCH ERROR:', error);
 
-            if (error.response) {
-                console.error('PRODUCT FETCH: API error response status:', error.response.status);
-                console.error('PRODUCT FETCH: API error response data:', error.response.data);
-            } else if (error.request) {
-                console.error('PRODUCT FETCH: No response received from API');
+            if (isAxiosError(error)) {
+                if (error.response) {
+                    console.error('PRODUCT FETCH: API error response status:', error.response.status);
+                    console.error('PRODUCT FETCH: API error response data:', error.response.data);
+                } else if (error.request) {
+                    console.error('PRODUCT FETCH: No response received from API');
+                } else {
+                    console.error('PRODUCT FETCH: Error setting up request:', error.message);
+                }
             } else {
                 console.error('PRODUCT FETCH: Error setting up request:', error.message);
             }
@@ -543,12 +552,16 @@ export class ProductService {
             console.error('===== PRODUCT CREATION ERROR =====');
             console.error('Error object:', error);
 
-            if (error.response) {
-                console.error('API error response status:', error.response.status);
-                console.error('API error response data:', error.response.data);
-            } else if (error.request) {
-                console.error('No response received from API');
-                console.error('Request details:', error.request);
+            if (isAxiosError(error)) {
+                if (error.response) {
+                    console.error('API error response status:', error.response.status);
+                    console.error('API error response data:', error.response.data);
+                } else if (error.request) {
+                    console.error('No response received from API');
+                    console.error('Request details:', error.request);
+                } else {
+                    console.error('Error setting up request:', error.message);
+                }
             } else {
                 console.error('Error setting up request:', error.message);
             }

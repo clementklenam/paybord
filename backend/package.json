@@ -32,10 +32,12 @@
     "morgan": "^1.10.0",
     "nanoid": "^5.0.6",
     "paystack": "^2.0.1",
+    "socket.io-client": "^4.8.1",
     "stripe": "^14.18.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/socket.io-client": "^1.4.36",
     "nodemon": "^3.1.9"
   }
 }

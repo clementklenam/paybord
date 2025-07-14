@@ -6,6 +6,11 @@ import { getThemeById } from '../data/themePresets';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5002/api';
 
+// Type guard for axios errors
+function isAxiosError(error: unknown): error is { response?: { data?: any; status?: number }; code?: string; message?: string } {
+    return typeof error === 'object' && error !== null && 'response' in error;
+}
+
 export interface Product {
     id: string;
     name: string;
@@ -83,240 +88,240 @@ interface ApiResponse<T> {
     data: T;
 }
 
-// Generate demo data for storefronts
-const generateDemoStorefronts = (filters: StorefrontFilters = {}): StorefrontListResponse => {
-    const demoStorefronts: Storefront[] = [
-        {
-            id: 'sf_1',
-            name: 'Premium Shop',
-            description: 'High-quality products for discerning customers',
-            url: 'https://premium-shop.paymesa.com',
-            createdAt: '2023-11-15T10:30:00Z',
-            updatedAt: '2023-12-01T14:20:00Z',
-            visits: 1250,
-            sales: 78,
-            banner: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070',
-            logo: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?q=80&w=2069',
-            primaryColor: '#1e8449',
-            accentColor: '#27ae60',
-            theme: getThemeById('fashion-elegant') || undefined,
-            products: [
-                {
-                    id: 'prod_1',
-                    name: 'Basic Plan',
-                    description: 'Essential features for small businesses',
-                    price: 49.99,
-                    image: 'https://images.unsplash.com/photo-1586892478025-2b5472316bf4?q=80&w=1974'
-                },
-                {
-                    id: 'prod_2',
-                    name: 'Premium Plan',
-                    description: 'Advanced features with priority support',
-                    price: 99.99,
-                    image: 'https://images.unsplash.com/photo-1661956602868-6ae368943878?q=80&w=2070'
-                },
-                {
-                    id: 'prod_3',
-                    name: 'Enterprise Plan',
-                    description: 'Comprehensive solution for large organizations',
-                    price: 199.99,
-                    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015'
-                }
-            ],
-            socialLinks: {
-                instagram: 'premium_shop',
-                twitter: 'premium_shop',
-                facebook: 'premium.shop'
-            },
-            paymentMethods: ['card', 'bank_transfer'],
-            status: 'active',
-            businessId: 'bus_1'
-        },
-        {
-            id: 'sf_2',
-            name: 'Tech Gadgets',
-            description: 'Latest technology and gadgets at competitive prices',
-            url: 'https://tech-gadgets.paymesa.com',
-            createdAt: '2023-10-05T08:15:00Z',
-            updatedAt: '2023-11-20T11:45:00Z',
-            visits: 2340,
-            sales: 156,
-            banner: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2101',
-            logo: 'https://images.unsplash.com/photo-1535303311164-664fc9ec6532?q=80&w=1974',
-            primaryColor: '#2980b9',
-            accentColor: '#3498db',
-            theme: getThemeById('electronics-tech') || undefined,
-            products: [
-                {
-                    id: 'prod_4',
-                    name: 'Smart Watch',
-                    description: 'Track your fitness and stay connected',
-                    price: 129.99,
-                    image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?q=80&w=1964'
-                },
-                {
-                    id: 'prod_5',
-                    name: 'Wireless Earbuds',
-                    description: 'Premium sound quality with noise cancellation',
-                    price: 89.99,
-                    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1932'
-                }
-            ],
-            socialLinks: {
-                instagram: 'tech_gadgets',
-                twitter: 'tech_gadgets',
-                facebook: 'tech.gadgets'
-            },
-            paymentMethods: ['card', 'mobile_money'],
-            status: 'active',
-            businessId: 'bus_1'
-        },
-        {
-            id: 'sf_3',
-            name: 'Fitness Store',
-            description: 'Everything you need for your fitness journey',
-            url: 'https://fitness-store.paymesa.com',
-            createdAt: '2023-09-12T15:40:00Z',
-            visits: 980,
-            sales: 42,
-            banner: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070',
-            logo: 'https://images.unsplash.com/photo-1517162418377-2b7e3e7399d8?q=80&w=1965',
-            primaryColor: '#c0392b',
-            accentColor: '#e74c3c',
-            theme: getThemeById('sports-energetic') || undefined,
-            products: [
-                {
-                    id: 'prod_6',
-                    name: 'Yoga Mat',
-                    description: 'Non-slip, eco-friendly yoga mat',
-                    price: 39.99,
-                    image: 'https://images.unsplash.com/photo-1592432678016-e910b452f9a2?q=80&w=1974'
-                },
-                {
-                    id: 'prod_7',
-                    name: 'Resistance Bands Set',
-                    description: 'Set of 5 resistance bands for home workouts',
-                    price: 29.99,
-                    image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=2070'
-                },
-                {
-                    id: 'prod_8',
-                    name: 'Protein Powder',
-                    description: 'Premium whey protein for muscle recovery',
-                    price: 54.99,
-                    image: 'https://images.unsplash.com/photo-1579722821273-0f6c1b5d28b0?q=80&w=1974'
-                }
-            ],
-            socialLinks: {
-                instagram: 'fitness_store',
-                twitter: 'fitness_store'
-            },
-            paymentMethods: ['card', 'bank_transfer', 'mobile_money'],
-            status: 'active',
-            businessId: 'bus_1'
-        }
-    ];
+// Generate demo data for storefronts (commented out to avoid unused variable warnings)
+// const generateDemoStorefronts = (filters: StorefrontFilters = {}): StorefrontListResponse => {
+//     const demoStorefronts: Storefront[] = [
+//         {
+//             id: 'sf_1',
+//             name: 'Premium Shop',
+//             description: 'High-quality products for discerning customers',
+//             url: 'https://premium-shop.paymesa.com',
+//             createdAt: '2023-11-15T10:30:00Z',
+//             updatedAt: '2023-12-01T14:20:00Z',
+//             visits: 1250,
+//             sales: 78,
+//             banner: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070',
+//             logo: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?q=80&w=2069',
+//             primaryColor: '#1e8449',
+//             accentColor: '#27ae60',
+//             theme: getThemeById('fashion-elegant') || undefined,
+//             products: [
+//                 {
+//                     id: 'prod_1',
+//                     name: 'Basic Plan',
+//                     description: 'Essential features for small businesses',
+//                     price: 49.99,
+//                     image: 'https://images.unsplash.com/photo-1586892478025-2b5472316bf4?q=80&w=1974'
+//                 },
+//                 {
+//                     id: 'prod_2',
+//                     name: 'Premium Plan',
+//                     description: 'Advanced features with priority support',
+//                     price: 99.99,
+//                     image: 'https://images.unsplash.com/photo-1661956602868-6ae368943878?q=80&w=2070'
+//                 },
+//                 {
+//                     id: 'prod_3',
+//                     name: 'Enterprise Plan',
+//                     description: 'Comprehensive solution for large organizations',
+//                     price: 199.99,
+//                     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015'
+//                 }
+//             ],
+//             socialLinks: {
+//                 instagram: 'premium_shop',
+//                 twitter: 'premium_shop',
+//                 facebook: 'premium.shop'
+//             },
+//             paymentMethods: ['card', 'bank_transfer'],
+//             status: 'active',
+//             businessId: 'bus_1'
+//         },
+//         {
+//             id: 'sf_2',
+//             name: 'Tech Gadgets',
+//             description: 'Latest technology and gadgets at competitive prices',
+//             url: 'https://tech-gadgets.paymesa.com',
+//             createdAt: '2023-10-05T08:15:00Z',
+//             updatedAt: '2023-11-20T11:45:00Z',
+//             visits: 2340,
+//             sales: 156,
+//             banner: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2101',
+//             logo: 'https://images.unsplash.com/photo-1535303311164-664fc9ec6532?q=80&w=1974',
+//             primaryColor: '#2980b9',
+//             accentColor: '#3498db',
+//             theme: getThemeById('electronics-tech') || undefined,
+//             products: [
+//                 {
+//                     id: 'prod_4',
+//                     name: 'Smart Watch',
+//                     description: 'Track your fitness and stay connected',
+//                     price: 129.99,
+//                     image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?q=80&w=1964'
+//                 },
+//                 {
+//                     id: 'prod_5',
+//                     name: 'Wireless Earbuds',
+//                     description: 'Premium sound quality with noise cancellation',
+//                     price: 89.99,
+//                     image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=1932'
+//                 }
+//             ],
+//             socialLinks: {
+//                 instagram: 'tech_gadgets',
+//                 twitter: 'tech_gadgets',
+//                 facebook: 'tech.gadgets'
+//             },
+//             paymentMethods: ['card', 'mobile_money'],
+//             status: 'active',
+//             businessId: 'bus_1'
+//         },
+//         {
+//             id: 'sf_3',
+//             name: 'Fitness Store',
+//             description: 'Everything you need for your fitness journey',
+//             url: 'https://fitness-store.paymesa.com',
+//             createdAt: '2023-09-12T15:40:00Z',
+//             visits: 980,
+//             sales: 42,
+//             banner: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070',
+//             logo: 'https://images.unsplash.com/photo-1517162418377-2b7e3e7399d8?q=80&w=1965',
+//             primaryColor: '#c0392b',
+//             accentColor: '#e74c3c',
+//             theme: getThemeById('sports-energetic') || undefined,
+//             products: [
+//                 {
+//                     id: 'prod_6',
+//                     name: 'Yoga Mat',
+//                     description: 'Non-slip, eco-friendly yoga mat',
+//                     price: 39.99,
+//                     image: 'https://images.unsplash.com/photo-1592432678016-e910b452f9a2?q=80&w=1974'
+//                 },
+//                 {
+//                     id: 'prod_7',
+//                     name: 'Resistance Bands Set',
+//                     description: 'Set of 5 resistance bands for home workouts',
+//                     price: 29.99,
+//                     image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=2070'
+//                 },
+//                 {
+//                     id: 'prod_8',
+//                     name: 'Protein Powder',
+//                     description: 'Premium whey protein for muscle recovery',
+//                     price: 54.99,
+//                     image: 'https://images.unsplash.com/photo-1579722821273-0f6c1b5d28b0?q=80&w=1974'
+//                 }
+//             ],
+//             socialLinks: {
+//                 instagram: 'fitness_store',
+//                 twitter: 'fitness_store'
+//             },
+//             paymentMethods: ['card', 'bank_transfer', 'mobile_money'],
+//             status: 'active',
+//             businessId: 'bus_1'
+//         }
+//     ];
 
-    // Apply filters
-    let filteredStorefronts = [...demoStorefronts];
+//     // Apply filters
+//     let filteredStorefronts = demoStorefronts.slice();
 
-    // Apply search filter
-    if (filters.search) {
-        const searchTerm = filters.search.toLowerCase();
-        filteredStorefronts = filteredStorefronts.filter(
-            sf => sf.name.toLowerCase().includes(searchTerm) ||
-                sf.description.toLowerCase().includes(searchTerm)
-        );
-    }
+//     // Apply search filter
+//     if (filters.search) {
+//         const searchTerm = filters.search.toLowerCase();
+//         filteredStorefronts = filteredStorefronts.filter(
+//             sf => sf.name.toLowerCase().includes(searchTerm) ||
+//                 sf.description.toLowerCase().includes(searchTerm)
+//         );
+//     }
 
-    // Apply status filter
-    if (filters.status) {
-        filteredStorefronts = filteredStorefronts.filter(sf => sf.status === filters.status);
-    }
+//     // Apply status filter
+//     if (filters.status) {
+//         filteredStorefronts = filteredStorefronts.filter(sf => sf.status === filters.status);
+//     }
 
-    // Apply sorting
-    if (filters?.sortBy) {
-        const sortField = filters.sortBy as keyof Storefront;
-        const sortOrder = filters.sortOrder === 'desc' ? -1 : 1;
+//     // Apply sorting
+//     if (filters?.sortBy) {
+//         const sortField = filters.sortBy as keyof Storefront;
+//         const sortOrder = filters.sortOrder === 'desc' ? -1 : 1;
 
-        filteredStorefronts.sort((a, b) => {
-            const aValue = a[sortField];
-            const bValue = b[sortField];
+//         filteredStorefronts.sort((a, b) => {
+//             const aValue = a[sortField];
+//             const bValue = b[sortField];
 
-            if (aValue == null || bValue == null) return 0;
-            if (aValue < bValue) return -1 * sortOrder;
-            if (aValue > bValue) return 1 * sortOrder;
-            return 0;
-        });
-    }
+//             if (aValue == null || bValue == null) return 0;
+//             if (aValue < bValue) return -1 * sortOrder;
+//             if (aValue > bValue) return 1 * sortOrder;
+//             return 0;
+//         });
+//     }
 
-    // Apply pagination
-    const page = filters.page || 1;
-    const limit = filters.limit || 10;
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const paginatedStorefronts = filteredStorefronts.slice(startIndex, endIndex);
+//     // Apply pagination
+//     const page = filters.page || 1;
+//     const limit = filters.limit || 10;
+//     const startIndex = (page - 1) * limit;
+//     const endIndex = startIndex + limit;
+//     const paginatedStorefronts = filteredStorefronts.slice(startIndex, endIndex);
 
-    return {
-        data: paginatedStorefronts,
-        total: filteredStorefronts.length,
-        pages: Math.ceil(filteredStorefronts.length / limit),
-        page,
-        limit
-    };
-};
+//     return {
+//         data: paginatedStorefronts,
+//         total: filteredStorefronts.length,
+//         pages: Math.ceil(filteredStorefronts.length / limit),
+//         page,
+//         limit
+//     };
+// };
 
-// Generate a single demo storefront
-const generateDemoStorefront = (id: string): Storefront => {
-    const products = [
-        {
-            id: 'prod_1',
-            name: 'Basic Plan',
-            description: 'Essential features for small businesses',
-            price: 49.99,
-            image: 'https://images.unsplash.com/photo-1586892478025-2b5472316bf4?q=80&w=1974'
-        },
-        {
-            id: 'prod_2',
-            name: 'Premium Plan',
-            description: 'Advanced features with priority support',
-            price: 99.99,
-            image: 'https://images.unsplash.com/photo-1661956602868-6ae368943878?q=80&w=2070'
-        },
-        {
-            id: 'prod_3',
-            name: 'Enterprise Plan',
-            description: 'Comprehensive solution for large organizations',
-            price: 199.99,
-            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015'
-        }
-    ];
+// Generate a single demo storefront (commented out to avoid unused variable warnings)
+// const generateDemoStorefront = (id: string): Storefront => {
+//     const products = [
+//         {
+//             id: 'prod_1',
+//             name: 'Basic Plan',
+//             description: 'Essential features for small businesses',
+//             price: 49.99,
+//             image: 'https://images.unsplash.com/photo-1586892478025-2b5472316bf4?q=80&w=1974'
+//         },
+//         {
+//             id: 'prod_2',
+//             name: 'Premium Plan',
+//             description: 'Advanced features with priority support',
+//             price: 99.99,
+//             image: 'https://images.unsplash.com/photo-1661956602868-6ae368943878?q=80&w=2070'
+//         },
+//         {
+//             id: 'prod_3',
+//             name: 'Enterprise Plan',
+//             description: 'Comprehensive solution for large organizations',
+//             price: 199.99,
+//             image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015'
+//         }
+//     ];
 
-    return {
-        id: id,
-        name: 'Demo Storefront',
-        description: 'A demonstration storefront for testing purposes',
-        url: `https://demo-${id}.paymesa.com`,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        visits: Math.floor(Math.random() * 1000) + 100,
-        sales: Math.floor(Math.random() * 100) + 10,
-        banner: null,
-        logo: null,
-        primaryColor: '#1e8449',
-        accentColor: '#27ae60',
-        theme: getThemeById('general-professional') || undefined,
-        products: products,
-        socialLinks: {
-            instagram: 'paymesa',
-            twitter: 'paymesa',
-            facebook: 'paymesa'
-        },
-        paymentMethods: ['card', 'bank_transfer', 'mobile_money'],
-        status: 'active',
-        businessId: 'demo_business_id'
-    };
-};
+//     return {
+//         id: id,
+//         name: 'Demo Storefront',
+//         description: 'A demonstration storefront for testing purposes',
+//         url: `https://demo-${id}.paymesa.com`,
+//         createdAt: new Date().toISOString(),
+//         updatedAt: new Date().toISOString(),
+//         visits: Math.floor(Math.random() * 1000) + 100,
+//         sales: Math.floor(Math.random() * 100) + 10,
+//         banner: null,
+//         logo: null,
+//         primaryColor: '#1e8449',
+//         accentColor: '#27ae60',
+//         theme: getThemeById('general-professional') || undefined,
+//         products: products,
+//         socialLinks: {
+//             instagram: 'paymesa',
+//             twitter: 'paymesa',
+//             facebook: 'paymesa'
+//         },
+//         paymentMethods: ['card', 'bank_transfer', 'mobile_money'],
+//         status: 'active',
+//         businessId: 'demo_business_id'
+//     };
+// };
 
 export class StorefrontService {
     // Cache for storefront data to prevent duplicate API calls
@@ -371,35 +376,35 @@ export class StorefrontService {
      * Sync localStorage storefronts with API
      * This method checks if localStorage storefronts exist in the API and removes them if they don't
      */
-    private async syncLocalStorefronts(): Promise<void> {
-        try {
-            const userStorefrontsJSON = localStorage.getItem('user_storefronts');
-            if (!userStorefrontsJSON) return;
+    // private async syncLocalStorefronts(): Promise<void> {
+    //     try {
+    //         const userStorefrontsJSON = localStorage.getItem('user_storefronts');
+    //         if (!userStorefrontsJSON) return;
 
-            const localStorefronts: Storefront[] = JSON.parse(userStorefrontsJSON);
-            const validStorefronts: Storefront[] = [];
+    //         const localStorefronts: Storefront[] = JSON.parse(userStorefrontsJSON);
+    //         const validStorefronts: Storefront[] = [];
 
-            for (const localStorefront of localStorefronts) {
-                try {
-                    // Try to fetch the storefront from API to see if it exists
-                    const apiStorefront = await this.getStorefrontById(localStorefront.id);
-                    if (apiStorefront) {
-                        // Storefront exists in API, keep it in localStorage
-                        validStorefronts.push(localStorefront);
-                    }
-                } catch (error) {
-                    // Storefront doesn't exist in API, remove it from localStorage
-                    console.log(`Removing invalid storefront from localStorage: ${localStorefront.id}`);
-                }
-            }
+    //         for (const localStorefront of localStorefronts) {
+    //             try {
+    //                 // Try to fetch the storefront from API to see if it exists
+    //                 const apiStorefront = await this.getStorefrontById(localStorefront.id);
+    //                 if (apiStorefront) {
+    //                     // Storefront exists in API, keep it in localStorage
+    //                     validStorefronts.push(localStorefront);
+    //                 }
+    //             } catch (error) {
+    //                 // Storefront doesn't exist in API, remove it from localStorage
+    //                 console.log(`Removing invalid storefront from localStorage: ${localStorefront.id}`);
+    //             }
+    //         }
 
-            // Update localStorage with only valid storefronts
-            localStorage.setItem('user_storefronts', JSON.stringify(validStorefronts));
-            console.log(`Synced localStorage: ${validStorefronts.length} valid storefronts`);
-        } catch (error) {
-            console.error('Error syncing localStorage storefronts:', error);
-        }
-    }
+    //         // Update localStorage with only valid storefronts
+    //         localStorage.setItem('user_storefronts', JSON.stringify(validStorefronts));
+    //         console.log(`Synced localStorage: ${validStorefronts.length} valid storefronts`);
+    //     } catch (error) {
+    //         console.error('Error syncing localStorage storefronts:', error);
+    //     }
+    // }
 
     /**
      * Get all storefronts with optional filters
@@ -455,7 +460,7 @@ export class StorefrontService {
 
             // Ensure all storefronts have proper IDs
             const processedStorefronts = storefronts.map((storefront: unknown) => {
-                const processed = { ...storefront };
+                const processed = Object.assign({}, storefront as Record<string, any>);
                 if (!processed.id && processed._id) {
                     processed.id = processed._id;
                 }
@@ -466,9 +471,7 @@ export class StorefrontService {
                 processed.products = processed.products || [];
                 processed.paymentMethods = processed.paymentMethods || ['card', 'bank_transfer'];
                 
-
-                
-                return processed;
+                return processed as Storefront;
             });
 
             console.log('Processed storefronts:', processedStorefronts);
@@ -564,76 +567,43 @@ export class StorefrontService {
      */
     async createStorefront(data: StorefrontCreateData): Promise<Storefront> {
         try {
-            console.log('StorefrontService.createStorefront called with data:', data);
+            console.log('Creating storefront with data:', data);
             
-            // Transform the data to match backend expectations
-            const requestData = {
-                business: data.businessId, // Backend expects 'business' field
-                name: data.name,
-                description: data.description,
-                logo: data.logo,
-                banner: data.banner,
-                primaryColor: data.primaryColor,
-                accentColor: data.accentColor,
-                socialLinks: data.socialLinks,
-                products: data.products,
-                paymentMethods: data.paymentMethods,
-                // Note: theme field is excluded as backend doesn't support it yet
-            };
-
-            console.log('Request data being sent to API:', requestData);
-            console.log('API URL:', `${API_URL}/storefronts`);
-            console.log('Auth headers:', getAuthHeader());
-
-            const response = await axios.post<ApiResponse<Storefront>>(`${API_URL}/storefronts`, requestData, {
-                timeout: 30000, // Increase timeout to 30 seconds
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...getAuthHeader()
-                },
+            const response = await axios.post<ApiResponse<Storefront>>(`${API_URL}/storefronts`, data, {
+                headers: getAuthHeader()
             });
 
-            console.log('API response:', response.data);
+            console.log('Storefront created:', response.data);
 
-            if (!response.data.success) {
-                throw new Error(response.data.message || 'Failed to create storefront');
-            }
-
-            // Ensure the storefront has a valid ID
             const storefront = response.data.data;
+            // Ensure the storefront has an id field
             if (!storefront.id && storefront._id) {
                 storefront.id = storefront._id;
-            } else if (!storefront.id) {
-                // Generate a client-side ID if none is provided
-                storefront.id = `sf_local_${Date.now()}`;
-                console.warn('Created storefront without ID, using generated ID:', storefront.id);
             }
 
-            // Add the theme back to the storefront object for frontend use
-            if (data.theme) {
-                storefront.theme = data.theme;
-            }
-
-            // Save to localStorage for persistence
+            // Save to localStorage for offline access
             this.saveUserStorefront(storefront);
 
             console.log('Final storefront object:', storefront);
             return storefront;
         } catch (error: unknown) {
             console.error('Error in createStorefront:', error);
-            console.error('Error response:', error.response?.data);
-            console.error('Error status:', error.response?.status);
+            
+            if (isAxiosError(error)) {
+                console.error('Error response:', error.response?.data);
+                console.error('Error status:', error.response?.status);
 
-            if (error?.code === 'ECONNABORTED') {
-                throw new Error('Request timed out. Please try again.');
-            }
+                if (error.code === 'ECONNABORTED') {
+                    throw new Error('Request timed out. Please try again.');
+                }
 
-            if (error?.response?.data?.message) {
-                throw new Error(error.response.data.message);
+                if (error.response?.data?.message) {
+                    throw new Error(error.response.data.message);
+                }
             }
 
             throw new Error(
-                error?.message ||
+                (error as any)?.message ||
                 'Failed to create storefront'
             );
         }
@@ -699,7 +669,7 @@ export class StorefrontService {
             }
 
             return result;
-        } catch (error) {
+        } catch (error: unknown) {
             console.error('Error in addProductsToStorefront:', error);
             throw error;
         }
@@ -718,7 +688,7 @@ export class StorefrontService {
                 } as any
             );
             return response.data.data;
-        } catch (error) {
+        } catch (error: unknown) {
             console.error(`Error removing products from storefront with ID ${id}:`, error);
             throw error;
         }
@@ -733,7 +703,7 @@ export class StorefrontService {
                 headers: getAuthHeader()
             });
             return response.data.data;
-        } catch (error) {
+        } catch (error: unknown) {
             console.error(`Error updating status of storefront with ID ${id}:`, error);
             throw error;
         }
@@ -748,7 +718,7 @@ export class StorefrontService {
                 headers: getAuthHeader()
             });
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             console.error(`Error fetching analytics for storefront with ID ${id}:`, error);
             throw error;
         }
@@ -797,15 +767,15 @@ export class StorefrontService {
         } catch (error: unknown) {
             // If it's a 404 error, the storefront doesn't exist on the server
             // In this case, we can still consider this a "success" since the end result is the same
-            if (error.response?.status === 404) {
+            if (isAxiosError(error) && error.response?.status === 404) {
                 console.warn(`Storefront with ID ${id} not found on server, but was removed from local state`);
                 return;
             }
             
             console.error('Error deleting storefront:', error);
             throw new Error(
-                error.response?.data?.message ||
-                error.message ||
+                (isAxiosError(error) && error.response?.data?.message) ||
+                (error as any)?.message ||
                 'Failed to delete storefront'
             );
         }
