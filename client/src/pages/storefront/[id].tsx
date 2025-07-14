@@ -999,7 +999,7 @@ export default function StorefrontPreview() {
     console.log('recordTransaction called with:', { amount, currency, customerInfo, provider, status });
     try {
       if (!storefront) return;
-      const businessId = storefront.businessId || (storefront as unknown).business;
+      const businessId = storefront.businessId || (storefront as any).business;
       if (!businessId) {
         toast({
           title: 'Payment Error',
@@ -1369,7 +1369,7 @@ export default function StorefrontPreview() {
             });
             setCart([]);
           }}
-          businessId={storefront?.businessId || (storefront as unknown)?.business}
+          businessId={storefront?.businessId || (storefront as any)?.business}
           storefrontId={storefront.id}
         />
       </Elements>
@@ -1393,7 +1393,7 @@ export default function StorefrontPreview() {
           setCart([]);
           toast({ title: 'Payment Successful!', description: 'Thank you for your purchase.', variant: 'default' });
         }}
-        businessId={storefront?.businessId || (storefront as unknown)?.business}
+        businessId={storefront?.businessId || (storefront as any)?.business}
         storefrontId={storefront?.id}
         recordTransaction={recordTransaction}
       />

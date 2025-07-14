@@ -4,6 +4,11 @@ import {getAuthHeader} from './auth-header';
 // For Vite-based React apps, use import.meta.env instead of process.env
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Add local type guard:
+function isAxiosError(error: unknown): error is { response?: { data?: any; status?: number }; code?: string; message?: string } {
+    return typeof error === 'object' && error !== null && 'response' in error;
+}
+
 /**
  * Service for fetching business analytics data
  */
@@ -33,7 +38,11 @@ class AnalyticsService {
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching dashboard overview:', error);
+      if (error instanceof Error) {
+        console.error('Error fetching dashboard overview:', error);
+      } else {
+        console.error('Error fetching dashboard overview:', error);
+      }
       throw error;
     }
   }
@@ -60,7 +69,11 @@ class AnalyticsService {
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching gross volume:', error);
+      if (error instanceof Error) {
+        console.error('Error fetching gross volume:', error);
+      } else {
+        console.error('Error fetching gross volume:', error);
+      }
       throw error;
     }
   }
@@ -85,7 +98,11 @@ class AnalyticsService {
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching balance and payout:', error);
+      if (error instanceof Error) {
+        console.error('Error fetching balance and payout:', error);
+      } else {
+        console.error('Error fetching balance and payout:', error);
+      }
       throw error;
     }
   }
@@ -114,7 +131,11 @@ class AnalyticsService {
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching top customers:', error);
+      if (error instanceof Error) {
+        console.error('Error fetching top customers:', error);
+      } else {
+        console.error('Error fetching top customers:', error);
+      }
       throw error;
     }
   }
@@ -141,7 +162,11 @@ class AnalyticsService {
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching failed payments:', error);
+      if (error instanceof Error) {
+        console.error('Error fetching failed payments:', error);
+      } else {
+        console.error('Error fetching failed payments:', error);
+      }
       throw error;
     }
   }
@@ -296,8 +321,14 @@ export async function getPaymentAnalytics(timeRange: string = 'last7days'): Prom
     });
     return response.data;
   } catch (error: unknown) {
-    console.error('Error fetching payment analytics:', error);
-    console.error('Error response:', error.response?.data);
+    if (isAxiosError(error)) {
+      console.error('Error fetching payment analytics:', error);
+      console.error('Error response:', error.response?.data);
+    } else if (error instanceof Error) {
+      console.error('Error fetching payment analytics:', error.message);
+    } else {
+      console.error('Error fetching payment analytics:', error);
+    }
     throw error;
   }
 }
@@ -324,8 +355,14 @@ export async function getProductAnalytics(timeRange: string = 'last30days'): Pro
     });
     return response.data;
   } catch (error: unknown) {
-    console.error('Error fetching product analytics:', error);
-    console.error('Error response:', error.response?.data);
+    if (isAxiosError(error)) {
+      console.error('Error fetching product analytics:', error);
+      console.error('Error response:', error.response?.data);
+    } else if (error instanceof Error) {
+      console.error('Error fetching product analytics:', error.message);
+    } else {
+      console.error('Error fetching product analytics:', error);
+    }
     throw error;
   }
 }
@@ -352,8 +389,14 @@ export async function getCustomerAnalytics(timeRange: string = 'last30days'): Pr
     });
     return response.data;
   } catch (error: unknown) {
-    console.error('Error fetching customer analytics:', error);
-    console.error('Error response:', error.response?.data);
+    if (isAxiosError(error)) {
+      console.error('Error fetching customer analytics:', error);
+      console.error('Error response:', error.response?.data);
+    } else if (error instanceof Error) {
+      console.error('Error fetching customer analytics:', error.message);
+    } else {
+      console.error('Error fetching customer analytics:', error);
+    }
     throw error;
   }
 }

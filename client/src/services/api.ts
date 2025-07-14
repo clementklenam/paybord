@@ -9,7 +9,6 @@ const api = axios.create({
         'Content-Type': 'application/json',
     },
     timeout: 30000, // 30 seconds timeout
-    timeoutErrorMessage: 'Request timed out. Please check your connection and try again.',
     // Retry logic
     validateStatus: function (status) {
         return status >= 200 && status < 500; // Only reject if status is 5xx
@@ -21,7 +20,8 @@ api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+            if (!config.headers) config.headers = {};
+            (config.headers as any).Authorization = `Bearer ${token}`;
         }
         return config;
     },
@@ -48,18 +48,21 @@ const shouldLogError = (url: string, status: number): boolean => {
 };
 
 // Retry logic for timeouts and network errors
-api.interceptors.response.use(undefined, async (error) => {
-    const config = error.config;
-    if (!config || config.__retryCount >= 2) {
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const config = error.config;
+        if (!config || config.__retryCount >= 2) {
+            return Promise.reject(error);
+        }
+        config.__retryCount = (config.__retryCount || 0) + 1;
+        if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+            console.warn(`Retrying request (${config.__retryCount}/2) due to timeout...`);
+            return api(config);
+        }
         return Promise.reject(error);
     }
-    config.__retryCount = (config.__retryCount || 0) + 1;
-    if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
-        console.warn(`Retrying request (${config.__retryCount}/2) due to timeout...`);
-        return api(config);
-    }
-    return Promise.reject(error);
-});
+);
 
 // Add a response interceptor to handle common errors
 api.interceptors.response.use(

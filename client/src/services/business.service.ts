@@ -86,7 +86,7 @@ export default class BusinessService {
         } catch (error) {
             console.error('Error uploading document:', error);
             if (error instanceof Error) {
-                // You can access error.message or other Error properties here
+                // handle error.message or other properties
             }
             // Do not access properties of error unless type is known
             throw error;

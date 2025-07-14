@@ -2,8 +2,23 @@ import {useState, useEffect} from "react";
 import analyticsService from "@/services/analytics.service";
 import {useAuth} from "@/contexts/AuthContext";
 
+// Define interface for objects with 'overview' and 'customer' properties.
+// Use type guards or assertions before accessing these properties.
+interface OverviewData {
+  topCustomers: {
+    name: string;
+    email: string;
+    spend: number;
+    transactionCount: number;
+  }[];
+}
+
+interface DashboardOverviewResponse {
+  overview: OverviewData;
+}
+
 export default function TestTopCustomersPage() {
-  const [data, setData] = useState<unknown>(null);
+  const [data, setData] = useState<DashboardOverviewResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
@@ -15,7 +30,7 @@ export default function TestTopCustomersPage() {
         const response = await analyticsService.getDashboardOverview('last7days');
         console.log('Full response:', response);
         console.log('Top customers:', response?.overview?.topCustomers);
-        setData(response);
+        setData(response as DashboardOverviewResponse);
       } catch (err) {
         console.error('Error:', err);
         setError(err instanceof Error ? err.message : 'Unknown error');
@@ -53,14 +68,17 @@ export default function TestTopCustomersPage() {
         <h2 className="text-lg font-semibold mb-2">Top Customers:</h2>
         {data?.overview?.topCustomers ? (
           <div className="space-y-2">
-            {data.overview.topCustomers.map((customer: unknown, index: number) => (
-              <div key={index} className="bg-white p-3 rounded border">
-                <div className="font-medium">{customer.name}</div>
-                <div className="text-sm text-gray-600">{customer.email}</div>
-                <div className="text-sm text-gray-600">Spend: ${customer.spend}</div>
-                <div className="text-sm text-gray-600">Transactions: {customer.transactionCount}</div>
-              </div>
-            ))}
+            {data.overview.topCustomers.map((customer: unknown, index: number) => {
+              const c = customer as { name: string; email: string; spend: number; transactionCount: number };
+              return (
+                <div key={index} className="bg-white p-3 rounded border">
+                  <div className="font-medium">{c.name}</div>
+                  <div className="text-sm text-gray-600">{c.email}</div>
+                  <div className="text-sm text-gray-600">Spend: ${c.spend}</div>
+                  <div className="text-sm text-gray-600">Transactions: {c.transactionCount}</div>
+                </div>
+              );
+            })}
           </div>
         ) : (
           <div className="text-red-500">No top customers data found</div>

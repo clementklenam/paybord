@@ -385,9 +385,9 @@ export class ProductService {
                 if (error.response) {
                     console.error('PRODUCT FETCH: API error response status:', error.response.status);
                     console.error('PRODUCT FETCH: API error response data:', error.response.data);
-                } else if (error.request) {
+                } else if (error && typeof error === 'object' && 'request' in error) {
                     console.error('PRODUCT FETCH: No response received from API');
-                } else {
+                } else if (error instanceof Error) {
                     console.error('PRODUCT FETCH: Error setting up request:', error.message);
                 }
             } else if (error && typeof error === 'object' && 'request' in error) {
@@ -559,12 +559,15 @@ export class ProductService {
                 if (error.response) {
                     console.error('API error response status:', error.response.status);
                     console.error('API error response data:', error.response.data);
-                } else if (error.request) {
+                } else if (error && typeof error === 'object' && 'request' in error) {
                     console.error('No response received from API');
                     console.error('Request details:', (error as any).request);
-                } else {
+                } else if (error instanceof Error) {
                     console.error('Error setting up request:', error.message);
                 }
+            } else if (error && typeof error === 'object' && 'request' in error) {
+                console.error('No response received from API');
+                console.error('Request details:', (error as any).request);
             } else if (error instanceof Error) {
                 console.error('Error setting up request:', error.message);
             }
