@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { DashboardLayout } from "./DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
+import {useState} from "react";
+import {DashboardLayout} from "./DashboardLayout";
+import {Card, CardContent, CardHeader, CardTitle, CardDescription} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Badge} from "@/components/ui/badge";
 import {
   Code,
   Copy,
@@ -26,8 +26,8 @@ import {
   Filter,
   Download
 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import {Switch} from "@/components/ui/switch";
+import {Label} from "@/components/ui/label";
 
 function ApiKeysPage() {
   const [activeTab, setActiveTab] = useState("api-keys");

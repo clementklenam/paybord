@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { Product, StorefrontCreateData } from "@/services/storefront.service";
-import { ArrowRight, Check, Eye, Globe, Loader2, Palette, ShoppingBag, Star } from "lucide-react";
-import { ProductService } from "@/services/product.service";
-import BusinessService from "@/services/business.service";
-import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from '@/components/ui/use-toast';
-import { ThemeSelector } from './ThemeSelector';
-import { StorefrontTheme } from '@/types/theme';
-import { getThemeById } from '../../data/themePresets';
-import { Badge } from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardFooter} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Textarea} from "@/components/ui/textarea";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Switch} from "@/components/ui/switch";
+import {Product, StorefrontCreateData} from "@/services/storefront.service";
+import {ArrowRight, Check, Eye, Globe, Loader2, Palette, ShoppingBag, Star} from "lucide-react";
+import {ProductService} from "@/services/product.service";
+import {useAuth} from "@/contexts/AuthContext";
+import {useToast} from '@/components/ui/use-toast';
+import {ThemeSelector} from './ThemeSelector';
+import {StorefrontTheme} from '@/types/theme';
+import {getThemeById} from '../../data/themePresets';
+import {Badge} from "@/components/ui/badge";
 
 interface Step {
     id: number;
@@ -26,7 +25,7 @@ interface Step {
 }
 
 interface StorefrontWizardProps {
-    onSubmit: (data: StorefrontCreateData) => Promise<any>;
+    onSubmit: (data: StorefrontCreateData) => Promise<unknown>;
     onCancel: () => void;
     isSubmitting: boolean;
     businesses: { _id: string; businessName: string }[];
@@ -125,7 +124,6 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
 
                 // Fetch products using the business ID
                 console.log("Fetching products for business ID:", businessId);
-                const productService = new ProductService();
 
                 // Use direct API call to bypass any demo mode logic
                 const token = localStorage.getItem('token');

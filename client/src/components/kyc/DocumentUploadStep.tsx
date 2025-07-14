@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Upload } from 'lucide-react';
-import { KycData } from '@/types/auth';
-import { cn } from '@/lib/utils';
+import {Button} from '@/components/ui/button';
+import {Label} from '@/components/ui/label';
+import {Upload} from 'lucide-react';
+import {KycData} from '@/types/auth';
+import {cn} from '@/lib/utils';
 
 interface DocumentUploadStepProps {
   onNext: () => void;

@@ -1,9 +1,9 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
-import { Storefront } from "@/services/storefront.service";
-import { Copy, Edit, Eye, Image as ImageIcon, Trash2 } from "lucide-react";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {useToast} from "@/components/ui/use-toast";
+import {Storefront} from "@/services/storefront.service";
+import {Copy, Edit, Eye, Image as ImageIcon, Trash2} from "lucide-react";
 
 interface StorefrontCardProps {
     storefront: Storefront;

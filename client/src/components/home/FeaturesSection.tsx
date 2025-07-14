@@ -1,6 +1,6 @@
-import { Container } from "@/components/ui/container";
-import { motion } from "framer-motion";
-import { Zap, Globe, Code, BarChart3 } from "lucide-react";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
+import {Zap, Globe, Code, BarChart3} from "lucide-react";
 
 const features = [
   {

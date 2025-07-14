@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { DashboardLayout } from "./DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {useState} from "react";
+import {DashboardLayout} from "./DashboardLayout";
+import {Card, CardContent, CardHeader, CardTitle, CardDescription} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
 import { 
   Search, 
   Plus, 
@@ -13,8 +13,8 @@ import {
   ArrowUpDown,
   DollarSign
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Badge} from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -488,7 +488,7 @@ function CustomersPage() {
 export default CustomersPage;
 
 // Icons that need to be imported
-const Users = (props: unknown) => (
+const Users = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -508,7 +508,7 @@ const Users = (props: unknown) => (
   </svg>
 );
 
-const RefreshCcw = (props: unknown) => (
+const RefreshCcw = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -528,7 +528,7 @@ const RefreshCcw = (props: unknown) => (
   </svg>
 );
 
-const User = (props: unknown) => (
+const User = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -546,7 +546,7 @@ const User = (props: unknown) => (
   </svg>
 );
 
-const ShoppingCart = (props: unknown) => (
+const ShoppingCart = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -565,7 +565,7 @@ const ShoppingCart = (props: unknown) => (
   </svg>
 );
 
-const Trash = (props: unknown) => (
+const Trash = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,5 @@
-import { DashboardChart } from "@/components/ui/dashboard-chart";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import {DashboardChart} from "@/components/ui/dashboard-chart";
+import {TrendingUp, TrendingDown} from "lucide-react";
 
 interface OverviewCardProps {
   title: string;

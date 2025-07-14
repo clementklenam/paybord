@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, KycData, LoginData, SignupData } from '@/types/auth';
+import {User, KycData, LoginData, SignupData} from '@/types/auth';
 import AuthService from '@/services/auth.service';
 
 interface AuthContextType {

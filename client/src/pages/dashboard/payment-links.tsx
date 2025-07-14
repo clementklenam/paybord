@@ -1,18 +1,16 @@
-import { useState, useRef, useEffect } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Pagination } from "@/components/ui/pagination";
-import { toast } from "@/components/ui/use-toast";
+import {useState, useRef, useEffect} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Card, CardContent} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Textarea} from "@/components/ui/textarea";
+import {Dialog, DialogContent, DialogDescription, DialogTitle} from "@/components/ui/dialog";
+import {Badge} from "@/components/ui/badge";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Pagination} from "@/components/ui/pagination";
+import {toast} from "@/components/ui/use-toast";
 import {
   Copy,
   Plus,
@@ -32,9 +30,9 @@ import {
   Link,
   Loader2
 } from "lucide-react";
-import { useBusinesses } from "@/hooks/useBusinesses";
-import { useProducts } from "@/hooks/useProducts";
-import { PaymentLink, paymentLinkService } from "@/services/payment-link.service";
+import {useBusinesses} from "@/hooks/useBusinesses";
+import {useProducts} from "@/hooks/useProducts";
+import {PaymentLink, paymentLinkService} from "@/services/payment-link.service";
 
 // Format currency
 const formatCurrency = (amount: number, currency: string = "USD") => {
@@ -77,7 +75,7 @@ export default function PaymentLinksPage() {
   const [newLinkCurrency, setNewLinkCurrency] = useState("USD");
   const [newLinkEmail, setNewLinkEmail] = useState("");
   const [selectedBusinessId, setSelectedBusinessId] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedProduct, setSelectedProduct] = useState<unknown>(null);
   const [previewDevice, setPreviewDevice] = useState<"mobile" | "desktop">("desktop");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"card" | "mobile" | "bank" | null>("card");

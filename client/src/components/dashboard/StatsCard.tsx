@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown } from "lucide-react";
+import {motion} from 'framer-motion';
+import {TrendingUp, TrendingDown} from "lucide-react";
 
 interface StatsCardProps {
   title: string;

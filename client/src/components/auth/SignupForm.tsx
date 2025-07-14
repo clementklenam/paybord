@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/components/ui/use-toast";
-import { Link, useLocation } from "wouter";
-import { useState } from "react";
-import { SignupData } from "@/types/auth";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {useAuth} from "@/contexts/AuthContext";
+import {useToast} from "@/components/ui/use-toast";
+import {Link, useLocation} from "wouter";
+import {useState} from "react";
+import {SignupData} from "@/types/auth";
 
 export function SignupForm() {
   const [formData, setFormData] = useState<SignupData>({

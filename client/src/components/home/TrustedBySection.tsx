@@ -1,7 +1,6 @@
-import React from 'react';
-import { Container } from "@/components/ui/container";
-import { motion } from "framer-motion";
-import { SiAirbnb, SiSlack, SiNetflix, SiAmazon, SiShopify } from "react-icons/si";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
+import {SiAirbnb, SiSlack, SiNetflix, SiAmazon, SiShopify} from "react-icons/si";
 
 function TrustedBySection() {
   const logos = [

@@ -11,11 +11,11 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
-import { DraggableWidget } from "./DraggableWidget";
-import { ReactNode } from "react";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { AddWidgetDialog } from "./AddWidgetDialog";
+import {DraggableWidget} from "./DraggableWidget";
+import {ReactNode} from "react";
+import {Button} from "@/components/ui/button";
+import {Plus} from "lucide-react";
+import {AddWidgetDialog} from "./AddWidgetDialog";
 
 export interface Widget {
   id: string;

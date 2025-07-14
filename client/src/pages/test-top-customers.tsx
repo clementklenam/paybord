@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import analyticsService from "@/services/analytics.service";
-import { useAuth } from "@/contexts/AuthContext";
+import {useAuth} from "@/contexts/AuthContext";
 
 export default function TestTopCustomersPage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();

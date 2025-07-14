@@ -1,11 +1,11 @@
-import { Button } from "../../ui/button";
+import {Button} from "../../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { Plus } from "lucide-react";
+import {Plus} from "lucide-react";
 
 export type WidgetType = "payment" | "netVolume" | "customers" | "failed";
 

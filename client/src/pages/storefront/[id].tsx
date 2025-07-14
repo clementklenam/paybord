@@ -1,24 +1,22 @@
 // PUBLIC VIEW: This page always uses light mode for public storefront, regardless of app or system dark mode.
 // All dark: classes are removed and backgrounds/text are forced to light theme.
-import { useState, useEffect, useMemo, useRef } from 'react';
-import { useParams } from 'wouter';
-import { StorefrontService, Storefront } from '@/services/storefront.service';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
-import { ArrowLeft, ShoppingBag, Search, ShoppingCart, CreditCard, Plus, Minus } from 'lucide-react';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import {useState, useEffect, useMemo, useRef} from 'react';
+import {useParams} from 'wouter';
+import {StorefrontService, Storefront} from '@/services/storefront.service';
+import {Button} from '@/components/ui/button';
+import {Skeleton} from '@/components/ui/skeleton';
+import {Badge} from '@/components/ui/badge';
+import {Input} from '@/components/ui/input';
+import {useToast} from '@/components/ui/use-toast';
+import {ArrowLeft, ShoppingBag, Search, ShoppingCart, CreditCard, Plus, Minus} from 'lucide-react';
+import {loadStripe} from '@stripe/stripe-js';
+import {Elements, CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
 import axios from 'axios';
 import AnalyticsService from '@/services/analytics.service';
-import { getAuthHeader } from '@/services/auth-header';
-import { usePaymentContext } from "@/contexts/PaymentContext";
-import { paystackService } from "@/services/paystack.service";
-import TransactionService from "@/services/transaction.service";
+import {getAuthHeader} from '@/services/auth-header';
+import {usePaymentContext} from "@/contexts/PaymentContext";
 
-// @ts-ignore
+// @ts-expect-error
  
 declare global {
   interface Window {
@@ -701,7 +699,7 @@ function PaystackCheckoutModal({
 }) {
   const [paystackReady, setPaystackReady] = useState(false);
   const { toast } = useToast();
-  const paymentResponseRef = useRef<any>(null);
+  const paymentResponseRef = useRef<unknown>(null);
 
   useEffect(() => {
     function checkPaystack() {
@@ -732,7 +730,7 @@ function PaystackCheckoutModal({
       return;
     }
     paymentResponseRef.current = null;
-    // @ts-ignore
+    // @ts-expect-error
     const handler = window.PaystackPop.setup({
       key: 'pk_test_8b6de0bd23150ee0195d09ee6f531442a6f246ba',
       email: customerInfo.email,
@@ -842,7 +840,7 @@ export default function StorefrontPreview() {
   }
 
   // Prevent multiple simultaneous API calls
-  const [fetchPromise, setFetchPromise] = useState<Promise<any> | null>(null);
+  const [fetchPromise, setFetchPromise] = useState<Promise<unknown> | null>(null);
 
   useEffect(() => {
     async function fetchStorefront() {
@@ -865,10 +863,10 @@ export default function StorefrontPreview() {
       const promise = (async () => {
         try {
           const data = await storefrontService.getStorefrontById(id);
-          if ((data as any).business && !data.businessId) {
-            data.businessId = (data as any).business;
+          if ((data as unknown).business && !data.businessId) {
+            data.businessId = (data as unknown).business;
           }
-          console.log('[DEBUG] Storefront loaded with businessId:', data.businessId, 'Raw business:', (data as any).business);
+          console.log('[DEBUG] Storefront loaded with businessId:', data.businessId, 'Raw business:', (data as unknown).business);
           setStorefront(data);
         } catch (err) {
           console.error('Error fetching storefront:', err);
@@ -1001,7 +999,7 @@ export default function StorefrontPreview() {
     console.log('recordTransaction called with:', { amount, currency, customerInfo, provider, status });
     try {
       if (!storefront) return;
-      const businessId = storefront.businessId || (storefront as any).business;
+      const businessId = storefront.businessId || (storefront as unknown).business;
       if (!businessId) {
         toast({
           title: 'Payment Error',
@@ -1371,7 +1369,7 @@ export default function StorefrontPreview() {
             });
             setCart([]);
           }}
-          businessId={storefront?.businessId || (storefront as any)?.business}
+          businessId={storefront?.businessId || (storefront as unknown)?.business}
           storefrontId={storefront.id}
         />
       </Elements>
@@ -1395,7 +1393,7 @@ export default function StorefrontPreview() {
           setCart([]);
           toast({ title: 'Payment Successful!', description: 'Thank you for your purchase.', variant: 'default' });
         }}
-        businessId={storefront?.businessId || (storefront as any)?.business}
+        businessId={storefront?.businessId || (storefront as unknown)?.business}
         storefrontId={storefront?.id}
         recordTransaction={recordTransaction}
       />

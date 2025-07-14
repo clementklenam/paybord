@@ -1,5 +1,5 @@
-import { Card } from "@/components/ui/card";
-import { LineChart } from "@/components/ui/line-chart";
+import {Card} from "@/components/ui/card";
+import {LineChart} from "@/components/ui/line-chart";
 
 interface NetVolumeData {
   amount: number;

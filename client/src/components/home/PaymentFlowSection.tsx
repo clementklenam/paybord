@@ -1,8 +1,6 @@
-import React from 'react';
-import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { ExternalLink, CheckCircle, Clock, ShieldCheck, ArrowRightCircle, Globe, CreditCard, Zap, Database, Cpu, Network } from "lucide-react";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
+import {ExternalLink, CheckCircle, Clock, ShieldCheck, Globe, CreditCard, Zap} from "lucide-react";
 
 
 function PaymentFlowSection() {

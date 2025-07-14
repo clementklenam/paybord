@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
-import { useRoute } from "wouter";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { CustomerProfileCard } from "@/components/subscriptions/CustomerProfileCard";
-import { SubscriptionCard } from "@/components/subscriptions/SubscriptionCard";
-import { InvoiceList } from "@/components/subscriptions/InvoiceList";
-import { PlanSwitcher } from "@/components/subscriptions/PlanSwitcher";
-import { PaymentMethodForm } from "@/components/subscriptions/PaymentMethodForm";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {useState, useEffect} from "react";
+import {useRoute} from "wouter";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {CustomerProfileCard} from "@/components/subscriptions/CustomerProfileCard";
+import {SubscriptionCard} from "@/components/subscriptions/SubscriptionCard";
+import {InvoiceList} from "@/components/subscriptions/InvoiceList";
+import {PlanSwitcher} from "@/components/subscriptions/PlanSwitcher";
+import {PaymentMethodForm} from "@/components/subscriptions/PaymentMethodForm";
+import {Card, CardContent, CardHeader} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import { 
   ArrowLeft, 
   Download, 
@@ -20,7 +19,7 @@ import {
   CreditCard,
   FileText
 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import {useToast} from "@/components/ui/use-toast";
 
 interface Customer {
   id: string;

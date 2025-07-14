@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Dialog } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {useState} from "react";
+import {Dialog} from "@/components/ui/dialog";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
 import CustomerService from '@/services/customer.service';
 
 export function AddCustomerModal({ open, onOpenChange, onAdd, businessId }: { open: boolean; onOpenChange: (open: boolean) => void; onAdd: (customer: unknown) => void; businessId: string }) {

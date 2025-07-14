@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { arrayMove } from "@dnd-kit/sortable";
+import {useState} from "react";
+import {arrayMove} from "@dnd-kit/sortable";
 
 export interface Widget {
   id: string;

@@ -1,7 +1,7 @@
-import { useState, useEffect, ReactNode, useRef } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import {useState, useEffect, ReactNode, useRef} from 'react';
+import {useAuth} from '@/contexts/AuthContext';
 import BusinessService from '@/services/business.service';
-import { BusinessRegistrationForm } from './BusinessRegistrationForm';
+import {BusinessRegistrationForm} from './BusinessRegistrationForm';
 
 // Use a module-level variable to track if we've already checked business registration
 // This prevents repeated checks across component remounts

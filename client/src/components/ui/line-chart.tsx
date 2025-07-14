@@ -1,4 +1,4 @@
-import { Line, LineChart as RechartsLineChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import {Line, LineChart as RechartsLineChart, ResponsiveContainer, Tooltip, XAxis} from "recharts";
 
 interface DataPoint {
   name: string;

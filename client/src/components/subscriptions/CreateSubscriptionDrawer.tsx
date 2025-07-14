@@ -1,20 +1,19 @@
-import { useState, useEffect } from "react";
-import { Dialog } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Plus, X, UserPlus, Package, Calendar as CalendarIcon } from "lucide-react";
-import { AddCustomerModal } from "./AddCustomerModal";
-import { Product, ProductListResponse, ProductService } from "@/services/product.service";
-import { ProductCreateForm } from "@/components/products/ProductCreateForm";
-import { Dialog as Modal, DialogContent as ModalContent } from "@/components/ui/dialog";
+import {useState, useEffect} from "react";
+import {Dialog} from "@/components/ui/dialog";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
+import {Card, CardContent} from "@/components/ui/card";
+import {Plus, X, UserPlus, Package, Calendar as CalendarIcon} from "lucide-react";
+import {AddCustomerModal} from "./AddCustomerModal";
+import {Product, ProductListResponse, ProductService} from "@/services/product.service";
+import {ProductCreateForm} from "@/components/products/ProductCreateForm";
+import {Dialog as Modal} from "@/components/ui/dialog";
 import SubscriptionService from '@/services/subscription.service';
 import CustomerService from '@/services/customer.service';
 import BusinessService from '@/services/business.service';
-import { Calendar } from '@/components/ui/calendar';
-import { Checkbox } from '@/components/ui/checkbox';
+import {Calendar} from '@/components/ui/calendar';
+import {Checkbox} from '@/components/ui/checkbox';
 
 const productService = new ProductService();
 
@@ -26,7 +25,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
   const [trialDays, setTrialDays] = useState(0);
   const [customers, setCustomers] = useState<any[]>([]);
   const [customerQuery, setCustomerQuery] = useState("");
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<unknown>(null);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
 
   // Product catalog state

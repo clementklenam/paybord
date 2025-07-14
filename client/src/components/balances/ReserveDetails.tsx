@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { AlertCircle, HelpCircle, ArrowUpRight, Clock, Calendar, Info, ShieldCheck } from "lucide-react";
-import { formatCurrency } from "@/lib/utils";
+import {useState} from "react";
+import {Card, CardContent, CardHeader, CardTitle, CardDescription} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Progress} from "@/components/ui/progress";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Badge} from "@/components/ui/badge";
+import {AlertCircle, HelpCircle, ArrowUpRight, Clock, Calendar, Info, ShieldCheck} from "lucide-react";
+import {formatCurrency} from "@/lib/utils";
 
 interface ReserveDetailsProps {
   reserveData: {

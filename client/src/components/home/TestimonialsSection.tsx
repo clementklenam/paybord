@@ -1,6 +1,6 @@
-import { Container } from "@/components/ui/container";
-import { motion } from "framer-motion";
-import { Star, Quote } from "lucide-react";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
+import {Star, Quote} from "lucide-react";
 
 const logos = [
   { name: "TechCorp", placeholder: "TC" },

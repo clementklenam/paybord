@@ -1,7 +1,7 @@
-import { Container } from "@/components/ui/container";
-import { motion } from "framer-motion";
-import { Link as WouterLink } from "wouter";
-import { Mail, Phone, Twitter, Linkedin, Github } from "lucide-react";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
+import {Link as WouterLink} from "wouter";
+import {Mail, Phone, Twitter, Linkedin, Github} from "lucide-react";
 
 const navigation = {
   product: [

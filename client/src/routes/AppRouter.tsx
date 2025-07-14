@@ -1,5 +1,5 @@
-import { Route, Switch, Redirect } from "wouter";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import {Route, Switch, Redirect} from "wouter";
+import {ProtectedRoute} from "@/components/auth/ProtectedRoute";
 import SigninPage from "@/pages/signin";
 import SignupPage from "@/pages/signup";
 import DashboardPage from "@/pages/dashboard";

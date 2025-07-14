@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useRoute, useLocation } from 'wouter';
-import { paymentLinkService } from '@/services/payment-link.service';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { CreditCard, DollarSign, Smartphone, User, Mail, Phone, MapPin, Lock } from 'lucide-react';
+import {useState, useEffect} from 'react';
+import {useRoute, useLocation} from 'wouter';
+import {paymentLinkService} from '@/services/payment-link.service';
+import {Button} from '@/components/ui/button';
+import {Input} from '@/components/ui/input';
+import {Textarea} from '@/components/ui/textarea';
+import {Label} from '@/components/ui/label';
+import {CreditCard, DollarSign, Smartphone, User, Mail, Phone, MapPin, Lock} from 'lucide-react';
 
 // Format currency
 const formatCurrency = (amount: number, currency: string = "USD") => {
@@ -23,7 +23,7 @@ export default function PaymentPage() {
   // Get link ID from either route pattern
   const linkId = paymentParams?.id || plParams?.id || location[0].substring(4); // Handle both route formats
   
-  const [paymentLink, setPaymentLink] = useState<any>(null);
+  const [paymentLink, setPaymentLink] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [customerInfo, setCustomerInfo] = useState({

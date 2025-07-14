@@ -1,7 +1,7 @@
-import { useAuth } from '@/contexts/AuthContext';
-import { useLocation } from 'wouter';
-import { useToast } from '@/hooks/use-toast';
-import { useEffect } from 'react';
+import {useAuth} from '@/contexts/AuthContext';
+import {useLocation} from 'wouter';
+import {useToast} from '@/hooks/use-toast';
+import {useEffect} from 'react';
 
 export default function KycPage() {
   const { submitKyc } = useAuth();

@@ -1,8 +1,7 @@
-import React from 'react';
-import { useState, useEffect } from "react";
-import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import {useState, useEffect} from "react";
+import {Container} from "@/components/ui/container";
+import {Button} from "@/components/ui/button";
+import {motion, AnimatePresence} from "framer-motion";
 import { 
   Menu, 
   X, 

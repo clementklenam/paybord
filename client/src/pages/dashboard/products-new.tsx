@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Download, Search, Filter, Package, MoreHorizontal, ChevronDown, Loader2, X, Pencil, Trash, Eye, EyeOff, Upload } from "lucide-react";
-import { ProductService } from "@/services/product.service";
+import {useState, useEffect} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Badge} from "@/components/ui/badge";
+import {Plus, Search, Package, Loader2, X, Pencil, Trash, Eye, EyeOff, Upload} from "lucide-react";
+import {ProductService} from "@/services/product.service";
 import BusinessService from "@/services/business.service";
-import { useAuth } from "@/contexts/AuthContext";
+import {useAuth} from "@/contexts/AuthContext";
 import {
   Dialog,
   DialogContent,
@@ -17,13 +17,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import { useNavigate } from 'react-router-dom';
+import {Label} from "@/components/ui/label";
+import {Textarea} from "@/components/ui/textarea";
+import {useToast} from "@/components/ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -46,13 +42,13 @@ export default function ProductsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedProduct, setSelectedProduct] = useState<unknown>(null);
   const [products, setProducts] = useState<any[]>([]); // Changed to any[] as Product type is removed
   const [businessId, setBusinessId] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // New product state
-  const [newProduct, setNewProduct] = useState<any>({ // Changed to any as ProductCreateData is removed
+  const [newProduct, setNewProduct] = useState<unknown>({ // Changed to any as ProductCreateData is removed
     businessId: "",
     name: "",
     description: "",
@@ -1025,7 +1021,7 @@ export default function ProductsPage() {
                         name="billingPeriod"
                         className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
                         value={newProduct.billingPeriod}
-                        onChange={(e) => setNewProduct({...newProduct, billingPeriod: e.target.value as any})}
+                        onChange={(e) => setNewProduct({...newProduct, billingPeriod: e.target.value as unknown})}
                       >
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>

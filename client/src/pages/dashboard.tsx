@@ -1,29 +1,28 @@
-import { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Plus, RefreshCw, TrendingUp, TrendingDown, Users, DollarSign, CreditCard, Activity, Calendar, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import {useState, useEffect} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Button} from "@/components/ui/button";
+import {Plus, RefreshCw, Users, DollarSign, CreditCard, Calendar, ArrowUpRight} from "lucide-react";
 import analyticsService from "@/services/analytics.service";
-import { useToast } from "@/components/ui/use-toast";
-import { useCurrency } from "@/contexts/CurrencyContext";
-import { usePaymentContext } from "@/contexts/PaymentContext";
-import { BusinessRegistrationCheck } from "@/components/business/BusinessRegistrationCheck";
+import {useToast} from "@/components/ui/use-toast";
+import {useCurrency} from "@/contexts/CurrencyContext";
+import {usePaymentContext} from "@/contexts/PaymentContext";
+import {BusinessRegistrationCheck} from "@/components/business/BusinessRegistrationCheck";
 
 // Import dashboard components
-import { TimeRangeSelector } from "@/components/dashboard/TimeRangeSelector";
-import { DashboardCard } from "@/components/dashboard/DashboardCard";
-import { OverviewCard } from "@/components/dashboard/OverviewCard";
-import { TopCustomersCard } from "@/components/dashboard/TopCustomersCard";
-import { AddWidgetDialog } from "@/components/dashboard/AddWidgetDialog";
-import { ShopifyStatsCard } from "@/components/dashboard/ShopifyStatsCard";
-import { ShopifyHeader } from "@/components/dashboard/ShopifyHeader";
-import { PaymentSourcesWidget } from "@/components/dashboard/widgets/PaymentSourcesWidget";
+import {TimeRangeSelector} from "@/components/dashboard/TimeRangeSelector";
+import {OverviewCard} from "@/components/dashboard/OverviewCard";
+import {TopCustomersCard} from "@/components/dashboard/TopCustomersCard";
+import {AddWidgetDialog} from "@/components/dashboard/AddWidgetDialog";
+import {ShopifyStatsCard} from "@/components/dashboard/ShopifyStatsCard";
+import {ShopifyHeader} from "@/components/dashboard/ShopifyHeader";
+import {PaymentSourcesWidget} from "@/components/dashboard/widgets/PaymentSourcesWidget";
 
 export default function DashboardPage() {
   const [timeRange, setTimeRange] = useState("last7days");
   const [isAddingWidget, setIsAddingWidget] = useState(false);
   const [customWidgets, setCustomWidgets] = useState<Array<{ id: string; type: string }>>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [dashboardData, setDashboardData] = useState<any>(null);
+  const [dashboardData, setDashboardData] = useState<unknown>(null);
   const { toast } = useToast();
   const { currency } = useCurrency();
   const { subscribeToPaymentEvents } = usePaymentContext();

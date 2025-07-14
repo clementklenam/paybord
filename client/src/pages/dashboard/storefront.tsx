@@ -1,16 +1,15 @@
-import { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { useToast } from "@/components/ui/use-toast";
-import { StorefrontCard } from "@/components/storefront/StorefrontCard";
-import { StorefrontWizard } from "@/components/storefront/StorefrontWizard";
-import { Storefront, StorefrontCreateData, StorefrontService } from "@/services/storefront.service";
-import { Filter, Loader2, Plus, Search } from "lucide-react";
-import { getBusinessesForUser } from '@/services/business.service';
+import {useState, useEffect} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Skeleton} from "@/components/ui/skeleton";
+import {useToast} from "@/components/ui/use-toast";
+import {StorefrontCard} from "@/components/storefront/StorefrontCard";
+import {StorefrontWizard} from "@/components/storefront/StorefrontWizard";
+import {Storefront, StorefrontCreateData, StorefrontService} from "@/services/storefront.service";
+import {Filter, Loader2, Plus, Search} from "lucide-react";
+import {getBusinessesForUser} from '@/services/business.service';
 
 export default function StorefrontPage() {
     const { toast } = useToast();

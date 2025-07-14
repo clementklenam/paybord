@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { TrendingUp, Users, AlertCircle, DollarSign } from "lucide-react";
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
+import {TrendingUp, Users, AlertCircle, DollarSign} from "lucide-react";
 
 interface AddWidgetDialogProps {
   open: boolean;

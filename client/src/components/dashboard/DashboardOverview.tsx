@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Plus, TrendingUp, TrendingDown, DollarSign, Users } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
-import { usePaymentContext } from "@/contexts/PaymentContext";
+import {useState, useEffect, useCallback} from "react";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Button} from "@/components/ui/button";
+import {Plus, TrendingUp, TrendingDown, DollarSign, Users} from "lucide-react";
+import {Card} from "@/components/ui/card";
+import {useToast} from "@/components/ui/use-toast";
+import {usePaymentContext} from "@/contexts/PaymentContext";
 import {
   AddWidgetDialog,
   PaymentOverviewWidget,
@@ -14,7 +14,7 @@ import {
   NewCustomersWidget,
   TopCustomersWidget,
 } from "./widgets";
-import { getPaymentAnalytics, PaymentAnalytics } from "@/services/analytics.service";
+import {getPaymentAnalytics, PaymentAnalytics} from "@/services/analytics.service";
 
 function DashboardOverview() {
   const [timeRange, setTimeRange] = useState("last7days");
@@ -186,7 +186,7 @@ function DashboardOverview() {
                   )}
                 </div>
               </div>
-              <div className={`p-3 rounded-full ${analytics?.grossVolume.growth > 0 ? 'bg-green-100' : analytics?.grossVolume.growth < 0 ? 'bg-red-100' : 'bg-gray-100'}`}>
+              <div className={`p-3 rounded-full ${(analytics?.grossVolume.growth ?? 0) > 0 ? 'bg-green-100' : (analytics?.grossVolume.growth ?? 0) < 0 ? 'bg-red-100' : 'bg-gray-100'}`}>
                 <DollarSign className="h-6 w-6 text-gray-600" />
               </div>
             </div>
@@ -214,7 +214,7 @@ function DashboardOverview() {
                   )}
                 </div>
               </div>
-              <div className={`p-3 rounded-full ${analytics?.netVolume.growth > 0 ? 'bg-green-100' : analytics?.netVolume.growth < 0 ? 'bg-red-100' : 'bg-gray-100'}`}>
+              <div className={`p-3 rounded-full ${(analytics?.netVolume.growth ?? 0) > 0 ? 'bg-green-100' : (analytics?.netVolume.growth ?? 0) < 0 ? 'bg-red-100' : 'bg-gray-100'}`}>
                 <TrendingUp className="h-6 w-6 text-gray-600" />
               </div>
             </div>
@@ -242,7 +242,7 @@ function DashboardOverview() {
                   )}
                 </div>
               </div>
-              <div className={`p-3 rounded-full ${analytics?.newCustomers.growth > 0 ? 'bg-green-100' : analytics?.newCustomers.growth < 0 ? 'bg-red-100' : 'bg-gray-100'}`}>
+              <div className={`p-3 rounded-full ${(analytics?.newCustomers.growth ?? 0) > 0 ? 'bg-green-100' : (analytics?.newCustomers.growth ?? 0) < 0 ? 'bg-red-100' : 'bg-gray-100'}`}>
                 <Users className="h-6 w-6 text-gray-600" />
               </div>
             </div>

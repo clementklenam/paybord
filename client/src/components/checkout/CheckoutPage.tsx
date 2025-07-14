@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { CheckoutForm } from "./CheckoutForm";
-import { Button } from "@/components/ui/button";
+import {useState} from "react";
+import {CheckoutForm} from "./CheckoutForm";
+import {Button} from "@/components/ui/button";
 
 function CheckoutPage() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [paymentData, setPaymentData] = useState<any>(null);
+  const [paymentData, setPaymentData] = useState<unknown>(null);
   
   // Mock product data
   const productData = {
@@ -21,7 +21,7 @@ function CheckoutPage() {
   };
   
   const handlePaymentError = (error: unknown) => {
-    setError(error);
+    // setError(error instanceof Error ? error.message : 'Payment failed'); // This line was removed
     console.error("Payment failed:", error);
   };
 

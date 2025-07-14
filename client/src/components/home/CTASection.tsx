@@ -1,8 +1,8 @@
-import { Container } from "@/components/ui/container";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Shield, Globe } from "lucide-react";
-import { Link as WouterLink } from "wouter";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
+import {Button} from "@/components/ui/button";
+import {ArrowRight, Zap, Shield, Globe} from "lucide-react";
+import {Link as WouterLink} from "wouter";
 
 export function CTASection() {
   return (

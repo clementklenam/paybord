@@ -1,8 +1,8 @@
-import { useAuth } from "@/contexts/AuthContext";
-import { useLocation } from "wouter";
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
-import { BusinessRegistrationCheck } from "@/components/business/BusinessRegistrationCheck";
+import {useAuth} from "@/contexts/AuthContext";
+import {useLocation} from "wouter";
+import {useEffect, useState} from "react";
+import {Loader2} from "lucide-react";
+import {BusinessRegistrationCheck} from "@/components/business/BusinessRegistrationCheck";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

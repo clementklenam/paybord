@@ -1,16 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
-import { useRoute, useLocation } from 'wouter';
-import { paymentLinkService } from '@/services/payment-link.service';
-import { paystackService } from '@/services/paystack.service';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { CreditCard, DollarSign, Smartphone, User, Mail, Phone, MapPin, Lock, ArrowLeft } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
-import { usePaymentContext } from "@/contexts/PaymentContext";
+import {useState, useEffect, useRef} from 'react';
+import {useRoute, useLocation} from 'wouter';
+import {paymentLinkService} from '@/services/payment-link.service';
+import {paystackService} from '@/services/paystack.service';
+import {Button} from '@/components/ui/button';
+import {Input} from '@/components/ui/input';
+import {Textarea} from '@/components/ui/textarea';
+import {CreditCard, DollarSign, Smartphone, User, Mail, Phone, MapPin, Lock} from 'lucide-react';
+import {useToast} from '@/components/ui/use-toast';
+import {usePaymentContext} from "@/contexts/PaymentContext";
 
-// @ts-ignore
+// @ts-expect-error
 declare global {
   interface Window {
     PaystackPop?: unknown;
@@ -51,7 +50,7 @@ function PaystackCheckoutModal({
 }) {
   const [paystackReady, setPaystackReady] = useState(false);
   const { toast } = useToast();
-  const paymentResponseRef = useRef<any>(null);
+  const paymentResponseRef = useRef<unknown>(null);
 
   useEffect(() => {
     function checkPaystack() {
@@ -107,7 +106,7 @@ function PaystackCheckoutModal({
       console.log('[DEBUG] Backend returned amount:', paymentIntent.data.amount);
       
       paymentResponseRef.current = null;
-      // @ts-ignore
+      // @ts-expect-error
       const handler = window.PaystackPop.setup({
         key: 'pk_test_8b6de0bd23150ee0195d09ee6f531442a6f246ba',
         email: customerInfo.email,
@@ -213,7 +212,7 @@ export default function PaymentLinkViewPage() {
   // Get link ID from either route pattern
   const linkId = paymentParams?.id || plParams?.id || location[0].substring(4);
   
-  const [paymentLink, setPaymentLink] = useState<any>(null);
+  const [paymentLink, setPaymentLink] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [customerInfo, setCustomerInfo] = useState({

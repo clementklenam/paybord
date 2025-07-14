@@ -1,14 +1,14 @@
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CalendarIcon } from 'lucide-react';
-import { format } from 'date-fns';
-import { UseFormReturn } from 'react-hook-form';
-import { KycData } from '@/types/auth';
-import { useState } from 'react';
+import {Button} from '@/components/ui/button';
+import {Calendar} from '@/components/ui/calendar';
+import {Input} from '@/components/ui/input';
+import {Label} from '@/components/ui/label';
+import {Popover, PopoverContent} from '@/components/ui/popover';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import {CalendarIcon} from 'lucide-react';
+import {format} from 'date-fns';
+import {UseFormReturn} from 'react-hook-form';
+import {KycData} from '@/types/auth';
+import {useState} from 'react';
 
 interface PersonalInfoStepProps {
   form: UseFormReturn<KycData>;

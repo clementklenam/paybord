@@ -1,7 +1,7 @@
-import { Container } from "@/components/ui/container";
-import { motion } from "framer-motion";
-import { CheckCircle, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
+import {CheckCircle, ArrowRight} from "lucide-react";
+import {Button} from "@/components/ui/button";
 
 const useCases = [
   "E-commerce platforms processing millions of transactions",

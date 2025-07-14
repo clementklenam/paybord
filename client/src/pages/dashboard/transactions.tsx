@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import {useState, useEffect} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {useToast} from "@/components/ui/use-toast";
 import TransactionService, { Transaction, TransactionFilters } from "@/services/transaction.service";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {Input} from "@/components/ui/input";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Badge} from "@/components/ui/badge";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Label} from "@/components/ui/label";
+import {Separator} from "@/components/ui/separator";
+import {Slider} from "@/components/ui/slider";
+import {Dialog, DialogContent, DialogTitle, DialogFooter} from "@/components/ui/dialog";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import { 
   Search, 
   Download, 
@@ -159,28 +159,28 @@ export default function TransactionsPage() {
           dateFrom = yesterday.toISOString().split('T')[0];
           dateTo = yesterday.toISOString().split('T')[0];
           break;
-        case 'last7days':
-          const last7Days = new Date(today);
+        case 'last7days': { const last7Days = new Date(today);
           last7Days.setDate(today.getDate() - 7);
           dateFrom = last7Days.toISOString().split('T')[0];
           dateTo = today.toISOString().split('T')[0];
           break;
-        case 'last30days':
-          const last30Days = new Date(today);
+}
+        case 'last30days': { const last30Days = new Date(today);
           last30Days.setDate(today.getDate() - 30);
           dateFrom = last30Days.toISOString().split('T')[0];
           dateTo = today.toISOString().split('T')[0];
           break;
+}
         case 'thisMonth':
           dateFrom = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
           dateTo = today.toISOString().split('T')[0];
           break;
-        case 'lastMonth':
-          const firstDayLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        case 'lastMonth': { const firstDayLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
           const lastDayLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
           dateFrom = firstDayLastMonth.toISOString().split('T')[0];
           dateTo = lastDayLastMonth.toISOString().split('T')[0];
           break;
+}
       }
       
       // Prepare filters
@@ -275,7 +275,6 @@ export default function TransactionsPage() {
   // Calculate statistics
   const successfulTransactions = transactions.filter(t => t.status === "succeeded");
   const failedTransactions = transactions.filter(t => t.status === "failed");
-  const pendingTransactions = transactions.filter(t => t.status === "pending");
   const refundedTransactions = transactions.filter(t => t.status === "refunded");
 
   const totalVolume = transactions.reduce((sum, t) => sum + t.amount, 0);

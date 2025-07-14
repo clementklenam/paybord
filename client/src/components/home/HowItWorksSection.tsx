@@ -1,6 +1,5 @@
-import React from 'react';
-import { Container } from "@/components/ui/container";
-import { motion } from "framer-motion";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
 import { 
   UserPlus, 
   Store, 

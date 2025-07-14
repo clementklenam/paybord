@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { UseFormReturn } from 'react-hook-form';
-import { KycData } from '@/types/auth';
-import { AlertTriangle } from 'lucide-react';
+import {Button} from '@/components/ui/button';
+import {UseFormReturn} from 'react-hook-form';
+import {KycData} from '@/types/auth';
+import {AlertTriangle} from 'lucide-react';
 
 interface ReviewStepProps {
   form: UseFormReturn<KycData>;

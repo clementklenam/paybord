@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Download, Info, ArrowRight } from "lucide-react";
-import { CreateSubscriptionDrawer } from "@/components/subscriptions/CreateSubscriptionDrawer";
+import {useState, useEffect} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Badge} from "@/components/ui/badge";
+import {Plus, Download, Info, ArrowRight} from "lucide-react";
+import {CreateSubscriptionDrawer} from "@/components/subscriptions/CreateSubscriptionDrawer";
 import SubscriptionService, { Subscription } from '@/services/subscription.service';
 
 export default function SubscriptionsPage() {

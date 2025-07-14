@@ -1,5 +1,5 @@
 import api from './api';
-import { AuthResponse, SignupData, LoginData, OtpVerificationData, KycData } from '../types/auth';
+import {AuthResponse, SignupData, LoginData, OtpVerificationData, KycData} from '../types/auth';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 

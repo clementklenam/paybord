@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { ProductService, Product, ProductCreateData } from "@/services/product.service";
-import { useAuth } from "@/contexts/AuthContext";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {useState, useEffect} from "react";
+import {ProductService, Product, ProductCreateData} from "@/services/product.service";
+import {useAuth} from "@/contexts/AuthContext";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Badge} from "@/components/ui/badge";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import { 
   Plus, 
   Download, 
@@ -34,10 +34,10 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {Label} from "@/components/ui/label";
+import {Textarea} from "@/components/ui/textarea";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 
 export default function ProductsPage() {
   // Service instance

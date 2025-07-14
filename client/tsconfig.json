@@ -21,5 +21,19 @@
     }
   },
   "include": ["src"],
+  "exclude": [
+    "src/pages/dashboard/storefront-backup-original.tsx",
+    "src/pages/dashboard/storefront-backup.tsx",
+    "src/pages/dashboard/storefront-new.tsx",
+    "src/pages/dashboard/payment-links-backup-1746967990.tsx",
+    "src/pages/dashboard/products.tsx.bak",
+    "src/pages/dashboard/products.tsx.new",
+    "src/pages/dashboard/storefront-backup.tsx",
+    "src/pages/dashboard/storefront.tsx.backup",
+    "src/pages/dashboard/storefront.tsx.bak",
+    "src/pages/dashboard/storefront.tsx.old",
+    "src/services/storefront.service.fixed.ts",
+    "src/services/storefront.service.ts.bak"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

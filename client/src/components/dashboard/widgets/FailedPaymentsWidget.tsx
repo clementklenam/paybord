@@ -1,5 +1,5 @@
-import { Card } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import {Card} from "@/components/ui/card";
+import {AlertCircle} from "lucide-react";
 
 export function FailedPaymentsWidget() {
   return (

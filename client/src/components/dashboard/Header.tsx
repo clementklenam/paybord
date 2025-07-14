@@ -1,10 +1,10 @@
-import { Bell, User, Settings, HelpCircle, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {Bell, User, Settings, HelpCircle, LogOut} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 
-import { useAuth } from "@/contexts/AuthContext";
-import { useLocation } from "wouter";
+import {useAuth} from "@/contexts/AuthContext";
+import {useLocation} from "wouter";
 
 function Header() {
   const { user, signout } = useAuth();

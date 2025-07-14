@@ -1,7 +1,7 @@
-import { Container } from "@/components/ui/container";
-import { SignupForm } from "@/components/auth/SignupForm";
-import { motion } from "framer-motion";
-import { CheckCircle, Zap, Globe, Shield } from "lucide-react";
+import {Container} from "@/components/ui/container";
+import {SignupForm} from "@/components/auth/SignupForm";
+import {motion} from "framer-motion";
+import {CheckCircle, Zap, Globe, Shield} from "lucide-react";
 
 export default function SignupPage() {
   return (

@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
-import { CreditCard } from "lucide-react";
-import { formatCurrency } from "@/lib/utils/date";
+import {Card, CardContent, CardHeader, CardTitle} from "../../ui/card";
+import {CreditCard} from "lucide-react";
+import {formatCurrency} from "@/lib/utils/date";
 
 interface PaymentWidgetProps {
   data: {

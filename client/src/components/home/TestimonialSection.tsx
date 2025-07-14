@@ -1,7 +1,6 @@
-import React from 'react';
-import { Container } from "@/components/ui/container";
-import { motion } from "framer-motion";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {Container} from "@/components/ui/container";
+import {motion} from "framer-motion";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
 function TestimonialSection() {
   return (

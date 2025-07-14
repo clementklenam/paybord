@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { Link as WouterLink } from "wouter";
+import {Container} from "@/components/ui/container";
+import {Button} from "@/components/ui/button";
+import {motion, AnimatePresence} from "framer-motion";
+import {Menu, X} from "lucide-react";
+import {Link as WouterLink} from "wouter";
 
 function Navbar() {
   const navigation = [

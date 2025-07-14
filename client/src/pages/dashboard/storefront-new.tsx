@@ -1,17 +1,17 @@
-import { useState, useEffect, useRef } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/components/ui/use-toast";
-import { StorefrontService } from "@/services/storefront.service";
+import {useState, useEffect, useRef} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Textarea} from "@/components/ui/textarea";
+import {Select} from "@/components/ui/select";
+import {Switch} from "@/components/ui/switch";
+import {Badge} from "@/components/ui/badge";
+import {Separator} from "@/components/ui/separator";
+import {useToast} from "@/components/ui/use-toast";
+import {StorefrontService} from "@/services/storefront.service";
 
 // Define the step interface
 interface Step {
@@ -34,8 +34,6 @@ interface AnalyticsData {
 export default function StorefrontPage() {
     const { toast } = useToast();
     const storefrontService = new StorefrontService();
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const bannerInputRef = useRef<HTMLInputElement>(null);
     
     // State for the current step in the creation wizard
     const [currentStep, setCurrentStep] = useState(1);
@@ -160,7 +158,6 @@ export default function StorefrontPage() {
     };
     
     // Fetch a single storefront by ID
-    const fetchStorefrontById = async (id: string) => {
         try {
             const storefront = await storefrontService.getStorefrontById(id);
             setSelectedStorefront(storefront);
@@ -292,7 +289,6 @@ export default function StorefrontPage() {
     };
 
     // Generate preview URL for the storefront
-    const generatePreviewUrl = () => {
         const domain = storeInfo.domain || storeInfo.name.toLowerCase().replace(/\s+/g, '-');
         const url = `https://${domain}.paymesa.com`;
         setPreviewUrl(url);
@@ -393,7 +389,6 @@ export default function StorefrontPage() {
     };
     
     // Handle deleting a storefront
-    const handleDeleteStorefront = async () => {
         if (!storefrontToDelete) return;
         
         setIsDeleting(true);
@@ -428,7 +423,6 @@ export default function StorefrontPage() {
     };
     
     // Handle updating a storefront
-    const handleUpdateStorefront = async (id: string, data: Partial<StorefrontCreateData>) => {
         setIsUpdating(true);
         try {
             const updatedStorefront = await storefrontService.updateStorefront(id, data);
@@ -464,7 +458,6 @@ export default function StorefrontPage() {
     };
     
     // Handle updating storefront status (activate/deactivate)
-    const handleUpdateStatus = async (id: string, status: 'active' | 'inactive' | 'draft') => {
         try {
             const updatedStorefront = await storefrontService.updateStorefrontStatus(id, status);
             
@@ -499,7 +492,6 @@ export default function StorefrontPage() {
     };
     
     // Handle opening the delete confirmation dialog
-    const confirmDelete = (id: string) => {
         setStorefrontToDelete(id);
         setShowDeleteDialog(true);
     };

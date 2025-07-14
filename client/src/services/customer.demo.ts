@@ -1,4 +1,4 @@
-import { Customer, Address, PaymentMethod, CustomerListResponse, CustomerFilters } from './customer.service';
+import {Customer, Address, PaymentMethod, CustomerListResponse, CustomerFilters} from './customer.service';
 
 // Generate a random customer ID
 const generateCustomerId = (): string => {

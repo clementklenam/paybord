@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+import {useState} from "react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {useToast} from "@/components/ui/use-toast";
 import {
     Select,
     SelectContent,
@@ -18,7 +18,7 @@ import {
     CardHeader,
     CardTitle
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+import {Checkbox} from "@/components/ui/checkbox";
 import {
     BusinessRegistrationData,
     BUSINESS_TYPE_OPTIONS,
@@ -28,7 +28,7 @@ import {
     CURRENCY_OPTIONS
 } from "@/types/business";
 import BusinessService from "@/services/business.service";
-import { Check, ChevronRight, Building2, CreditCard, Shield, Upload, Landmark } from "lucide-react";
+import {Check, ChevronRight, Building2, CreditCard, Shield, Upload, Landmark} from "lucide-react";
 
 const initialFormData: BusinessRegistrationData = {
     businessName: "",
@@ -125,7 +125,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
             setFormData((prev) => ({
                 ...prev,
                 [parent]: {
-                    ...prev[parent as keyof BusinessRegistrationData],
+                    ...(prev[parent as keyof BusinessRegistrationData] as Record<string, any> || {}),
                     [child]: value
                 }
             }));
@@ -144,7 +144,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
             setFormData((prev) => ({
                 ...prev,
                 [parent]: {
-                    ...prev[parent as keyof BusinessRegistrationData],
+                    ...(prev[parent as keyof BusinessRegistrationData] as Record<string, any> || {}),
                     [child]: value
                 }
             }));
@@ -165,7 +165,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                 setFormData((prev) => ({
                     ...prev,
                     [parent]: {
-                        ...prev[parent as keyof BusinessRegistrationData],
+                        ...(prev[parent as keyof BusinessRegistrationData] as Record<string, any> || {}),
                         [child]: checked
                     }
                 }));
@@ -174,9 +174,9 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                 setFormData((prev) => ({
                     ...prev,
                     [parent]: {
-                        ...prev[parent as keyof BusinessRegistrationData],
+                        ...(prev[parent as keyof BusinessRegistrationData] as Record<string, any> || {}),
                         [child]: {
-                            ...((prev[parent as keyof BusinessRegistrationData] as any)[child]),
+                            ...((prev[parent as keyof BusinessRegistrationData] as unknown)[child] || {}),
                             [grandchild]: checked
                         }
                     }
@@ -279,7 +279,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                 if (field.includes('.')) {
                     const [parent, child] = field.split('.');
                     if (!formData[parent as keyof BusinessRegistrationData] || 
-                        !(formData[parent as keyof BusinessRegistrationData] as any)[child]) {
+                        !(formData[parent as keyof BusinessRegistrationData] as unknown)[child]) {
                         missingFields.push(label);
                     }
                 } else if (!formData[field as keyof BusinessRegistrationData]) {
@@ -334,7 +334,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                     swiftCode: formData.bankingInfo.swiftCode || '',
                     routingNumber: formData.bankingInfo.routingNumber || ''
                 }
-            };
+            } as BusinessRegistrationData;
             
             // Only add optional fields if they have values
             if (formData.registrationNumber) {
@@ -444,20 +444,20 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
             // Extract detailed error information from the response if available
             let errorMessage = "An error occurred during registration";
             
-            if (error.response) {
-                console.log('Error response status:', error.response.status);
-                console.log('Error response data:', JSON.stringify(error.response.data, null, 2));
+            if ((error as unknown).response) {
+                console.log('Error response status:', (error as unknown).response.status);
+                console.log('Error response data:', JSON.stringify((error as unknown).response.data, null, 2));
                 console.log('Request data that was sent:', JSON.stringify(formattedData, null, 2));
                 
-                if (error.response.data.error) {
-                    errorMessage = error.response.data.error;
-                } else if (error.response.data.errors && Array.isArray(error.response.data.errors)) {
+                if ((error as unknown).response.data.error) {
+                    errorMessage = (error as unknown).response.data.error;
+                } else if ((error as unknown).response.data.errors && Array.isArray((error as unknown).response.data.errors)) {
                     // Format validation errors from express-validator
-                    const validationErrors = error.response.data.errors.map((err: unknown) => `${err.param}: ${err.msg}`).join(', ');
+                    const validationErrors = (error as unknown).response.data.errors.map((err: unknown) => `${err.param}: ${err.msg}`).join(', ');
                     errorMessage = `Validation failed: ${validationErrors}`;
                 }
-            } else if (error.message) {
-                errorMessage = error.message;
+            } else if ((error as unknown).message) {
+                errorMessage = (error as unknown).message;
             }
             
             toast({

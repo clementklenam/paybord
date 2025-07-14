@@ -1,5 +1,5 @@
 import api from './api';
-import { Business, BusinessRegistrationData, VerificationDocument } from '../types/business';
+import {Business, BusinessRegistrationData, VerificationDocument} from '../types/business';
 
 export default class BusinessService {
     // Cache for business profile checks

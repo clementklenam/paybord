@@ -1,9 +1,8 @@
-import { Product } from '@/services/storefront.service';
-import { StorefrontTheme } from '@/types/theme';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ShoppingCart, Heart, Star } from 'lucide-react';
+import {Product} from '@/services/storefront.service';
+import {StorefrontTheme} from '@/types/theme';
+import {Card, CardContent} from '@/components/ui/card';
+import {Button} from '@/components/ui/button';
+import {ShoppingCart} from 'lucide-react';
 
 interface ProductGridProps {
   products: Product[];

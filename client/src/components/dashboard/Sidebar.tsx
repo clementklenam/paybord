@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import {Link} from "wouter";
 import {
   HomeIcon,
   WalletIcon,
@@ -15,16 +15,16 @@ import {
   CodeBracketIcon,
   BuildingStorefrontIcon,
 } from "@heroicons/react/24/outline";
-import { Bell, User, Settings, HelpCircle, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+import {Bell, User, Settings, HelpCircle, LogOut} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {ThemeToggle} from "@/components/ui/theme-toggle";
 
-import { useState, useEffect, useRef } from "react";
+import {useState, useEffect, useRef} from "react";
 import BusinessService from "@/services/business.service";
-import { useAuth } from "@/contexts/AuthContext";
-import { useLocation } from "wouter";
+import {useAuth} from "@/contexts/AuthContext";
+import {useLocation} from "wouter";
 
 interface SidebarItemProps {
   icon: React.ReactNode;

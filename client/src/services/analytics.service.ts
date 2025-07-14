@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuthHeader } from './auth-header';
+import {getAuthHeader} from './auth-header';
 
 // For Vite-based React apps, use import.meta.env instead of process.env
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -11,9 +11,9 @@ class AnalyticsService {
   /**
    * Get dashboard overview data
    * @param {string} timeRange - Time range for the data (today, yesterday, last7days, last30days, thisMonth, lastMonth)
-   * @returns {Promise<any>} Dashboard overview data
+   * @returns {Promise<unknown>} Dashboard overview data
    */
-  async getDashboardOverview(timeRange: string = 'last7days'): Promise<any> {
+  async getDashboardOverview(timeRange: string = 'last7days'): Promise<unknown> {
     try {
       // Fetch real data from the API
       const response = await axios.get(`${API_URL}/analytics/dashboard-overview`, {
@@ -41,9 +41,9 @@ class AnalyticsService {
   /**
    * Get gross volume data
    * @param {string} timeRange - Time range for the data
-   * @returns {Promise<any>} Gross volume data
+   * @returns {Promise<unknown>} Gross volume data
    */
-  async getGrossVolume(timeRange: string = 'last7days'): Promise<any> {
+  async getGrossVolume(timeRange: string = 'last7days'): Promise<unknown> {
     try {
       const response = await axios.get(`${API_URL}/analytics/gross-volume`, {
         headers: {
@@ -67,9 +67,9 @@ class AnalyticsService {
 
   /**
    * Get balance and next payout information
-   * @returns {Promise<any>} Balance and payout data
+   * @returns {Promise<unknown>} Balance and payout data
    */
-  async getBalanceAndPayout(): Promise<any> {
+  async getBalanceAndPayout(): Promise<unknown> {
     try {
       const response = await axios.get(`${API_URL}/analytics/balance-and-payout`, {
         headers: {
@@ -94,9 +94,9 @@ class AnalyticsService {
    * Get top customers by spend
    * @param {string} timeRange - Time range for the data
    * @param {number} limit - Maximum number of customers to return
-   * @returns {Promise<any>} Top customers data
+   * @returns {Promise<unknown>} Top customers data
    */
-  async getTopCustomers(timeRange: string = 'last30days', limit: number = 5): Promise<any> {
+  async getTopCustomers(timeRange: string = 'last30days', limit: number = 5): Promise<unknown> {
     try {
       const response = await axios.get(`${API_URL}/analytics/top-customers`, {
         headers: {
@@ -122,9 +122,9 @@ class AnalyticsService {
   /**
    * Get failed payments data
    * @param {string} timeRange - Time range for the data
-   * @returns {Promise<any>} Failed payments data
+   * @returns {Promise<unknown>} Failed payments data
    */
-  async getFailedPayments(timeRange: string = 'last7days'): Promise<any> {
+  async getFailedPayments(timeRange: string = 'last7days'): Promise<unknown> {
     try {
       const response = await axios.get(`${API_URL}/analytics/failed-payments`, {
         headers: {

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import BusinessService from '@/services/business.service';
-import { CURRENCY_OPTIONS, CurrencyOption } from '@/types/business';
+import {CURRENCY_OPTIONS} from '@/types/business';
 
 interface CurrencyContextType {
   currency: string;

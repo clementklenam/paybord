@@ -1,6 +1,6 @@
-import { Users, Crown } from "lucide-react";
-import { useCurrency } from "@/contexts/CurrencyContext";
-import { formatCurrency } from "@/lib/utils";
+import {Users, Crown} from "lucide-react";
+import {useCurrency} from "@/contexts/CurrencyContext";
+import {formatCurrency} from "@/lib/utils";
 
 interface Customer {
   name: string;

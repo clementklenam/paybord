@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Product, ProductCreateData, ProductService } from "@/services/product.service";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Image as ImageIcon } from "lucide-react";
+import {useState} from "react";
+import {Product, ProductCreateData, ProductService} from "@/services/product.service";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
+import {Button} from "@/components/ui/button";
+import {Label} from "@/components/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Image as ImageIcon} from "lucide-react";
 
 export function ProductCreateForm({ businessId, onCreate, onCancel }: { businessId: string; onCreate: (product: Product) => void; onCancel: () => void }) {
   const [form, setForm] = useState<ProductCreateData>({

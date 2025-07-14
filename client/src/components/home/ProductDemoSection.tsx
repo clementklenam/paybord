@@ -1,10 +1,9 @@
-import React from 'react';
-import { useState } from "react";
-import { Container } from "@/components/ui/container";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { motion } from "framer-motion";
-import { CreditCard, Shield, BarChart3, Zap, Globe, CheckCircle, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {useState} from "react";
+import {Container} from "@/components/ui/container";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {motion} from "framer-motion";
+import {CreditCard, Shield, BarChart3, Zap, Globe, CheckCircle} from "lucide-react";
+import {Button} from "@/components/ui/button";
 
 // Demo components for each product
 function PaymentProcessingDemo() {
@@ -170,7 +169,7 @@ function PaymentProcessingDemo() {
 function FraudProtectionDemo() {
   const [riskScore, setRiskScore] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [analysisResult, setAnalysisResult] = useState<unknown>(null);
 
   const analyzeTransaction = () => {
     setIsAnalyzing(true);

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {useState, useEffect} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import { 
   ArrowUpRight, 
   TrendingUp, 
@@ -20,16 +20,16 @@ import {
   Zap
 } from "lucide-react";
 import balanceService from "@/services/balance.service";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useToast } from "@/components/ui/use-toast";
-import { usePaymentContext } from "@/contexts/PaymentContext";
-import { useCurrency } from "@/contexts/CurrencyContext";
-import { TransactionHistory } from "@/components/balances/TransactionHistory";
+import {Skeleton} from "@/components/ui/skeleton";
+import {Alert, AlertDescription} from "@/components/ui/alert";
+import {useToast} from "@/components/ui/use-toast";
+import {usePaymentContext} from "@/contexts/PaymentContext";
+import {useCurrency} from "@/contexts/CurrencyContext";
+import {TransactionHistory} from "@/components/balances/TransactionHistory";
 import TransactionService from "@/services/transaction.service";
-import { ShopifyHeader } from "@/components/dashboard/ShopifyHeader";
-import { ShopifyStatsCard } from "@/components/dashboard/ShopifyStatsCard";
-import { useSocket } from '@/hooks/useSocket';
+import {ShopifyHeader} from "@/components/dashboard/ShopifyHeader";
+import {ShopifyStatsCard} from "@/components/dashboard/ShopifyStatsCard";
+import {useSocket} from '@/hooks/useSocket';
 
 // Local type for TransactionHistory
 interface TransactionHistoryItem {
@@ -49,7 +49,7 @@ export default function BalancesPage() {
   const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
   const { subscribeToPaymentEvents } = usePaymentContext();
-  const { currency, currencySymbol, isLoading: currencyLoading } = useCurrency();
+  const {currency} = useCurrency();
 
   // Demo data for fallback if API fails
   const demoBalanceData = {
@@ -70,7 +70,7 @@ export default function BalancesPage() {
   };
 
   // Balance data state - start as null, only set real data when loaded
-  const [balanceData, setBalanceData] = useState<any>(null);
+  const [balanceData, setBalanceData] = useState<unknown>(null);
 
   // Transaction history state
   const [transactions, setTransactions] = useState<TransactionHistoryItem[]>([]);

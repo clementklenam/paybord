@@ -1,5 +1,5 @@
 import api from './api';
-import { getAuthHeader } from './auth-header';
+import {getAuthHeader} from './auth-header';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 

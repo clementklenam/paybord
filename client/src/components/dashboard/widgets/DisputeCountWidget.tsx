@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, ArrowDown, ArrowUp } from "lucide-react";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {AlertTriangle, ArrowDown, ArrowUp} from "lucide-react";
 
 interface DisputeCategory {
   name: string;

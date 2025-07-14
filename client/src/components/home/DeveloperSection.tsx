@@ -1,9 +1,8 @@
-import React from 'react';
-import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { Check, Copy, Terminal, Zap, Shield, Globe } from "lucide-react";
-import { useState } from "react";
+import {Container} from "@/components/ui/container";
+import {Button} from "@/components/ui/button";
+import {motion} from "framer-motion";
+import {Check, Copy, Terminal, Zap, Shield, Globe} from "lucide-react";
+import {useState} from "react";
 
 function DeveloperSection() {
   const [copied, setCopied] = useState(false);

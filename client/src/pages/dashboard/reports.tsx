@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { usePaymentContext } from "@/contexts/PaymentContext";
+import {useEffect, useState} from "react";
+import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Separator} from "@/components/ui/separator";
+import {Badge} from "@/components/ui/badge";
+import {usePaymentContext} from "@/contexts/PaymentContext";
 import {
   Search,
   Download,
@@ -45,7 +44,7 @@ import {
   AreaChart
 } from "recharts";
 import analyticsService, { getPaymentAnalytics, PaymentAnalytics, getProductAnalytics, ProductAnalytics, getCustomerAnalytics, CustomerAnalytics } from "@/services/analytics.service";
-import { africanColors } from "@/lib/african-colors";
+import {africanColors} from "@/lib/african-colors";
 
 export default function ReportsPage() {
   const [dateRange, setDateRange] = useState("last30days");
@@ -142,7 +141,7 @@ export default function ReportsPage() {
   }, [subscribeToPaymentEvents]);
 
   // Extract currency from analytics response, fallback to 'GHS'
-  const currency = (analytics?.grossVolume as any)?.currency || 'GHS';
+  const currency = (analytics?.grossVolume as unknown)?.currency || 'GHS';
 
   // Debug: Print raw analytics data to help trace inconsistencies
   useEffect(() => {
@@ -241,7 +240,7 @@ export default function ReportsPage() {
   const topCustomersBase = analytics.topCustomers;
 
   // Use payment methods data as-is
-  const paymentMethodsBase = (analytics as any).paymentMethods || [];
+  const paymentMethodsBase = (analytics as unknown).paymentMethods || [];
   const paymentMethodsTotalBase = paymentMethodsBase.reduce((sum: number, pm: unknown) => sum + pm.amount, 0);
 
   return (
@@ -474,7 +473,7 @@ export default function ReportsPage() {
                               nameKey="method"
                               label={({ percent }: { percent: number }) => `${(percent * 100).toFixed(0)}%`}
                             >
-                              {(paymentMethodsBase as any).map((_: unknown, index: number) => (
+                              {(paymentMethodsBase as unknown).map((_: unknown, index: number) => (
                                 <Cell 
                                   key={`cell-${index}`} 
                                   fill={index === 0 ? africanColors.green : index === 1 ? africanColors.yellow : index === 2 ? africanColors.red : africanColors.black} 

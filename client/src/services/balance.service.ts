@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuthHeader } from './auth-header';
+import {getAuthHeader} from './auth-header';
 
 // For Vite-based React apps, use import.meta.env instead of process.env
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -10,9 +10,9 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 class BalanceService {
   /**
    * Get balance and payout information
-   * @returns {Promise<any>} Balance and payout data
+   * @returns {Promise<unknown>} Balance and payout data
    */
-  async getBalanceAndPayout(): Promise<any> {
+  async getBalanceAndPayout(): Promise<unknown> {
     try {
       // Fetch real data from the API - use authenticated endpoint
       console.log('Fetching balance data from:', `${API_URL}/analytics/balance-and-payout`);
@@ -34,9 +34,9 @@ class BalanceService {
   /**
    * Initiate a manual payout
    * @param {number} amount - Amount to payout
-   * @returns {Promise<any>} Payout result
+   * @returns {Promise<unknown>} Payout result
    */
-  async initiatePayout(amount: number): Promise<any> {
+  async initiatePayout(amount: number): Promise<unknown> {
     try {
       const response = await axios.post(`${API_URL}/payouts/initiate`, {
         amount
@@ -54,9 +54,9 @@ class BalanceService {
    * Schedule a future payout
    * @param {number} amount - Amount to payout
    * @param {string} date - Date for the scheduled payout
-   * @returns {Promise<any>} Scheduled payout result
+   * @returns {Promise<unknown>} Scheduled payout result
    */
-  async schedulePayout(amount: number, date: string): Promise<any> {
+  async schedulePayout(amount: number, date: string): Promise<unknown> {
     try {
       const response = await axios.post(`${API_URL}/payouts/schedule`, {
         amount,
@@ -74,9 +74,9 @@ class BalanceService {
   /**
    * Get payout history
    * @param {string} timeRange - Time range for the data
-   * @returns {Promise<any>} Payout history data
+   * @returns {Promise<unknown>} Payout history data
    */
-  async getPayoutHistory(timeRange: string = 'last30days'): Promise<any> {
+  async getPayoutHistory(timeRange: string = 'last30days'): Promise<unknown> {
     try {
       const response = await axios.get(`${API_URL}/payouts/history`, {
         headers: getAuthHeader(),
@@ -91,9 +91,9 @@ class BalanceService {
 
   /**
    * Get detailed balance information including reserved funds, pending balance, and currency
-   * @returns {Promise<any>} Detailed balance information
+   * @returns {Promise<unknown>} Detailed balance information
    */
-  async getDetailedBalance(): Promise<any> {
+  async getDetailedBalance(): Promise<unknown> {
     try {
       const response = await axios.get(`${API_URL}/analytics/detailed-balance`, {
         headers: getAuthHeader()
@@ -109,9 +109,9 @@ class BalanceService {
    * Export balance and transaction data
    * @param {string} format - Export format (csv, pdf)
    * @param {string} timeRange - Time range for the data
-   * @returns {Promise<any>} Export data
+   * @returns {Promise<unknown>} Export data
    */
-  async exportData(format: string = 'csv', timeRange: string = 'last30days'): Promise<any> {
+  async exportData(format: string = 'csv', timeRange: string = 'last30days'): Promise<unknown> {
     try {
       const response = await axios.get(`${API_URL}/analytics/export`, {
         headers: getAuthHeader(),

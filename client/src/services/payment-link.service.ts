@@ -2,7 +2,6 @@ import axios from 'axios';
 import AuthService from './auth.service';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const authService = new AuthService();
 
 export interface PaymentLink {
   _id?: string;

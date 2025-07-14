@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { KycData } from '@/types/auth';
+import {useAuth} from '@/contexts/AuthContext';
+import {KycData} from '@/types/auth';
 
 interface KycFormProps {
   onSuccess?: () => void;
