@@ -46,7 +46,7 @@ const COLORS = {
   teal: '#14B8A6',
 };
 
- 
+const EnhancedChart = ({
   data, 
   type = 'line', 
   height = 200, 
@@ -57,7 +57,7 @@ const COLORS = {
   className = '',
   currency = 'GHS',
   title
-}: EnhancedChartProps) {
+}: EnhancedChartProps) => {
   const chartColor = COLORS[color as keyof typeof COLORS] || COLORS.primary;
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -240,3 +240,5 @@ const COLORS = {
     </div>
   );
 } 
+
+export default EnhancedChart; 
