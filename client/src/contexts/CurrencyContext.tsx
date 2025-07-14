@@ -60,7 +60,7 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
         setCurrencyLogo('🇬🇭');
         console.log('No business registered, using default currency: GHS');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error fetching business currency:', err);
       setError(err.message || 'Failed to load currency');
       // Fallback to default

@@ -454,7 +454,7 @@ export class StorefrontService {
             }
 
             // Ensure all storefronts have proper IDs
-            const processedStorefronts = storefronts.map((storefront: any) => {
+            const processedStorefronts = storefronts.map((storefront: unknown) => {
                 const processed = { ...storefront };
                 if (!processed.id && processed._id) {
                     processed.id = processed._id;
@@ -542,7 +542,7 @@ export class StorefrontService {
                 throw new Error(response.data?.message || 'Failed to fetch storefront');
             }
             
-            let storefront = response.data.data;
+            const storefront = response.data.data;
             if (storefront && typeof storefront === 'object') {
                 if (!storefront.id && storefront._id) {
                     storefront.id = storefront._id;
@@ -619,7 +619,7 @@ export class StorefrontService {
 
             console.log('Final storefront object:', storefront);
             return storefront;
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error in createStorefront:', error);
             console.error('Error response:', error.response?.data);
             console.error('Error status:', error.response?.status);
@@ -659,7 +659,7 @@ export class StorefrontService {
 
             console.log('Products added to storefront:', response.data);
 
-            let result = response.data.data;
+            const result = response.data.data;
             // Ensure the storefront has an id field
             if (!result.id && result._id) {
                 result.id = result._id;
@@ -763,7 +763,7 @@ export class StorefrontService {
             });
             
             console.log('Storefront deleted successfully from API:', id);
-        } catch (error: any) {
+        } catch (error: unknown) {
             // If it's a 404 error, the storefront doesn't exist on the server
             // In this case, we can still consider this a "success" since the end result is the same
             if (error.response?.status === 404) {

@@ -24,7 +24,7 @@ class BalanceService {
       
       console.log('Balance data received:', response.data);
       return response.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching balance and payout:', error);
       console.error('Error details:', error.response?.data || 'No response data');
       throw error;

@@ -6,7 +6,7 @@ export interface PaystackInitializeRequest {
   currency?: string;
   reference: string;
   callback_url: string;
-  metadata?: any;
+  metadata?: unknown;
   paymentLinkId?: string;
   customerInfo?: {
     name?: string;
@@ -33,7 +33,7 @@ export interface PaystackVerifyResponse {
     status: string;
     amount: number;
     currency: string;
-    customer?: any;
+    customer?: unknown;
     transaction_id: string;
     payment_method: string;
   };

@@ -105,7 +105,7 @@ export const useBusinesses = () => {
           // If no real businesses, keep the mock data to ensure UI works
           console.log('No businesses found in API response, using mock data');
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error fetching businesses:', err);
         setError(err.response?.data?.message || 'Failed to fetch businesses');
         // Keep mock data to ensure UI functionality

@@ -120,7 +120,7 @@ export default function BalancesPage() {
         // Invalid data structure
         throw new Error('Invalid data structure received from API');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error fetching balance data:', err);
       setError(`Failed to load real data: ${err.message || 'Unknown error'}. Using demo data instead.`);
       setBalanceData(demoBalanceData); // Only use demo data if API fails
@@ -184,7 +184,7 @@ export default function BalancesPage() {
       try {
         const response = await transactionService.getTransactions({ limit: 20 });
         // Map to TransactionHistory type
-        const mapped: TransactionHistoryItem[] = response.data.map((t: any) => ({
+        const mapped: TransactionHistoryItem[] = response.data.map((t: unknown) => ({
           id: t.transactionId || t._id || t.id || t.created,
           type: t.paymentMethod || 'charge', // fallback if type missing
           amount: t.amount,

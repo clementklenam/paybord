@@ -102,7 +102,7 @@ export default function ProductTestPage() {
       if (response.ok) {
         await testGetProducts();
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       setResult(`Error: ${error.message}`);
       console.error("Test error:", error);
     } finally {
@@ -139,7 +139,7 @@ export default function ProductTestPage() {
           2
         )}`
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       setResult(prev => `${prev}\n\nGet Products Error: ${error.message}`);
       console.error("Test error:", error);
     }

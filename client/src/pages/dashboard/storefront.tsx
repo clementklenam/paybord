@@ -55,7 +55,7 @@ export default function StorefrontPage() {
             try {
                 const result = await getBusinessesForUser();
                 setBusinesses(result);
-            } catch (err: any) {
+            } catch (err: unknown) {
                 setBusinessesError('Failed to load businesses.');
             } finally {
                 setBusinessesLoading(false);
@@ -198,7 +198,7 @@ export default function StorefrontPage() {
                 });
             // Always refetch from backend after deletion
             fetchStorefronts();
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error deleting storefront:', error);
             toast({
                 title: 'Error',

@@ -53,8 +53,8 @@ class PaymentLinkService {
         }
       );
 
-      return (response.data as any).data as PaymentLink;
-    } catch (error: any) {
+      return (response.data as unknown).data as PaymentLink;
+    } catch (error: unknown) {
       console.error('Error creating payment link:', error);
       throw error.response?.data || error.message || 'Error creating payment link';
     }
@@ -89,7 +89,7 @@ class PaymentLinkService {
         },
       });
 
-      return (response.data as any) as {
+      return (response.data as unknown) as {
         data: PaymentLink[];
         pagination: {
           page: number;
@@ -98,7 +98,7 @@ class PaymentLinkService {
           totalPages: number;
         };
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching payment links:', error);
       throw error.response?.data || error.message || 'Error fetching payment links';
     }
@@ -120,8 +120,8 @@ class PaymentLinkService {
         },
       });
 
-      return (response.data as any).data as PaymentLink;
-    } catch (error: any) {
+      return (response.data as unknown).data as PaymentLink;
+    } catch (error: unknown) {
       console.error('Error fetching payment link:', error);
       throw error.response?.data || error.message || 'Error fetching payment link';
     }
@@ -148,8 +148,8 @@ class PaymentLinkService {
         }
       );
 
-      return (response.data as any).data as PaymentLink;
-    } catch (error: any) {
+      return (response.data as unknown).data as PaymentLink;
+    } catch (error: unknown) {
       console.error('Error updating payment link:', error);
       throw error.response?.data || error.message || 'Error updating payment link';
     }
@@ -170,7 +170,7 @@ class PaymentLinkService {
           Authorization: `Bearer ${token}`,
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting payment link:', error);
       throw error.response?.data || error.message || 'Error deleting payment link';
     }
@@ -196,8 +196,8 @@ class PaymentLinkService {
       }
       
       const response = await axios.get(`${API_URL}/payment-links/public/${id}`);
-      return (response.data as any).data as PaymentLink;
-    } catch (error: any) {
+      return (response.data as unknown).data as PaymentLink;
+    } catch (error: unknown) {
       console.error('Error fetching public payment link:', error);
       throw error.response?.data || error.message || 'Error fetching public payment link';
     }
@@ -209,7 +209,7 @@ class PaymentLinkService {
   async trackLinkClick(linkId: string): Promise<void> {
     try {
       await axios.get(`${API_URL}/payment-links/${linkId}/track-view`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error tracking link click:', error);
       // Don't throw here, just log - we don't want to interrupt the user flow
     }

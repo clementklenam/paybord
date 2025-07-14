@@ -1238,7 +1238,7 @@ export default function ProductsPage() {
                         
                         // Show success message
                         alert("Product created successfully!");
-                      } catch (error: any) {
+                      } catch (error: unknown) {
                         console.error('Error creating product:', error);
                         
                         // Show detailed error message

@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 export interface PaymentMethod {
     id: string;
     type: 'card' | 'bank_account' | 'wallet';
-    details: any;
+    details: unknown;
     isDefault: boolean;
     createdAt: string;
 }
@@ -136,7 +136,7 @@ export default class CustomerService {
 
     async addPaymentMethod(customerId: string, data: {
         type: 'card' | 'bank_account' | 'wallet';
-        details: any;
+        details: unknown;
         isDefault?: boolean;
     }): Promise<{ paymentMethod: PaymentMethod; customer: Customer }> {
         const response = await axios.post<{ paymentMethod: PaymentMethod; customer: Customer }>(`${API_URL}/customers/${customerId}/payment-methods`, data, {

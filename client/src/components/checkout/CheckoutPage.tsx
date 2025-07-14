@@ -14,13 +14,13 @@ function CheckoutPage() {
     currency: "USD",
   };
   
-  const handlePaymentSuccess = (data: any) => {
+  const handlePaymentSuccess = (data: unknown) => {
     setPaymentSuccess(true);
     setPaymentData(data);
     console.log("Payment successful:", data);
   };
   
-  const handlePaymentError = (error: any) => {
+  const handlePaymentError = (error: unknown) => {
     setError(error);
     console.error("Payment failed:", error);
   };

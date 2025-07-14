@@ -19,7 +19,7 @@ import {
 interface DataPoint {
   name: string;
   value: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface EnhancedChartProps {
@@ -60,7 +60,7 @@ const EnhancedChart = ({
 }: EnhancedChartProps) => {
   const chartColor = COLORS[color as keyof typeof COLORS] || COLORS.primary;
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload, label }: unknown) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3">
@@ -69,7 +69,7 @@ const EnhancedChart = ({
               <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</p>
             )}
             <p className="text-sm text-gray-600 dark:text-gray-400">{label}</p>
-            {payload.map((entry: any, index: number) => (
+            {payload.map((entry: unknown, index: number) => (
               <div key={index} className="flex items-center space-x-2">
                 <div 
                   className="w-3 h-3 rounded-full" 

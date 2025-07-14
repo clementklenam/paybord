@@ -53,7 +53,7 @@ export default function TestTopCustomersPage() {
         <h2 className="text-lg font-semibold mb-2">Top Customers:</h2>
         {data?.overview?.topCustomers ? (
           <div className="space-y-2">
-            {data.overview.topCustomers.map((customer: any, index: number) => (
+            {data.overview.topCustomers.map((customer: unknown, index: number) => (
               <div key={index} className="bg-white p-3 rounded border">
                 <div className="font-medium">{customer.name}</div>
                 <div className="text-sm text-gray-600">{customer.email}</div>

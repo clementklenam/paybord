@@ -289,7 +289,7 @@ export default function PaymentLinksPage() {
       
       // Refresh the list
       fetchPaymentLinks();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error creating payment link:", error);
       
       let errorMessage = "Failed to create payment link.";
@@ -362,7 +362,7 @@ export default function PaymentLinksPage() {
     });
   };
 
-  const handleProductSelect = (product: any) => {
+  const handleProductSelect = (product: unknown) => {
     setSelectedProduct(product);
     if (product) {
       setNewLinkTitle(product.name);

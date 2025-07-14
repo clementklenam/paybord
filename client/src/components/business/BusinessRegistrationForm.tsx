@@ -438,7 +438,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                     window.location.href = '/dashboard';
                 }, 2000); // Longer delay to allow the backend to process the registration
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Business registration error:', error);
             
             // Extract detailed error information from the response if available
@@ -453,7 +453,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                     errorMessage = error.response.data.error;
                 } else if (error.response.data.errors && Array.isArray(error.response.data.errors)) {
                     // Format validation errors from express-validator
-                    const validationErrors = error.response.data.errors.map((err: any) => `${err.param}: ${err.msg}`).join(', ');
+                    const validationErrors = error.response.data.errors.map((err: unknown) => `${err.param}: ${err.msg}`).join(', ');
                     errorMessage = `Validation failed: ${validationErrors}`;
                 }
             } else if (error.message) {

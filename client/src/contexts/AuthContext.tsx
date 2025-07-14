@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await authService.signup(data);
       setUser(response.user as User);
       setIsKycSubmitted(false); // New users need to submit KYC
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err.response?.data?.error || 'Failed to create account';
       setError(errorMessage);
       throw err;
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // In a real app, you would check KYC status from the backend
       setIsKycSubmitted(true); // Assuming existing users have completed KYC
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err.response?.data?.error || 'Invalid email or password';
       setError(errorMessage);
       throw err;
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       await authService.submitKyc(data);
       setIsKycSubmitted(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage = err.response?.data?.error || 'Failed to submit KYC';
       setError(errorMessage);
       throw err;

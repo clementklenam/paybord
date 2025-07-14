@@ -488,7 +488,7 @@ function CustomersPage() {
 export default CustomersPage;
 
 // Icons that need to be imported
-const Users = (props: any) => (
+const Users = (props: unknown) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -508,7 +508,7 @@ const Users = (props: any) => (
   </svg>
 );
 
-const RefreshCcw = (props: any) => (
+const RefreshCcw = (props: unknown) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -528,7 +528,7 @@ const RefreshCcw = (props: any) => (
   </svg>
 );
 
-const User = (props: any) => (
+const User = (props: unknown) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -546,7 +546,7 @@ const User = (props: any) => (
   </svg>
 );
 
-const ShoppingCart = (props: any) => (
+const ShoppingCart = (props: unknown) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -565,7 +565,7 @@ const ShoppingCart = (props: any) => (
   </svg>
 );
 
-const Trash = (props: any) => (
+const Trash = (props: unknown) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"

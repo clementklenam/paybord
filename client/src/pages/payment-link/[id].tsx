@@ -13,7 +13,7 @@ import { usePaymentContext } from "@/contexts/PaymentContext";
 // @ts-ignore
 declare global {
   interface Window {
-    PaystackPop?: any;
+    PaystackPop?: unknown;
   }
 }
 
@@ -47,7 +47,7 @@ function PaystackCheckoutModal({
   onSuccess?: () => void;
   paymentLinkId?: string;
   businessId?: string; // <-- add this prop
-  recordTransaction?: (args: any) => Promise<void>;
+  recordTransaction?: (args: unknown) => Promise<void>;
 }) {
   const [paystackReady, setPaystackReady] = useState(false);
   const { toast } = useToast();
@@ -124,7 +124,7 @@ function PaystackCheckoutModal({
             { display_name: 'Payment Link ID', variable_name: 'payment_link_id', value: paymentLinkId },
           ]
         },
-        callback: function(response: any) {
+        callback: function(response: unknown) {
           console.log('[DEBUG] Paystack callback triggered:', response);
           paymentResponseRef.current = response;
           (async () => {
@@ -246,7 +246,7 @@ export default function PaymentLinkViewPage() {
           else if (method === 'mobile_money') setSelectedPaymentMethod('mobile');
           else if (method === 'bank_transfer') setSelectedPaymentMethod('bank');
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error fetching payment link:', err);
         setError(err.message || 'Failed to load payment link. It may be expired or invalid.');
       } finally {
@@ -320,7 +320,7 @@ export default function PaymentLinkViewPage() {
     setShowPaystackModal(true);
   };
 
-  const recordTransaction = async ({ amount, currency, customerInfo, provider, status }: any) => {
+  const recordTransaction = async ({ amount, currency, customerInfo, provider, status }: unknown) => {
     console.log('[DEBUG] recordTransaction called with:', { amount, currency, customerInfo, provider, status, paymentLink, linkId });
     try {
       // Record the transaction in your backend

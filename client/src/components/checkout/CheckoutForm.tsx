@@ -70,8 +70,8 @@ export type CheckoutFormProps = {
   companyLogo?: string;
   customerEmail?: string;
   allowedPaymentMethods?: string[];
-  onPaymentSuccess?: (paymentData: any) => void;
-  onPaymentError?: (error: any) => void;
+  onPaymentSuccess?: (paymentData: unknown) => void;
+  onPaymentError?: (error: unknown) => void;
 };
 
 export function CheckoutForm({

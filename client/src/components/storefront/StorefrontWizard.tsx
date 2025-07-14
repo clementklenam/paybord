@@ -151,7 +151,7 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
 
                 if (data.data && data.data.length > 0) {
                     // Map the products to include isSelected property
-                    const products = data.data.map((product: any) => ({
+                    const products = data.data.map((product: unknown) => ({
                         ...product,
                         id: product.id || product._id || product.customId, // Ensure we have an ID
                         isSelected: false
@@ -308,7 +308,7 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
                 window.location.href = `/storefront/${createdStorefront.id}`;
             }, 500);
 
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Full error object:', error);
 
             let errorMessage = error.message;

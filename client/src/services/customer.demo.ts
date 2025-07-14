@@ -52,7 +52,7 @@ const generatePaymentMethod = (): PaymentMethod => {
   const types: Array<'card' | 'bank_account' | 'wallet'> = ['card', 'bank_account', 'wallet'];
   const type = types[Math.floor(Math.random() * types.length)];
   
-  let details: any = {};
+  let details: unknown = {};
   
   if (type === 'card') {
     const cardBrands = ['visa', 'mastercard', 'amex'];

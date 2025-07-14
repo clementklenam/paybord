@@ -209,7 +209,7 @@ export default function CustomersPage() {
   };
   
   // Handle customer creation
-  const handleCreateCustomer = async (data: any) => {
+  const handleCreateCustomer = async (data: unknown) => {
     setIsCreatingCustomer(true);
     try {
       if (!businessId) throw new Error('No business selected');

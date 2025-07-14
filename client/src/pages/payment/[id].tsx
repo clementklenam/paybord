@@ -53,7 +53,7 @@ export default function PaymentPage() {
           else if (method === 'mobile_money') setSelectedPaymentMethod('mobile');
           else if (method === 'bank_transfer') setSelectedPaymentMethod('bank');
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error fetching payment link:', err);
         setError(err.message || 'Failed to load payment link. It may be expired or invalid.');
       } finally {

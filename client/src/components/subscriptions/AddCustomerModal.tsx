@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CustomerService from '@/services/customer.service';
 
-export function AddCustomerModal({ open, onOpenChange, onAdd, businessId }: { open: boolean; onOpenChange: (open: boolean) => void; onAdd: (customer: any) => void; businessId: string }) {
+export function AddCustomerModal({ open, onOpenChange, onAdd, businessId }: { open: boolean; onOpenChange: (open: boolean) => void; onAdd: (customer: unknown) => void; businessId: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -35,7 +35,7 @@ export function AddCustomerModal({ open, onOpenChange, onAdd, businessId }: { op
       onAdd(customer);
       setName(""); setEmail(""); setPhone(""); setBilling(""); setError("");
       onOpenChange(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err?.response?.data?.error || err.message || 'Failed to create customer');
     } finally {
       setLoading(false);

@@ -43,7 +43,7 @@ interface Storefront {
     logo: string | null;
     primaryColor: string;
     accentColor?: string;
-    products?: any[];
+    products?: unknown[];
 }
 
 export default function StorefrontPage() {

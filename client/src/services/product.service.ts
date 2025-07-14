@@ -373,7 +373,7 @@ export class ProductService {
 
                 return responseData;
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('PRODUCT FETCH ERROR:', error);
 
             if (error.response) {
@@ -539,7 +539,7 @@ export class ProductService {
             saveUserProduct(createdProduct);
 
             return createdProduct;
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('===== PRODUCT CREATION ERROR =====');
             console.error('Error object:', error);
 

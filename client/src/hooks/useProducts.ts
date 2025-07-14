@@ -43,7 +43,7 @@ export const useProducts = () => {
         });
         
         setProducts(response.data.data || []);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error fetching products:', err);
         setError(err.response?.data?.message || 'Failed to fetch products');
       } finally {

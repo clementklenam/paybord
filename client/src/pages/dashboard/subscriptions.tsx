@@ -23,7 +23,7 @@ export default function SubscriptionsPage() {
       try {
         const subs = await SubscriptionService.listSubscriptions();
         setSubscriptions(subs);
-      } catch (err: any) {
+      } catch (err: unknown) {
         setError(err?.response?.data?.error || err.message || 'Failed to load subscriptions');
       } finally {
         setLoading(false);

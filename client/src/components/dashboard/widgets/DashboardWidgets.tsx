@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 interface WidgetProps {
-  data: any;
+  data: unknown;
   className?: string;
 }
 
@@ -25,7 +25,7 @@ const WidgetCard = ({
   title: string;
   value: string | number;
   trend?: { value: number; label: string };
-  icon: any;
+  icon: unknown;
   className?: string;
 }) => (
   <Card className={`bg-gradient-to-br from-gray-50/50 to-gray-100/30 hover:from-gray-100/50 hover:to-gray-200/40 transition-all border-gray-200 hover:border-gray-300 ${className}`}>
@@ -128,7 +128,7 @@ export const TopCustomersWidget = ({ data, className }: WidgetProps) => (
     </CardHeader>
     <CardContent>
       <div className="space-y-4">
-        {data?.customers?.map((customer: any) => (
+        {data?.customers?.map((customer: unknown) => (
           <div key={customer.id} className="flex items-center justify-between">
             <div className="space-y-1">
               <p className="text-sm font-medium leading-none">{customer.name}</p>

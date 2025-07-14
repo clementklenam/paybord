@@ -21,7 +21,7 @@ const demoPlans = [
 
 const CreateSubscriptionWizard = ({
   open, onOpenChange, onComplete
-}: { open: boolean; onOpenChange: (open: boolean) => void; onComplete: (data: any) => void; }) => {
+}: { open: boolean; onOpenChange: (open: boolean) => void; onComplete: (data: unknown) => void; }) => {
   const [step, setStep] = useState(0);
   const [selectedCustomer, setSelectedCustomer] = useState<string>("");
   const [selectedPlan, setSelectedPlan] = useState<string>("");

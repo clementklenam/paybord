@@ -168,7 +168,7 @@ export default function ProductsPage() {
       
       // Also get user-created products from localStorage
       const userProductsJSON = localStorage.getItem('user_products');
-      let userProducts: any[] = []; // Changed to any[]
+      let userProducts: unknown[] = []; // Changed to any[]
       
       if (userProductsJSON) {
         try {
@@ -180,7 +180,7 @@ export default function ProductsPage() {
       }
       
       // Combine API products and local products
-      let allProducts: any[] = []; // Changed to any[]
+      let allProducts: unknown[] = []; // Changed to any[]
       
       if (response && response.data) {
         allProducts = [...response.data];
@@ -394,7 +394,7 @@ export default function ProductsPage() {
       // Close modal
       setIsEditModalOpen(false);
       setSelectedProduct(null);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating product:', error);
       toast({
         title: "Error",
@@ -454,7 +454,7 @@ export default function ProductsPage() {
       // Close modal
       setIsDeleteModalOpen(false);
       setSelectedProduct(null);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting product:', error);
       toast({
         title: "Error",
@@ -582,7 +582,7 @@ export default function ProductsPage() {
       // Manually save to localStorage to ensure it's available immediately
       try {
         const userProductsJSON = localStorage.getItem('user_products');
-        let userProducts: any[] = []; // Changed to any[]
+        let userProducts: unknown[] = []; // Changed to any[]
         
         if (userProductsJSON) {
           userProducts = JSON.parse(userProductsJSON);
@@ -627,7 +627,7 @@ export default function ProductsPage() {
         pricingType: "one-off",
         billingPeriod: "monthly"
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error in createProduct function:', error);
       
       // Show detailed error message

@@ -287,7 +287,7 @@ export default function CustomerDetailPage() {
     });
   };
 
-  const handleUpdatePaymentMethod = async (paymentMethod: any) => {
+  const handleUpdatePaymentMethod = async (paymentMethod: unknown) => {
     toast({
       title: "Payment Method Updated",
       description: "Your payment method has been updated successfully.",

@@ -85,10 +85,10 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
     setCustomersError(null);
     new CustomerService().getCustomersByBusiness(businessId)
       .then(res => {
-        const normalized = res.map((c: any) => ({ ...c, id: c.id || c._id }));
+        const normalized = res.map((c: unknown) => ({ ...c, id: c.id || c._id }));
         setCustomers(normalized);
       })
-      .catch((err: any) => {
+      .catch((err: unknown) => {
         setCustomersError(err?.response?.data?.error || err.message || 'Failed to load customers');
       })
       .finally(() => setCustomersLoading(false));
@@ -104,7 +104,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
     (c.email && c.email.toLowerCase().includes(customerQuery.toLowerCase()))
   );
 
-  function handleAddCustomer(newCustomer: any) {
+  function handleAddCustomer(newCustomer: unknown) {
     setCustomers(prev => [...prev, newCustomer]);
     setSelectedCustomer(newCustomer);
     setShowAddCustomer(false);
@@ -132,7 +132,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
       setCreating(false);
       onOpenChange(false);
       // Optionally: show a toast or success message here
-    } catch (err: any) {
+    } catch (err: unknown) {
       setCreateError(err?.response?.data?.error || err.message || 'Failed to create subscription');
       setCreating(false);
     }

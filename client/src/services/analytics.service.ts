@@ -295,7 +295,7 @@ export async function getPaymentAnalytics(timeRange: string = 'last7days'): Prom
       }
     });
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching payment analytics:', error);
     console.error('Error response:', error.response?.data);
     throw error;
@@ -323,7 +323,7 @@ export async function getProductAnalytics(timeRange: string = 'last30days'): Pro
       }
     });
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching product analytics:', error);
     console.error('Error response:', error.response?.data);
     throw error;
@@ -351,7 +351,7 @@ export async function getCustomerAnalytics(timeRange: string = 'last30days'): Pr
       }
     });
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching customer analytics:', error);
     console.error('Error response:', error.response?.data);
     throw error;

@@ -22,7 +22,7 @@ import TransactionService from "@/services/transaction.service";
  
 declare global {
   interface Window {
-    PaystackPop?: any;
+    PaystackPop?: unknown;
   }
 }
 
@@ -365,7 +365,7 @@ function StripeCheckoutModal({
         setPaymentDeclined(true);
         setError('Payment was not successful.');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setPaymentDeclined(true);
       setError(err.message || 'Payment failed');
     } finally {
@@ -697,7 +697,7 @@ function PaystackCheckoutModal({
   onSuccess?: () => void;
   businessId?: string;
   storefrontId?: string;
-  recordTransaction?: (args: any) => Promise<void>;
+  recordTransaction?: (args: unknown) => Promise<void>;
 }) {
   const [paystackReady, setPaystackReady] = useState(false);
   const { toast } = useToast();
@@ -749,7 +749,7 @@ function PaystackCheckoutModal({
           { display_name: 'Storefront ID', variable_name: 'storefront_id', value: storefrontId },
         ]
       },
-      callback: function(response: any) {
+      callback: function(response: unknown) {
         paymentResponseRef.current = response;
         onSuccess();
         onClose();
@@ -997,7 +997,7 @@ export default function StorefrontPreview() {
     ? (cart[0].product.currency || 'NGN')
     : 'NGN';
 
-  const recordTransaction = async ({ amount, currency, customerInfo, provider, status }: any) => {
+  const recordTransaction = async ({ amount, currency, customerInfo, provider, status }: unknown) => {
     console.log('recordTransaction called with:', { amount, currency, customerInfo, provider, status });
     try {
       if (!storefront) return;
@@ -1011,7 +1011,7 @@ export default function StorefrontPreview() {
         console.error('Payment blocked: storefront.businessId is missing', storefront);
         return;
       }
-      const payload: any = {
+      const payload: unknown = {
         amount,
         currency,
         customerName: customerInfo.fullName,
