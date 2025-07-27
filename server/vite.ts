@@ -87,6 +87,17 @@ export function serveStatic(app: Express) {
     );
   }
 
+  app.use("/assets", express.static(path.join(distPath, "assets"), {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
+      } else if (filePath.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css");
+      }
+    }
+  }));
+
+  app.use("/img", express.static(path.join(distPath, "img")));
   app.use(express.static(distPath));
 
   // Skip processing payment links in the catch-all route
