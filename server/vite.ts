@@ -80,7 +80,6 @@ export async function setupVite(app: Express, server: Server) {
 
 export function serveStatic(app: Express) {
   const distPath = path.resolve(__dirname, "..", "client", "dist");
-  const clientPath = path.resolve(__dirname, "..", "client");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
@@ -102,18 +101,9 @@ export function serveStatic(app: Express) {
   // Serve images
   app.use("/img", express.static(path.join(distPath, "img")));
 
-  // Serve other static files from dist, but NOT index.html
-  app.use(express.static(distPath, {
-    index: false, // Disable automatic index.html serving
-    setHeaders: (res, filePath) => {
-      // Ensure we never serve the development index.html
-      if (filePath.endsWith("index.html") && !filePath.includes("dist")) {
-        res.status(404).send("Not found");
-        return;
-      }
-    }
-  }));
-
+  // IMPORTANT: Do NOT serve static files from the root client directory
+  // This prevents serving development files like /src/main.tsx
+  
   // Catch-all route - serve the BUILT index.html for all routes except payment links
   app.use("*", (req, res) => {
     const url = req.originalUrl;
