@@ -4,16 +4,14 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
 import {Card, CardContent} from "@/components/ui/card";
-import {Plus, X, UserPlus, Package, Calendar as CalendarIcon} from "lucide-react";
+import {X, UserPlus, Package, Calendar as CalendarIcon} from "lucide-react";
 import {AddCustomerModal} from "./AddCustomerModal";
 import {Product, ProductListResponse, ProductService} from "@/services/product.service";
-import {ProductCreateForm} from "@/components/products/ProductCreateForm";
 import SubscriptionService from '@/services/subscription.service';
 import CustomerService from '@/services/customer.service';
 import BusinessService from '@/services/business.service';
 import {Calendar} from '@/components/ui/calendar';
 import {Checkbox} from '@/components/ui/checkbox';
-import {DialogContent} from "@/components/ui/dialog";
 
 const productService = new ProductService();
 

@@ -74,7 +74,7 @@ function BenefitsSection() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: _index * 0.1 }}
               >
                 <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 group-hover:bg-emerald-500/20 flex items-center justify-center mb-6 transition-colors duration-300 border border-emerald-500/20">
                   <benefit.icon className="h-8 w-8 text-emerald-400" />
@@ -127,7 +127,7 @@ function BenefitsSection() {
                 { icon: Database, title: "High Availability", description: "Multi-region deployment with automatic failover" },
                 { icon: Cpu, title: "AI-Powered", description: "Machine learning for fraud detection and optimization" },
                 { icon: Network, title: "Global Network", description: "Edge computing for sub-100ms response times" }
-              ].map((feature, index) => (
+              ].map((feature, _index) => (
                 <div key={feature.title} className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10">
                   <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
                     <feature.icon className="h-6 w-6 text-emerald-400" />

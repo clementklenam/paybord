@@ -3,7 +3,6 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import {ExternalLink, Store, Link as LinkIcon} from "lucide-react";
-import {useCurrency} from "@/contexts/CurrencyContext";
 import {getAuthHeader} from "@/services/auth-header";
 import axios from "axios";
 

@@ -385,12 +385,11 @@ export default function StorefrontPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {storefronts.map(storefront => (
                                         <StorefrontCard
-                                        key={storefront.id || storefront._id || `temp-${Math.random().toString(36).substr(2, 9)}`}
-                                            storefront={storefront}
-                                            onView={handleViewStorefront}
-                                            onEdit={handleEditStorefront}
-                                            onDelete={handleDeleteStorefront}
-                                        />
+                                        key={storefront._id}
+                                        storefront={storefront}
+                                        onEdit={handleEditStorefront}
+                                        onDelete={handleDeleteStorefront}
+                                    />
                                 ))}
                             </div>
                         )}

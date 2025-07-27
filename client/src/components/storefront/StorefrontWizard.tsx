@@ -582,7 +582,7 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
                                                 gridTemplateColumns: `repeat(${selectedTheme.layout.columns}, 1fr)` 
                                             }}
                                         >
-                                            {availableProducts.filter(p => p.isSelected).slice(0, selectedTheme.layout.columns).map((product, i) => (
+                                            {availableProducts.filter(p => p.isSelected).slice(0, selectedTheme.layout.columns).map((product) => (
                                                 <div 
                                                     key={product.id}
                                                     className="rounded-lg overflow-hidden border"

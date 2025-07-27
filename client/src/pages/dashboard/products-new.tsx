@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Badge} from "@/components/ui/badge";
-import {Plus, Search, Package, Loader2, X, Pencil, Trash, Eye, EyeOff, Upload} from "lucide-react";
+import {Plus, Search, Package, Loader2, X, Eye, EyeOff, Upload} from "lucide-react";
 import {ProductService} from "@/services/product.service";
 import BusinessService from "@/services/business.service";
 import {useAuth} from "@/contexts/AuthContext";
@@ -39,7 +39,6 @@ export default function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [businessId, setBusinessId] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
