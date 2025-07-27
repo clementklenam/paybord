@@ -2,15 +2,16 @@ import {useState} from "react";
 import {Dialog} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import CustomerService from '@/services/customer.service';
+import CustomerService, { Customer } from '@/services/customer.service';
 
-export function AddCustomerModal({ open, onOpenChange, onAdd, businessId }: { open: boolean; onOpenChange: (open: boolean) => void; onAdd: (customer: unknown) => void; businessId: string }) {
+export function AddCustomerModal({ open, onOpenChange, onAdd, businessId }: { open: boolean; onOpenChange: (open: boolean) => void; onAdd: (customer: Customer) => void; businessId: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [billing, setBilling] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const customerService = new CustomerService();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -25,18 +26,18 @@ export function AddCustomerModal({ open, onOpenChange, onAdd, businessId }: { op
     setLoading(true);
     setError("");
     try {
-      const customer = await CustomerService.createCustomer({
+      const customer = await customerService.createCustomer({
         name,
         email,
         phone,
-        billingAddress: billing ? { line1: billing } : undefined,
-        businessId
+        billingAddress: billing ? { line1: billing } : undefined
       });
       onAdd(customer);
       setName(""); setEmail(""); setPhone(""); setBilling(""); setError("");
       onOpenChange(false);
     } catch (err: unknown) {
-      setError(err?.response?.data?.error || err.message || 'Failed to create customer');
+      const errorMsg = (err as any)?.response?.data?.error || (err as any)?.message || 'Failed to create customer';
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }

@@ -64,7 +64,9 @@ export interface ProductCreateData {
     currency?: string;
     metadata?: Record<string, string>;
     status?: string;
-    billingPeriod?: 'monthly' | 'yearly' | 'one-time' | null;
+    billingPeriod?: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'biannually' | 'yearly' | 'custom' | 'one-time' | null;
+    pricingType?: string;
+    customBillingDays?: number;
 }
 
 // Generate demo data for products

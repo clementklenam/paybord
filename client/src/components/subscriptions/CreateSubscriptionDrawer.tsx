@@ -8,12 +8,12 @@ import {Plus, X, UserPlus, Package, Calendar as CalendarIcon} from "lucide-react
 import {AddCustomerModal} from "./AddCustomerModal";
 import {Product, ProductListResponse, ProductService} from "@/services/product.service";
 import {ProductCreateForm} from "@/components/products/ProductCreateForm";
-import {Dialog as Modal} from "@/components/ui/dialog";
 import SubscriptionService from '@/services/subscription.service';
 import CustomerService from '@/services/customer.service';
 import BusinessService from '@/services/business.service';
 import {Calendar} from '@/components/ui/calendar';
 import {Checkbox} from '@/components/ui/checkbox';
+import {DialogContent} from "@/components/ui/dialog";
 
 const productService = new ProductService();
 
@@ -25,7 +25,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
   const [trialDays, setTrialDays] = useState(0);
   const [customers, setCustomers] = useState<any[]>([]);
   const [customerQuery, setCustomerQuery] = useState("");
-  const [selectedCustomer, setSelectedCustomer] = useState<unknown>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
 
   // Product catalog state
@@ -39,7 +39,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
 
-  const [businessId, setBusinessId] = useState<string | null>(null);
+  const [businessId, setBusinessId] = useState<string | undefined>(undefined);
   const [customersLoading, setCustomersLoading] = useState(false);
   const [customersError, setCustomersError] = useState<string | null>(null);
 
@@ -68,9 +68,9 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
     async function fetchBusinessId() {
       try {
         const business = await new BusinessService().getBusinessProfile();
-        setBusinessId(business._id || business.id);
+        setBusinessId(typeof business._id === 'string' ? business._id : undefined);
       } catch (err) {
-        setBusinessId(null);
+        setBusinessId(undefined);
       }
     }
     if (open) fetchBusinessId();
@@ -84,23 +84,31 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
     setCustomersError(null);
     new CustomerService().getCustomersByBusiness(businessId)
       .then(res => {
-        const normalized = res.map((c: unknown) => ({ ...c, id: c.id || c._id }));
+        const normalized = res.map((c: unknown) => ({ ...(c as any), id: (c as any).id || (c as any)._id }));
         setCustomers(normalized);
       })
       .catch((err: unknown) => {
-        setCustomersError(err?.response?.data?.error || err.message || 'Failed to load customers');
+        let errorMsg = 'Failed to load customers';
+        if (err && typeof err === 'object') {
+          if ('response' in err && (err as any).response?.data?.error) {
+            errorMsg = (err as any).response.data.error;
+          } else if ('message' in err && typeof (err as any).message === 'string') {
+            errorMsg = (err as any).message;
+          }
+        }
+        setCustomersError(errorMsg);
       })
       .finally(() => setCustomersLoading(false));
   }, [open, businessId]);
 
   const filteredProducts = products.filter(p =>
-    (p.name && p.name.toLowerCase().includes(productQuery.toLowerCase())) ||
-    (p.description && p.description.toLowerCase().includes(productQuery.toLowerCase()))
+    (typeof p.name === 'string' && p.name.toLowerCase().includes(productQuery.toLowerCase())) ||
+    (typeof p.description === 'string' && p.description.toLowerCase().includes(productQuery.toLowerCase()))
   );
 
   const filteredCustomers = customers.filter(c =>
-    (c.name && c.name.toLowerCase().includes(customerQuery.toLowerCase())) ||
-    (c.email && c.email.toLowerCase().includes(customerQuery.toLowerCase()))
+    (typeof (c as any).name === 'string' && (c as any).name.toLowerCase().includes(customerQuery.toLowerCase())) ||
+    (typeof (c as any).email === 'string' && (c as any).email.toLowerCase().includes(customerQuery.toLowerCase()))
   );
 
   function handleAddCustomer(newCustomer: unknown) {
@@ -118,21 +126,23 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
     setCreating(true);
     setCreateError(null);
     try {
+      const customer = selectedCustomer as any;
+      const product = selectedProduct as any;
       await SubscriptionService.createSubscription({
-        customer: selectedCustomer.id || selectedCustomer._id,
-        product: selectedProduct.id || selectedProduct._id,
-        price: selectedProduct.price * productQty,
-        currency: selectedProduct.currency || 'USD',
+        customer: customer.id || customer._id,
+        product: product.id || product._id,
+        price: product.price * productQty,
+        currency: product.currency || 'USD',
         interval: 'month',
         startDate: startDate ? startDate.toISOString() : undefined,
-        endDate: forever ? null : (endDate ? endDate.toISOString() : null),
+        endDate: forever ? undefined : (endDate ? endDate.toISOString() : undefined),
         metadata: {},
       });
       setCreating(false);
       onOpenChange(false);
       // Optionally: show a toast or success message here
     } catch (err: unknown) {
-      setCreateError(err?.response?.data?.error || err.message || 'Failed to create subscription');
+      setCreateError((err && typeof err === 'object' && 'response' in err && (err as any).response?.data?.error) ? (err as any).response.data.error : (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string' ? (err as any).message : 'Failed to create subscription'));
       setCreating(false);
     }
   }
@@ -184,7 +194,15 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
                   <Input
                     placeholder="Find or add a customer..."
                     className="bg-background border-gray-200 pr-10"
-                    value={selectedCustomer ? selectedCustomer.name + ' (' + selectedCustomer.email + ')' : customerQuery}
+                    value={(() => {
+                      if (selectedCustomer) {
+                        const customer = selectedCustomer as any;
+                        const name = typeof customer.name === 'string' ? customer.name : '';
+                        const email = typeof customer.email === 'string' ? customer.email : '';
+                        return name && email ? `${name} (${email})` : name || email || '';
+                      }
+                      return customerQuery;
+                    })()}
                     onChange={e => {
                       setCustomerQuery(e.target.value);
                       setSelectedCustomer(null);
@@ -194,19 +212,22 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
                   {customerQuery && !selectedCustomer && (
                     <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-56 overflow-auto">
                       {filteredCustomers.length > 0 ? (
-                        filteredCustomers.map(c => (
-                          <div
-                            key={c.id}
-                            className="px-4 py-2 cursor-pointer hover:bg-gray-50"
-                            onClick={() => {
-                              setSelectedCustomer(c);
-                              setCustomerQuery("");
-                            }}
-                          >
-                            <div className="font-medium">{c.name}</div>
-                            <div className="text-xs text-gray-500">{c.email}</div>
-                          </div>
-                        ))
+                        filteredCustomers.map(c => {
+                          const customer = c as any;
+                          return (
+                            <div
+                              key={customer.id}
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-50"
+                              onClick={() => {
+                                setSelectedCustomer(customer);
+                                setCustomerQuery("");
+                              }}
+                            >
+                              <div className="font-medium">{typeof customer.name === 'string' ? customer.name : ''}</div>
+                              <div className="text-xs text-gray-500">{typeof customer.email === 'string' ? customer.email : ''}</div>
+                            </div>
+                          );
+                        })
                       ) : (
                         <div className="px-4 py-3 text-gray-600 flex items-center gap-2">
                           <UserPlus className="h-4 w-4 text-primary" />
@@ -220,12 +241,22 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
                 </div>
                 {selectedCustomer && (
                   <div className="mt-2 text-xs text-gray-600">
-                    Selected: <span className="font-medium">{selectedCustomer.name}</span> ({selectedCustomer.email})
-                    <button className="ml-2 text-primary underline text-xs" onClick={() => setSelectedCustomer(null)} type="button">Change</button>
+                    {((() => {
+                      const customer = selectedCustomer as any;
+                      const name = typeof customer.name === 'string' ? customer.name : '';
+                      const email = typeof customer.email === 'string' ? customer.email : '';
+                      if (!name && !email) return null;
+                      return (
+                        <>
+                          Selected: <span className="font-medium">{name}</span> ({email})
+                          <button className="ml-2 text-primary underline text-xs" onClick={() => setSelectedCustomer(null)} type="button">Change</button>
+                        </>
+                      );
+                    })() as React.ReactNode)}
                   </div>
                 )}
               </div>
-              <AddCustomerModal open={showAddCustomer} onOpenChange={setShowAddCustomer} onAdd={handleAddCustomer} businessId={businessId || ''} />
+              <AddCustomerModal open={showAddCustomer} onOpenChange={setShowAddCustomer} onAdd={handleAddCustomer} businessId={businessId ?? ''} />
               {/* Duration */}
               <div className="mb-10">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">Duration</label>
@@ -240,7 +271,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
                       mode="single"
                       selected={startDate}
                       onSelect={setStartDate}
-                      disabled={date => false}
+                      disabled={() => false}
                     />
                   </div>
                   <div>
@@ -249,7 +280,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
                       mode="single"
                       selected={endDate}
                       onSelect={setEndDate}
-                      disabled={forever ? () => true : date => (startDate ? date < startDate : false)}
+                      disabled={forever ? () => true : (date) => (startDate ? date < startDate : false)}
                     />
                   </div>
                 </div>
@@ -457,19 +488,17 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
           </div>
         </div>
       )}
-      <Modal open={showAddProduct} onOpenChange={setShowAddProduct}>
-        <ModalContent className="max-w-lg w-full">
-          <ProductCreateForm
-            businessId={businessId}
-            onCreate={product => {
-              setProducts(prev => [product, ...prev]);
-              setSelectedProduct(product);
-              setShowAddProduct(false);
-            }}
-            onCancel={() => setShowAddProduct(false)}
-          />
-        </ModalContent>
-      </Modal>
+      <DialogContent className="max-w-lg w-full">
+        <ProductCreateForm
+          businessId={businessId ?? ''}
+          onCreate={product => {
+            setProducts(prev => [product, ...prev]);
+            setSelectedProduct(product);
+            setShowAddProduct(false);
+          }}
+          onCancel={() => setShowAddProduct(false)}
+        />
+      </DialogContent>
     </Dialog>
   );
 } 

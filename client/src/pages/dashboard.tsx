@@ -137,26 +137,62 @@ export default function DashboardPage() {
   return (
     <DashboardLayout>
       <BusinessRegistrationCheck>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen bg-white">
+          {/* Verification Banner */}
+          <div className="bg-gradient-to-r from-[#FFD700] via-[#FFC700] to-[#FFD700] border-b-4 border-[#2d5a5a] shadow-lg">
+            <div className="px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md">
+                      <svg className="w-6 h-6 text-[#2d5a5a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-[#1a1a1a]">Account Verification Required</h3>
+                    <p className="text-[#1a1a1a]/80 text-sm">Complete your account verification to unlock all features and start accepting payments</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-all duration-200 font-semibold"
+                  >
+                    Verify Later
+                  </Button>
+                  <Button 
+                    size="sm"
+                    className="bg-[#2d5a5a] hover:bg-[#3a6b6b] text-white shadow-md hover:shadow-lg transition-all duration-200 font-semibold"
+                  >
+                    Verify Now
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Shopify-style Header */}
           <ShopifyHeader 
             title="Dashboard"
             subtitle="Track your business performance"
             actions={
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
                 <Button 
                   onClick={() => setIsAddingWidget(true)} 
                   variant="outline"
                   size="sm"
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                  className="border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a]/5 transition-all duration-200"
                 >
                   <Plus className="mr-2 h-4 w-4" /> Add widget
                 </Button>
                 <Button 
                   onClick={fetchDashboardData}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-[#FFD700] hover:bg-[#FFC700] text-black transition-all duration-200"
                   disabled={isLoading}
                 >
                   <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} /> 
@@ -168,17 +204,20 @@ export default function DashboardPage() {
           
           {isLoading && (
             <div className="flex justify-center items-center h-64">
-              <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-6 w-6 border-2 border-gray-300 dark:border-gray-600 border-t-blue-600"></div>
-                <span className="text-gray-600 dark:text-gray-400">Loading dashboard data...</span>
+              <div className="flex flex-col items-center space-y-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#1a1a1a]/20 border-t-[#FFD700]"></div>
+                <div className="text-center">
+                  <span className="text-[#1a1a1a] font-medium">Loading dashboard data...</span>
+                  <p className="text-gray-500 text-sm mt-1">Please wait while we fetch your latest metrics</p>
+                </div>
               </div>
             </div>
           )}
           
           {!isLoading && dashboardData && (
-            <div className="space-y-6">
+            <div className="space-y-8 p-6">
               {/* Key Metrics - Shopify Style */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <ShopifyStatsCard
                   title="Total sales"
                   value={`${dashboardData.today.grossVolume.currency || 'GHS'} ${dashboardData.today.grossVolume.amount.toFixed(2)}`}
@@ -186,6 +225,7 @@ export default function DashboardPage() {
                   changeLabel="vs last period"
                   icon={<DollarSign className="h-5 w-5" />}
                   trend="up"
+                  color="yellow"
                 />
                 
                 <ShopifyStatsCard
@@ -195,6 +235,7 @@ export default function DashboardPage() {
                   changeLabel="vs last period"
                   icon={<CreditCard className="h-5 w-5" />}
                   trend="up"
+                  color="blue"
                 />
                 
                 <ShopifyStatsCard
@@ -204,6 +245,7 @@ export default function DashboardPage() {
                   changeLabel={`Estimated for ${dashboardData.today.nextPayout?.date || 'N/A'}`}
                   icon={<Calendar className="h-5 w-5" />}
                   trend="neutral"
+                  color="green"
                 />
                 
                 <ShopifyStatsCard
@@ -213,16 +255,17 @@ export default function DashboardPage() {
                   changeLabel="this period"
                   icon={<Users className="h-5 w-5" />}
                   trend="up"
+                  color="purple"
                 />
               </div>
 
               {/* Charts Section - Shopify Style */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Revenue overview</h3>
-                      <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300">
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-semibold text-gray-900">Revenue overview</h3>
+                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
                         View report
                         <ArrowUpRight className="ml-1 h-4 w-4" />
                       </Button>
@@ -237,11 +280,11 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 
-                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Net revenue</h3>
-                      <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300">
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-semibold text-gray-900">Net revenue</h3>
+                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
                         View report
                         <ArrowUpRight className="ml-1 h-4 w-4" />
                       </Button>
@@ -258,12 +301,12 @@ export default function DashboardPage() {
               </div>
 
               {/* Bottom Section - Shopify Style */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Customer growth</h3>
-                      <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300">
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-semibold text-gray-900">Customer growth</h3>
+                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
                         View all customers
                         <ArrowUpRight className="ml-1 h-4 w-4" />
                       </Button>
@@ -278,11 +321,11 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 
-                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Top customers</h3>
-                      <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300">
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-semibold text-gray-900">Top customers</h3>
+                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
                         View all
                         <ArrowUpRight className="ml-1 h-4 w-4" />
                       </Button>
@@ -296,11 +339,11 @@ export default function DashboardPage() {
               </div>
 
               {/* Failed Payments Section - Shopify Style */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Payment issues</h3>
-                    <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+                    <h3 className="text-lg font-semibold text-gray-900">Payment issues</h3>
+                    <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
                       View all issues
                       <ArrowUpRight className="ml-1 h-4 w-4" />
                     </Button>
@@ -316,23 +359,21 @@ export default function DashboardPage() {
               </div>
 
               {/* Payment Sources Section - Shopify Style */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Payment Sources</h3>
-                    <Button variant="ghost" size="sm" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
-                      View all transactions
-                      <ArrowUpRight className="ml-1 h-4 w-4" />
-                    </Button>
-                  </div>
-                  <PaymentSourcesWidget />
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Recent Payment Sources</h3>
+                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
+                    View all transactions
+                    <ArrowUpRight className="ml-1 h-4 w-4" />
+                  </Button>
                 </div>
+                <PaymentSourcesWidget />
               </div>
             </div>
           )}
 
           {!isLoading && dashboardData && customWidgets.map((widget) => (
-            <div key={widget.id} className="mt-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+            <div key={widget.id} className="mt-6 bg-white rounded-lg border border-gray-200 shadow-sm">
               <div className="p-6">
                 {widget.type === "grossVolume" && (
                   <OverviewCard

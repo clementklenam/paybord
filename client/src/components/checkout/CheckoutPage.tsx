@@ -2,9 +2,17 @@ import {useState} from "react";
 import {CheckoutForm} from "./CheckoutForm";
 import {Button} from "@/components/ui/button";
 
+// Define the payment data type
+interface PaymentData {
+  transactionId?: string;
+  currency?: string;
+  amount?: number;
+  paymentMethod?: string;
+}
+
 function CheckoutPage() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [paymentData, setPaymentData] = useState<unknown>(null);
+  const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   
   // Mock product data
   const productData = {
@@ -16,7 +24,7 @@ function CheckoutPage() {
   
   const handlePaymentSuccess = (data: unknown) => {
     setPaymentSuccess(true);
-    setPaymentData(data);
+    setPaymentData(data as PaymentData);
     console.log("Payment successful:", data);
   };
   

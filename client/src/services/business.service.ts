@@ -156,5 +156,9 @@ export default class BusinessService {
 export async function getBusinessesForUser(): Promise<Business[]> {
     const response = await api.get('/business'); // Adjust endpoint if needed
     // Expecting response.data.data to be an array of businesses
-    return ((response.data as unknown).data || response.data) as Business[];
+    const responseData = response.data as { data?: Business[] } | Business[];
+    if ('data' in responseData && responseData.data) {
+        return responseData.data;
+    }
+    return responseData as Business[];
 }

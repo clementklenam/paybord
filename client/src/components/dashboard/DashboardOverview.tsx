@@ -16,6 +16,11 @@ import {
 } from "./widgets";
 import {getPaymentAnalytics, PaymentAnalytics} from "@/services/analytics.service";
 
+// Helper to guarantee a number
+function safeNumber(val: unknown): number {
+  return typeof val === 'number' ? val : 0;
+}
+
 function DashboardOverview() {
   const [timeRange, setTimeRange] = useState("last7days");
   const [isAddingWidget, setIsAddingWidget] = useState(false);
@@ -170,7 +175,7 @@ function DashboardOverview() {
                 <h3 className="text-sm font-medium text-muted-foreground">Gross Volume</h3>
                 <div className="mt-2">
                   <p className="text-2xl font-semibold text-gray-900">
-                    {analytics ? formatCurrency(analytics.grossVolume.amount) : '$0.00'}
+                    {analytics ? formatCurrency(safeNumber(analytics.grossVolume.amount)) : '$0.00'}
                   </p>
                   {analytics && (analytics.grossVolume.growth ?? 0) !== 0 && (
                     <div className="flex items-center mt-1">
@@ -198,7 +203,7 @@ function DashboardOverview() {
                 <h3 className="text-sm font-medium text-muted-foreground">Net Revenue</h3>
                 <div className="mt-2">
                   <p className="text-2xl font-semibold text-gray-900">
-                    {analytics ? formatCurrency(analytics.netVolume.amount) : '$0.00'}
+                    {analytics ? formatCurrency(safeNumber(analytics.netVolume.amount)) : '$0.00'}
                   </p>
                   {analytics && (analytics.netVolume.growth ?? 0) !== 0 && (
                     <div className="flex items-center mt-1">
@@ -285,8 +290,8 @@ function DashboardOverview() {
         {analytics && (
           <div className="grid grid-cols-3 gap-4">
             <GrossVolumeWidget data={{
-              today: analytics.grossVolume.amount,
-              yesterday: analytics.grossVolume.previousAmount,
+              today: safeNumber(analytics.grossVolume.amount),
+              yesterday: safeNumber(analytics.grossVolume.previousAmount),
               lastUpdated: new Date(analytics.lastUpdated).toLocaleTimeString(),
               chart: analytics.grossVolume.chart
             }} />
@@ -294,18 +299,18 @@ function DashboardOverview() {
             <PaymentOverviewWidget data={{
               total: analytics.totalTransactions,
               trend: analytics.grossVolume.chart,
-              growth: analytics.grossVolume.growth
+              growth: safeNumber(analytics.grossVolume.growth)
             }} />
             
             <NetVolumeWidget data={{
-              amount: analytics.netVolume.amount,
+              amount: safeNumber(analytics.netVolume.amount),
               trend: analytics.netVolume.chart,
               lastUpdated: new Date(analytics.lastUpdated).toLocaleTimeString()
             }} />
             
             <NewCustomersWidget data={{
-              count: analytics.newCustomers.count,
-              previousPeriod: analytics.newCustomers.previousCount,
+              count: safeNumber(analytics.newCustomers.count),
+              previousPeriod: safeNumber(analytics.newCustomers.previousCount),
               trend: analytics.newCustomers.chart,
               lastUpdated: new Date(analytics.lastUpdated).toLocaleTimeString()
             }} />
@@ -314,7 +319,7 @@ function DashboardOverview() {
             
             <TopCustomersWidget
               customers={analytics.topCustomers}
-              currency={analytics.grossVolume.currency ?? 'GHS'}
+              currency={'GHS'}
             />
           </div>
         )}

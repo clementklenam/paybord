@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { CustomerForm } from "@/components/customers/CustomerForm";
-import CustomerService, { Customer, CustomerListResponse, CustomerFilters } from "@/services/customer.service";
+import CustomerService, { Customer, CustomerListResponse, CustomerFilters, CustomerCreationData } from "@/services/customer.service";
 import BusinessService from '@/services/business.service';
 import { 
   Search, 
@@ -209,15 +209,10 @@ export default function CustomersPage() {
   };
   
   // Handle customer creation
-  const handleCreateCustomer = async (data: unknown) => {
+  const handleCreateCustomer = async (data: CustomerCreationData) => {
     setIsCreatingCustomer(true);
     try {
-      if (!businessId) throw new Error('No business selected');
-      const customerData = {
-        ...data,
-        businessId
-      };
-      const newCustomer = await customerService.createCustomer(customerData);
+      const newCustomer = await customerService.createCustomer(data);
       setIsCreateCustomerOpen(false);
       fetchCustomers();
       toast({

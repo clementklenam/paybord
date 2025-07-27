@@ -8,7 +8,14 @@ import {Textarea} from '@/components/ui/textarea';
 import {CreditCard, DollarSign, Smartphone, User, Mail, Phone, MapPin, Lock} from 'lucide-react';
 import {useToast} from '@/components/ui/use-toast';
 import {usePaymentContext} from "@/contexts/PaymentContext";
+import { PaymentLink } from '@/services/payment-link.service';
 
+// Add interface PaymentLink with all expected properties.
+// Type paymentLink as PaymentLink | null.
+// Use paymentLink.amount ?? 0, paymentLink.currency ?? 'USD', etc.
+// Add type guards or assertions for unknown types.
+// Remove unused variables and unused @ts-expect-error.
+// Ensure Button is imported from '@/components/ui/button'.
 // @ts-expect-error
 declare global {
   interface Window {
@@ -212,7 +219,7 @@ export default function PaymentLinkViewPage() {
   // Get link ID from either route pattern
   const linkId = paymentParams?.id || plParams?.id || location[0].substring(4);
   
-  const [paymentLink, setPaymentLink] = useState<unknown>(null);
+  const [paymentLink, setPaymentLink] = useState<PaymentLink | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [customerInfo, setCustomerInfo] = useState({
@@ -455,7 +462,7 @@ export default function PaymentLinkViewPage() {
               {/* Amount */}
               <div className="text-center mb-4">
                 <div className="text-4xl font-bold mb-2 text-white">
-                  {formatCurrency(paymentLink.amount, paymentLink.currency)}
+                  {formatCurrency(paymentLink.amount ?? 0, paymentLink.currency ?? 'USD')}
                 </div>
                 <div className="text-lg font-medium text-white">
                   {paymentLink.title}
@@ -616,7 +623,7 @@ export default function PaymentLinkViewPage() {
                     Processing...
                   </>
                 ) : (
-                  `Pay ${formatCurrency(paymentLink.amount, paymentLink.currency)}`
+                  `Pay ${formatCurrency(paymentLink.amount ?? 0, paymentLink.currency ?? 'USD')}`
                 )}
               </Button>
             </div>
@@ -639,9 +646,9 @@ export default function PaymentLinkViewPage() {
       <PaystackCheckoutModal
         open={showPaystackModal}
         onClose={() => setShowPaystackModal(false)}
-        amount={paymentLink.amount} // for display
+        amount={paymentLink.amount ?? 0} // for display
         amountInKobo={Math.round(paymentLink.amount * 100)} // for Paystack
-        currency={paymentLink.currency || 'NGN'}
+        currency={paymentLink.currency ?? 'NGN'}
         customerInfo={customerInfo}
         onSuccess={() => {
           setPaymentComplete(true);

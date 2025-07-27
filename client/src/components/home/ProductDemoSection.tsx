@@ -169,7 +169,7 @@ function PaymentProcessingDemo() {
 function FraudProtectionDemo() {
   const [riskScore, setRiskScore] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<unknown>(null);
+  const [analysisResult, setAnalysisResult] = useState<any>(null);
 
   const analyzeTransaction = () => {
     setIsAnalyzing(true);
@@ -239,11 +239,11 @@ function FraudProtectionDemo() {
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium text-white">Risk Assessment</h4>
                 <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  analysisResult.riskLevel === "Low" ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/20" :
-                  analysisResult.riskLevel === "Medium" ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/20" :
+                  analysisResult && analysisResult.riskLevel === "Low" ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/20" :
+                  analysisResult && analysisResult.riskLevel === "Medium" ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/20" :
                   "bg-red-500/20 text-red-400 border border-red-500/20"
                 }`}>
-                  {analysisResult.riskLevel} Risk
+                  {analysisResult && analysisResult.riskLevel} Risk
                 </div>
               </div>
               
@@ -266,13 +266,13 @@ function FraudProtectionDemo() {
 
               <div className="mb-4">
                 <div className="text-sm text-gray-400 mb-2">Confidence Level</div>
-                <div className="text-lg font-semibold text-white">{analysisResult.confidence}%</div>
+                <div className="text-lg font-semibold text-white">{analysisResult && analysisResult.confidence}%</div>
               </div>
 
               <div>
                 <div className="text-sm text-gray-400 mb-2">Risk Factors</div>
                 <div className="space-y-1">
-                  {analysisResult.factors.map((factor: string, index: number) => (
+                  {analysisResult && analysisResult.factors && analysisResult.factors.map((factor: string, index: number) => (
                     <div key={index} className="flex items-center text-sm">
                       <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2"></div>
                       <span className="text-gray-300">{factor}</span>

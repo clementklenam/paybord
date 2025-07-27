@@ -43,6 +43,9 @@ export interface KycData {
   address: string;
   idType: string;
   idNumber: string;
-  idDocument: File | null;
-  proofOfAddress: File | null;
+  idDocument?: File;
+  proofOfAddress?: File;
+  idFrontImage?: File;
+  idBackImage?: File;
+  selfieImage?: File;
 }

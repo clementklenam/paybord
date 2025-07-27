@@ -419,7 +419,7 @@ export default function ProductsPage() {
     switch (status) {
       case "active":
         return (
-          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+          <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">
             Active
           </Badge>
         );
@@ -447,7 +447,7 @@ export default function ProductsPage() {
             <Download className="h-4 w-4 mr-2" />
             <span>Export</span>
           </Button>
-          <Button size="sm" className="h-9" onClick={() => setIsCreateModalOpen(true)}>
+          <Button variant="default" size="sm" className="h-9" onClick={() => setIsCreateModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             <span>Add product</span>
           </Button>

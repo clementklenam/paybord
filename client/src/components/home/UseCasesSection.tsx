@@ -12,7 +12,7 @@ const useCases = [
 
 export function UseCasesSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-900 to-black">
+    <section className="py-24 bg-[#2a2a2a]">
       <Container>
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left: Text Content */}
@@ -24,7 +24,7 @@ export function UseCasesSection() {
           >
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-8">
               Trusted by Businesses
-              <span className="block bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-[#FFD700] to-[#FFC700] bg-clip-text text-transparent">
                 Worldwide
               </span>
             </h2>
@@ -49,7 +49,7 @@ export function UseCasesSection() {
               ))}
             </div>
 
-            <Button className="group bg-white text-black hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-white/25 hover:scale-105">
+            <Button className="group bg-[#FFD700] text-black hover:bg-[#FFC700] px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-[#FFD700]/25 hover:scale-105">
               <span>Explore Use Cases</span>
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -67,7 +67,7 @@ export function UseCasesSection() {
               {/* Mockup Header */}
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-white to-gray-300 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-[#FFD700] rounded-xl flex items-center justify-center">
                     <span className="text-xl font-bold text-black">P</span>
                   </div>
                   <div>

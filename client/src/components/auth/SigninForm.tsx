@@ -52,12 +52,12 @@ export function SigninForm() {
   return (
     <div className="grid gap-6">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
+        <div className="bg-red-900/20 border border-red-500/30 text-red-300 p-4 rounded-lg">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">{error}</span>
             <button 
               onClick={clearError} 
-              className="text-red-500 hover:text-red-700 transition-colors"
+              className="text-red-400 hover:text-red-200 transition-colors"
             >
               ✕
             </button>
@@ -68,7 +68,7 @@ export function SigninForm() {
       <form onSubmit={onSubmit}>
         <div className="grid gap-6">
           <div className="grid gap-2">
-            <Label htmlFor="email" className="text-sm font-medium text-slate-700">Email address</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-gray-300">Email address</Label>
             <Input
               id="email"
               name="email"
@@ -81,15 +81,15 @@ export function SigninForm() {
               onChange={handleChange}
               disabled={loading}
               required
-              className="h-12 px-4 border-slate-300 focus:border-slate-500 focus:ring-slate-500 rounded-lg transition-colors"
+              className="h-12 px-4 bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#FFD700] focus:ring-[#FFD700] rounded-lg transition-colors"
             />
           </div>
           <div className="grid gap-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-sm font-medium text-slate-700">Password</Label>
+              <Label htmlFor="password" className="text-sm font-medium text-gray-300">Password</Label>
               <Link
                 href="/forgot-password"
-                className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
+                className="text-sm text-[#FFD700] hover:text-[#FFC700] transition-colors"
               >
                 Forgot password?
               </Link>
@@ -105,16 +105,16 @@ export function SigninForm() {
               onChange={handleChange}
               disabled={loading}
               required
-              className="h-12 px-4 border-slate-300 focus:border-slate-500 focus:ring-slate-500 rounded-lg transition-colors"
+              className="h-12 px-4 bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#FFD700] focus:ring-[#FFD700] rounded-lg transition-colors"
             />
           </div>
           <Button 
-            className="h-12 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg transition-colors duration-200" 
+            className="h-12 bg-[#FFD700] hover:bg-[#FFC700] text-black font-semibold rounded-lg transition-colors duration-200" 
             disabled={loading}
           >
             {loading ? (
               <div className="flex items-center gap-2">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent"></div>
                 <span>Signing in...</span>
               </div>
             ) : (
@@ -126,10 +126,10 @@ export function SigninForm() {
       
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-slate-200" />
+          <span className="w-full border-t border-white/20" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white px-4 text-slate-500 font-medium">Or continue with</span>
+          <span className="bg-[#1a1a1a] px-4 text-gray-400 font-medium">Or continue with</span>
         </div>
       </div>
       
@@ -138,7 +138,7 @@ export function SigninForm() {
           variant="outline" 
           type="button" 
           disabled={loading}
-          className="h-12 border-slate-200 hover:bg-slate-50 text-slate-700 font-medium rounded-lg transition-colors"
+          className="h-12 border-white/20 hover:bg-white/10 text-white font-medium rounded-lg transition-colors"
         >
           <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
             <path
@@ -164,7 +164,7 @@ export function SigninForm() {
           variant="outline" 
           type="button" 
           disabled={loading}
-          className="h-12 border-slate-200 hover:bg-slate-50 text-slate-700 font-medium rounded-lg transition-colors"
+          className="h-12 border-white/20 hover:bg-white/10 text-white font-medium rounded-lg transition-colors"
         >
           <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
             <path
@@ -176,9 +176,9 @@ export function SigninForm() {
         </Button>
       </div>
       
-      <div className="text-center text-sm text-slate-600">
+      <div className="text-center text-sm text-gray-400">
         Don't have an account?{" "}
-        <Link href="/signup" className="text-slate-900 hover:text-slate-700 font-medium transition-colors">
+        <Link href="/signup" className="text-[#FFD700] hover:text-[#FFC700] font-medium transition-colors">
           Sign up for free
         </Link>
       </div>

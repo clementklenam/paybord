@@ -50,8 +50,8 @@ const SidebarItem = ({ icon, label, href, isActive }: SidebarItemProps) => {
       <a 
         className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
           isActive
-            ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700"
-            : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+            ? "bg-[#FFD700]/10 text-[#FFD700] border border-[#FFD700]/20"
+            : "text-gray-300 hover:bg-white/5 hover:text-white"
         }`}
         onClick={handleClick}
       >
@@ -69,7 +69,7 @@ interface SidebarSectionProps {
 
 const SidebarSection = ({ title, children }: SidebarSectionProps) => (
   <div className="mb-6">
-    <h3 className="px-3 mb-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{title}</h3>
+    <h3 className="px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">{title}</h3>
     <div className="space-y-1">{children}</div>
   </div>
 );
@@ -180,35 +180,35 @@ export function Sidebar() {
   }, []);
 
   return (
-    <div className="h-full w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+    <div className="h-full w-64 bg-[#2d5a5a] border-r border-white/10 flex flex-col shadow-sm">
       <div className="p-4 flex flex-col h-full">
         {/* Header Section */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Paybord</h2>
+            <h2 className="text-lg font-semibold text-white">Paybord</h2>
             <div className="flex items-center gap-2">
               <ThemeToggle />
-              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-800">
+              <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white hover:bg-white/5">
                 <HelpCircle className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-800 relative">
+              <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white hover:bg-white/5 relative">
                 <Bell className="h-4 w-4" />
                 <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500"></span>
               </Button>
-              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-800">
+              <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white hover:bg-white/5">
                 <Settings className="h-4 w-4" />
               </Button>
             </div>
           </div>
           
           {/* User Profile Section */}
-          <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full p-0">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="" alt={user ? `${user.firstName} ${user.lastName}` : 'User'} />
-                    <AvatarFallback className="bg-blue-600 text-white text-xs">
+                    <AvatarFallback className="bg-[#FFD700] text-black text-xs">
                       {user ? user.firstName.charAt(0).toUpperCase() : 'U'}
                     </AvatarFallback>
                   </Avatar>
@@ -242,10 +242,10 @@ export function Sidebar() {
               </DropdownMenuContent>
             </DropdownMenu>
                           <div className="flex-1 ml-3">
-                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <p className="text-sm font-medium text-white">
                   {user ? `${user.firstName} ${user.lastName}` : 'User'}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-gray-400">
                   {user?.email || 'user@example.com'}
                 </p>
               </div>
@@ -254,10 +254,10 @@ export function Sidebar() {
 
         {/* Business Selector */}
         <div className="flex items-center space-x-2 px-4 mb-6">
-          <select className="text-sm font-semibold text-gray-900 dark:text-gray-100 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer">
-            <option className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">{isLoading ? "Loading..." : businessName || "My Business"}</option>
+          <select className="text-sm font-semibold text-white bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer">
+            <option className="bg-[#2d5a5a] text-white">{isLoading ? "Loading..." : businessName || "My Business"}</option>
           </select>
-          <ChevronDownIcon className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+          <ChevronDownIcon className="w-4 h-4 text-gray-400" />
         </div>
 
         {/* Navigation Sections */}

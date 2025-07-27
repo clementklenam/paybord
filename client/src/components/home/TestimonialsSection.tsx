@@ -28,7 +28,7 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-black to-gray-900">
+    <section className="py-24 bg-[#1a1a1a]">
       <Container>
         {/* Client Logos */}
         <motion.div
@@ -70,7 +70,7 @@ export function TestimonialsSection() {
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-8">
             What Our Customers
-            <span className="block bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-[#FFD700] to-[#FFC700] bg-clip-text text-transparent">
               Say About Us
             </span>
           </h2>
@@ -96,7 +96,7 @@ export function TestimonialsSection() {
                 {/* Rating */}
                 <div className="flex items-center gap-1 mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-white text-white" />
+                    <Star key={i} className="w-5 h-5 fill-[#FFD700] text-[#FFD700]" />
                   ))}
                 </div>
 

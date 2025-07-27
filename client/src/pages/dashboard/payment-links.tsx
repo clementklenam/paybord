@@ -990,8 +990,8 @@ export default function PaymentLinksPage() {
                     <span className="text-sm text-gray-600">Card Color:</span>
                     <div className="flex gap-1">
                       {[
-                        { name: 'Green', value: '#1e8449' },
-                        { name: 'Blue', value: '#3b82f6' },
+                        { name: 'Primary Blue', value: '#0A2C73' },
+                        { name: 'Accent Blue', value: '#2979FF' },
                         { name: 'Purple', value: '#8b5cf6' },
                         { name: 'Orange', value: '#f97316' },
                         { name: 'Pink', value: '#ec4899' }

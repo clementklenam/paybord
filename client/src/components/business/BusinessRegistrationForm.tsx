@@ -176,7 +176,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                     [parent]: {
                         ...(prev[parent as keyof BusinessRegistrationData] as Record<string, any> || {}),
                         [child]: {
-                            ...((prev[parent as keyof BusinessRegistrationData] as unknown)[child] || {}),
+                            ...(((prev[parent as keyof BusinessRegistrationData] as Record<string, any>)[child]) || {}),
                             [grandchild]: checked
                         }
                     }
@@ -279,7 +279,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                 if (field.includes('.')) {
                     const [parent, child] = field.split('.');
                     if (!formData[parent as keyof BusinessRegistrationData] || 
-                        !(formData[parent as keyof BusinessRegistrationData] as unknown)[child]) {
+                        !((formData[parent as keyof BusinessRegistrationData] as Record<string, any>)[child])) {
                         missingFields.push(label);
                     }
                 } else if (!formData[field as keyof BusinessRegistrationData]) {
@@ -441,23 +441,32 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
         } catch (error: unknown) {
             console.error('Business registration error:', error);
             
-            // Extract detailed error information from the response if available
             let errorMessage = "An error occurred during registration";
             
-            if ((error as unknown).response) {
-                console.log('Error response status:', (error as unknown).response.status);
-                console.log('Error response data:', JSON.stringify((error as unknown).response.data, null, 2));
+            if (
+                typeof error === 'object' &&
+                error !== null &&
+                'response' in error &&
+                typeof (error as any).response === 'object' &&
+                (error as any).response !== null
+            ) {
+                const response = (error as any).response;
+                console.log('Error response status:', response.status);
+                console.log('Error response data:', JSON.stringify(response.data, null, 2));
                 console.log('Request data that was sent:', JSON.stringify(formattedData, null, 2));
-                
-                if ((error as unknown).response.data.error) {
-                    errorMessage = (error as unknown).response.data.error;
-                } else if ((error as unknown).response.data.errors && Array.isArray((error as unknown).response.data.errors)) {
-                    // Format validation errors from express-validator
-                    const validationErrors = (error as unknown).response.data.errors.map((err: unknown) => `${err.param}: ${err.msg}`).join(', ');
+                if (response.data && response.data.error) {
+                    errorMessage = response.data.error;
+                } else if (response.data && response.data.errors && Array.isArray(response.data.errors)) {
+                    const validationErrors = (response.data.errors as any[]).map((err: any) => `${err.param}: ${err.msg}`).join(', ');
                     errorMessage = `Validation failed: ${validationErrors}`;
                 }
-            } else if ((error as unknown).message) {
-                errorMessage = (error as unknown).message;
+            } else if (
+                typeof error === 'object' &&
+                error !== null &&
+                'message' in error &&
+                typeof (error as any).message === 'string'
+            ) {
+                errorMessage = (error as any).message;
             }
             
             toast({
@@ -466,7 +475,6 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                 variant: "destructive",
             });
             
-            // Reset form only on error
             setFormData(initialFormData);
             setCurrentStep(0);
             setDocuments({});

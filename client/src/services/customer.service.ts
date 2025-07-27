@@ -64,6 +64,16 @@ export interface CustomerFilters {
     sortOrder?: 'asc' | 'desc';
 }
 
+export type CustomerCreationData = {
+    email: string;
+    name: string;
+    phone?: string;
+    description?: string;
+    metadata?: Record<string, string>;
+    billingAddress?: Address;
+    shippingAddress?: Address;
+};
+
 export default class CustomerService {
     async getCustomers(filters: CustomerFilters = {}): Promise<CustomerListResponse> {
         const params = new URLSearchParams();
@@ -101,15 +111,7 @@ export default class CustomerService {
         return response.data;
     }
 
-    async createCustomer(data: {
-        email: string;
-        name: string;
-        phone?: string;
-        description?: string;
-        metadata?: Record<string, string>;
-        billingAddress?: Address;
-        shippingAddress?: Address;
-    }): Promise<Customer> {
+    async createCustomer(data: CustomerCreationData): Promise<Customer> {
         const response = await axios.post<Customer>(`${API_URL}/customers`, data, {
             headers: getAuthHeader()
         });

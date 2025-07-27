@@ -38,7 +38,7 @@ const social = [
 
 export function Footer() {
   return (
-    <footer className="bg-black border-t border-white/10">
+    <footer className="bg-[#1a1a1a] border-t border-white/10">
       <Container>
         <div className="py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
@@ -51,7 +51,7 @@ export function Footer() {
                 viewport={{ once: true }}
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-br from-white to-gray-300 rounded-xl flex items-center justify-center shadow-lg">
+                  <div className="w-10 h-10 bg-[#FFD700] rounded-xl flex items-center justify-center shadow-lg">
                     <span className="text-xl font-bold text-black">P</span>
                   </div>
                   <span className="text-2xl font-bold text-white">Paybord</span>

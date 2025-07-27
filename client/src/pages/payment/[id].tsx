@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useRoute, useLocation} from 'wouter';
 import {paymentLinkService} from '@/services/payment-link.service';
+import { PaymentLink } from '@/services/payment-link.service';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {Textarea} from '@/components/ui/textarea';
@@ -15,29 +16,12 @@ const formatCurrency = (amount: number, currency: string = "USD") => {
   }).format(amount);
 };
 
-interface PaymentLink {
-  imageUrl?: string;
-  title?: string;
-  description?: string;
-  amount?: number;
-  currency?: string;
-  requiredFields?: {
-    customerName?: boolean;
-    customerEmail?: boolean;
-    customerPhone?: boolean;
-    shippingAddress?: boolean;
-  };
-  paymentMethodTypes?: string[];
-  // Add any other fields you expect
-}
-
 export default function PaymentPage() {
   const [paymentMatch, paymentParams] = useRoute('/payment/:id');
-  const [plMatch, plParams] = useRoute('/pl_:id');
   const location = useLocation();
   
   // Get link ID from either route pattern
-  const linkId = paymentParams?.id || plParams?.id || location[0].substring(4); // Handle both route formats
+  const linkId = paymentParams?.id || location[0].substring(4); // Handle both route formats
   
   const [paymentLink, setPaymentLink] = useState<PaymentLink | null>(null);
   const [loading, setLoading] = useState(true);
@@ -71,7 +55,7 @@ export default function PaymentPage() {
         }
       } catch (err: unknown) {
         console.error('Error fetching payment link:', err);
-        setError(err.message || 'Failed to load payment link. It may be expired or invalid.');
+        setError(err instanceof Error ? err.message : 'Failed to load payment link. It may be expired or invalid.');
       } finally {
         setLoading(false);
       }
@@ -163,7 +147,7 @@ export default function PaymentPage() {
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Payment Successful!</h1>
             <p className="text-gray-600 mb-6">Thank you for your payment. A receipt has been sent to your email.</p>
             <p className="text-xl font-bold text-[#1e8449] mb-8">
-              {formatCurrency(paymentLink.amount, paymentLink.currency)}
+              {formatCurrency(paymentLink.amount ?? 0, paymentLink.currency ?? 'USD')}
             </p>
             <Button className="w-full" onClick={() => window.location.href = '/'}>
               Return Home
@@ -226,7 +210,7 @@ export default function PaymentPage() {
               <div className="flex justify-between items-center border-b border-gray-100 pb-6 mb-6">
                 <div className="font-medium text-gray-500">Total Amount</div>
                 <div className="text-3xl font-bold text-[#1e8449]">
-                  {formatCurrency(paymentLink.amount, paymentLink.currency)}
+                  {formatCurrency(paymentLink.amount ?? 0, paymentLink.currency ?? 'USD')}
                 </div>
               </div>
               
@@ -393,7 +377,7 @@ export default function PaymentPage() {
                       Processing...
                     </>
                   ) : (
-                    `Pay ${formatCurrency(paymentLink.amount, paymentLink.currency)}`
+                    `Pay ${formatCurrency(paymentLink.amount ?? 0, paymentLink.currency ?? 'USD')}`
                   )}
                 </Button>
                 

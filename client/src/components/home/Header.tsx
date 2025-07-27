@@ -25,25 +25,21 @@ const productDropdown = [
   {
     title: "Storefronts",
     description: "Create beautiful, customizable storefronts",
-    icon: Zap,
     href: "#"
   },
   {
     title: "Payment Links",
     description: "Generate viral payment links instantly",
-    icon: Globe,
     href: "#"
   },
   {
     title: "Analytics",
     description: "Track performance and optimize growth",
-    icon: Users,
     href: "#"
   },
   {
     title: "Security",
     description: "Enterprise-grade security & compliance",
-    icon: Shield,
     href: "#"
   }
 ];
@@ -160,11 +156,6 @@ function Header() {
                               transition={{ duration: 0.3, delay: idx * 0.05 }}
                               className="flex items-start gap-4 p-3 rounded-xl hover:bg-white/10 transition-all duration-300 group"
                             >
-                              {dropdownItem.icon && (
-                                <div className="w-10 h-10 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                  <dropdownItem.icon className="w-5 h-5 text-purple-400" />
-                                </div>
-                              )}
                               <div className="flex-1">
                                 <h4 className="text-white font-semibold mb-1 group-hover:text-purple-300 transition-colors duration-300">
                                   {dropdownItem.title}

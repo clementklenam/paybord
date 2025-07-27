@@ -62,8 +62,8 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
         description: "",
         logo: null as string | null,
         banner: null as string | null,
-        primaryColor: "#1e8449",
-        accentColor: "#27ae60",
+        primaryColor: "#0A2C73",
+        accentColor: "#2979FF",
         domain: "",
         socialLinks: {
             instagram: "",
@@ -149,11 +149,14 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
 
                 if (data.data && data.data.length > 0) {
                     // Map the products to include isSelected property
-                    const products = data.data.map((product: unknown) => ({
-                        ...product,
-                        id: product.id || product._id || product.customId, // Ensure we have an ID
-                        isSelected: false
-                    }));
+                    const products = data.data.map((product: unknown) => {
+                        const typedProduct = product as Product;
+                        return {
+                            ...(typedProduct as any),
+                            id: typedProduct.id || (typedProduct as any)._id || (typedProduct as any).customId, // Ensure we have an ID
+                            isSelected: false,
+                        } as Product & { isSelected: boolean };
+                    });
 
                     setAvailableProducts(products);
                     console.log("Products set to state:", products.length);
@@ -282,7 +285,10 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
             console.log('Full response from onSubmit:', response);
 
             // Handle both direct storefront object and API response formats
-            const createdStorefront = response?.data || response;
+            let createdStorefront: any = response;
+            if (response && typeof response === 'object' && response !== null && 'data' in response) {
+                createdStorefront = (response as any).data;
+            }
             // Defensive: if only _id is present, use it as id
             if (createdStorefront && !createdStorefront.id && createdStorefront._id) {
                 createdStorefront.id = createdStorefront._id;
@@ -291,7 +297,11 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
 
             if (!createdStorefront?.id) {
                 console.error('Invalid response format:', response);
-                throw new Error(response?.message || 'Storefront created but no ID returned');
+                let errorMsg = 'Storefront created but no ID returned';
+                if (response && typeof response === 'object' && response !== null && 'message' in response && typeof (response as any).message === 'string') {
+                    errorMsg = (response as any).message;
+                }
+                throw new Error(errorMsg);
             }
 
             console.log('Created storefront:', createdStorefront);
@@ -309,11 +319,19 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
         } catch (error: unknown) {
             console.error('Full error object:', error);
 
-            let errorMessage = error.message;
-            if (error.code === 'ECONNABORTED') {
-                errorMessage = 'Request timed out. The server might be busy. Please try again.';
-            } else if (error.response?.data?.message) {
-                errorMessage = error.response.data.message;
+            let errorMessage = 'An error occurred while creating the storefront.';
+            if (typeof error === 'object' && error !== null) {
+                if ('message' in error && typeof (error as any).message === 'string') {
+                    errorMessage = (error as any).message;
+                }
+                if ('code' in error && (error as any).code === 'ECONNABORTED') {
+                    errorMessage = 'Request timed out. The server might be busy. Please try again.';
+                } else if ('response' in error && (error as any).response && typeof (error as any).response === 'object') {
+                    const response = (error as any).response;
+                    if (response.data && typeof response.data.message === 'string') {
+                        errorMessage = response.data.message;
+                    }
+                }
             }
 
             toast({

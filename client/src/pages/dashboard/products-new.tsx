@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import type { Product, ProductCreateData } from "@/services/product.service";
 import {DashboardLayout} from "@/components/dashboard/DashboardLayout";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
@@ -42,13 +43,13 @@ export default function ProductsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<unknown>(null);
-  const [products, setProducts] = useState<any[]>([]); // Changed to any[] as Product type is removed
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
   const [businessId, setBusinessId] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // New product state
-  const [newProduct, setNewProduct] = useState<unknown>({ // Changed to any as ProductCreateData is removed
+  const [newProduct, setNewProduct] = useState<ProductCreateData>({
     businessId: "",
     name: "",
     description: "",
@@ -56,7 +57,6 @@ export default function ProductsPage() {
     image: "",
     category: "Subscription",
     currency: "USD",
-    pricingType: "one-off",
     billingPeriod: "monthly"
   });
   
@@ -164,7 +164,7 @@ export default function ProductsPage() {
       
       // Also get user-created products from localStorage
       const userProductsJSON = localStorage.getItem('user_products');
-      let userProducts: unknown[] = []; // Changed to any[]
+      let userProducts: Product[] = []; // Changed to any[]
       
       if (userProductsJSON) {
         try {
@@ -176,7 +176,7 @@ export default function ProductsPage() {
       }
       
       // Combine API products and local products
-      let allProducts: unknown[] = []; // Changed to any[]
+      let allProducts: Product[] = []; // Changed to any[]
       
       if (response && response.data) {
         allProducts = [...response.data];
@@ -392,9 +392,15 @@ export default function ProductsPage() {
       setSelectedProduct(null);
     } catch (error: unknown) {
       console.error('Error updating product:', error);
+      let message = 'Failed to update product';
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'object' && error && 'message' in error && typeof (error as any).message === 'string') {
+        message = (error as any).message;
+      }
       toast({
         title: "Error",
-        description: error.message || "Failed to update product",
+        description: message,
         variant: "destructive"
       });
     } finally {
@@ -452,9 +458,15 @@ export default function ProductsPage() {
       setSelectedProduct(null);
     } catch (error: unknown) {
       console.error('Error deleting product:', error);
+      let message = 'Failed to delete product';
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'object' && error && 'message' in error && typeof (error as any).message === 'string') {
+        message = (error as any).message;
+      }
       toast({
         title: "Error",
-        description: error.message || "Failed to delete product",
+        description: message,
         variant: "destructive"
       });
     } finally {
@@ -523,7 +535,7 @@ export default function ProductsPage() {
       
       if (newProduct.pricingType === 'recurring') {
         metadataObject['pricingType'] = newProduct.pricingType;
-        metadataObject['billingPeriod'] = newProduct.billingPeriod;
+        metadataObject['billingPeriod'] = newProduct.billingPeriod ?? '';
         if (newProduct.billingPeriod === 'custom' && newProduct.customBillingDays) {
           metadataObject['customBillingDays'] = String(newProduct.customBillingDays);
         }
@@ -578,7 +590,7 @@ export default function ProductsPage() {
       // Manually save to localStorage to ensure it's available immediately
       try {
         const userProductsJSON = localStorage.getItem('user_products');
-        let userProducts: unknown[] = []; // Changed to any[]
+        let userProducts: Product[] = []; // Changed to any[]
         
         if (userProductsJSON) {
           userProducts = JSON.parse(userProductsJSON);
@@ -871,7 +883,8 @@ export default function ProductsPage() {
       </Card>
       
       {/* Create Product Modal */}
-      <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+ {/* Create Product Modal */}
+ <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
         <DialogContent className="sm:max-w-[750px] p-0 overflow-hidden">
           <div className="flex h-full">
             {/* Form Section */}
@@ -889,304 +902,179 @@ export default function ProductsPage() {
                   </Button>
                 </div>
               </DialogHeader>
-              
+             
               <div className="grid grid-cols-2 gap-6">
                 {/* Left Column - Form Fields */}
                 <div className="space-y-5">
-                  <div>
-                    <Label htmlFor="name" className="text-sm font-medium block mb-1.5">
-                      Product Name <span className="text-red-500">*</span>
-                    </Label>
+                  {/* Product Name */}
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Product Name *</Label>
                     <Input
                       id="name"
                       name="name"
-                      placeholder="Enter product name"
                       value={newProduct.name}
                       onChange={handleInputChange}
-                      className="w-full"
+                      placeholder="Enter product name"
                       required
                     />
                   </div>
                   
-                  <div>
-                    <Label htmlFor="description" className="text-sm font-medium block mb-1.5">
-                      Description <span className="text-red-500">*</span>
-                    </Label>
+                  {/* Description */}
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Description</Label>
                     <Textarea
                       id="description"
                       name="description"
-                      placeholder="Describe your product"
                       value={newProduct.description}
                       onChange={handleInputChange}
-                      className="min-h-[100px] w-full"
-                      required
+                      placeholder="Describe your product..."
+                      rows={3}
                     />
                   </div>
                   
-                  <div>
-                    <Label htmlFor="category" className="text-sm font-medium block mb-1.5">
-                      Category <span className="text-red-500">*</span>
-                    </Label>
-                    <select
-                      id="category"
-                      name="category"
-                      className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
+                  {/* Category */}
+                  <div className="space-y-2">
+                    <Label htmlFor="category">Category</Label>
+                    <Select
                       value={newProduct.category}
-                      onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
+                      onValueChange={(value) => setNewProduct(prev => ({ ...prev, category: value }))}
                     >
-                      {categories.map(category => (
-                        <option key={category} value={category}>{category}</option>
-                      ))}
-                    </select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 
                 {/* Right Column - Pricing & Image */}
                 <div className="space-y-5">
-                  <div>
-                    <Label className="text-sm font-medium block mb-1.5">
-                      Pricing Type <span className="text-red-500">*</span>
-                    </Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div 
-                        className={`border rounded-md p-3 cursor-pointer ${newProduct.pricingType === 'one-off' ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
-                        onClick={() => setNewProduct({...newProduct, pricingType: 'one-off'})}
+                  {/* Price */}
+                  <div className="space-y-2">
+                    <Label htmlFor="price">Price *</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="price"
+                        name="price"
+                        type="number"
+                        value={newProduct.price}
+                        onChange={handleInputChange}
+                        placeholder="0.00"
+                        min="0"
+                        step="0.01"
+                        required
+                        className="flex-1"
+                      />
+                      <Select
+                        value={newProduct.currency}
+                        onValueChange={(value) => setNewProduct(prev => ({ ...prev, currency: value }))}
                       >
-                        <div className="flex items-center">
-                          <div className={`w-4 h-4 rounded-full mr-2 flex items-center justify-center ${newProduct.pricingType === 'one-off' ? 'bg-primary' : 'border border-gray-300'}`}>
-                            {newProduct.pricingType === 'one-off' && <div className="w-2 h-2 bg-white rounded-full"></div>}
-                          </div>
-                          <span className="font-medium">One-time</span>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-1 ml-6">Charge once for this product</p>
-                      </div>
-                      
-                      <div 
-                        className={`border rounded-md p-3 cursor-pointer ${newProduct.pricingType === 'recurring' ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
-                        onClick={() => setNewProduct({...newProduct, pricingType: 'recurring'})}
-                      >
-                        <div className="flex items-center">
-                          <div className={`w-4 h-4 rounded-full mr-2 flex items-center justify-center ${newProduct.pricingType === 'recurring' ? 'bg-primary' : 'border border-gray-300'}`}>
-                            {newProduct.pricingType === 'recurring' && <div className="w-2 h-2 bg-white rounded-full"></div>}
-                          </div>
-                          <span className="font-medium">Subscription</span>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-1 ml-6">Charge on a recurring basis</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="price" className="text-sm font-medium block mb-1.5">
-                      Price <span className="text-red-500">*</span>
-                    </Label>
-                    <div className="flex">
-                      <div className="w-1/3 mr-2">
-                        <select
-                          id="currency"
-                          name="currency"
-                          className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
-                          value={newProduct.currency}
-                          onChange={(e) => setNewProduct({...newProduct, currency: e.target.value})}
-                        >
-                          {currencies.map(currency => (
-                            <option key={currency.code} value={currency.code}>{currency.code}</option>
+                        <SelectTrigger className="w-20">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {currencies.map((currency) => (
+                            <SelectItem key={currency.code} value={currency.code}>
+                              {currency.code}
+                            </SelectItem>
                           ))}
-                        </select>
-                      </div>
-                      <div className="w-2/3">
-                        <Input
-                          id="price"
-                          name="price"
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          placeholder="0.00"
-                          value={newProduct.price}
-                          onChange={handleInputChange}
-                          className="w-full"
-                          required
-                        />
-                      </div>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                   
-                  {newProduct.pricingType === 'recurring' && (
-                    <div>
-                      <Label htmlFor="billingPeriod" className="text-sm font-medium block mb-1.5">
-                        Billing Period <span className="text-red-500">*</span>
-                      </Label>
-                      <select
-                        id="billingPeriod"
-                        name="billingPeriod"
-                        className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
-                        value={newProduct.billingPeriod}
-                        onChange={(e) => setNewProduct({...newProduct, billingPeriod: e.target.value as unknown})}
-                      >
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="quarterly">Every 3 Months</option>
-                        <option value="biannually">Every 6 Months</option>
-                        <option value="yearly">Yearly</option>
-                        <option value="custom">Custom</option>
-                      </select>
-                      
-                      {newProduct.billingPeriod === 'custom' && (
-                        <div className="mt-2">
-                          <Label htmlFor="customBillingDays" className="text-sm font-medium block mb-1.5">
-                            Days Between Billing <span className="text-red-500">*</span>
-                          </Label>
-                          <Input
-                            id="customBillingDays"
-                            name="customBillingDays"
-                            type="number"
-                            min="1"
-                            placeholder="30"
-                            value={newProduct.customBillingDays || ''}
-                            onChange={(e) => setNewProduct({...newProduct, customBillingDays: parseInt(e.target.value) || undefined})}
-                            className="w-full"
-                            required
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  
-                  <div>
-                    <Label htmlFor="image" className="text-sm font-medium block mb-1.5">
-                      Product Image
-                    </Label>
-                    <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 text-center">
+                  {/* Image Upload */}
+                  <div className="space-y-2">
+                    <Label htmlFor="image">Product Image</Label>
+                    <div className="space-y-2">
                       {newProduct.image ? (
-                        <div className="flex flex-col items-center">
+                        <div className="relative">
                           <img 
-                            src={typeof newProduct.image === 'string' ? newProduct.image : ''} 
+                            src={newProduct.image} 
                             alt="Product preview" 
-                            className="max-h-[150px] object-contain mb-3"
+                            className="w-full h-32 object-cover rounded-md border"
                           />
-                          <div className="flex space-x-2">
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={removeImage}
-                              className="text-xs"
-                            >
-                              <X className="h-3 w-3 mr-1" /> Remove
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={() => document.getElementById('product-image-upload')?.click()}
-                              className="text-xs"
-                            >
-                              <Upload className="h-3 w-3 mr-1" /> Change
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col items-center">
-                          <Upload className="h-10 w-10 text-gray-300 mb-2" />
-                          <p className="text-sm text-gray-500 mb-3">Drag and drop an image or click to browse</p>
-                          <Button 
-                            variant="outline" 
+                          <Button
+                            type="button"
+                            variant="destructive"
                             size="sm"
-                            onClick={() => document.getElementById('product-image-upload')?.click()}
+                            className="absolute top-2 right-2"
+                            onClick={removeImage}
                           >
-                            <Upload className="h-3.5 w-3.5 mr-1.5" /> Upload Image
+                            <X className="h-3 w-3" />
                           </Button>
                         </div>
+                      ) : (
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                          <Upload className="h-8 w-8 mx-auto text-gray-400" />
+                          <p className="mt-2 text-sm text-gray-600">Upload product image</p>
+                        </div>
                       )}
-                      <input
-                        id="product-image-upload"
+                      <Input
+                        id="image"
                         type="file"
                         accept="image/*"
                         onChange={handleImageUpload}
-                        className="hidden"
-                      />
-                    </div>
-                    <div className="mt-2">
-                      <p className="text-xs text-gray-500 mb-1">Or enter an image URL:</p>
-                      <Input
-                        id="imageUrl"
-                        name="image"
-                        placeholder="https://example.com/image.jpg"
-                        value={typeof newProduct.image === 'string' ? newProduct.image : ''}
-                        onChange={handleInputChange}
-                        className="w-full"
+                        className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                       />
                     </div>
                   </div>
+                  
+                  {/* Billing Period for Subscriptions */}
+                  {newProduct.category === "Subscription" && (
+                    <div className="space-y-2">
+                      <Label htmlFor="billingPeriod">Billing Period</Label>
+                      <Select
+                        value={newProduct.billingPeriod ?? ''}
+                        onValueChange={(value) => setNewProduct(prev => ({ ...prev, billingPeriod: value as ProductCreateData['billingPeriod'] }))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                          <SelectItem value="yearly">Yearly</SelectItem>
+                          <SelectItem value="weekly">Weekly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
                 </div>
               </div>
               
               {/* Preview Section */}
               {isPreviewMode && (
                 <div className="mt-6 border-t pt-5">
-                  <h3 className="text-sm font-medium mb-3 flex items-center">
-                    <Eye className="h-4 w-4 mr-1.5 text-blue-500" /> 
-                    Product Preview
-                  </h3>
-                  <div className="bg-white rounded-lg overflow-hidden border shadow-sm hover:shadow-md transition-shadow duration-200">
-                    {/* Product Header with Image */}
-                    <div className="relative">
-                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 h-32 w-full flex items-center justify-center">
+                  <h3 className="text-lg font-semibold mb-3">Preview</h3>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="flex items-center gap-4">
+                      <div className="h-16 w-16 rounded-md bg-gray-200 flex items-center justify-center overflow-hidden">
                         {newProduct.image ? (
-                          <img 
-                            src={newProduct.image as string} 
-                            alt={newProduct.name} 
-                            className="max-h-28 max-w-[80%] object-contain shadow-sm"
-                          />
+                          <img src={newProduct.image} alt="Preview" className="h-full w-full object-cover" />
                         ) : (
-                          <div className="w-24 h-24 bg-white flex items-center justify-center rounded-full shadow-sm">
-                            <Package className="h-12 w-12 text-gray-300" />
-                          </div>
+                          <Package className="h-8 w-8 text-gray-400" />
                         )}
                       </div>
-                      <div className="absolute top-2 right-2">
-                        <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                          Active
-                        </Badge>
-                      </div>
-                    </div>
-                    
-                    {/* Product Details */}
-                    <div className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h4 className="font-medium text-lg text-gray-900">{newProduct.name || 'Product Name'}</h4>
-                          <div className="flex items-center mt-1 space-x-2">
-                            <Badge variant="outline" className="text-xs">{newProduct.category || 'Category'}</Badge>
-                            {newProduct.pricingType === 'recurring' && (
-                              <Badge variant="secondary" className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-50">
-                                Subscription
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-gray-600 mt-3 line-clamp-3">{newProduct.description || 'Product description'}</p>
-                        </div>
-                        <div className="text-right ml-4">
-                          <div className="font-bold text-xl text-gray-900">
-                            {newProduct.currency} {newProduct.price.toFixed(2)}
-                          </div>
-                          {newProduct.pricingType === 'recurring' && (
-                            <div className="text-xs text-gray-500 mt-1 font-medium">
-                              {newProduct.billingPeriod === 'daily' && 'Billed daily'}
-                              {newProduct.billingPeriod === 'weekly' && 'Billed weekly'}
-                              {newProduct.billingPeriod === 'monthly' && 'Billed monthly'}
-                              {newProduct.billingPeriod === 'quarterly' && 'Billed every 3 months'}
-                              {newProduct.billingPeriod === 'biannually' && 'Billed every 6 months'}
-                              {newProduct.billingPeriod === 'yearly' && 'Billed yearly'}
-                              {newProduct.billingPeriod === 'custom' && `Billed every ${newProduct.customBillingDays || 30} days`}
-                            </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-lg">{newProduct.name || "Product Name"}</h4>
+                        <p className="text-gray-600 text-sm">{newProduct.description || "No description"}</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className="font-semibold text-lg">
+                            {formatCurrency(newProduct.price, newProduct.currency)}
+                          </span>
+                          <Badge variant="outline">{newProduct.category}</Badge>
+                          {newProduct.category === "Subscription" && (
+                            <Badge variant="secondary">
+                              {newProduct.billingPeriod}
+                            </Badge>
                           )}
                         </div>
-                      </div>
-                      
-                      {/* Additional Info */}
-                      <div className="mt-4 pt-3 border-t border-gray-100 text-xs text-gray-500 flex justify-between">
-                        <div>Created: {new Date().toLocaleDateString()}</div>
-                        <div>ID: PROD_{Math.floor(Math.random() * 10000).toString().padStart(4, '0')}</div>
                       </div>
                     </div>
                   </div>
@@ -1221,13 +1109,12 @@ export default function ProductsPage() {
                   >
                     Cancel
                   </Button>
-                  <div className="flex gap-2">
-                    <Button 
-                      onClick={createProduct} 
-                      disabled={isSubmitting}
-                      className="min-w-[120px] bg-blue-600 hover:bg-blue-700"
-                      type="button"
-                    >
+                  <Button 
+                    onClick={createProduct} 
+                    disabled={isSubmitting}
+                    className="min-w-[120px] bg-blue-600 hover:bg-blue-700"
+                    type="button"
+                  >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -1244,246 +1131,8 @@ export default function ProductsPage() {
               </div>
             </div>
           </div>
-        </div>
         </DialogContent>
       </Dialog>
-
-      {/* Edit Product Modal */}
-      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="sm:max-w-[750px] p-0 overflow-hidden">
-          <div className="flex h-full">
-            {/* Form Section */}
-            <div className="w-full p-6">
-              <DialogHeader className="pb-4">
-                <div className="flex justify-between items-center">
-                  <DialogTitle className="text-xl font-semibold">Edit Product</DialogTitle>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={() => setIsEditModalOpen(false)}
-                    className="h-8 w-8"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              </DialogHeader>
-              
-              {selectedProduct && (
-                <div className="space-y-4 mt-4">
-                  {/* Product Name */}
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-name">Product Name *</Label>
-                    <Input 
-                      id="edit-name" 
-                      placeholder="Enter product name" 
-                      value={selectedProduct.name} 
-                      onChange={(e) => setSelectedProduct({...selectedProduct, name: e.target.value})}
-                    />
-                  </div>
-                  
-                  {/* Description */}
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-description">Description</Label>
-                    <Textarea 
-                      id="edit-description" 
-                      placeholder="Describe your product" 
-                      className="min-h-[100px]" 
-                      value={selectedProduct.description || ''}
-                      onChange={(e) => setSelectedProduct({...selectedProduct, description: e.target.value})}
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    {/* Price */}
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-price">Price *</Label>
-                      <Input 
-                        id="edit-price" 
-                        type="number" 
-                        min="0" 
-                        step="0.01" 
-                        placeholder="0.00" 
-                        value={selectedProduct.price}
-                        onChange={(e) => setSelectedProduct({...selectedProduct, price: parseFloat(e.target.value)})}
-                      />
-                    </div>
-                    
-                    {/* Currency */}
-                    <div className="space-y-2">
-                      <Label htmlFor="edit-currency">Currency</Label>
-                      <Select 
-                        value={selectedProduct.currency || 'USD'}
-                        onValueChange={(value) => setSelectedProduct({...selectedProduct, currency: value})}
-                      >
-                        <SelectTrigger id="edit-currency">
-                          <SelectValue placeholder="Select currency" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {currencies.map((currency) => (
-                            <SelectItem key={currency.code} value={currency.code}>
-                              {currency.code} - {currency.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  
-                  {/* Category */}
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-category">Category</Label>
-                    <Select 
-                      value={selectedProduct.category || 'Other'}
-                      onValueChange={(value) => setSelectedProduct({...selectedProduct, category: value})}
-                    >
-                      <SelectTrigger id="edit-category">
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  {/* Image */}
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-image">Product Image</Label>
-                    <div className="flex items-center gap-4">
-                      <div className="h-16 w-16 rounded-md bg-gray-100 flex items-center justify-center overflow-hidden">
-                        {selectedProduct.image ? (
-                          <img src={selectedProduct.image} alt={selectedProduct.name} className="h-full w-full object-cover" />
-                        ) : (
-                          <Package className="h-6 w-6 text-gray-400" />
-                        )}
-                      </div>
-                      <Input 
-                        id="edit-image" 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (!file) return;
-                          
-                          // Check if file is an image
-                          if (!file.type.startsWith('image/')) {
-                            toast({
-                              title: "Invalid file type",
-                              description: "Please upload an image file (JPEG, PNG, etc.)",
-                              variant: "destructive"
-                            });
-                            return;
-                          }
-                          
-                          // Check file size (max 5MB)
-                          if (file.size > 5 * 1024 * 1024) {
-                            toast({
-                              title: "File too large",
-                              description: "Image must be less than 5MB",
-                              variant: "destructive"
-                            });
-                            return;
-                          }
-                          
-                          // Convert to base64 for preview and storage
-                          const reader = new FileReader();
-                          reader.onload = (event) => {
-                            const base64 = event.target?.result as string;
-                            setSelectedProduct({...selectedProduct, image: base64});
-                          };
-                          reader.readAsDataURL(file);
-                        }}
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4 mt-4 border-t flex justify-end gap-3">
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setIsEditModalOpen(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      onClick={editProduct} 
-                      disabled={isSubmitting}
-                      className="min-w-[120px] bg-blue-600 hover:bg-blue-700"
-                      type="button"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Updating...
-                        </>
-                      ) : (
-                        <>Save Changes</>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-      
-      {/* Delete Product Confirmation Modal */}
-      <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-        <DialogContent className="sm:max-w-[450px]">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">Delete Product</DialogTitle>
-          </DialogHeader>
-          
-          {selectedProduct && (
-            <div className="py-4">
-              <p className="text-gray-700">Are you sure you want to delete this product?</p>
-              
-              <div className="mt-4 p-4 bg-gray-50 rounded-md flex items-center gap-3">
-                <div className="h-12 w-12 rounded-md bg-gray-100 flex items-center justify-center overflow-hidden">
-                  {selectedProduct.image ? (
-                    <img src={selectedProduct.image} alt={selectedProduct.name} className="h-full w-full object-cover" />
-                  ) : (
-                    <Package className="h-6 w-6 text-gray-400" />
-                  )}
-                </div>
-                <div>
-                  <h4 className="font-medium text-gray-900">{selectedProduct.name}</h4>
-                  <p className="text-sm text-gray-500">{formatCurrency(selectedProduct.price, selectedProduct.currency || "USD")}</p>
-                </div>
-              </div>
-              
-              <p className="mt-4 text-sm text-red-600">This action cannot be undone.</p>
-              
-              <div className="mt-6 flex justify-end gap-3">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setIsDeleteModalOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  variant="destructive"
-                  onClick={deleteProduct}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Deleting...
-                    </>
-                  ) : (
-                    <>Delete Product</>
-                  )}
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-    </DashboardLayout>
+ </DashboardLayout>
   );
 }

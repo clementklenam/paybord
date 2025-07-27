@@ -6,11 +6,11 @@ import {Link as WouterLink} from "wouter";
 
 export function CTASection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+    <section className="py-24 bg-[#2a2a2a] relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.05),transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.05),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.1),transparent_50%)]"></div>
       </div>
 
       <Container>
@@ -23,7 +23,7 @@ export function CTASection() {
         >
           <h2 className="text-4xl lg:text-6xl font-bold text-white mb-8">
             Ready to Simplify Your
-            <span className="block bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-[#FFD700] to-[#FFC700] bg-clip-text text-transparent">
               Payment Infrastructure?
             </span>
           </h2>
@@ -82,12 +82,12 @@ export function CTASection() {
             className="flex flex-col sm:flex-row gap-6 justify-center items-center"
           >
             <WouterLink to="/signup">
-              <Button className="group bg-white text-black hover:bg-gray-100 px-10 py-5 text-xl font-semibold rounded-full transition-all duration-300 shadow-2xl hover:shadow-white/25 hover:scale-105">
+              <Button className="group bg-[#FFD700] text-black hover:bg-[#FFC700] px-10 py-5 text-xl font-semibold rounded-full transition-all duration-300 shadow-2xl hover:shadow-[#FFD700]/0.25] hover:scale-105">
                 <span>Get Started Today</span>
                 <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
               </Button>
             </WouterLink>
-            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 px-10 py-5 text-xl font-semibold rounded-full backdrop-blur-sm hover:scale-105 transition-all duration-300">
+            <Button variant="outline" className="border-white/0.2 text-white hover:bg-white/0.1 px-10 py-5 text-xl font-semibold rounded-full backdrop-blur-sm hover:scale-105 transition-all duration-300">
               <span>Schedule a Demo</span>
             </Button>
           </motion.div>
