@@ -9,7 +9,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log("Registering payment link route handler");
   
   // Handle payment link routes
-  app.get('/pl_:id', (req, res) => {
+  app.get('/pl/:id', (req, res) => {
     const { id } = req.params;
     console.log(`Payment link accessed: pl_${id}`);
     

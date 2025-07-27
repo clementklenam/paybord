@@ -8,7 +8,7 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 app.use(express.static(path.join(__dirname, 'client/public')));
 
 // Handle payment link routes
-app.get('/pl_:id', (req, res) => {
+app.get('/pl/:id', (req, res) => {
   const { id } = req.params;
   console.log(`Payment link accessed: pl_${id}`);
   

@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 app.use(express.static(path.join(__dirname, 'client/public')));
 
 // Special handler for payment links
-app.get('/pl_*', (req, res) => {
+app.get('/pl/:id', (req, res) => {
   const fullPath = req.path;
   // Extract the ID part
   const id = fullPath.slice(1); // Remove leading slash
