@@ -16,12 +16,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Redirect to the payment page with explicit status code
     res.redirect(302, `/payment/${id}`);
   });
-
-  // *** WORKAROUND: Create a route for specific payment link to debug
-  app.get('/pl_3032c28b28d32637', (req, res) => {
-    console.log("Specific payment link handler reached!");
-    res.redirect(302, '/payment/3032c28b28d32637');
-  });
   
   // API proxy routes - forward API requests to backend server
   console.log("Registering API proxy routes");
