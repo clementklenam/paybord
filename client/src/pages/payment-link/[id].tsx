@@ -212,7 +212,7 @@ function PaystackCheckoutModal({
 
 export default function PaymentLinkViewPage() {
   const [paymentParams] = useRoute('/payment-link/:id');
-  const [plParams] = useRoute('/pl_:id');
+  const [plParams] = useRoute('/pl/:id');
   const location = useLocation();
   
   // Get link ID from either route pattern

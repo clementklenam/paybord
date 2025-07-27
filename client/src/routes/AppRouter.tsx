@@ -36,7 +36,7 @@ export function AppRouter() {
       <Route path="/storefront/:id" component={StorefrontPreview} />
       <Route path="/payment/:id" component={PaymentPage} />
       <Route path="/payment-link/:id" component={PaymentLinkViewPage} />
-      <Route path="/pl_:id" component={PaymentLinkRedirect} />
+      <Route path="/pl/:id" component={PaymentLinkRedirect} />
 
       {/* Home Page */}
       <Route path="/home" component={Home} />
