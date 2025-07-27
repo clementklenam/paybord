@@ -21,7 +21,7 @@ import PaymentPage from "@/pages/payment/[id]";
 import PaymentLinkViewPage from "@/pages/payment-link/[id]";
 import TestTopCustomersPage from "@/pages/test-top-customers";
 
-// Component to handle the redirect from /pl_:id to /payment/:id
+// Component to handle the redirect from /pl/:id to /payment/:id
 function PaymentLinkRedirect({ params }: { params: { id: string } }) {
   return <Redirect to={`/payment/${params.id}`} />;
 }
