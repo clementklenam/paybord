@@ -3,16 +3,19 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5002;
 
-// Serve static files from the React app
+// Log static files middleware
+console.log('Registering static middleware:', path.join(__dirname, 'dist'));
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// For any route that doesn't match a static file, serve index.html
-// This allows client-side routing to work
+// Log /pl/:id route
+console.log('Registering route: /pl/:id');
 app.get('/pl/:id', (req, res) => {
   console.log(`Received request for payment link: ${req.path}`);
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Log catch-all route
+console.log('Registering route: *');
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
