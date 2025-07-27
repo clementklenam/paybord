@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import BusinessService from '@/services/business.service';
 import {CURRENCY_OPTIONS} from '@/types/business';
 

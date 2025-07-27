@@ -12,12 +12,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import { 
   ArrowLeft, 
   Download, 
-  Mail, 
-  Phone, 
-  Calendar,
-  Activity,
-  CreditCard,
-  FileText
+  Mail
 } from "lucide-react";
 import {useToast} from "@/components/ui/use-toast";
 
@@ -279,14 +274,14 @@ export default function CustomerDetailPage() {
     });
   };
 
-  const handleSwitchPlan = async (planId: string, couponCode?: string) => {
+  const handleSwitchPlan = async (planId: string, _couponCode?: string) => {
     toast({
       title: "Plan Switched",
       description: `Successfully switched to ${plans.find(p => p.id === planId)?.name} plan.`,
     });
   };
 
-  const handleUpdatePaymentMethod = async (paymentMethod: unknown) => {
+  const handleUpdatePaymentMethod = async (_paymentMethod: unknown) => {
     toast({
       title: "Payment Method Updated",
       description: "Your payment method has been updated successfully.",

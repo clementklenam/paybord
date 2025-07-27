@@ -41,7 +41,6 @@ export default function StorefrontPage() {
     
     // Business state
     const [businesses, setBusinesses] = useState<{ _id: string; businessName: string }[]>([]);
-    const [businessesLoading, setBusinessesLoading] = useState(false);
     
     // Fetch storefronts on mount and when page changes
     useEffect(() => {
@@ -56,7 +55,6 @@ export default function StorefrontPage() {
     
     // Fetch businesses from API
     const fetchBusinesses = async () => {
-        setBusinessesLoading(true);
         try {
             const businessProfile = await businessServiceInstance.getBusinessProfile();
             setBusinesses([{
@@ -66,8 +64,6 @@ export default function StorefrontPage() {
         } catch (error) {
             console.error("Error fetching businesses:", error);
             setBusinesses([]);
-        } finally {
-            setBusinessesLoading(false);
         }
     };
     
@@ -187,7 +183,7 @@ export default function StorefrontPage() {
     };
     
     // Handle editing a storefront
-    const handleEditStorefront = (id: string) => {
+    const handleEditStorefront = (_id: string) => {
         // Navigate to edit page or open edit modal
         toast({
             title: "Coming Soon",

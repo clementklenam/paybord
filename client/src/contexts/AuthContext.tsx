@@ -99,7 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // TODO: Implement OTP verification logic
   };
 
-  const resendOtp = async (type: 'email' | 'phone') => {
+  const resendOtp = async (_type: 'email' | 'phone') => {
     // TODO: Implement resend OTP logic
   };
 
