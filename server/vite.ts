@@ -80,6 +80,7 @@ export async function setupVite(app: Express, server: Server) {
 
 export function serveStatic(app: Express) {
   const distPath = path.resolve(__dirname, "..", "client", "dist");
+  const clientPath = path.resolve(__dirname, "..", "client");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
@@ -87,6 +88,7 @@ export function serveStatic(app: Express) {
     );
   }
 
+  // Serve assets with proper MIME types
   app.use("/assets", express.static(path.join(distPath, "assets"), {
     setHeaders: (res, filePath) => {
       if (filePath.endsWith(".js")) {
@@ -97,13 +99,22 @@ export function serveStatic(app: Express) {
     }
   }));
 
+  // Serve images
   app.use("/img", express.static(path.join(distPath, "img")));
-  // Don't serve the root index.html from static middleware to avoid conflicts
+
+  // Serve other static files from dist, but NOT index.html
   app.use(express.static(distPath, {
-    index: false // Disable automatic index.html serving
+    index: false, // Disable automatic index.html serving
+    setHeaders: (res, filePath) => {
+      // Ensure we never serve the development index.html
+      if (filePath.endsWith("index.html") && !filePath.includes("dist")) {
+        res.status(404).send("Not found");
+        return;
+      }
+    }
   }));
 
-  // Skip processing payment links in the catch-all route
+  // Catch-all route - serve the BUILT index.html for all routes except payment links
   app.use("*", (req, res) => {
     const url = req.originalUrl;
     
@@ -113,6 +124,12 @@ export function serveStatic(app: Express) {
       return;
     }
     
-    res.sendFile(path.resolve(distPath, "index.html"));
+    // Explicitly serve the built index.html
+    const builtIndexPath = path.join(distPath, "index.html");
+    if (fs.existsSync(builtIndexPath)) {
+      res.sendFile(builtIndexPath);
+    } else {
+      res.status(404).send("Built index.html not found");
+    }
   });
 }
