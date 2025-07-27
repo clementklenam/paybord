@@ -300,7 +300,7 @@ export default function StorefrontPage() {
                                         key={storefront._id}
                                         storefront={storefront}
                                         onEdit={handleEditStorefront}
-                                        onDelete={() => setStorefrontToDelete(storefront._id)}
+                                        onDelete={() => setStorefrontToDelete(storefront._id ?? null)}
                                     />
                                 ))}
                             </div>
