@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
-console.log('Registering route: *');
-app.get('*', (req, res) => {
+console.log('Registering route: /*');
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
