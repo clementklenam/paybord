@@ -210,7 +210,7 @@ const EnhancedChart = ({
         dataKey="value"
         animationDuration={animate ? 1000 : 0}
       >
-        {data.map((entry, index) => (
+        {data.map((_, index) => (
           <Cell key={`cell-${index}`} fill={Object.values(COLORS)[index % Object.values(COLORS).length]} />
         ))}
       </Pie>

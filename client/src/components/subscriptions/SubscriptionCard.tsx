@@ -4,10 +4,8 @@ import {Button} from "@/components/ui/button";
 import {Progress} from "@/components/ui/progress";
 import { 
   Calendar, 
-  CreditCard, 
   Pause, 
   Play, 
-  RotateCcw,
   AlertCircle,
   CheckCircle,
   Clock,

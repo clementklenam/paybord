@@ -11,7 +11,6 @@ import {
   Plus, 
   Shield, 
   CheckCircle,
-  AlertCircle,
   Lock
 } from "lucide-react";
 import { useState } from "react";
@@ -50,15 +49,7 @@ export function PaymentMethodForm({
     type: 'card' as 'card' | 'bank_account' | 'mobile_money'
   });
 
-  const getCardIcon = (brand?: string) => {
-    switch (brand?.toLowerCase()) {
-      case 'visa': return '💳';
-      case 'mastercard': return '💳';
-      case 'amex': return '💳';
-      case 'discover': return '💳';
-      default: return '💳';
-    }
-  };
+
 
   const getPaymentMethodIcon = (type: string) => {
     switch (type) {
