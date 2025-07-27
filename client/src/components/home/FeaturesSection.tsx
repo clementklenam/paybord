@@ -36,9 +36,9 @@ export function FeaturesSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   
   const slides = [
-    { id: 1, label: "Step 1: Add your first product", image: "/src/img/slide1.jpg" },
-    { id: 2, label: "Step 2: Customize your store", image: "/src/img/slide2.jpg" },
-    { id: 3, label: "Step 3: Set up payments", image: "/src/img/slide3.jpg" }
+    { id: 1, label: "Step 1: Add your first product", image: "/img/slide1.jpg" },
+    { id: 2, label: "Step 2: Customize your store", image: "/img/slide2.jpg" },
+    { id: 3, label: "Step 3: Set up payments", image: "/img/slide3.jpg" }
   ];
 
   useEffect(() => {

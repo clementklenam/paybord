@@ -85,7 +85,7 @@ export function HeroSection() {
             {/* Image Container */}
             <div className="relative w-[500px] h-[500px] rounded-3xl shadow-2xl overflow-hidden">
               <img 
-                src="/src/img/istockphoto-1214692731-612x612.jpg" 
+                src="/img/istockphoto-1214692731-612x612.jpg" 
                 alt="Business payment solutions" 
                 className="w-full h-full object-cover"
               />
