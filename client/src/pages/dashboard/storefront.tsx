@@ -207,15 +207,6 @@ export default function StorefrontPage() {
         }
     };
 
-    // Handle viewing a storefront
-    const handleViewStorefront = (id: string) => {
-        const storefront = storefronts.find(s => s.id === id);
-        if (storefront) {
-            // Use the frontend route for the storefront
-            window.open(`/storefront/${id}`, '_blank');
-        }
-    };
-
     // Handle editing a storefront
     const handleEditStorefront = (_id: string) => {
         // Navigate to edit page or open edit modal

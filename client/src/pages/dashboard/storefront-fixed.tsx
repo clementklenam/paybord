@@ -140,11 +140,6 @@ export default function StorefrontPage() {
     };
     
     // Handle storefront deletion
-    const confirmDeleteStorefront = (id: string) => {
-        setStorefrontToDelete(id);
-        setShowDeleteDialog(true);
-    };
-    
     const handleDeleteStorefront = async () => {
         if (!storefrontToDelete) return;
         
@@ -171,14 +166,6 @@ export default function StorefrontPage() {
             });
         } finally {
             setIsDeleting(false);
-        }
-    };
-    
-    // Handle viewing a storefront
-    const handleViewStorefront = (id: string) => {
-        const storefront = storefronts.find(s => s.id === id);
-        if (storefront) {
-            window.open(storefront.url, '_blank');
         }
     };
     
@@ -313,7 +300,7 @@ export default function StorefrontPage() {
                                         key={storefront._id}
                                         storefront={storefront}
                                         onEdit={handleEditStorefront}
-                                        onDelete={handleDeleteStorefront}
+                                        onDelete={() => setStorefrontToDelete(storefront._id)}
                                     />
                                 ))}
                             </div>
