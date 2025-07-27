@@ -62,7 +62,7 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
       }
     } catch (err: unknown) {
       console.error('Error fetching business currency:', err);
-      setError(err.message || 'Failed to load currency');
+      setError((err as any)?.message || 'Failed to load currency');
       // Fallback to default
       setCurrency('GHS');
       setCurrencySymbol('₵');

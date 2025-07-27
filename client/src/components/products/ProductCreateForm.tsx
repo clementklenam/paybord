@@ -147,7 +147,7 @@ export function ProductCreateForm({ businessId, onCreate, onCancel }: { business
       {error && <div className="text-red-600 text-sm">{error}</div>}
       <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>Cancel</Button>
-        <Button type="submit" variant="default" loading={loading}>Create Product</Button>
+        <Button type="submit" variant="default" disabled={loading}>Create Product</Button>
       </div>
     </form>
   );

@@ -43,7 +43,7 @@ import {
   Area,
   AreaChart
 } from "recharts";
-import analyticsService, { getPaymentAnalytics, PaymentAnalytics, getProductAnalytics, ProductAnalytics, getCustomerAnalytics, CustomerAnalytics } from "@/services/analytics.service";
+import { getPaymentAnalytics, PaymentAnalytics, getProductAnalytics, ProductAnalytics, getCustomerAnalytics, CustomerAnalytics } from "@/services/analytics.service";
 import {africanColors} from "@/lib/african-colors";
 
 export default function ReportsPage() {
@@ -141,7 +141,7 @@ export default function ReportsPage() {
   }, [subscribeToPaymentEvents]);
 
   // Extract currency from analytics response, fallback to 'GHS'
-  const currency = (analytics?.grossVolume as unknown)?.currency || 'GHS';
+  const currency = (analytics?.grossVolume as any)?.currency || 'GHS';
 
   // Debug: Print raw analytics data to help trace inconsistencies
   useEffect(() => {
@@ -240,8 +240,8 @@ export default function ReportsPage() {
   const topCustomersBase = analytics.topCustomers;
 
   // Use payment methods data as-is
-  const paymentMethodsBase = (analytics as unknown).paymentMethods || [];
-  const paymentMethodsTotalBase = paymentMethodsBase.reduce((sum: number, pm: unknown) => sum + pm.amount, 0);
+  const paymentMethodsBase = (analytics as any).paymentMethods || [];
+  const paymentMethodsTotalBase = paymentMethodsBase.reduce((sum: number, pm: any) => sum + pm.amount, 0);
 
   return (
     <DashboardLayout>
@@ -473,7 +473,7 @@ export default function ReportsPage() {
                               nameKey="method"
                               label={({ percent }: { percent: number }) => `${(percent * 100).toFixed(0)}%`}
                             >
-                              {(paymentMethodsBase as unknown).map((_: unknown, index: number) => (
+                              {(paymentMethodsBase as any).map((_: any, index: number) => (
                                 <Cell 
                                   key={`cell-${index}`} 
                                   fill={index === 0 ? africanColors.green : index === 1 ? africanColors.yellow : index === 2 ? africanColors.red : africanColors.black} 
@@ -496,7 +496,7 @@ export default function ReportsPage() {
                         </ResponsiveContainer>
                       </div>
                       <div className="space-y-4 flex flex-col justify-center">
-                        {paymentMethodsBase.map((item: unknown, index: number) => (
+                        {paymentMethodsBase.map((item: any, index: number) => (
                           <div key={index} className="space-y-2">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center">

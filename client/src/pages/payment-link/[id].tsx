@@ -16,7 +16,6 @@ import { PaymentLink } from '@/services/payment-link.service';
 // Add type guards or assertions for unknown types.
 // Remove unused variables and unused @ts-expect-error.
 // Ensure Button is imported from '@/components/ui/button'.
-// @ts-expect-error
 declare global {
   interface Window {
     PaystackPop?: unknown;
@@ -136,7 +135,7 @@ function PaystackCheckoutModal({
           (async () => {
             try {
               // Call backend to verify payment and record transaction
-              const verifyResult = await paystackService.verifyPayment(response.reference);
+              const verifyResult = await paystackService.verifyPayment((response as any).reference);
               if (verifyResult.success && verifyResult.data.status === 'success') {
                 onSuccess();
                 // Optionally, pass transaction data to onSuccess if needed
@@ -212,12 +211,12 @@ function PaystackCheckoutModal({
 }
 
 export default function PaymentLinkViewPage() {
-  const [paymentMatch, paymentParams] = useRoute('/payment-link/:id');
-  const [plMatch, plParams] = useRoute('/pl_:id');
+  const [paymentParams] = useRoute('/payment-link/:id');
+  const [plParams] = useRoute('/pl_:id');
   const location = useLocation();
   
   // Get link ID from either route pattern
-  const linkId = paymentParams?.id || plParams?.id || location[0].substring(4);
+  const linkId = (paymentParams as any)?.id || (plParams as any)?.id || location[0]?.substring(4) || "";
   
   const [paymentLink, setPaymentLink] = useState<PaymentLink | null>(null);
   const [loading, setLoading] = useState(true);
@@ -229,7 +228,7 @@ export default function PaymentLinkViewPage() {
     address: ''
   });
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"card" | "mobile" | "bank" | null>(null);
-  const [processingPayment, setProcessingPayment] = useState(false);
+  const [processingPayment, ] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [showPaystackModal, setShowPaystackModal] = useState(false);
   const { toast } = useToast();
@@ -254,7 +253,7 @@ export default function PaymentLinkViewPage() {
         }
       } catch (err: unknown) {
         console.error('Error fetching payment link:', err);
-        setError(err.message || 'Failed to load payment link. It may be expired or invalid.');
+        setError((err as any)?.message || 'Failed to load payment link. It may be expired or invalid.');
       } finally {
         setLoading(false);
       }
@@ -326,14 +325,15 @@ export default function PaymentLinkViewPage() {
     setShowPaystackModal(true);
   };
 
-  const recordTransaction = async ({ amount, currency, customerInfo, provider, status }: unknown) => {
+  const recordTransaction = async (args: any) => {
+    const { amount, currency, customerInfo, provider, status } = args;
     console.log('[DEBUG] recordTransaction called with:', { amount, currency, customerInfo, provider, status, paymentLink, linkId });
     try {
       // Record the transaction in your backend
       console.log('Recording transaction:', { amount, currency, customerInfo, provider, status });
       
       // Get businessId from payment link data
-      const businessId = paymentLink?.businessId || paymentLink?.business?._id;
+      const businessId = paymentLink?.businessId;
       console.log('[DEBUG] businessId from payment link:', businessId);
       
       if (!businessId) {
@@ -455,7 +455,7 @@ export default function PaymentLinkViewPage() {
               <div className="text-center mb-3">
                 <span className="text-white/80 text-xs font-medium tracking-wider uppercase">Payment to</span>
                 <div className="text-lg font-semibold text-white mt-1">
-                  {paymentLink.business?.name || "Business"}
+                  {"Business"}
                 </div>
               </div>
               
@@ -655,7 +655,7 @@ export default function PaymentLinkViewPage() {
           setShowPaystackModal(false);
         }}
         paymentLinkId={linkId}
-        businessId={paymentLink?.businessId || paymentLink?.business?._id} // <-- pass businessId
+        businessId={paymentLink?.businessId} // <-- pass businessId
         recordTransaction={recordTransaction}
       />
     </div>

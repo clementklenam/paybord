@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(currentUser.user as User);
       // Set axios default header with the token
       if (currentUser.token) {
-        authService.setToken(currentUser.token);
+        localStorage.setItem('token', currentUser.token);
       }
     }
     setLoading(false);
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(response.user as User);
       setIsKycSubmitted(false); // New users need to submit KYC
     } catch (err: unknown) {
-      const errorMessage = err.response?.data?.error || 'Failed to create account';
+      const errorMessage = (err as any)?.response?.data?.error || 'Failed to create account';
       setError(errorMessage);
       throw err;
     } finally {
@@ -63,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // In a real app, you would check KYC status from the backend
       setIsKycSubmitted(true); // Assuming existing users have completed KYC
     } catch (err: unknown) {
-      const errorMessage = err.response?.data?.error || 'Invalid email or password';
+      const errorMessage = (err as any)?.response?.data?.error || 'Invalid email or password';
       setError(errorMessage);
       throw err;
     } finally {
@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await authService.submitKyc(data);
       setIsKycSubmitted(true);
     } catch (err: unknown) {
-      const errorMessage = err.response?.data?.error || 'Failed to submit KYC';
+      const errorMessage = (err as any)?.response?.data?.error || 'Failed to submit KYC';
       setError(errorMessage);
       throw err;
     } finally {
@@ -95,7 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const verifyOtp = async ({ type, otp }: { type: 'email' | 'phone'; otp: string }) => {
+  const verifyOtp = async (_params: { type: 'email' | 'phone'; otp: string }) => {
     // TODO: Implement OTP verification logic
   };
 

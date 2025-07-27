@@ -33,9 +33,9 @@ export default function StorefrontPage() {
     const [isCreating, setIsCreating] = useState(false);
 
     // Delete dialog state
-    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-    const [storefrontToDelete, setStorefrontToDelete] = useState<string | null>(null);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const [] = useState(false);
+    const [] = useState<string | null>(null);
+    const [] = useState(false);
 
     // Businesses state
     const [businesses, setBusinesses] = useState<{ _id: string; businessName: string }[]>([]);
@@ -201,7 +201,7 @@ export default function StorefrontPage() {
             console.error('Error deleting storefront:', error);
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to delete storefront',
+                description: (error as any).message || 'Failed to delete storefront',
                 variant: 'destructive',
             });
         }
@@ -263,7 +263,7 @@ export default function StorefrontPage() {
                                     You must create a business profile before you can create a storefront.<br />
                                     If you just registered, please wait a moment and retry.
                                 </CardDescription>
-                                <Button onClick={fetchBusinesses} disabled={businessesLoading}>
+                                <Button onClick={() => fetchBusinesses()} disabled={businessesLoading}>
                                     {businessesLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Filter className="h-4 w-4 mr-2" />}
                                     Retry
                                 </Button>

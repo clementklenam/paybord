@@ -1242,19 +1242,19 @@ export default function ProductsPage() {
                         console.error('Error creating product:', error);
                         
                         // Show detailed error message
-                        if (error.response) {
+                        if ((error as any).response) {
                           // The request was made and the server responded with an error status
-                          const errorMessage = error.response.data?.message || error.response.statusText || 'Server error';
+                          const errorMessage = (error as any).response.data?.message || (error as any).response.statusText || 'Server error';
                           console.error('Server error response:', errorMessage);
                           alert(`Error creating product: ${errorMessage}`); 
-                        } else if (error.request) {
+                        } else if ((error as any).request) {
                           // The request was made but no response was received
-                          console.error('No response received:', error.request);
+                          console.error('No response received:', (error as any).request);
                           alert("Error creating product: No response from server. Please check your connection.");
                         } else {
                           // Something happened in setting up the request
-                          console.error('Request setup error:', error.message);
-                          alert(`Error creating product: ${error.message || 'Unknown error'}`); 
+                          console.error('Request setup error:', (error as any).message);
+                          alert(`Error creating product: ${(error as any).message || 'Unknown error'}`); 
                         }
                       } finally {
                         // Always reset loading state

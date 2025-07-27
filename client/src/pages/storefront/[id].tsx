@@ -16,8 +16,6 @@ import AnalyticsService from '@/services/analytics.service';
 import {getAuthHeader} from '@/services/auth-header';
 import {usePaymentContext} from "@/contexts/PaymentContext";
 
-// @ts-expect-error
- 
 declare global {
   interface Window {
     PaystackPop?: unknown;
@@ -365,7 +363,7 @@ function StripeCheckoutModal({
       }
     } catch (err: unknown) {
       setPaymentDeclined(true);
-      setError(err.message || 'Payment failed');
+      setError((err as any)?.message || 'Payment failed');
     } finally {
       setLoading(false);
     }
@@ -863,14 +861,14 @@ export default function StorefrontPreview() {
       const promise = (async () => {
         try {
           const data = await storefrontService.getStorefrontById(id);
-          if ((data as unknown).business && !data.businessId) {
-            data.businessId = (data as unknown).business;
+          if ((data as any).business && !data.businessId) {
+            data.businessId = (data as any).business;
           }
-          console.log('[DEBUG] Storefront loaded with businessId:', data.businessId, 'Raw business:', (data as unknown).business);
+          console.log('[DEBUG] Storefront loaded with businessId:', data.businessId, 'Raw business:', (data as any).business);
           setStorefront(data);
         } catch (err) {
           console.error('Error fetching storefront:', err);
-          setError(err instanceof Error ? err.message : 'Failed to load storefront. Please try again later.');
+          setError(err instanceof Error ? (err as any)?.message : 'Failed to load storefront. Please try again later.');
           throw err;
         } finally {
           setLoading(false);

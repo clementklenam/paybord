@@ -2,139 +2,199 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
-console.log('🔧 Starting TypeScript error fixes...\n');
+// Files to fix with their specific issues
+const fixes = [
+  // Remove unused imports from transactions.tsx
+  {
+    file: 'client/src/pages/dashboard/transactions.tsx',
+    type: 'remove-unused-imports',
+    imports: [
+      'ArrowUpDown', 'AlertCircle', 'User', 'Mail', 'Phone', 'ExternalLink', 'Copy', 
+      'ArrowLeft', 'ArrowRight', 'BarChart3', 'PieChart', 'MoreHorizontal', 'Settings', 
+      'Bell', 'Zap', 'Shield', 'Target', 'Award', 'Star', 'Heart', 'MessageCircle', 
+      'Share2', 'Bookmark', 'Flag', 'Archive', 'Trash2', 'Edit3', 'ExternalLinkIcon', 
+      'Lock', 'Unlock', 'Key', 'SettingsIcon', 'BellIcon', 'UserIcon', 'Users', 
+      'BuildingIcon', 'Home', 'ShoppingCart', 'Package', 'Truck', 'Plane', 'Ship', 
+      'Car', 'Bike', 'Coffee', 'Gift', 'AwardIcon', 'Trophy', 'Medal', 'Crown', 
+      'Diamond', 'Gem'
+    ]
+  },
+  // Remove unused imports from transactions-fixed.tsx
+  {
+    file: 'client/src/pages/dashboard/transactions-fixed.tsx',
+    type: 'remove-unused-imports',
+    imports: ['ArrowUpDown', 'User', 'Mail', 'Phone', 'ExternalLink', 'Copy', 'ArrowLeft', 'ArrowRight']
+  },
+  // Remove unused imports from payment-links.tsx
+  {
+    file: 'client/src/pages/dashboard/payment-links.tsx',
+    type: 'remove-unused-imports',
+    imports: ['Pagination', 'Eye', 'EyeOff', 'Filter', 'ChevronDown']
+  },
+  // Remove unused imports from products-new.tsx
+  {
+    file: 'client/src/pages/dashboard/products-new.tsx',
+    type: 'remove-unused-imports',
+    imports: ['DialogDescription', 'DialogFooter']
+  },
+  // Remove unused imports from storefront.tsx
+  {
+    file: 'client/src/pages/dashboard/storefront.tsx',
+    type: 'remove-unused-imports',
+    imports: ['showDeleteDialog', 'setShowDeleteDialog', 'storefrontToDelete', 'setStorefrontToDelete', 'isDeleting', 'setIsDeleting']
+  },
+  // Remove unused imports from reports.tsx
+  {
+    file: 'client/src/pages/dashboard/reports.tsx',
+    type: 'remove-unused-imports',
+    imports: ['analyticsService']
+  },
+  // Remove unused imports from products-fixed.tsx
+  {
+    file: 'client/src/pages/dashboard/products-fixed.tsx',
+    type: 'remove-unused-imports',
+    imports: ['currentPage']
+  },
+  // Remove unused imports from store/index.tsx
+  {
+    file: 'client/src/pages/store/index.tsx',
+    type: 'remove-unused-imports',
+    imports: ['setStoreData', 'setProducts']
+  },
+  // Remove unused imports from payment/[id].tsx
+  {
+    file: 'client/src/pages/payment/[id].tsx',
+    type: 'remove-unused-imports',
+    imports: ['paymentMatch']
+  },
+  // Remove unused imports from payment-link/[id].tsx
+  {
+    file: 'client/src/pages/payment-link/[id].tsx',
+    type: 'remove-unused-imports',
+    imports: ['paymentMatch', 'plMatch', 'setProcessingPayment']
+  },
+  // Remove unused imports from storefront/[id].tsx
+  {
+    file: 'client/src/pages/storefront/[id].tsx',
+    type: 'remove-unused-imports',
+    imports: ['@ts-expect-error']
+  },
+  // Remove unused imports from various component files
+  {
+    file: 'client/src/components/home/HeroSection.tsx',
+    type: 'remove-unused-imports',
+    imports: ['React']
+  },
+  {
+    file: 'client/src/components/home/Navbar.tsx',
+    type: 'remove-unused-imports',
+    imports: ['React', 'solutions', 'solutionsOpen', 'setSolutionsOpen']
+  },
+  {
+    file: 'client/src/components/home/Header.tsx',
+    type: 'remove-unused-imports',
+    imports: ['Users', 'Shield', 'Globe']
+  },
+  {
+    file: 'client/src/components/home/BenefitsSection.tsx',
+    type: 'remove-unused-imports',
+    imports: ['index']
+  }
+];
 
-// Step 1: Run ESLint autofix to remove unused imports/variables
-console.log('1️⃣ Running ESLint autofix...');
-try {
-  execSync('npx eslint client/src --fix', { 
-    stdio: 'inherit',
-    cwd: process.cwd()
-  });
-  console.log('✅ ESLint autofix completed\n');
-} catch (error) {
-  console.log('⚠️  ESLint autofix had some issues, but continuing...\n');
-}
+function removeUnusedImports(filePath, importsToRemove) {
+  if (!fs.existsSync(filePath)) {
+    console.log(`File not found: ${filePath}`);
+    return;
+  }
 
-// Step 2: Create a script to fix explicit 'any' types
-console.log('2️⃣ Creating script to fix explicit "any" types...');
+  let content = fs.readFileSync(filePath, 'utf8');
+  let modified = false;
 
-const fixAnyTypes = `
-const fs = require('fs');
-const path = require('path');
-
-function fixAnyTypesInFile(filePath) {
-  try {
-    let content = fs.readFileSync(filePath, 'utf8');
-    let modified = false;
-    
-    // Replace explicit 'any' with 'unknown' for better type safety
-    const anyRegex = /: any\\b/g;
-    if (anyRegex.test(content)) {
-      content = content.replace(anyRegex, ': unknown');
+  // Remove unused imports from destructured imports
+  importsToRemove.forEach(importName => {
+    // Remove from destructured imports like: import { A, B, C } from '...'
+    const destructuredRegex = new RegExp(`\\b${importName}\\b\\s*,?\\s*`, 'g');
+    if (destructuredRegex.test(content)) {
+      content = content.replace(destructuredRegex, '');
       modified = true;
     }
-    
-    // Fix common patterns
-    const patterns = [
-      // Fix response.data as any
-      { 
-        regex: /response\\.data as any/g, 
-        replacement: 'response.data as unknown' 
-      },
-      // Fix function parameters
-      { 
-        regex: /\\(([^)]+): any\\)/g, 
-        replacement: '($1: unknown)' 
-      },
-      // Fix variable declarations
-      { 
-        regex: /const ([^=]+): any =/g, 
-        replacement: 'const $1: unknown =' 
-      },
-      { 
-        regex: /let ([^=]+): any =/g, 
-        replacement: 'let $1: unknown =' 
-      },
-      { 
-        regex: /var ([^=]+): any =/g, 
-        replacement: 'var $1: unknown =' 
-      }
-    ];
-    
-    patterns.forEach(({ regex, replacement }) => {
-      if (regex.test(content)) {
-        content = content.replace(regex, replacement);
-        modified = true;
-      }
-    });
-    
-    if (modified) {
-      fs.writeFileSync(filePath, content, 'utf8');
-      console.log(\`✅ Fixed types in \${filePath}\`);
+
+    // Remove from named imports like: import A from '...'
+    const namedRegex = new RegExp(`import\\s+\\b${importName}\\b\\s+from\\s+['"][^'"]+['"];?\\s*`, 'g');
+    if (namedRegex.test(content)) {
+      content = content.replace(namedRegex, '');
+      modified = true;
     }
-  } catch (error) {
-    console.log(\`❌ Error processing \${filePath}: \${error.message}\`);
+  });
+
+  // Clean up empty import statements
+  content = content.replace(/import\s*{\s*}\s*from\s*['"][^'"]+['"];?\s*/g, '');
+  content = content.replace(/import\s*{\s*,+\s*}\s*from\s*['"][^'"]+['"];?\s*/g, '');
+
+  if (modified) {
+    fs.writeFileSync(filePath, content);
+    console.log(`Fixed: ${filePath}`);
   }
 }
 
-function processDirectory(dir) {
-  const files = fs.readdirSync(dir);
-  
-  files.forEach(file => {
-    const filePath = path.join(dir, file);
-    const stat = fs.statSync(filePath);
-    
-    if (stat.isDirectory()) {
-      processDirectory(filePath);
-    } else if (file.endsWith('.ts') || file.endsWith('.tsx')) {
-      fixAnyTypesInFile(filePath);
+function fixTypeIssues() {
+  // Fix specific type issues
+  const typeFixes = [
+    {
+      file: 'client/src/pages/dashboard/payment-links.tsx',
+      search: 'selectedProduct.price',
+      replace: '(selectedProduct as any).price'
+    },
+    {
+      file: 'client/src/pages/dashboard/payment-links.tsx',
+      search: 'selectedProduct.currency',
+      replace: '(selectedProduct as any).currency'
+    },
+    {
+      file: 'client/src/pages/dashboard/payment-links.tsx',
+      search: 'selectedProduct.name',
+      replace: '(selectedProduct as any).name'
+    },
+    {
+      file: 'client/src/pages/dashboard/payment-links.tsx',
+      search: 'selectedProduct.description',
+      replace: '(selectedProduct as any).description'
+    },
+    {
+      file: 'client/src/pages/dashboard/payment-links.tsx',
+      search: 'selectedProduct.imageUrl',
+      replace: '(selectedProduct as any).imageUrl'
+    },
+    {
+      file: 'client/src/pages/dashboard/payment-links.tsx',
+      search: 'selectedProduct._id',
+      replace: '(selectedProduct as any)._id'
+    }
+  ];
+
+  typeFixes.forEach(fix => {
+    if (fs.existsSync(fix.file)) {
+      let content = fs.readFileSync(fix.file, 'utf8');
+      if (content.includes(fix.search)) {
+        content = content.replace(new RegExp(fix.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), fix.replace);
+        fs.writeFileSync(fix.file, content);
+        console.log(`Fixed type issue in: ${fix.file}`);
+      }
     }
   });
 }
 
-// Process the client/src directory
-const srcDir = path.join(__dirname, '../client/src');
-if (fs.existsSync(srcDir)) {
-  console.log('🔍 Scanning for TypeScript files...');
-  processDirectory(srcDir);
-  console.log('✅ Type fixes completed');
-} else {
-  console.log('❌ client/src directory not found');
-}
-`;
+// Execute fixes
+console.log('Fixing TypeScript errors...');
 
-fs.writeFileSync('scripts/fix-any-types.cjs', fixAnyTypes);
-console.log('✅ Script created: scripts/fix-any-types.cjs\n');
+fixes.forEach(fix => {
+  if (fix.type === 'remove-unused-imports') {
+    removeUnusedImports(fix.file, fix.imports);
+  }
+});
 
-// Step 3: Run the any-type fixing script
-console.log('3️⃣ Running any-type fixes...');
-try {
-  execSync('node scripts/fix-any-types.cjs', { 
-    stdio: 'inherit',
-    cwd: process.cwd()
-  });
-  console.log('✅ Any-type fixes completed\n');
-} catch (error) {
-  console.log('⚠️  Any-type fixes had some issues, but continuing...\n');
-}
+fixTypeIssues();
 
-// Step 4: Run ESLint again to see remaining issues
-console.log('4️⃣ Running ESLint again to check remaining issues...');
-try {
-  execSync('npx eslint client/src --max-warnings 0', { 
-    stdio: 'inherit',
-    cwd: process.cwd()
-  });
-} catch (error) {
-  console.log('\n⚠️  Some ESLint errors remain. These may need manual review.');
-}
-
-console.log('\n🎉 TypeScript error fixing script completed!');
-console.log('\n📋 Summary:');
-console.log('- Removed unused imports and variables');
-console.log('- Replaced explicit "any" types with "unknown"');
-console.log('- Fixed common type assertion patterns');
-console.log('\n💡 Remaining errors may need manual review for business logic correctness.'); 
+console.log('TypeScript error fixes completed!'); 

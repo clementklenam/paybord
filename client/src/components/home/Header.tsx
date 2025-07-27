@@ -8,10 +8,7 @@ import {
   Zap, 
   ChevronDown,
   ArrowRight,
-  Globe,
-  Shield,
-  Users
-} from "lucide-react";
+  } from "lucide-react";
 
 const navigation = [
   { name: "Products", href: "#", hasDropdown: true },

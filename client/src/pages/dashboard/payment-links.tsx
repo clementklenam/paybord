@@ -9,19 +9,14 @@ import {Textarea} from "@/components/ui/textarea";
 import {Dialog, DialogContent, DialogDescription, DialogTitle} from "@/components/ui/dialog";
 import {Badge} from "@/components/ui/badge";
 import {Checkbox} from "@/components/ui/checkbox";
-import {Pagination} from "@/components/ui/pagination";
 import {toast} from "@/components/ui/use-toast";
 import {
   Copy,
   Plus,
   Share2,
-  Eye,
-  EyeOff,
   Edit,
   Trash2,
   Search,
-  Filter,
-  ChevronDown,
   Smartphone,
   Monitor,
   Upload,
@@ -75,7 +70,7 @@ export default function PaymentLinksPage() {
   const [newLinkCurrency, setNewLinkCurrency] = useState("USD");
   const [newLinkEmail, setNewLinkEmail] = useState("");
   const [selectedBusinessId, setSelectedBusinessId] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<unknown>(null);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [previewDevice, setPreviewDevice] = useState<"mobile" | "desktop">("desktop");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"card" | "mobile" | "bank" | null>("card");
@@ -94,7 +89,7 @@ export default function PaymentLinksPage() {
   const { businesses } = useBusinesses();
   const { products } = useProducts();
   
-  // Filter and search
+  // and search
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   
@@ -260,8 +255,8 @@ export default function PaymentLinksPage() {
       const paymentLinkData: PaymentLink = {
         title: newLinkTitle,
         description: newLinkDescription,
-        amount: selectedProduct ? selectedProduct.price : parseFloat(newLinkAmount),
-        currency: selectedProduct ? selectedProduct.currency : newLinkCurrency,
+        amount: selectedProduct ? (selectedProduct as any).price : parseFloat(newLinkAmount),
+        currency: selectedProduct ? (selectedProduct as any).currency : newLinkCurrency,
         businessId: selectedBusinessId,
         imageUrl: uploadedImage || undefined,
         paymentMethodTypes: selectedPaymentMethod ? [getPaymentMethodType(selectedPaymentMethod)] : ["card"],
@@ -293,14 +288,14 @@ export default function PaymentLinksPage() {
       let errorMessage = "Failed to create payment link.";
       
       // Enhanced error handling
-      if (error.response?.status === 403) {
+      if ((error as any)?.response?.status === 403) {
         errorMessage = "Access denied. Please check your permissions or try logging in again.";
-      } else if (error.response?.status === 401) {
+      } else if ((error as any)?.response?.status === 401) {
         errorMessage = "Authentication failed. Please log in again.";
-      } else if (error.message && error.message.includes("Cast to ObjectId failed")) {
+      } else if ((error as any)?.message && (error as any).message.includes("Cast to ObjectId failed")) {
         errorMessage = "Invalid business ID format. Please select a valid business.";
-      } else if (error.response?.data?.message) {
-        errorMessage = error.response.data.message;
+      } else if ((error as any)?.response?.data?.message) {
+        errorMessage = (error as any).response.data.message;
       } else if (typeof error === 'string') {
         errorMessage = error;
       }
@@ -360,7 +355,7 @@ export default function PaymentLinksPage() {
     });
   };
 
-  const handleProductSelect = (product: unknown) => {
+  const handleProductSelect = (product: any) => {
     setSelectedProduct(product);
     if (product) {
       setNewLinkTitle(product.name);
@@ -461,7 +456,7 @@ export default function PaymentLinksPage() {
         </div>
       </div>
 
-      {/* Search & Filter Bar */}
+      {/* Search & Bar */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
         <div className="relative w-full md:w-96">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400" />
@@ -475,7 +470,7 @@ export default function PaymentLinksPage() {
         <div className="flex items-center gap-3">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="h-12 rounded-full border-gray-200 bg-white shadow-sm w-40">
-              <SelectValue placeholder="Filter by status" />
+              <SelectValue placeholder="by status" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Links</SelectItem>
@@ -637,7 +632,7 @@ export default function PaymentLinksPage() {
         )}
       </div>
 
-      {/* Pagination */}
+      {/* */}
       {pagination.totalPages > 1 && (
         <div className="flex items-center justify-between mt-12 px-2">
           <div className="text-lg text-gray-500">
@@ -878,12 +873,12 @@ export default function PaymentLinksPage() {
                   {selectedProduct && (
                     <div className="mt-3 p-4 bg-green-50 rounded-xl border border-green-200">
                       <div className="flex justify-between items-center">
-                        <div className="font-semibold text-gray-900">{selectedProduct.name}</div>
-                        <div className="font-bold text-[#1e8449]">{formatCurrency(selectedProduct.price, selectedProduct.currency)}</div>
+                        <div className="font-semibold text-gray-900">{(selectedProduct as any).name}</div>
+                        <div className="font-bold text-[#1e8449]">{formatCurrency((selectedProduct as any).price, (selectedProduct as any).currency)}</div>
                       </div>
-                      {selectedProduct.description && (
+                      {(selectedProduct as any).description && (
                         <div className="text-sm text-gray-600 mt-1">
-                          {selectedProduct.description}
+                          {(selectedProduct as any).description}
                         </div>
                       )}
                     </div>
@@ -1132,7 +1127,7 @@ export default function PaymentLinksPage() {
                           {newLinkAmount
                             ? formatCurrency(parseFloat(newLinkAmount), newLinkCurrency)
                             : selectedProduct
-                              ? formatCurrency(selectedProduct.price, selectedProduct.currency)
+                              ? formatCurrency((selectedProduct as any).price, (selectedProduct as any).currency)
                               : formatCurrency(0, "USD")
                           }
                         </div>
@@ -1265,7 +1260,7 @@ export default function PaymentLinksPage() {
                       Pay {newLinkAmount
                         ? formatCurrency(parseFloat(newLinkAmount), newLinkCurrency)
                         : selectedProduct
-                          ? formatCurrency(selectedProduct.price, selectedProduct.currency)
+                          ? formatCurrency((selectedProduct as any).price, (selectedProduct as any).currency)
                           : formatCurrency(0, "USD")
                       }
                     </Button>

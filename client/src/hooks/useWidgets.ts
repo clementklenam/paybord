@@ -10,7 +10,7 @@ const useWidgets = (initialWidgets: Widget[]) => {
   const [widgets, setWidgets] = useState<Widget[]>(initialWidgets);
   const [isAddingWidget, setIsAddingWidget] = useState(false);
 
-  const handleDragEnd = (event: unknown) => {
+  const handleDragEnd = (event: any) => {
     const { active, over } = event;
 
     if (active.id !== over.id) {

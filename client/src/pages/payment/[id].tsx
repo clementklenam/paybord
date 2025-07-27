@@ -17,11 +17,11 @@ const formatCurrency = (amount: number, currency: string = "USD") => {
 };
 
 export default function PaymentPage() {
-  const [paymentMatch, paymentParams] = useRoute('/payment/:id');
+  const [paymentParams] = useRoute('/payment/:id');
   const location = useLocation();
   
   // Get link ID from either route pattern
-  const linkId = paymentParams?.id || location[0].substring(4); // Handle both route formats
+  const linkId = (paymentParams as any)?.id || location[0]?.substring(4) || ""; // Handle both route formats
   
   const [paymentLink, setPaymentLink] = useState<PaymentLink | null>(null);
   const [loading, setLoading] = useState(true);

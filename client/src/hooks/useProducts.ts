@@ -42,10 +42,10 @@ export const useProducts = () => {
           }
         });
         
-        setProducts(response.data.data || []);
+        setProducts((response.data as any)?.data || []);
       } catch (err: unknown) {
         console.error('Error fetching products:', err);
-        setError(err.response?.data?.message || 'Failed to fetch products');
+        setError((err as any)?.response?.data?.message || 'Failed to fetch products');
       } finally {
         setIsLoading(false);
       }

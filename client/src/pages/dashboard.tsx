@@ -17,12 +17,28 @@ import {ShopifyStatsCard} from "@/components/dashboard/ShopifyStatsCard";
 import {ShopifyHeader} from "@/components/dashboard/ShopifyHeader";
 import {PaymentSourcesWidget} from "@/components/dashboard/widgets/PaymentSourcesWidget";
 
+// Type definitions for dashboard data
+interface DashboardData {
+  today: {
+    grossVolume: { amount: number; lastUpdated: string; trend: number; currency: string };
+    balance: { amount: number; type: string; trend: number };
+    nextPayout: { amount: number; date: string; currency: string };
+  };
+  overview: {
+    grossVolume: { total: number; previousPeriod: number; trend: Array<{ name: string; value: number }>; lastUpdated: string; currency: string };
+    netVolume: { total: number; previousPeriod: number; trend: Array<{ name: string; value: number }>; lastUpdated: string; currency: string };
+    newCustomers: { total: number; previousPeriod: number; trend: Array<{ name: string; value: number }>; lastUpdated: string };
+    failedPayments: { total: number; previousPeriod: number; trend: Array<{ name: string; value: number }>; lastUpdated: string };
+    topCustomers: Array<{ name: string; spend: number }>;
+  };
+}
+
 export default function DashboardPage() {
   const [timeRange, setTimeRange] = useState("last7days");
   const [isAddingWidget, setIsAddingWidget] = useState(false);
   const [customWidgets, setCustomWidgets] = useState<Array<{ id: string; type: string }>>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [dashboardData, setDashboardData] = useState<unknown>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const { toast } = useToast();
   const { currency } = useCurrency();
   const { subscribeToPaymentEvents } = usePaymentContext();
@@ -43,8 +59,8 @@ export default function DashboardPage() {
       
       const data = await analyticsService.getDashboardOverview(timeRange);
       console.log('Dashboard data received:', data);
-      console.log('Top customers data:', data?.overview?.topCustomers);
-      setDashboardData(data);
+      console.log('Top customers data:', (data as any)?.overview?.topCustomers);
+      setDashboardData(data as DashboardData);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       toast({
@@ -60,10 +76,10 @@ export default function DashboardPage() {
           nextPayout: { amount: 0, date: "", currency: "GHS" }
         },
         overview: {
-          grossVolume: { total: 0, previousPeriod: 0, trend: [], lastUpdated: "" },
-          netVolume: { total: 0, previousPeriod: 0, trend: [], lastUpdated: "" },
-          newCustomers: { total: 0, previousPeriod: 0, trend: [], lastUpdated: "" },
-          failedPayments: { total: 0, previousPeriod: 0, trend: [], lastUpdated: "" },
+          grossVolume: { total: 0, previousPeriod: 0, trend: [{ name: "Jan", value: 0 }], lastUpdated: "", currency: "GHS" },
+          netVolume: { total: 0, previousPeriod: 0, trend: [{ name: "Jan", value: 0 }], lastUpdated: "", currency: "GHS" },
+          newCustomers: { total: 0, previousPeriod: 0, trend: [{ name: "Jan", value: 0 }], lastUpdated: "" },
+          failedPayments: { total: 0, previousPeriod: 0, trend: [{ name: "Jan", value: 0 }], lastUpdated: "" },
           topCustomers: []
         }
       });

@@ -67,14 +67,14 @@ export const useBusinesses = () => {
           
           console.log('User business profile response:', profileResponse.data);
           
-          if (profileResponse.data && profileResponse.data._id) {
+          if (profileResponse.data && (profileResponse.data as any)._id) {
             // Format the business profile to match the Business interface
             const userBusiness: Business = {
-              _id: profileResponse.data._id,
-              name: profileResponse.data.businessName || 'My Business',
-              description: profileResponse.data.description || 'Your business',
-              logo: profileResponse.data.logo,
-              industry: profileResponse.data.industry
+              _id: (profileResponse.data as any)._id,
+              name: (profileResponse.data as any).businessName || 'My Business',
+              description: (profileResponse.data as any).description || 'Your business',
+              logo: (profileResponse.data as any).logo,
+              industry: (profileResponse.data as any).industry
             };
             
             // Add the user's business at the top of the list
@@ -97,9 +97,9 @@ export const useBusinesses = () => {
         
         console.log('Businesses response:', response.data);
         
-        if (response.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
+        if (response.data && Array.isArray((response.data as any)?.data) && (response.data as any)?.data.length > 0) {
           // Add real businesses without the mock data
-          const realBusinesses = response.data.data;
+          const realBusinesses = (response.data as any)?.data;
           setBusinesses(realBusinesses);
         } else {
           // If no real businesses, keep the mock data to ensure UI works
@@ -107,7 +107,7 @@ export const useBusinesses = () => {
         }
       } catch (err: unknown) {
         console.error('Error fetching businesses:', err);
-        setError(err.response?.data?.message || 'Failed to fetch businesses');
+        setError((err as any)?.response?.data?.message || 'Failed to fetch businesses');
         // Keep mock data to ensure UI functionality
       } finally {
         setIsLoading(false);

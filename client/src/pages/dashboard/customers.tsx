@@ -81,7 +81,7 @@ export default function CustomersPage() {
     async function fetchBusinessId() {
       try {
         const business = await businessService.getBusinessProfile();
-        setBusinessId(business._id || business.id);
+        setBusinessId(business._id);
       } catch (err) {
         setBusinessId(null);
       }
@@ -769,17 +769,17 @@ export default function CustomersPage() {
                                   <div>
                                     <div className="font-medium">
                                       {method.type === 'card' 
-                                        ? `${method.details.brand} ending in ${method.details.last4}` 
+                                        ? `${(method.details as any).brand} ending in ${(method.details as any).last4}` 
                                         : method.type === 'bank_account'
-                                          ? `${method.details.bankName} (${method.details.accountType})`
+                                          ? `${(method.details as any).bankName} (${(method.details as any).accountType})`
                                           : 'Wallet'}
                                     </div>
                                     <div className="text-xs text-gray-500">
                                       {method.type === 'card' 
-                                        ? `Expires ${method.details.expMonth}/${method.details.expYear}` 
+                                        ? `Expires ${(method.details as any).expMonth}/${(method.details as any).expYear}` 
                                         : method.type === 'bank_account'
-                                          ? `Account ${method.details.accountNumber}`
-                                          : method.details.provider}
+                                          ? `Account ${(method.details as any).accountNumber}`
+                                          : (method.details as any).provider}
                                     </div>
                                   </div>
                                 </div>

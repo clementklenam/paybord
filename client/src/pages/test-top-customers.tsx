@@ -29,7 +29,7 @@ export default function TestTopCustomersPage() {
         setLoading(true);
         const response = await analyticsService.getDashboardOverview('last7days');
         console.log('Full response:', response);
-        console.log('Top customers:', response?.overview?.topCustomers);
+        console.log('Top customers:', (response as any)?.overview?.topCustomers);
         setData(response as DashboardOverviewResponse);
       } catch (err) {
         console.error('Error:', err);

@@ -9,11 +9,13 @@ import {useToast} from "@/components/ui/use-toast";
 import {StorefrontCard} from "@/components/storefront/StorefrontCard";
 import {StorefrontWizard} from "@/components/storefront/StorefrontWizard";
 import {StorefrontService, Storefront, StorefrontCreateData} from "@/services/storefront.service";
+import businessService from "@/services/business.service";
 import {Filter, Loader2, Plus, Search} from "lucide-react";
 
 export default function StorefrontPage() {
     const { toast } = useToast();
     const storefrontService = new StorefrontService();
+    const businessServiceInstance = new businessService();
     
     // State for storefronts
     const [storefronts, setStorefronts] = useState<Storefront[]>([]);
@@ -37,15 +39,37 @@ export default function StorefrontPage() {
     const [storefrontToDelete, setStorefrontToDelete] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     
+    // Business state
+    const [businesses, setBusinesses] = useState<{ _id: string; businessName: string }[]>([]);
+    const [businessesLoading, setBusinessesLoading] = useState(false);
+    
     // Fetch storefronts on mount and when page changes
     useEffect(() => {
         fetchStorefronts();
+        fetchBusinesses();
     }, [currentPage]);
     
     // Apply filters when search query or status filter changes
     useEffect(() => {
         applyFilters();
     }, [searchQuery, statusFilter, storefronts]);
+    
+    // Fetch businesses from API
+    const fetchBusinesses = async () => {
+        setBusinessesLoading(true);
+        try {
+            const businessProfile = await businessServiceInstance.getBusinessProfile();
+            setBusinesses([{
+                _id: businessProfile._id,
+                businessName: businessProfile.businessName || 'My Business'
+            }]);
+        } catch (error) {
+            console.error("Error fetching businesses:", error);
+            setBusinesses([]);
+        } finally {
+            setBusinessesLoading(false);
+        }
+    };
     
     // Fetch storefronts from API
     const fetchStorefronts = async () => {
@@ -198,6 +222,7 @@ export default function StorefrontPage() {
                         onSubmit={handleCreateStorefront}
                         onCancel={() => setShowCreationWizard(false)}
                         isSubmitting={isCreating}
+                        businesses={businesses}
                     />
                 ) : (
                     <>

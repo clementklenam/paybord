@@ -10,7 +10,7 @@ import {Plus, Download, Search, Filter, Package, MoreHorizontal, ChevronDown} fr
 export default function ProductsPage() {
   // State
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage] = useState(1);
+  const [] = useState(1);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   
   // Mock data

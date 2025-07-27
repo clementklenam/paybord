@@ -20,8 +20,8 @@ export default function KycPage() {
           address: '',
           idType: '',
           idNumber: '',
-          idDocument: null,
-          proofOfAddress: null,
+          idDocument: undefined,
+          proofOfAddress: undefined,
         });
         
         setLocation('/dashboard');

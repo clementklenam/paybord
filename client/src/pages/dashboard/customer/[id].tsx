@@ -462,7 +462,15 @@ export default function CustomerDetailPage() {
         {/* Payment Method Tab */}
         <TabsContent value="payment" className="space-y-6">
           <PaymentMethodForm
-            currentPaymentMethod={customer.paymentMethod}
+            currentPaymentMethod={customer.paymentMethod ? {
+              id: 'temp-id',
+              type: customer.paymentMethod.type as 'card' | 'bank_account' | 'mobile_money',
+              brand: customer.paymentMethod.brand,
+              last4: customer.paymentMethod.last4,
+              expiryMonth: customer.paymentMethod.expiryMonth,
+              expiryYear: customer.paymentMethod.expiryYear,
+              isDefault: true
+            } : undefined}
             onUpdatePaymentMethod={handleUpdatePaymentMethod}
             onRemovePaymentMethod={handleRemovePaymentMethod}
           />

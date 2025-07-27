@@ -21,7 +21,6 @@ import {
   Filter, 
   Calendar, 
   ChevronDown, 
-  ArrowUpDown,
   CreditCard,
   Smartphone,
   Building,
@@ -31,16 +30,9 @@ import {
   AlertCircle,
   CheckCircle,
   XCircle,
-  User,
-  Mail,
-  Phone,
   Clock,
   FileText,
-  ExternalLink,
-  Copy,
-  ArrowLeft,
-  ArrowRight
-} from "lucide-react";
+  } from "lucide-react";
 
 // Main Transactions Page Component
 export default function TransactionsPage() {
@@ -404,7 +396,7 @@ export default function TransactionsPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="font-medium">{formatDate(transaction.date)}</div>
+                      <div className="font-medium">{formatDate(transaction.date || "")}</div>
                     </TableCell>
                     <TableCell>
                       <div className="font-medium">{transaction.description}</div>
@@ -563,7 +555,7 @@ export default function TransactionsPage() {
                 min={0}
                 max={1000}
                 step={10}
-                onValueChange={setAmountRange}
+                onValueChange={(value) => setAmountRange([value[0], value[1]])}
                 className="mt-2"
               />
               <div className="flex justify-between text-xs mt-1">
@@ -613,7 +605,7 @@ export default function TransactionsPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Date</p>
-                      <p className="text-sm">{formatDate(selectedTransaction.date)}</p>
+                      <p className="text-sm">{formatDate(selectedTransaction.date || "")}</p>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Amount</p>
@@ -659,7 +651,7 @@ export default function TransactionsPage() {
                           <p className="text-sm">{selectedTransaction.provider}</p>
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-500">Phone</p>
+                          <p className="text-sm font-medium text-gray-500"></p>
                           <p className="text-sm">{selectedTransaction.phoneNumber}</p>
                         </div>
                       </>

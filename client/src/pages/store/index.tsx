@@ -16,7 +16,7 @@ interface Product {
 
 export default function StorePreview() {
   const { id } = useParams();
-  const [storeData, setStoreData] = useState({
+  const [storeData, ] = useState({
     name: id ? id.replace(/-/g, " ") : "Store",
     description: "Welcome to our store. Browse our products and services.",
     logo: null,
@@ -25,7 +25,7 @@ export default function StorePreview() {
     accentColor: "#2979FF",
   });
 
-  const [products, setProducts] = useState<Product[]>([
+  const [products, ] = useState<Product[]>([
     {
       id: "prod_1",
       name: "Basic Plan",

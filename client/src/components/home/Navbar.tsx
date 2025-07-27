@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {Container} from "@/components/ui/container";
 import {Button} from "@/components/ui/button";
 import {motion, AnimatePresence} from "framer-motion";
@@ -14,35 +14,7 @@ function Navbar() {
     { name: "Learn", href: "#" }
   ];
 
-  const solutions = [
-    {
-      name: "E-commerce",
-      description: "Complete online store solution",
-      href: "#",
-      icon: "🛒"
-    },
-    {
-      name: "Payment Links",
-      description: "Generate viral payment links",
-      href: "#",
-      icon: "🔗"
-    },
-    {
-      name: "Global Payments",
-      description: "Accept payments worldwide",
-      href: "#",
-      icon: "🌍"
-    },
-    {
-      name: "Analytics",
-      description: "Advanced business insights",
-      href: "#",
-      icon: "📊"
-    }
-  ];
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [solutionsOpen, setSolutionsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

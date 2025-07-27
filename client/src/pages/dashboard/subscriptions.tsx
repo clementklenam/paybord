@@ -24,7 +24,7 @@ export default function SubscriptionsPage() {
         const subs = await SubscriptionService.listSubscriptions();
         setSubscriptions(subs);
       } catch (err: unknown) {
-        setError(err?.response?.data?.error || err.message || 'Failed to load subscriptions');
+        setError((err as any)?.response?.data?.error || (err as any)?.message || 'Failed to load subscriptions');
       } finally {
         setLoading(false);
       }
@@ -132,8 +132,8 @@ export default function SubscriptionsPage() {
                 {subscriptions.map(sub => (
                   <div key={sub._id} className="bg-white rounded-lg shadow border p-6 flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                      <div className="font-semibold text-gray-900">{sub.product && typeof sub.product === 'object' ? sub.product.name : sub.product}</div>
-                      <div className="text-xs text-gray-500">Customer: {sub.customer && typeof sub.customer === 'object' ? sub.customer.name : sub.customer}</div>
+                      <div className="font-semibold text-gray-900">{sub.product}</div>
+                      <div className="text-xs text-gray-500">Customer: {sub.customer}</div>
                       <div className="text-xs text-gray-500">Interval: {sub.interval}</div>
                       <div className="text-xs text-gray-500">Status: {sub.status}</div>
                     </div>

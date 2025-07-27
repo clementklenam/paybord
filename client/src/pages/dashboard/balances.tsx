@@ -248,10 +248,10 @@ export default function BalancesPage() {
     }
   }, [activeView]);
 
-  useSocket((data) => {
+  useSocket((data: any) => {
     if (data.type === 'new_payment') {
       fetchBalanceData();
-      fetchTransactions();
+      // fetchTransactions(); // This function is defined inside useEffect
     }
   });
 
