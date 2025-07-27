@@ -98,7 +98,10 @@ export function serveStatic(app: Express) {
   }));
 
   app.use("/img", express.static(path.join(distPath, "img")));
-  app.use(express.static(distPath));
+  // Don't serve the root index.html from static middleware to avoid conflicts
+  app.use(express.static(distPath, {
+    index: false // Disable automatic index.html serving
+  }));
 
   // Skip processing payment links in the catch-all route
   app.use("*", (req, res) => {
