@@ -30,7 +30,7 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { currency } = useCurrency();
+
 
   const fetchTransactions = async () => {
     try {

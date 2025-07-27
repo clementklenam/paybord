@@ -67,7 +67,7 @@ function BenefitsSection() {
             </p>
           </motion.div>
           <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {benefits.map((benefit, index) => (
+            {benefits.map((benefit, _index) => (
               <motion.div
                 key={benefit.title}
                 className="group bg-white/5 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-white/10 hover:border-emerald-500/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"

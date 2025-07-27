@@ -8,7 +8,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Switch} from "@/components/ui/switch";
 import {Product, StorefrontCreateData} from "@/services/storefront.service";
 import {ArrowRight, Check, Eye, Globe, Loader2, Palette, ShoppingBag, Star} from "lucide-react";
-import {ProductService} from "@/services/product.service";
+
 import {useAuth} from "@/contexts/AuthContext";
 import {useToast} from '@/components/ui/use-toast';
 import {ThemeSelector} from './ThemeSelector';
@@ -618,9 +618,9 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
                                                 </div>
                                             ))}
                                             {/* Fill empty slots with placeholder products */}
-                                            {Array.from({ length: Math.max(0, selectedTheme.layout.columns - availableProducts.filter(p => p.isSelected).length) }).map((_, i) => (
+                                            {Array.from({ length: Math.max(0, selectedTheme.layout.columns - availableProducts.filter(p => p.isSelected).length) }).map((_, index) => (
                                                 <div 
-                                                    key={`placeholder-${i}`}
+                                                    key={`placeholder-${index}`}
                                                     className="rounded-lg overflow-hidden border"
                                                     style={{ 
                                                         backgroundColor: selectedTheme.colors.surface,
@@ -639,13 +639,13 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
                                                                 fontFamily: selectedTheme.typography.bodyFont 
                                                             }}
                                                         >
-                                                            Product {i + 1}
+                                                            Product {index + 1}
                                                         </div>
                                                         <div 
                                                             className="text-sm"
                                                             style={{ color: selectedTheme.colors.textSecondary }}
                                                         >
-                                                            ${(19.99 * (i + 1)).toFixed(2)}
+                                                            ${(19.99 * (index + 1)).toFixed(2)}
                                                         </div>
                                                     </div>
                                                 </div>

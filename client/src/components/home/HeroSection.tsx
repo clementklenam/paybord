@@ -1,7 +1,7 @@
 import {Container} from "@/components/ui/container";
 import {Button} from "@/components/ui/button";
 import {motion} from "framer-motion";
-import {ChevronDown, ArrowRight} from "lucide-react";
+
 import {Link as WouterLink} from "wouter";
 
 export function HeroSection() {

@@ -35,13 +35,10 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
   const [productQty, setProductQty] = useState(1);
   const [productsLoading, setProductsLoading] = useState(false);
   const [productsError, setProductsError] = useState<string | null>(null);
-  const [showAddProduct, setShowAddProduct] = useState(false);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
 
   const [businessId, setBusinessId] = useState<string | undefined>(undefined);
-  const [customersLoading, setCustomersLoading] = useState(false);
-  const [customersError, setCustomersError] = useState<string | null>(null);
 
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -80,25 +77,15 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
   useEffect(() => {
     if (!open) return;
     if (!businessId) return; // Only fetch if businessId is set
-    setCustomersLoading(true);
-    setCustomersError(null);
     new CustomerService().getCustomersByBusiness(businessId)
       .then(res => {
         const normalized = res.map((c: unknown) => ({ ...(c as any), id: (c as any).id || (c as any)._id }));
         setCustomers(normalized);
       })
       .catch((err: unknown) => {
-        let errorMsg = 'Failed to load customers';
-        if (err && typeof err === 'object') {
-          if ('response' in err && (err as any).response?.data?.error) {
-            errorMsg = (err as any).response.data.error;
-          } else if ('message' in err && typeof (err as any).message === 'string') {
-            errorMsg = (err as any).message;
-          }
-        }
-        setCustomersError(errorMsg);
-      })
-      .finally(() => setCustomersLoading(false));
+        console.error('Failed to load customers:', err);
+        setCustomers([]);
+      });
   }, [open, businessId]);
 
   const filteredProducts = products.filter(p =>
@@ -293,9 +280,11 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
                   <div className="mb-6">
                     <label className="block text-xs font-medium text-gray-500 mb-1 flex items-center gap-2">
                       Product
+                      {/* TODO: Implement add product functionality
                       <Button type="button" size="icon" variant="outline" className="ml-2 h-7 w-7 p-0" onClick={() => setShowAddProduct(true)}>
                         <Plus className="h-4 w-4" />
                       </Button>
+                      */}
                     </label>
                     <div className="relative">
                       <Input
@@ -488,6 +477,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
           </div>
         </div>
       )}
+      {/* TODO: Implement product creation form
       <DialogContent className="max-w-lg w-full">
         <ProductCreateForm
           businessId={businessId ?? ''}
@@ -499,6 +489,7 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
           onCancel={() => setShowAddProduct(false)}
         />
       </DialogContent>
+      */}
     </Dialog>
   );
 } 

@@ -7,12 +7,11 @@ import {Copy, Edit, Eye, Image as ImageIcon, Trash2} from "lucide-react";
 
 interface StorefrontCardProps {
     storefront: Storefront;
-    onView: (id: string) => void;
     onEdit: (id: string) => void;
     onDelete: (id: string) => void;
 }
 
-export function StorefrontCard({ storefront, onView, onEdit, onDelete }: StorefrontCardProps) {
+export function StorefrontCard({ storefront, onEdit, onDelete }: StorefrontCardProps) {
     const { toast } = useToast();
     
 

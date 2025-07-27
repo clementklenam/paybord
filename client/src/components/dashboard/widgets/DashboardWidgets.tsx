@@ -10,18 +10,7 @@ import {
   Users
 } from "lucide-react";
 
-interface WidgetProps {
-  data: unknown;
-  className?: string;
-}
 
-interface PaymentOverviewWidgetProps {
-  data: {
-    total: number;
-    trend: Array<{ name: string; value: number }>;
-    growth?: number;
-  };
-}
 interface NetVolumeWidgetProps {
   data: {
     amount: number;

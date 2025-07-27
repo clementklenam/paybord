@@ -38,8 +38,6 @@ export default function ProductsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -309,170 +307,15 @@ export default function ProductsPage() {
     setIsPreviewMode(!isPreviewMode);
   };
 
-  // Edit product function - unused
-  const editProduct = async () => {
-    // TODO: Implement edit functionality
-    try {
-      if (!selectedProduct) return;
-      
-      setIsSubmitting(true);
-      console.log('Editing product:', selectedProduct._id);
-      
-      // Validate required fields
-      if (!selectedProduct.name || !selectedProduct.price) {
-        toast({
-          title: "Error",
-          description: "Please fill in all required fields.",
-          variant: "destructive"
-        });
-        setIsSubmitting(false);
-        return;
-      }
-      
-      // Get token from localStorage
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast({
-          title: "Authentication Error",
-          description: "Please log in again.",
-          variant: "destructive"
-        });
-        setIsSubmitting(false);
-        return;
-      }
-      
-      // Format price if it's a string
-      const formattedPrice = typeof selectedProduct.price === 'string' 
-        ? parseFloat(selectedProduct.price) 
-        : selectedProduct.price;
-      
-      // Prepare the product data for API
-      const productData = {
-        name: selectedProduct.name,
-        description: selectedProduct.description || '',
-        price: formattedPrice,
-        image: selectedProduct.image || 'https://via.placeholder.com/800x600?text=Product+Image',
-        category: selectedProduct.category || 'Other',
-        currency: selectedProduct.currency || 'USD',
-        customId: selectedProduct.customId || `product_${Date.now()}`
-      };
-      
-      // Make API call to update product
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const productId = selectedProduct._id || selectedProduct.id || selectedProduct.customId;
-      
-      const response = await fetch(`${API_URL}/products/${productId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(productData)
-      });
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`API error: ${response.status} - ${errorText}`);
-      }
-      
-      const data = await response.json();
-      
-      console.log('Product updated successfully:', data);
-      toast({
-        title: "Success",
-        description: `Product "${productData.name}" updated successfully!`
-      });
-      
-      // Refresh products list
-      fetchProducts(businessId);
-      
-      // Close modal
-      setIsEditModalOpen(false);
-      setSelectedProduct(null);
-    } catch (error: unknown) {
-      console.error('Error updating product:', error);
-      let message = 'Failed to update product';
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'object' && error && 'message' in error && typeof (error as any).message === 'string') {
-        message = (error as any).message;
-      }
-      toast({
-        title: "Error",
-        description: message,
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  // Edit product function - TODO: Implement when needed
+  // const editProduct = async () => {
+  //   // TODO: Implement edit functionality
+  // };
   
-  // Delete product function - unused
-  const deleteProduct = async () => {
-    // TODO: Implement delete functionality
-    try {
-      if (!selectedProduct) return;
-      
-      setIsSubmitting(true);
-      console.log('Deleting product:', selectedProduct._id);
-      
-      // Get token from localStorage
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast({
-          title: "Authentication Error",
-          description: "Please log in again.",
-          variant: "destructive"
-        });
-        setIsSubmitting(false);
-        return;
-      }
-      
-      // Make API call to delete product
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const productId = selectedProduct._id || selectedProduct.id || selectedProduct.customId;
-      
-      const response = await fetch(`${API_URL}/products/${productId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`API error: ${response.status} - ${errorText}`);
-      }
-      
-      console.log('Product deleted successfully');
-      toast({
-        title: "Success",
-        description: `Product "${selectedProduct.name}" deleted successfully!`
-      });
-      
-      // Refresh products list
-      fetchProducts(businessId);
-      
-      // Close modal
-      setIsDeleteModalOpen(false);
-      setSelectedProduct(null);
-    } catch (error: unknown) {
-      console.error('Error deleting product:', error);
-      let message = 'Failed to delete product';
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'object' && error && 'message' in error && typeof (error as any).message === 'string') {
-        message = (error as any).message;
-      }
-      toast({
-        title: "Error",
-        description: message,
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  // Delete product function - TODO: Implement when needed
+  // const deleteProduct = async () => {
+  //   // TODO: Implement delete functionality
+  // };
   
   // Create product function
   const createProduct = async () => {
@@ -821,6 +664,7 @@ export default function ProductsPage() {
                     </TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-2 justify-end">
+                        {/* TODO: Implement edit functionality
                         <Button 
                           variant="ghost" 
                           size="sm" 
@@ -833,6 +677,8 @@ export default function ProductsPage() {
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
+                        */}
+                        {/* TODO: Implement delete functionality
                         <Button 
                           variant="ghost" 
                           size="sm" 
@@ -845,6 +691,7 @@ export default function ProductsPage() {
                         >
                           <Trash className="h-4 w-4" />
                         </Button>
+                        */}
                       </div>
                     </TableCell>
                   </TableRow>
