@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 5002;
 const VITE_PORT = process.env.VITE_PORT || 5173;
 
 // Redirect all /pl_* routes to /payment/*
-app.get('/pl_:id', (req, res) => {
+app.get('/pl/:id', (req, res) => {
   const id = req.params.id;
   console.log(`Redirecting payment link pl_${id} to /payment/${id}`);
   res.redirect(`/payment/${id}`);
