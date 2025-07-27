@@ -1,26 +1,32 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 5002;
 
-// Add some debugging
+// Add debugging
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
 
-// Serve static files from dist with explicit MIME types
-app.use('/assets', express.static(path.join(__dirname, 'dist', 'assets'), {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.js')) {
+// Explicitly handle assets directory
+app.get('/assets/*', (req, res) => {
+  const filePath = path.join(__dirname, 'dist', req.url);
+  console.log('Serving asset:', filePath);
+  
+  if (fs.existsSync(filePath)) {
+    const ext = path.extname(filePath);
+    if (ext === '.js') {
       res.setHeader('Content-Type', 'application/javascript');
-    } else if (path.endsWith('.css')) {
+    } else if (ext === '.css') {
       res.setHeader('Content-Type', 'text/css');
     }
+    res.sendFile(filePath);
+  } else {
+    res.status(404).send('Asset not found');
   }
-}));
-
-app.use('/img', express.static(path.join(__dirname, 'dist', 'img')));
+});
 
 // Serve other static files
 app.use(express.static(path.join(__dirname, 'dist')));
