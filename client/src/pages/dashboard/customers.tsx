@@ -10,10 +10,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { CustomerForm } from "@/components/customers/CustomerForm";
-import CustomerService, { Customer, CustomerListResponse, CustomerFilters, CustomerCreationData } from "@/services/customer.service";
+import CustomerService, { Customer, CustomerFilters, CustomerCreationData } from "@/services/customer.service";
 import BusinessService from '@/services/business.service';
 import { 
   Search, 
@@ -127,11 +126,7 @@ export default function CustomersPage() {
     fetchCustomers();
   };
   
-  // Handle filter application for multiple filters at once
-  const applyAllFilters = () => {
-    setCurrentPage(1); // Reset to first page when filtering
-    fetchCustomers();
-  };
+
   
   // Handle reset filters
   const handleResetFilters = () => {

@@ -1372,7 +1372,7 @@ export default function ReportsPage() {
                               fill="#8884d8"
                               dataKey="count"
                               nameKey="name"
-                              label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                              label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
                             >
                               {customerAnalytics.customerSegments.map((segment) => (
                                 <Cell 
@@ -1384,7 +1384,7 @@ export default function ReportsPage() {
                               ))}
                             </Pie>
                             <Tooltip 
-                              formatter={(value, name) => [value, 'Customers']}
+                              formatter={(value) => [value, 'Customers']}
                               contentStyle={{ 
                                 backgroundColor: '#fff', 
                                 borderRadius: '12px', 

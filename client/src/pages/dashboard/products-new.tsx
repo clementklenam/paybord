@@ -28,8 +28,7 @@ import {
 } from "@/components/ui/select";
 
 export default function ProductsPage() {
-  // Service instance
-  const productService = new ProductService();
+
   const { user } = useAuth();
   const { toast } = useToast();
   
@@ -39,8 +38,7 @@ export default function ProductsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [businessId, setBusinessId] = useState<string>("");
@@ -309,8 +307,9 @@ export default function ProductsPage() {
     setIsPreviewMode(!isPreviewMode);
   };
 
-  // Edit product function
+  // Edit product function - unused
   const editProduct = async () => {
+    // TODO: Implement edit functionality
     try {
       if (!selectedProduct) return;
       
@@ -406,8 +405,9 @@ export default function ProductsPage() {
     }
   };
   
-  // Delete product function
+  // Delete product function - unused
   const deleteProduct = async () => {
+    // TODO: Implement delete functionality
     try {
       if (!selectedProduct) return;
       
