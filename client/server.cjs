@@ -8,7 +8,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // For any route that doesn't match a static file, serve index.html
 // This allows client-side routing to work
-app.get('/pl_:id', (req, res) => {
+app.get('/pl/:id', (req, res) => {
   console.log(`Received request for payment link: ${req.path}`);
   res.sendFile(path.join(__dirname, 'index.html'));
 });
