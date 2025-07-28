@@ -36,6 +36,11 @@ router.get('/', auth, storefrontController.getStorefronts);
 // @access  Public
 router.get('/slug/:slug', storefrontController.getStorefrontBySlug);
 
+// @route   GET /api/storefronts/public/:id
+// @desc    Get a storefront by ID (public access)
+// @access  Public
+router.get('/public/:id', storefrontController.getPublicStorefrontById);
+
 // @route   GET /api/storefronts/:id
 // @desc    Get a storefront by ID
 // @access  Private/Public (depending on storefront status)

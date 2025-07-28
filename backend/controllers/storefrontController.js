@@ -281,9 +281,88 @@ exports.getStorefronts = async (req, res) => {
 };
 
 /**
+ * @desc    Get a storefront by ID (public access)
+ * @route   GET /api/storefronts/public/:id
+ * @access  Public
+ */
+exports.getPublicStorefrontById = async (req, res) => {
+    try {
+        console.log('Fetching public storefront with ID:', req.params.id);
+
+        const id = req.params.id;
+        if (!id) {
+            return res.status(400).json({
+                success: false,
+                message: 'Storefront ID is required'
+            });
+        }
+
+        // Verify MongoDB connection
+        if (mongoose.connection.readyState !== 1) {
+            throw new Error('Database connection is not established');
+        }
+
+        let storefront;
+        const isValidObjectId = mongoose.Types.ObjectId.isValid(id);
+
+        if (isValidObjectId) {
+            storefront = await Storefront.findOne({
+                _id: id,
+                status: 'active'  // Only active storefronts are publicly accessible
+            })
+                .populate('business', 'businessName currency')
+                .populate({
+                    path: 'products',
+                    select: 'name description price image currency isActive',
+                    match: { isActive: true }  // Only show active products
+                })
+                .lean();
+        } else {
+            storefront = await Storefront.findOne({
+                customId: id,
+                status: 'active'
+            })
+                .populate('business', 'businessName currency')
+                .populate({
+                    path: 'products',
+                    select: 'name description price image currency isActive',
+                    match: { isActive: true }  // Only show active products
+                })
+                .lean();
+        }
+
+        if (!storefront) {
+            console.error('Public storefront not found for ID:', id);
+            return res.status(404).json({
+                success: false,
+                message: 'Storefront not found or not active'
+            });
+        }
+
+        // Increment visit count
+        await Storefront.findByIdAndUpdate(storefront._id, { $inc: { visits: 1 } });
+
+        // Return the storefront data
+        const obj = { ...storefront, id: storefront._id };
+        delete obj._id;
+        res.json({
+            success: true,
+            data: obj
+        });
+    } catch (error) {
+        console.error('Error fetching public storefront by ID:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error',
+            error: error.message
+        });
+    }
+};
+
+/**
  * @desc    Get a storefront by ID
  * @route   GET /api/storefronts/:id
- * @access  Private/Public (depending on storefront status)
+ * @access  Private
  */
 exports.getStorefrontById = async (req, res) => {
     try {
