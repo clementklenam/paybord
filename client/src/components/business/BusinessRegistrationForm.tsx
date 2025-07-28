@@ -28,7 +28,7 @@ import {
     CURRENCY_OPTIONS
 } from "@/types/business";
 import BusinessService from "@/services/business.service";
-import {Check, ChevronRight, Building2, CreditCard, Shield, Upload, Landmark} from "lucide-react";
+import {Check, ChevronRight, Building2, CreditCard, Upload, Landmark} from "lucide-react";
 
 const initialFormData: BusinessRegistrationData = {
     businessName: "",
@@ -801,71 +801,6 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                                 value={formData.mobileMoneyInfo?.accountName || ''}
                                 onChange={handleInputChange}
                             />
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
-    };
-
-    const renderComplianceStep = () => {
-        return (
-            <>
-                <div className="mb-6">
-                    <h3 className="text-lg font-medium mb-2">PCI DSS Compliance</h3>
-                    <div className="grid grid-cols-1 gap-4 mb-4">
-                        <div className="flex items-center space-x-2">
-                            <Checkbox
-                                id="complianceInfo.pciDssCompliant"
-                                checked={formData.complianceInfo?.pciDssCompliant || false}
-                                onCheckedChange={(checked) =>
-                                    handleCheckboxChange(checked as boolean, 'complianceInfo.pciDssCompliant')
-                                }
-                            />
-                            <Label htmlFor="complianceInfo.pciDssCompliant">
-                                My business is PCI DSS compliant
-                            </Label>
-                        </div>
-                    </div>
-
-                    {formData.complianceInfo?.pciDssCompliant && (
-                        <div className="grid grid-cols-1 gap-4 mb-4">
-                            <div>
-                                <Label htmlFor="complianceInfo.pciDssLevel">PCI DSS Level</Label>
-                                <Select
-                                    value={formData.complianceInfo?.pciDssLevel || 'level_4'}
-                                    onValueChange={(value) => handleSelectChange(value, 'complianceInfo.pciDssLevel')}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select PCI DSS level" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="level_1">Level 1</SelectItem>
-                                        <SelectItem value="level_2">Level 2</SelectItem>
-                                        <SelectItem value="level_3">Level 3</SelectItem>
-                                        <SelectItem value="level_4">Level 4</SelectItem>
-                                        <SelectItem value="not_applicable">Not Applicable</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                <div className="mb-6">
-                    <h3 className="text-lg font-medium mb-2">Data Protection Policy</h3>
-                    <div className="grid grid-cols-1 gap-4 mb-4">
-                        <div className="flex items-center space-x-2">
-                            <Checkbox
-                                id="complianceInfo.dataProtectionPolicy.exists"
-                                checked={formData.complianceInfo?.dataProtectionPolicy?.exists || false}
-                                onCheckedChange={(checked) =>
-                                    handleCheckboxChange(checked as boolean, 'complianceInfo.dataProtectionPolicy.exists')
-                                }
-                            />
-                            <Label htmlFor="complianceInfo.dataProtectionPolicy.exists">
-                                My business has a data protection policy
-                            </Label>
                         </div>
                     </div>
                 </div>
