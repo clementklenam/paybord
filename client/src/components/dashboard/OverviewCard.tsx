@@ -21,9 +21,17 @@ export function OverviewCard({ title, value, previousValue, data, lastUpdated }:
   const isPositive = percentChange >= 0;
 
   // Ensure we have valid data for the chart
-  const chartData = data && data.length > 0 ? data : [
+  let chartData = data && data.length > 0 ? data : [
     { name: 'No Data', value: 0 }
   ];
+  // Pad the data if only one point exists
+  if (chartData.length === 1) {
+    chartData = [
+      { name: 'Start', value: 0 },
+      ...chartData
+    ];
+  }
+  console.log('[DEBUG] OverviewCard chartData:', chartData, 'title:', title);
 
   // Set chart color based on trend
   const chartColor = isPositive ? '#10B981' : '#EF4444';

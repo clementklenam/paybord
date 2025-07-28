@@ -562,6 +562,49 @@ export class StorefrontService {
     }
 
     /**
+     * Get a storefront by ID using public endpoint (no authentication required)
+     */
+    async getPublicStorefrontById(id: string): Promise<Storefront> {
+        // Check cache first
+        const cached = StorefrontService.getCachedStorefront(id);
+        if (cached) {
+            console.log('Returning cached storefront:', id);
+            return cached;
+        }
+
+        // Use retry utility for rate limiting
+        const storefront = await retryWithBackoff(async () => {
+            const response = await axios.get<ApiResponse<Storefront>>(`${API_URL}/storefronts/public/${id}`, {
+                validateStatus: (status) => status < 500, // Don't throw on 4xx errors
+                timeout: 10000 // 10 second timeout
+            });
+            
+            if (response.status === 404) {
+                throw new Error('Storefront not found or not active');
+            }
+            
+            if (response.status >= 400) {
+                throw new Error(response.data?.message || 'Failed to fetch storefront');
+            }
+            
+            const storefront = response.data.data;
+            if (storefront && typeof storefront === 'object') {
+                if (!storefront.id && storefront._id) {
+                    storefront.id = storefront._id;
+                } else if (!storefront.id) {
+                    storefront.id = id;
+                }
+                return storefront;
+            }
+            throw new Error('Invalid storefront data received from server');
+        }, 3, 1000); // 3 retries, 1 second base delay
+
+        // Cache the result
+        StorefrontService.setCachedStorefront(id, storefront);
+        return storefront;
+    }
+
+    /**
      * Create a new storefront
      */
     async createStorefront(data: StorefrontCreateData): Promise<Storefront> {

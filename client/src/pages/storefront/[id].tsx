@@ -860,7 +860,7 @@ export default function StorefrontPreview() {
 
       const promise = (async () => {
         try {
-          const data = await storefrontService.getStorefrontById(id);
+          const data = await storefrontService.getPublicStorefrontById(id);
           if ((data as any).business && !data.businessId) {
             data.businessId = (data as any).business;
           }
@@ -980,12 +980,19 @@ export default function StorefrontPreview() {
   };
 
   const handleRemoveItem = (productId: string) => {
-    setCart(prevCart => 
-      prevCart.filter(item => {
-        const itemId = item?.product?.id || item?.product?._id;
-        return !(itemId && String(itemId) === String(productId));
-      })
-    );
+    setCart(prev => prev.filter(item => (item.product.id || item.product._id) !== productId));
+  };
+
+  const handleCheckout = () => {
+    if (!isCustomerInfoValid) {
+      toast({ 
+        title: 'Missing Information', 
+        description: 'Please fill in all required customer information.', 
+        variant: 'destructive' 
+      });
+      return;
+    }
+    setShowPaystackModal(true);
   };
 
   // Determine the cart currency (assume all products in cart have the same currency, fallback to NGN)
@@ -1052,33 +1059,33 @@ export default function StorefrontPreview() {
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <Button variant="ghost" onClick={() => window.history.back()}>
+          <div className="flex items-center flex-1 min-w-0">
+            <Button variant="ghost" onClick={() => window.history.back()} className="flex-shrink-0">
               <ArrowLeft className="h-5 w-5" />
             </Button>
             
-            <div className="flex items-center ml-2">
+            <div className="flex items-center ml-2 min-w-0 flex-1">
               {storefront.logo ? (
                 <img 
                   src={storefront.logo}
                   alt={`${storefront.name} logo`} 
-                  className="h-8 w-8 rounded-full mr-2 object-cover"
+                  className="h-8 w-8 rounded-full mr-2 object-cover flex-shrink-0"
                 />
               ) : (
                 <div 
-                  className="h-8 w-8 rounded-full mr-2 flex items-center justify-center"
+                  className="h-8 w-8 rounded-full mr-2 flex items-center justify-center flex-shrink-0"
                   style={{ backgroundColor: storefront.primaryColor || '#1e8449' }}
                 >
-                  <span className="text-white font-bold">
+                  <span className="text-white font-bold text-sm">
                     {storefront.name.charAt(0)}
                   </span>
                 </div>
               )}
-              <h1 className="text-xl font-bold">{storefront.name}</h1>
+              <h1 className="text-lg sm:text-xl font-bold truncate">{storefront.name}</h1>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <Button
               variant="outline"
               size="icon"
@@ -1096,23 +1103,23 @@ export default function StorefrontPreview() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <main className="max-w-7xl mx-auto px-4 py-4 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main content */}
-          <div className="md:col-span-2">
+          <div className="lg:col-span-2">
             {/* Banner */}
             {storefront.banner && (
-              <div className="h-64 rounded-lg overflow-hidden mb-6 relative">
+              <div className="h-48 sm:h-64 rounded-lg overflow-hidden mb-6 relative">
                 <img
                   src={storefront.banner}
                   alt={storefront.name}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                  <div className="p-6 text-white">
-                    <h2 className="text-2xl font-bold">{storefront.name}</h2>
+                  <div className="p-4 sm:p-6 text-white">
+                    <h2 className="text-xl sm:text-2xl font-bold">{storefront.name}</h2>
                     {storefront.description && (
-                      <p className="text-white/90">{storefront.description}</p>
+                      <p className="text-white/90 text-sm sm:text-base">{storefront.description}</p>
                     )}
                     {storefront.socialLinks && Object.keys(storefront.socialLinks).length > 0 && (
                       <div className="flex gap-4 mt-4">
@@ -1172,11 +1179,11 @@ export default function StorefrontPreview() {
                 <p className="text-gray-500">No products found.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {filteredProducts.map((product: ExtendedProduct, index) => (
                   <div 
                     key={`product-${product?.id || index}`}
-                    className="border rounded-lg overflow-hidden"
+                    className="border rounded-lg overflow-hidden bg-white"
                   >
                     {/* Product image */}
                     {product.image && (
@@ -1189,7 +1196,7 @@ export default function StorefrontPreview() {
                     
                     {/* Product details */}
                     <div className="p-4">
-                      <h3 className="font-semibold text-lg">{product.name}</h3>
+                      <h3 className="font-semibold text-lg truncate">{product.name}</h3>
                       
                       {/* Price with currency */}
                       <p className="text-gray-700 mt-2">
@@ -1211,14 +1218,21 @@ export default function StorefrontPreview() {
           </div>
 
           {/* Sidebar / Cart */}
-          <div className={`fixed md:static top-0 right-0 h-full md:h-auto w-full md:w-auto max-w-md bg-white shadow-xl md:shadow-none z-40 transform transition-transform duration-300 ${showCart ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}`}>
-            <div className="p-6">
+          <div className={`fixed lg:static top-0 right-0 h-full lg:h-auto w-full lg:w-auto max-w-md bg-white shadow-xl lg:shadow-none z-50 transform transition-transform duration-300 ${showCart ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
+            {/* Mobile overlay */}
+            {showCart && (
+              <div 
+                className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                onClick={() => setShowCart(false)}
+              />
+            )}
+            <div className="p-4 sm:p-6 h-full lg:h-auto flex flex-col relative z-50">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold">Your Cart</h2>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="md:hidden"
+                  className="lg:hidden"
                   onClick={() => setShowCart(false)}
                 >
                   <ArrowLeft className="h-5 w-5" />
@@ -1226,13 +1240,13 @@ export default function StorefrontPreview() {
               </div>
 
               {cart.length === 0 ? (
-                <div className="text-center py-8">
+                <div className="text-center py-8 flex-1 flex flex-col items-center justify-center">
                   <ShoppingBag className="h-12 w-12 mx-auto text-gray-300 mb-4" />
                   <p className="text-gray-500">Your cart is empty</p>
                 </div>
               ) : (
                 <>
-                  <div className="max-h-[60vh] overflow-auto">
+                  <div className="flex-1 overflow-auto">
                     {cart.map((item, index) => (
                       <CartItem
                         key={`cart-item-${item?.product?.id || index}-${index}`}
@@ -1243,45 +1257,54 @@ export default function StorefrontPreview() {
                     ))}
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4 mt-4">
+                  <div className="border-t border-gray-200 pt-4 mt-4 flex-shrink-0">
                     <div className="flex justify-between mb-4">
                       <span className="font-medium">Total</span>
                       <span className="font-bold">{cart.reduce((total, item) => {
                         return total + ((item.product.price ?? 0) * item.quantity);
                       }, 0).toFixed(2)}</span>
                     </div>
-
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                      <Input
-                        type="text"
-                        placeholder="Enter your full name"
-                        value={customerInfo.fullName}
-                        onChange={(e) => setCustomerInfo({ ...customerInfo, fullName: e.target.value })}
-                        className="mb-2"
-                        required
-                      />
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
-                      <Input
-                        type="email"
-                        placeholder="Enter your email address"
-                        value={customerInfo.email}
-                        onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                        className="mb-2"
-                        required
-                      />
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                      <Input
-                        type="tel"
-                        placeholder="Enter your phone number"
-                        value={customerInfo.phone}
-                        onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
-                        className="mb-2"
-                        required
-                      />
+                    
+                    {/* Customer Information Form */}
+                    <div className="mb-4 space-y-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                        <Input
+                          type="text"
+                          placeholder="Enter your full name"
+                          value={customerInfo.fullName}
+                          onChange={(e) => setCustomerInfo({ ...customerInfo, fullName: e.target.value })}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                        <Input
+                          type="email"
+                          placeholder="Enter your email address"
+                          value={customerInfo.email}
+                          onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                        <Input
+                          type="tel"
+                          placeholder="Enter your phone number"
+                          value={customerInfo.phone}
+                          onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                          required
+                        />
+                      </div>
                     </div>
-                    <Button className="w-full" onClick={() => setShowPaystackModal(true)} disabled={!isCustomerInfoValid}>
-                      <CreditCard className="mr-2 h-5 w-5" />
+                    
+                    <Button 
+                      onClick={handleCheckout}
+                      className="w-full"
+                      disabled={!isCustomerInfoValid}
+                    >
+                      <CreditCard className="mr-2 h-4 w-4" />
                       Checkout
                     </Button>
                   </div>
