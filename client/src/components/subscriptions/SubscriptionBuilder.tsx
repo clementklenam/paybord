@@ -1,31 +1,30 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Calendar } from "@/components/ui/calendar";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { 
-  User, 
-  Package, 
-  CreditCard, 
-  Settings, 
   CheckCircle, 
-  ArrowRight, 
-  ArrowLeft, 
   Plus, 
   X,
   Sparkles,
-  DollarSign,
-  Clock,
-  Users,
-  Zap
+  Calendar as CalendarIcon,
+  FileText,
+  Phone,
+  Mail,
+  Info,
+  ChevronDown,
+  ChevronRight,
+  User,
+  CreditCard,
+  Settings,
+  Package
 } from "lucide-react";
 import { Product, ProductService } from "@/services/product.service";
 import CustomerService, { Customer } from "@/services/customer.service";
@@ -33,6 +32,7 @@ import SubscriptionService, { Subscription } from "@/services/subscription.servi
 import BusinessService from "@/services/business.service";
 import { useToast } from "@/components/ui/use-toast";
 import { AddCustomerModal } from "./AddCustomerModal";
+import { cn } from "@/lib/utils";
 
 interface SubscriptionBuilderProps {
   open: boolean;
@@ -45,6 +45,7 @@ interface SubscriptionFormData {
   customerId: string;
   customerName: string;
   customerEmail: string;
+  customerPhone: string;
   
   // Product & Pricing
   productId: string;
@@ -59,6 +60,11 @@ interface SubscriptionFormData {
   endDate?: Date;
   forever: boolean;
   
+  // Payment Settings
+  paymentMethod: 'auto' | 'manual';
+  billingMode: 'classic' | 'flexible';
+  invoiceTemplate: string;
+  
   // Trial & Settings
   trialDays: number;
   autoCharge: boolean;
@@ -68,22 +74,9 @@ interface SubscriptionFormData {
   metadata: Record<string, string>;
   description: string;
   invoiceMemo: string;
+  invoiceFooter: string;
+  customFields: boolean;
 }
-
-const STEPS = [
-  { id: 'customer', title: 'Customer', icon: User, description: 'Select or create customer' },
-  { id: 'product', title: 'Product', icon: Package, description: 'Choose subscription product' },
-  { id: 'billing', title: 'Billing', icon: CreditCard, description: 'Set billing details' },
-  { id: 'settings', title: 'Settings', icon: Settings, description: 'Configure options' },
-  { id: 'review', title: 'Review', icon: CheckCircle, description: 'Review and create' }
-];
-
-const BILLING_INTERVALS = [
-  { value: 'day', label: 'Daily', description: 'Charge every day' },
-  { value: 'week', label: 'Weekly', description: 'Charge every week' },
-  { value: 'month', label: 'Monthly', description: 'Charge every month' },
-  { value: 'year', label: 'Yearly', description: 'Charge every year' }
-];
 
 const CURRENCIES = [
   { value: 'USD', label: 'USD ($)', symbol: '$' },
@@ -94,12 +87,26 @@ const CURRENCIES = [
   { value: 'GHS', label: 'GHS (₵)', symbol: '₵' }
 ];
 
+const INVOICE_TEMPLATES = [
+  { value: 'default', label: 'Default Template' },
+  { value: 'minimal', label: 'Minimal Template' },
+  { value: 'detailed', label: 'Detailed Template' }
+];
+
+const SECTIONS = [
+  { id: 'customer', title: 'Customer', icon: User, required: true },
+  { id: 'duration', title: 'Duration', icon: CalendarIcon, required: true },
+  { id: 'pricing', title: 'Pricing', icon: Package, required: true },
+  { id: 'billing', title: 'Billing', icon: CreditCard, required: true },
+  { id: 'settings', title: 'Subscription Settings', icon: Settings, required: false }
+];
+
 export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: SubscriptionBuilderProps) {
-  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<SubscriptionFormData>({
     customerId: '',
     customerName: '',
     customerEmail: '',
+    customerPhone: '',
     productId: '',
     productName: '',
     price: 0,
@@ -109,12 +116,17 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
     startDate: new Date(),
     endDate: undefined,
     forever: true,
+    paymentMethod: 'auto',
+    billingMode: 'classic',
+    invoiceTemplate: 'default',
     trialDays: 0,
     autoCharge: true,
     collectTax: false,
     metadata: {},
     description: '',
-    invoiceMemo: ''
+    invoiceMemo: '',
+    invoiceFooter: '',
+    customFields: false
   });
 
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -122,6 +134,10 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
   const [submitting, setSubmitting] = useState(false);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
   const [businessId, setBusinessId] = useState<string | null>(null);
+  const [businessName, setBusinessName] = useState<string>('');
+  const [previewTab, setPreviewTab] = useState<'summary' | 'invoice' | 'code'>('invoice');
+  const [showDurationPicker, setShowDurationPicker] = useState(false);
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set(['customer', 'duration', 'pricing']));
   
   const { toast } = useToast();
 
@@ -139,6 +155,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
       const businessService = new BusinessService();
       const business = await businessService.getBusinessProfile();
       setBusinessId(business._id);
+      setBusinessName(business.businessName || 'Your Business');
     } catch (error) {
       console.error('Failed to load business ID:', error);
       toast({
@@ -169,18 +186,6 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
     }
   };
 
-  const handleNext = () => {
-    if (currentStep < STEPS.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
   const handleCustomerSelect = (customerId: string) => {
     const customer = customers.find(c => c._id === customerId);
     if (customer) {
@@ -188,7 +193,8 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
         ...prev,
         customerId: customer._id || '',
         customerName: customer.name,
-        customerEmail: customer.email
+        customerEmail: customer.email,
+        customerPhone: customer.phone || ''
       }));
     }
   };
@@ -232,7 +238,9 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
           invoiceMemo: formData.invoiceMemo,
           trialDays: formData.trialDays,
           autoCharge: formData.autoCharge,
-          collectTax: formData.collectTax
+          collectTax: formData.collectTax,
+          paymentMethod: formData.paymentMethod,
+          billingMode: formData.billingMode
         }
       };
 
@@ -251,6 +259,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
         customerId: '',
         customerName: '',
         customerEmail: '',
+        customerPhone: '',
         productId: '',
         productName: '',
         price: 0,
@@ -260,14 +269,18 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
         startDate: new Date(),
         endDate: undefined,
         forever: true,
+        paymentMethod: 'auto',
+        billingMode: 'classic',
+        invoiceTemplate: 'default',
         trialDays: 0,
         autoCharge: true,
         collectTax: false,
         metadata: {},
         description: '',
-        invoiceMemo: ''
+        invoiceMemo: '',
+        invoiceFooter: '',
+        customFields: false
       });
-      setCurrentStep(0);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -279,17 +292,6 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
     }
   };
 
-  const getStepValidation = () => {
-    switch (currentStep) {
-      case 0: return formData.customerId;
-      case 1: return formData.productId;
-      case 2: return formData.price > 0 && formData.interval;
-      case 3: return true; // Settings are optional
-      case 4: return formData.customerId && formData.productId;
-      default: return false;
-    }
-  };
-
   const calculateTotal = () => {
     return formData.price * formData.quantity;
   };
@@ -298,650 +300,718 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
     return CURRENCIES.find(c => c.value === formData.currency)?.symbol || '$';
   };
 
+  const generateInvoiceNumber = () => {
+    return `INV-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+  };
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  };
+
+  const getEndDate = () => {
+    if (formData.forever) return 'Forever';
+    if (formData.endDate) return formatDate(formData.endDate);
+    return 'Ongoing';
+  };
+
+  const getDurationText = () => {
+    const start = formatDate(formData.startDate);
+    const end = getEndDate();
+    return `${start} → ${end}`;
+  };
+
+  const toggleSection = (sectionId: string) => {
+    const newOpenSections = new Set(openSections);
+    if (newOpenSections.has(sectionId)) {
+      newOpenSections.delete(sectionId);
+    } else {
+      newOpenSections.add(sectionId);
+    }
+    setOpenSections(newOpenSections);
+  };
+
+  const isSectionComplete = (sectionId: string) => {
+    switch (sectionId) {
+      case 'customer': return !!formData.customerId;
+      case 'duration': return !!formData.startDate;
+      case 'pricing': return !!formData.productId && formData.price > 0;
+      case 'billing': return !!formData.startDate;
+      default: return true;
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl h-[90vh] p-0 overflow-hidden">
-        <div className="flex h-full">
-          {/* Left Panel - Form */}
-          <div className="flex-1 flex flex-col overflow-hidden">
+      <DialogContent className="max-w-[95vw] h-[95vh] p-0 flex flex-col">
+        <div className="flex h-full bg-gray-50">
+          {/* Left Panel - Form with Collapsible Sections */}
+          <div className="w-1/2 flex flex-col bg-white overflow-hidden">
             {/* Header */}
-            <DialogHeader className="px-8 py-6 border-b">
+            <div className="border-b px-8 py-6 flex-shrink-0 bg-white">
               <div className="flex items-center justify-between">
                 <div>
-                  <DialogTitle className="text-2xl font-bold">Create Subscription</DialogTitle>
-                  <p className="text-gray-600 mt-1">Set up recurring billing for your customers</p>
+                  <h1 className="text-2xl font-bold text-gray-900">Create a subscription</h1>
                 </div>
                 <Button variant="ghost" size="icon" onClick={() => onOpenChange(false)}>
                   <X className="h-5 w-5" />
                 </Button>
               </div>
-              
-              {/* Step Indicator */}
-              <div className="flex items-center mt-6 space-x-4">
-                {STEPS.map((step, index) => (
-                  <div key={step.id} className="flex items-center">
-                    <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
-                      index <= currentStep 
-                        ? 'bg-primary border-primary text-white' 
-                        : 'border-gray-300 text-gray-500'
-                    }`}>
-                      {index < currentStep ? (
-                        <CheckCircle className="h-4 w-4" />
-                      ) : (
-                        <step.icon className="h-4 w-4" />
-                      )}
-                    </div>
-                    <div className="ml-3">
-                      <div className={`text-sm font-medium ${
-                        index <= currentStep ? 'text-gray-900' : 'text-gray-500'
-                      }`}>
-                        {step.title}
-                      </div>
-                      <div className="text-xs text-gray-400">{step.description}</div>
-                    </div>
-                    {index < STEPS.length - 1 && (
-                      <ArrowRight className="h-4 w-4 mx-4 text-gray-300" />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </DialogHeader>
-
-            {/* Form Content */}
-            <div className="flex-1 overflow-y-auto px-8 py-6">
-              {currentStep === 0 && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">Select Customer</h3>
-                    <div className="space-y-4">
-                      <Select value={formData.customerId} onValueChange={handleCustomerSelect}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Choose an existing customer" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {customers.map(customer => (
-                            <SelectItem key={customer._id} value={customer._id || ''}>
-                              <div className="flex flex-col">
-                                <span className="font-medium">{customer.name}</span>
-                                <span className="text-sm text-gray-500">{customer.email}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      
-                      <div className="flex items-center">
-                        <div className="flex-1 h-px bg-gray-200" />
-                        <span className="px-4 text-sm text-gray-500">or</span>
-                        <div className="flex-1 h-px bg-gray-200" />
-                      </div>
-                      
-                      <Button 
-                        variant="outline" 
-                        onClick={() => setShowAddCustomer(true)}
-                        className="w-full"
-                        disabled={!businessId}
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add New Customer
-                      </Button>
-                    </div>
-                  </div>
-
-                  {formData.customerId && (
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                            <User className="h-5 w-5 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">{formData.customerName}</div>
-                            <div className="text-sm text-gray-500">{formData.customerEmail}</div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              )}
-
-              {currentStep === 1 && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">Select Product</h3>
-                    <div className="space-y-4">
-                      <Select value={formData.productId} onValueChange={handleProductSelect}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Choose a product" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {products.map(product => (
-                            <SelectItem key={product._id} value={product._id || ''}>
-                              <div className="flex items-center justify-between">
-                                <span>{product.name}</span>
-                                <span className="text-sm text-gray-500">
-                                  {product.currency} {product.price}
-                                </span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      
-                      <Button 
-                        variant="outline" 
-                        className="w-full"
-                        disabled
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Create New Product (Coming Soon)
-                      </Button>
-                    </div>
-                  </div>
-
-                  {formData.productId && (
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                              <Package className="h-5 w-5 text-primary" />
-                            </div>
-                            <div>
-                              <div className="font-medium">{formData.productName}</div>
-                              <div className="text-sm text-gray-500">Product</div>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-semibold text-lg">
-                              {getCurrencySymbol()}{formData.price}
-                            </div>
-                            <div className="text-sm text-gray-500">Base price</div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              )}
-
-              {currentStep === 2 && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">Billing Configuration</h3>
-                    
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div>
-                        <Label>Billing Interval</Label>
-                        <Select value={formData.interval} onValueChange={(value: any) => 
-                          setFormData(prev => ({ ...prev, interval: value }))
-                        }>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {BILLING_INTERVALS.map(interval => (
-                              <SelectItem key={interval.value} value={interval.value}>
-                                <div>
-                                  <div className="font-medium">{interval.label}</div>
-                                  <div className="text-sm text-gray-500">{interval.description}</div>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label>Currency</Label>
-                        <Select value={formData.currency} onValueChange={(value) => 
-                          setFormData(prev => ({ ...prev, currency: value }))
-                        }>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {CURRENCIES.map(currency => (
-                              <SelectItem key={currency.value} value={currency.value}>
-                                {currency.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div>
-                        <Label>Quantity</Label>
-                        <Input
-                          type="number"
-                          min="1"
-                          value={formData.quantity}
-                          onChange={(e) => setFormData(prev => ({ 
-                            ...prev, 
-                            quantity: parseInt(e.target.value) || 1 
-                          }))}
-                          className="w-32"
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Start Date</Label>
-                        <Calendar
-                          mode="single"
-                          selected={formData.startDate}
-                          onSelect={(date) => date && setFormData(prev => ({ ...prev, startDate: date }))}
-                          className="rounded-md border"
-                        />
-                      </div>
-
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id="forever"
-                          checked={formData.forever}
-                          onCheckedChange={(checked) => 
-                            setFormData(prev => ({ ...prev, forever: !!checked }))
-                          }
-                        />
-                        <Label htmlFor="forever">No end date (forever)</Label>
-                      </div>
-
-                      {!formData.forever && (
-                        <div>
-                          <Label>End Date</Label>
-                          <Calendar
-                            mode="single"
-                            selected={formData.endDate}
-                            onSelect={(date) => setFormData(prev => ({ ...prev, endDate: date }))}
-                            disabled={(date) => date < formData.startDate}
-                            className="rounded-md border"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Pricing Summary */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg">Pricing Summary</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div className="flex justify-between">
-                          <span>Base Price</span>
-                          <span>{getCurrencySymbol()}{formData.price}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Quantity</span>
-                          <span>× {formData.quantity}</span>
-                        </div>
-                        <div className="border-t pt-3 flex justify-between font-semibold">
-                          <span>Total per {formData.interval}</span>
-                          <span>{getCurrencySymbol()}{calculateTotal()}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              )}
-
-              {currentStep === 3 && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">Advanced Settings</h3>
-                    
-                    <div className="space-y-6">
-                      <div>
-                        <Label>Trial Period (Days)</Label>
-                        <Input
-                          type="number"
-                          min="0"
-                          value={formData.trialDays}
-                          onChange={(e) => setFormData(prev => ({ 
-                            ...prev, 
-                            trialDays: parseInt(e.target.value) || 0 
-                          }))}
-                          className="w-32"
-                          placeholder="0"
-                        />
-                        <p className="text-sm text-gray-500 mt-1">
-                          Number of days before first charge
-                        </p>
-                      </div>
-
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <Label>Auto-charge customer</Label>
-                            <p className="text-sm text-gray-500">
-                              Automatically charge the customer on billing dates
-                            </p>
-                          </div>
-                          <Switch
-                            checked={formData.autoCharge}
-                            onCheckedChange={(checked) => 
-                              setFormData(prev => ({ ...prev, autoCharge: checked }))
-                            }
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <Label>Collect tax automatically</Label>
-                            <p className="text-sm text-gray-500">
-                              Apply tax rates based on customer location
-                            </p>
-                          </div>
-                          <Switch
-                            checked={formData.collectTax}
-                            onCheckedChange={(checked) => 
-                              setFormData(prev => ({ ...prev, collectTax: checked }))
-                            }
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label>Description</Label>
-                        <Textarea
-                          value={formData.description}
-                          onChange={(e) => setFormData(prev => ({ 
-                            ...prev, 
-                            description: e.target.value 
-                          }))}
-                          placeholder="Optional description for this subscription"
-                          className="mt-1"
-                        />
-                      </div>
-
-                      <div>
-                        <Label>Invoice Memo</Label>
-                        <Textarea
-                          value={formData.invoiceMemo}
-                          onChange={(e) => setFormData(prev => ({ 
-                            ...prev, 
-                            invoiceMemo: e.target.value 
-                          }))}
-                          placeholder="Optional memo to appear on invoices"
-                          className="mt-1"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {currentStep === 4 && (
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">Review & Create</h3>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Customer Info */}
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="flex items-center">
-                            <User className="h-5 w-5 mr-2" />
-                            Customer
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            <div>
-                              <span className="text-sm text-gray-500">Name:</span>
-                              <div className="font-medium">{formData.customerName}</div>
-                            </div>
-                            <div>
-                              <span className="text-sm text-gray-500">Email:</span>
-                              <div className="font-medium">{formData.customerEmail}</div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      {/* Product Info */}
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="flex items-center">
-                            <Package className="h-5 w-5 mr-2" />
-                            Product
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            <div>
-                              <span className="text-sm text-gray-500">Name:</span>
-                              <div className="font-medium">{formData.productName}</div>
-                            </div>
-                            <div>
-                              <span className="text-sm text-gray-500">Price:</span>
-                              <div className="font-medium">
-                                {getCurrencySymbol()}{formData.price} × {formData.quantity}
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      {/* Billing Info */}
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="flex items-center">
-                            <CreditCard className="h-5 w-5 mr-2" />
-                            Billing
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            <div>
-                              <span className="text-sm text-gray-500">Interval:</span>
-                              <div className="font-medium capitalize">{formData.interval}</div>
-                            </div>
-                            <div>
-                              <span className="text-sm text-gray-500">Start Date:</span>
-                              <div className="font-medium">
-                                {formData.startDate.toLocaleDateString()}
-                              </div>
-                            </div>
-                            {!formData.forever && formData.endDate && (
-                              <div>
-                                <span className="text-sm text-gray-500">End Date:</span>
-                                <div className="font-medium">
-                                  {formData.endDate.toLocaleDateString()}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </CardContent>
-                      </Card>
-
-                      {/* Settings */}
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="flex items-center">
-                            <Settings className="h-5 w-5 mr-2" />
-                            Settings
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-500">Trial Days:</span>
-                              <span className="font-medium">{formData.trialDays}</span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-500">Auto-charge:</span>
-                              <Badge variant={formData.autoCharge ? "default" : "secondary"}>
-                                {formData.autoCharge ? "Yes" : "No"}
-                              </Badge>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-500">Collect Tax:</span>
-                              <Badge variant={formData.collectTax ? "default" : "secondary"}>
-                                {formData.collectTax ? "Yes" : "No"}
-                              </Badge>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    {/* Final Summary */}
-                    <Card className="bg-primary/5 border-primary/20">
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-semibold text-lg">Total Amount</h4>
-                            <p className="text-sm text-gray-600">
-                              {getCurrencySymbol()}{calculateTotal()} per {formData.interval}
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-3xl font-bold text-primary">
-                              {getCurrencySymbol()}{calculateTotal()}
-                            </div>
-                            <div className="text-sm text-gray-500">per {formData.interval}</div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              )}
             </div>
 
-            {/* Footer */}
-            <div className="border-t px-8 py-4">
-              <div className="flex items-center justify-between">
-                <Button
-                  variant="outline"
-                  onClick={handleBack}
-                  disabled={currentStep === 0}
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-                
-                <div className="flex items-center space-x-2">
-                  {currentStep < STEPS.length - 1 ? (
-                    <Button
-                      onClick={handleNext}
-                      disabled={!getStepValidation()}
-                    >
-                      Next
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleSubmit}
-                      disabled={submitting || !getStepValidation()}
-                      className="min-w-[140px]"
-                    >
-                      {submitting ? (
-                        <>
-                          <Sparkles className="h-4 w-4 mr-2 animate-spin" />
-                          Creating...
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          Create Subscription
-                        </>
+            {/* Form Content - Scrollable with Sections */}
+            <div className="h-[calc(95vh-200px)] overflow-y-auto">
+              <div className="px-8 py-6 max-w-xl space-y-4 pb-20">
+                {SECTIONS.map((section) => (
+                  <Collapsible
+                    key={section.id}
+                    open={openSections.has(section.id)}
+                    onOpenChange={() => toggleSection(section.id)}
+                    className="border rounded-lg"
+                  >
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between p-4 h-auto hover:bg-[#2d5a5a]/5"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <section.icon className="h-5 w-5 text-gray-500" />
+                          <div className="text-left">
+                            <div className="font-semibold text-gray-900">{section.title}</div>
+                            {section.required && (
+                              <div className="text-sm text-gray-500">Required</div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {isSectionComplete(section.id) && (
+                            <CheckCircle className="h-5 w-5 text-green-500" />
+                          )}
+                          {openSections.has(section.id) ? (
+                            <ChevronDown className="h-4 w-4 text-gray-500" />
+                          ) : (
+                            <ChevronRight className="h-4 w-4 text-gray-500" />
+                          )}
+                        </div>
+                      </Button>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent className="px-4 pb-4">
+                      {section.id === 'customer' && (
+                        <div className="space-y-4">
+                          <Select value={formData.customerId} onValueChange={handleCustomerSelect}>
+                            <SelectTrigger className="h-12">
+                              <SelectValue placeholder="Find or add a customer..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {customers.map(customer => (
+                                <SelectItem key={customer._id} value={customer._id || ''}>
+                                  <div className="flex flex-col">
+                                    <span className="font-medium">{customer.name}</span>
+                                    <span className="text-sm text-gray-500">{customer.email}</span>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Button 
+                            variant="outline" 
+                            onClick={() => setShowAddCustomer(true)}
+                            className="w-full"
+                            disabled={!businessId}
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            Add new customer
+                          </Button>
+                          
+                          {customers.length > 0 && (
+                            <div>
+                              <p className="text-sm font-medium text-gray-700 mb-2">RECENT</p>
+                              {customers.slice(0, 3).map(customer => (
+                                <div 
+                                  key={customer._id}
+                                  className="flex items-center justify-between p-3 rounded-lg border border-[#2d5a5a]/20 cursor-pointer hover:bg-[#2d5a5a]/5"
+                                  onClick={() => handleCustomerSelect(customer._id || '')}
+                                >
+                                  <div>
+                                    <div className="font-medium">{customer.name}</div>
+                                    <div className="text-sm text-gray-500">{customer.email}</div>
+                                  </div>
+                                  {formData.customerId === customer._id && (
+                                    <CheckCircle className="h-5 w-5 text-green-500" />
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       )}
-                    </Button>
-                  )}
+
+                      {section.id === 'duration' && (
+                        <div className="space-y-4">
+                          <Popover open={showDurationPicker} onOpenChange={setShowDurationPicker}>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className="w-full justify-start text-left font-normal h-12"
+                              >
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {getDurationText()}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <div className="flex">
+                                <Calendar
+                                  mode="single"
+                                  selected={formData.startDate}
+                                  onSelect={(date) => date && setFormData(prev => ({ ...prev, startDate: date }))}
+                                  initialFocus
+                                  className="rounded-md border"
+                                />
+                                <div className="border-l p-4 w-48">
+                                  <h4 className="font-medium mb-2">Shortcuts</h4>
+                                  <div className="space-y-2">
+                                    <Button
+                                      variant="ghost"
+                                      className="w-full justify-start"
+                                      onClick={() => {
+                                        setFormData(prev => ({ ...prev, forever: true, endDate: undefined }));
+                                        setShowDurationPicker(false);
+                                      }}
+                                    >
+                                      Forever
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      className="w-full justify-start"
+                                      onClick={() => {
+                                        const endDate = new Date(formData.startDate);
+                                        endDate.setMonth(endDate.getMonth() + 1);
+                                        setFormData(prev => ({ ...prev, forever: false, endDate }));
+                                        setShowDurationPicker(false);
+                                      }}
+                                    >
+                                      1 cycle ({formatDate(new Date(formData.startDate.getTime() + 30 * 24 * 60 * 60 * 1000))})
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      className="w-full justify-start"
+                                      onClick={() => {
+                                        const endDate = new Date(formData.startDate);
+                                        endDate.setMonth(endDate.getMonth() + 2);
+                                        setFormData(prev => ({ ...prev, forever: false, endDate }));
+                                        setShowDurationPicker(false);
+                                      }}
+                                    >
+                                      2 cycles ({formatDate(new Date(formData.startDate.getTime() + 60 * 24 * 60 * 60 * 1000))})
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      className="w-full justify-start"
+                                      onClick={() => {
+                                        const endDate = new Date(formData.startDate);
+                                        endDate.setMonth(endDate.getMonth() + 3);
+                                        setFormData(prev => ({ ...prev, forever: false, endDate }));
+                                        setShowDurationPicker(false);
+                                      }}
+                                    >
+                                      3 cycles ({formatDate(new Date(formData.startDate.getTime() + 90 * 24 * 60 * 60 * 1000))})
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      className="w-full justify-start"
+                                      onClick={() => {
+                                        const endDate = new Date(formData.startDate);
+                                        endDate.setMonth(endDate.getMonth() + 6);
+                                        setFormData(prev => ({ ...prev, forever: false, endDate }));
+                                        setShowDurationPicker(false);
+                                      }}
+                                    >
+                                      6 cycles ({formatDate(new Date(formData.startDate.getTime() + 180 * 24 * 60 * 60 * 1000))})
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      className="w-full justify-start"
+                                      onClick={() => {
+                                        const endDate = new Date(formData.startDate);
+                                        endDate.setFullYear(endDate.getFullYear() + 1);
+                                        setFormData(prev => ({ ...prev, forever: false, endDate }));
+                                        setShowDurationPicker(false);
+                                      }}
+                                    >
+                                      12 cycles ({formatDate(new Date(formData.startDate.getTime() + 365 * 24 * 60 * 60 * 1000))})
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      className="w-full justify-start"
+                                      onClick={() => {
+                                        setFormData(prev => ({ ...prev, forever: false }));
+                                        setShowDurationPicker(false);
+                                      }}
+                                    >
+                                      custom
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      )}
+
+                      {section.id === 'pricing' && (
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-3 gap-4 text-sm font-medium text-gray-500 border-b pb-2">
+                            <div>PRODUCT</div>
+                            <div>QTY</div>
+                            <div>TOTAL</div>
+                          </div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div>
+                              <Select value={formData.productId} onValueChange={handleProductSelect}>
+                                <SelectTrigger className="h-10">
+                                  <SelectValue placeholder="Find or add a product..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {products.map(product => (
+                                    <SelectItem key={product._id} value={product._id || ''}>
+                                      <div className="flex items-center justify-between w-full">
+                                        <span>{product.name}</span>
+                                        <span className="text-sm text-gray-500">
+                                          {product.currency} {product.price}
+                                        </span>
+                                      </div>
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Input
+                                type="number"
+                                min="1"
+                                value={formData.quantity}
+                                onChange={(e) => setFormData(prev => ({ 
+                                  ...prev, 
+                                  quantity: parseInt(e.target.value) || 1 
+                                }))}
+                                className="h-10"
+                              />
+                            </div>
+                            <div className="text-right">
+                              <div className="font-medium">
+                                {formData.price > 0 ? `${getCurrencySymbol()}${calculateTotal()}` : '—'}
+                              </div>
+                              <div className="text-sm text-gray-500">per {formData.interval}</div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex space-x-4 text-sm">
+                            <Button variant="link" className="p-0 h-auto text-blue-600">
+                              Add product
+                            </Button>
+                            <Button variant="link" className="p-0 h-auto text-blue-600">
+                              Add coupon
+                            </Button>
+                          </div>
+                          
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <Switch
+                                checked={formData.collectTax}
+                                onCheckedChange={(checked) => 
+                                  setFormData(prev => ({ ...prev, collectTax: checked }))
+                                }
+                              />
+                              <Label className="text-sm">Collect tax automatically</Label>
+                            </div>
+                            <Button variant="link" className="p-0 h-auto text-blue-600 text-sm">
+                              Add tax manually
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+
+                      {section.id === 'billing' && (
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                                                      <div className="flex items-center space-x-2 p-3 border border-[#2d5a5a]/20 rounded-lg bg-[#2d5a5a]/5">
+                            <CalendarIcon className="h-5 w-5 text-[#2d5a5a]" />
+                            <span className="text-gray-900">{formatDate(formData.startDate)}</span>
+                          </div>
+                            <p className="text-sm text-gray-500">
+                              This is also when the next invoice will be generated.
+                            </p>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-medium mb-2">Free trial days</h4>
+                                                      <Button variant="outline" className="w-full justify-start border-[#2d5a5a] text-[#2d5a5a] hover:bg-[#2d5a5a]/10">
+                            <Plus className="h-4 w-4 mr-2" />
+                            Add trial days
+                          </Button>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-medium mb-2">Metadata</h4>
+                                                      <Button variant="outline" className="w-full justify-start border-[#2d5a5a] text-[#2d5a5a] hover:bg-[#2d5a5a]/10">
+                            <Plus className="h-4 w-4 mr-2" />
+                            Add metadata
+                          </Button>
+                          </div>
+                        </div>
+                      )}
+
+                      {section.id === 'settings' && (
+                        <div className="space-y-6">
+                          <div>
+                            <h4 className="text-lg font-semibold mb-4">Payment</h4>
+                            <RadioGroup 
+                              value={formData.paymentMethod} 
+                              onValueChange={(value: 'auto' | 'manual') => 
+                                setFormData(prev => ({ ...prev, paymentMethod: value }))
+                              }
+                              className="space-y-4"
+                            >
+                              <div className="flex items-start space-x-3">
+                                <RadioGroupItem value="auto" id="auto" />
+                                <div className="flex-1">
+                                  <Label htmlFor="auto" className="text-base font-medium">
+                                    Automatically charge a payment method on file
+                                  </Label>
+                                  <p className="text-sm text-gray-500 mt-1">
+                                    This customer doesn't have any valid payment methods on file.
+                                  </p>
+                                  <Button variant="outline" className="mt-2 border-[#2d5a5a] text-[#2d5a5a] hover:bg-[#2d5a5a]/10">
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Add a payment method
+                                  </Button>
+                                </div>
+                              </div>
+                              <div className="flex items-start space-x-3">
+                                <RadioGroupItem value="manual" id="manual" />
+                                <div className="flex-1">
+                                  <Label htmlFor="manual" className="text-base font-medium">
+                                    Email invoice to the customer to pay manually
+                                  </Label>
+                                  <p className="text-sm text-gray-500 mt-1">
+                                    Set your payment preferences, and we'll take care of the rest.
+                                  </p>
+                                </div>
+                              </div>
+                            </RadioGroup>
+                          </div>
+
+                          <div>
+                            <h4 className="text-lg font-semibold mb-4">Advanced settings</h4>
+                            <div className="space-y-6">
+                              <div>
+                                <div className="flex items-center space-x-2 mb-3">
+                                  <Label className="text-base font-medium">Billing mode</Label>
+                                  <Info className="h-4 w-4 text-gray-400" />
+                                </div>
+                                <RadioGroup 
+                                  value={formData.billingMode} 
+                                  onValueChange={(value: 'classic' | 'flexible') => 
+                                    setFormData(prev => ({ ...prev, billingMode: value }))
+                                  }
+                                  className="space-y-3"
+                                >
+                                  <div className="flex items-center space-x-3">
+                                    <RadioGroupItem value="classic" id="classic" />
+                                    <Label htmlFor="classic">Classic</Label>
+                                  </div>
+                                  <div className="flex items-center space-x-3">
+                                    <RadioGroupItem value="flexible" id="flexible" />
+                                    <Label htmlFor="flexible">Flexible</Label>
+                                  </div>
+                                </RadioGroup>
+                              </div>
+
+                              <div>
+                                <Label className="text-base font-medium mb-3 block">Invoice template</Label>
+                                <Select 
+                                  value={formData.invoiceTemplate} 
+                                  onValueChange={(value) => 
+                                    setFormData(prev => ({ ...prev, invoiceTemplate: value }))
+                                  }
+                                >
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select a template..." />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {INVOICE_TEMPLATES.map(template => (
+                                      <SelectItem key={template.value} value={template.value}>
+                                        {template.label}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+                              <div className="space-y-3">
+                                <div className="flex items-center space-x-3">
+                                  <input
+                                    type="checkbox"
+                                    id="description"
+                                    className="h-4 w-4"
+                                  />
+                                  <div className="flex items-center space-x-2">
+                                    <Label htmlFor="description">Description</Label>
+                                    <Info className="h-4 w-4 text-gray-400" />
+                                  </div>
+                                </div>
+                                <div className="flex items-center space-x-3">
+                                  <input
+                                    type="checkbox"
+                                    id="invoiceMemo"
+                                    className="h-4 w-4"
+                                  />
+                                  <Label htmlFor="invoiceMemo">Invoice memo</Label>
+                                </div>
+                                <div className="flex items-center space-x-3">
+                                  <input
+                                    type="checkbox"
+                                    id="invoiceFooter"
+                                    className="h-4 w-4"
+                                  />
+                                  <Label htmlFor="invoiceFooter">Invoice footer</Label>
+                                </div>
+                                <div className="flex items-center space-x-3">
+                                  <input
+                                    type="checkbox"
+                                    id="customFields"
+                                    className="h-4 w-4"
+                                  />
+                                  <div className="flex items-center space-x-2">
+                                    <Label htmlFor="customFields">Custom invoice fields</Label>
+                                    <Info className="h-4 w-4 text-gray-400" />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </CollapsibleContent>
+                  </Collapsible>
+                ))}
+
+                {/* Add Phase Button */}
+                <div className="pt-4">
+                  <Button variant="outline" className="w-full h-12 border-[#2d5a5a] text-[#2d5a5a] hover:bg-[#2d5a5a]/10">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add phase
+                  </Button>
                 </div>
+              </div>
+            </div>
+
+            {/* Footer - Always Visible */}
+            <div className="border-t px-8 py-4 bg-white flex-shrink-0">
+              <div className="flex items-center justify-between">
+                <Button variant="link" className="p-0 h-auto text-gray-500">
+                  Feedback?
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={submitting || !formData.customerId || !formData.productId}
+                  className="bg-[#2d5a5a] hover:bg-[#1f4a4a] text-white px-6 py-2 font-medium"
+                >
+                  {submitting ? (
+                    <>
+                      <Sparkles className="h-4 w-4 mr-2 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    'Create subscription'
+                  )}
+                </Button>
               </div>
             </div>
           </div>
 
-          {/* Right Panel - Preview */}
-          <div className="w-96 bg-gray-50 border-l p-6 overflow-y-auto">
-            <div className="sticky top-0">
-              <h3 className="text-lg font-semibold mb-4">Preview</h3>
+          {/* Right Panel - Preview (Stripe Style) */}
+          <div className="w-1/2 bg-white border-l overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b px-6 py-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Preview</h3>
+                <Button variant="ghost" size="sm">
+                  Close preview
+                </Button>
+              </div>
               
-              <Tabs defaultValue="summary" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="summary">Summary</TabsTrigger>
-                  <TabsTrigger value="invoice">Invoice</TabsTrigger>
-                  <TabsTrigger value="code">Code</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="summary" className="mt-4">
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="space-y-4">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                            <Users className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">{formData.customerName || 'Select customer'}</div>
-                            <div className="text-sm text-gray-500">Customer</div>
-                          </div>
+              {/* Preview Tabs */}
+              <div className="flex space-x-6 mt-4">
+                <button
+                  onClick={() => setPreviewTab('summary')}
+                  className={cn(
+                    "pb-2 border-b-2 font-medium text-sm",
+                    previewTab === 'summary' 
+                      ? 'border-[#2d5a5a] text-[#2d5a5a]' 
+                      : 'border-transparent text-gray-500'
+                  )}
+                >
+                  Summary
+                </button>
+                <button
+                  onClick={() => setPreviewTab('invoice')}
+                  className={cn(
+                    "pb-2 border-b-2 font-medium text-sm",
+                    previewTab === 'invoice' 
+                      ? 'border-[#2d5a5a] text-[#2d5a5a]' 
+                      : 'border-transparent text-gray-500'
+                  )}
+                >
+                  Invoice
+                </button>
+                <button
+                  onClick={() => setPreviewTab('code')}
+                  className={cn(
+                    "pb-2 border-b-2 font-medium text-sm",
+                    previewTab === 'code' 
+                      ? 'border-[#2d5a5a] text-[#2d5a5a]' 
+                      : 'border-transparent text-gray-500'
+                  )}
+                >
+                  Code
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              {previewTab === 'summary' && (
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-3">
+                    <CalendarIcon className="h-5 w-5 text-gray-400" />
+                    <span className="text-gray-900">{formatDate(formData.startDate)}</span>
+                  </div>
+                  <p className="text-sm text-gray-600">Subscription starts</p>
+                  
+                  <div className="flex items-center space-x-3">
+                    <FileText className="h-5 w-5 text-gray-400" />
+                    <div>
+                      <div className="font-medium text-gray-900">First invoice</div>
+                      <div className="text-sm text-gray-600">Amount due: {getCurrencySymbol()}{calculateTotal()}</div>
+                      <div className="text-sm text-gray-500">Bills immediately for 1 month</div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {previewTab === 'invoice' && (
+                <div className="bg-white border rounded-lg p-6 space-y-6 max-w-lg mx-auto">
+                  {/* Invoice Header */}
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900">Invoice</h2>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Invoice number {generateInvoiceNumber()}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Date due {formatDate(formData.startDate)}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-semibold text-gray-900">{businessName}</div>
+                      <div className="text-sm text-gray-600">United States</div>
+                    </div>
+                  </div>
+
+                  {/* Amount Due */}
+                  <div className="text-center py-4">
+                    <div className="text-3xl font-bold text-gray-900">
+                      {getCurrencySymbol()}{calculateTotal()} due {formatDate(formData.startDate)}
+                    </div>
+                  </div>
+
+                  {/* Billing Info */}
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <div className="font-semibold text-gray-900 mb-2">Bill to</div>
+                      <div className="space-y-1 text-gray-600">
+                        <div>{formData.customerName || 'Customer Name'}</div>
+                        <div>Ghana</div>
+                        <div className="flex items-center">
+                          <Phone className="h-3 w-3 mr-1" />
+                          {formData.customerPhone || '+233 55 666 6666'}
                         </div>
-                        
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                            <Package className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">{formData.productName || 'Select product'}</div>
-                            <div className="text-sm text-gray-500">Product</div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                            <Clock className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium capitalize">{formData.interval}</div>
-                            <div className="text-sm text-gray-500">Billing interval</div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                            <DollarSign className="h-4 w-4 text-primary" />
-                          </div>
-                          <div>
-                            <div className="font-medium">
-                              {getCurrencySymbol()}{calculateTotal()}
-                            </div>
-                            <div className="text-sm text-gray-500">Per {formData.interval}</div>
-                          </div>
+                        <div className="flex items-center">
+                          <Mail className="h-3 w-3 mr-1" />
+                          {formData.customerEmail || 'customer@example.com'}
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-                
-                <TabsContent value="invoice" className="mt-4">
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="text-center text-gray-500 py-8">
-                        <CreditCard className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                        <p className="text-sm">Invoice preview will appear here</p>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900 mb-2">Ship to</div>
+                      <div className="space-y-1 text-gray-600">
+                        <div>{formData.customerName || 'Customer Name'}</div>
+                        <div>Ghana</div>
+                        <div className="flex items-center">
+                          <Phone className="h-3 w-3 mr-1" />
+                          {formData.customerPhone || '+233 55 666 6666'}
+                        </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-                
-                <TabsContent value="code" className="mt-4">
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="text-center text-gray-500 py-8">
-                        <Zap className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                        <p className="text-sm">API code will appear here</p>
+                    </div>
+                  </div>
+
+                  {/* Line Items */}
+                  <div className="border-t pt-4">
+                    <div className="grid grid-cols-3 gap-3 text-sm font-medium text-gray-500 border-b pb-2">
+                      <div>Description</div>
+                      <div className="text-center">Qty</div>
+                      <div className="text-right">Amount</div>
+                    </div>
+                    
+                    <div className="grid grid-cols-3 gap-3 py-3 text-sm">
+                      <div>
+                        <div className="font-medium">{formData.productName || 'Product Name'}</div>
+                        <div className="text-gray-500 text-xs">
+                          {formatDate(formData.startDate)} - {getEndDate()}
+                        </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
+                      <div className="text-center">{formData.quantity}</div>
+                      <div className="text-right">{getCurrencySymbol()}{calculateTotal()}</div>
+                    </div>
+                  </div>
+
+                  {/* Totals */}
+                  <div className="border-t pt-4">
+                    <div className="flex justify-end">
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between space-x-8">
+                          <span>Subtotal</span>
+                          <span>{getCurrencySymbol()}{calculateTotal()}</span>
+                        </div>
+                        <div className="flex justify-between space-x-8 font-semibold">
+                          <span>Total</span>
+                          <span>{getCurrencySymbol()}{calculateTotal()}</span>
+                        </div>
+                        <div className="flex justify-between space-x-8 font-bold text-lg">
+                          <span>Amount due</span>
+                          <span>{getCurrencySymbol()}{calculateTotal()}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="border-t pt-4 text-center text-xs text-gray-500">
+                    {generateInvoiceNumber()} {getCurrencySymbol()}{calculateTotal()} due {formatDate(formData.startDate)}
+                  </div>
+                </div>
+              )}
+
+              {previewTab === 'code' && (
+                <div className="text-center py-8">
+                  <FileText className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                  <p className="text-sm text-gray-500">API code will appear here</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -957,7 +1027,8 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
             ...prev,
             customerId: customer._id,
             customerName: customer.name,
-            customerEmail: customer.email
+            customerEmail: customer.email,
+            customerPhone: customer.phone || ''
           }));
           setShowAddCustomer(false);
         }}
