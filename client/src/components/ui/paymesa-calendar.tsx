@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './button';
 import { cn } from '@/lib/utils';
 
-interface StripeCalendarProps {
+interface PaymesaCalendarProps {
   selected?: Date;
   onSelect?: (date: Date) => void;
   className?: string;
 }
 
-export function StripeCalendar({ selected, onSelect, className }: StripeCalendarProps) {
+export function PaymesaCalendar({ selected, onSelect, className }: PaymesaCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(() => {
     return selected ? new Date(selected.getFullYear(), selected.getMonth(), 1) : new Date();
   });
@@ -65,7 +65,6 @@ export function StripeCalendar({ selected, onSelect, className }: StripeCalendar
     for (let i = 0; i < totalCells; i++) {
       const dayNumber = i - adjustedFirstDay + 1;
       const isOutside = isOutsideMonth(dayNumber);
-      const isLastInRow = (i + 1) % 7 === 0;
       const isLastRow = i >= 35;
 
       days.push(

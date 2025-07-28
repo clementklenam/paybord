@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { StripeCalendar } from "@/components/ui/stripe-calendar";
+import { PaymesaCalendar } from "@/components/ui/paymesa-calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -133,7 +133,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
   const [submitting, setSubmitting] = useState(false);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [isCreatingProduct, setIsCreatingProduct] = useState(false);
+  const [isCreatingProduct] = useState(false);
   const [businessId, setBusinessId] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState<string>('');
   const [previewTab, setPreviewTab] = useState<'summary' | 'invoice' | 'code'>('invoice');
@@ -464,7 +464,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                             <PopoverContent className="w-auto p-0 mr-4" align="start">
                               <div className="flex">
                                 <div className="p-6">
-                                  <StripeCalendar
+                                  <PaymesaCalendar
                                     selected={formData.startDate}
                                     onSelect={(date: Date) => setFormData(prev => ({ ...prev, startDate: date }))}
                                   />
