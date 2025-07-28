@@ -62,8 +62,8 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
         description: "",
         logo: null as string | null,
         banner: null as string | null,
-        primaryColor: "#0A2C73",
-        accentColor: "#2979FF",
+        primaryColor: "#FFD700",
+        accentColor: "#FFC700",
         domain: "",
         socialLinks: {
             instagram: "",
@@ -931,25 +931,25 @@ export function StorefrontWizard({ onSubmit, onCancel, isSubmitting, businesses 
                                     {/* Theme Details */}
                                     <div className="space-y-4">
                                         <div>
-                                            <h4 className="text-sm font-medium mb-2">Color Palette</h4>
+                                            <h4 className="text-sm font-medium mb-2 text-card-foreground">Color Palette</h4>
                                             <div className="flex gap-2">
                                                 <div 
-                                                    className="w-8 h-8 rounded-full border border-gray-200"
+                                                    className="w-8 h-8 rounded-full border border-border"
                                                     style={{ backgroundColor: selectedTheme.colors.primary }}
                                                     title="Primary"
                                                 />
                                                 <div 
-                                                    className="w-8 h-8 rounded-full border border-gray-200"
+                                                    className="w-8 h-8 rounded-full border border-border"
                                                     style={{ backgroundColor: selectedTheme.colors.secondary }}
                                                     title="Secondary"
                                                 />
                                                 <div 
-                                                    className="w-8 h-8 rounded-full border border-gray-200"
+                                                    className="w-8 h-8 rounded-full border border-border"
                                                     style={{ backgroundColor: selectedTheme.colors.accent }}
                                                     title="Accent"
                                                 />
                                                 <div 
-                                                    className="w-8 h-8 rounded-full border border-gray-200"
+                                                    className="w-8 h-8 rounded-full border border-border"
                                                     style={{ backgroundColor: selectedTheme.colors.background }}
                                                     title="Background"
                                                 />

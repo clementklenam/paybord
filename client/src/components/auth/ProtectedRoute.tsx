@@ -33,8 +33,8 @@ export function ProtectedRoute({ children, skipBusinessCheck = false }: Protecte
   if (isChecking || loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500 mb-4" />
-        <p className="text-gray-500">Verifying your credentials...</p>
+        <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+        <p className="text-muted-foreground">Verifying your credentials...</p>
       </div>
     );
   }

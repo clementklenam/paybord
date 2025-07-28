@@ -35,13 +35,13 @@ interface EnhancedChartProps {
 }
 
 const COLORS = {
-  primary: '#0A2C73',
+  primary: '#FFD700',
   success: '#10B981',
   warning: '#F59E0B',
   danger: '#EF4444',
   purple: '#8B5CF6',
   pink: '#EC4899',
-  indigo: '#2979FF',
+  indigo: '#FFC700',
   teal: '#14B8A6',
 };
 

@@ -85,12 +85,6 @@ const steps: Step[] = [
         icon: <CreditCard className="h-5 w-5" />
     },
     {
-        id: "compliance",
-        title: "Compliance",
-        description: "PCI DSS compliance information",
-        icon: <Shield className="h-5 w-5" />
-    },
-    {
         id: "verification",
         title: "Verification",
         description: "Upload verification documents",
@@ -432,11 +426,10 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                     onSuccess();
                 }
                 
-                // Force a page reload to refresh the dashboard with the new business name
-                // Use a slightly longer delay to allow the backend to process the registration
+                // Redirect to dashboard after successful registration
                 setTimeout(() => {
                     window.location.href = '/dashboard';
-                }, 2000); // Longer delay to allow the backend to process the registration
+                }, 2000); // Delay to allow the backend to process the registration
             }
         } catch (error: unknown) {
             console.error('Business registration error:', error);
@@ -968,8 +961,6 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
             case 2:
                 return renderBankingStep();
             case 3:
-                return renderComplianceStep();
-            case 4:
                 return renderVerificationStep();
             default:
                 return null;
@@ -977,74 +968,71 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
     };
 
     return (
-        <div className="max-w-3xl mx-auto bg-[#1a1a1a] min-h-screen flex items-center justify-center py-12">
-            <Card className="shadow-lg bg-[#232323] border border-[#FFD700]/20 text-white">
+        <div className="max-w-3xl mx-auto bg-background min-h-screen flex items-center justify-center py-12">
+            <Card className="shadow-lg bg-card border border-primary/20 text-card-foreground">
                 <CardHeader>
-                    <CardTitle className="text-2xl text-[#FFD700]">Register Your Business</CardTitle>
-                    <CardDescription className="text-gray-300">
+                    <CardTitle className="text-2xl text-primary">Register Your Business</CardTitle>
+                    <CardDescription className="text-muted-foreground">
                         Complete the form below to register your business with Paymesa
                     </CardDescription>
                 </CardHeader>
 
                 <CardContent>
-                    <form onSubmit={handleSubmit}>
-                        {/* Step Indicator */}
-                        <div className="flex items-center justify-center space-x-2 mb-8">
+                    {/* Step Indicator */}
+                    <div className="mb-8">
+                        <div className="flex items-center justify-between">
                             {steps.map((step, index) => (
                                 <div key={step.id} className="flex items-center">
-                                    <div
-                                        className={`flex items-center justify-center w-8 h-8 rounded-full ${index < currentStep
-                                    ? "bg-green-500 text-white"
-                                    : index === currentStep
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-gray-200 text-gray-500"
-                                }`}
-                                    >
+                                    <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
+                                        index <= currentStep 
+                                            ? 'bg-primary text-primary-foreground border-primary' 
+                                            : 'bg-muted text-muted-foreground border-muted-foreground'
+                                    }`}>
                                         {index < currentStep ? (
                                             <Check className="h-5 w-5" />
                                         ) : (
-                                            <span>{index + 1}</span>
+                                            step.icon
                                         )}
                                     </div>
                                     {index < steps.length - 1 && (
-                                        <div
-                                            className={`w-10 h-1 ${index < currentStep ? "bg-green-500" : "bg-gray-200"}`}
-                                        />
+                                        <div className={`w-16 h-0.5 mx-2 ${
+                                            index < currentStep ? 'bg-primary' : 'bg-muted'
+                                        }`} />
                                     )}
                                 </div>
                             ))}
                         </div>
-
-                        <div className="mb-6">
-                            <div className="flex items-center mb-4">
-                                <div className="w-10 h-10 rounded-full bg-[#FFD700]/10 flex items-center justify-center mr-3 border border-[#FFD700]/30">
-                                    {steps[currentStep].icon}
+                        <div className="flex justify-between mt-2">
+                            {steps.map((step, index) => (
+                                <div key={step.id} className={`text-xs text-center ${
+                                    index <= currentStep ? 'text-primary' : 'text-muted-foreground'
+                                }`}>
+                                    {step.title}
                                 </div>
-                                <div>
-                                    <h2 className="text-xl font-semibold text-[#FFD700]">{steps[currentStep].title}</h2>
-                                    <p className="text-sm text-gray-400">{steps[currentStep].description}</p>
-                                </div>
-                            </div>
-
-                            {renderCurrentStep()}
+                            ))}
                         </div>
+                    </div>
 
-                        <div className="flex justify-between">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={prevStep}
-                                disabled={currentStep === 0}
-                                className="border border-gray-700 text-gray-300 bg-[#232323] hover:bg-[#2a2a2a]"
-                            >
-                                Previous
-                            </Button>
+                    <form onSubmit={handleSubmit}>
+                        {renderCurrentStep()}
+
+                        <div className="flex justify-between mt-8">
+                            {currentStep > 0 && (
+                                <Button
+                                    type="button"
+                                    onClick={prevStep}
+                                    variant="outline"
+                                    className="border-primary/20 text-primary hover:bg-primary/10"
+                                >
+                                    Previous
+                                </Button>
+                            )}
 
                             {currentStep < steps.length - 1 ? (
                                 <Button
                                     type="button"
                                     onClick={nextStep}
-                                    className="bg-[#FFD700] text-[#232323] hover:bg-[#FFC700] font-bold shadow-md"
+                                    className="bg-primary text-primary-foreground hover:bg-accent font-bold shadow-md"
                                 >
                                     Next
                                     <ChevronRight className="ml-2 h-4 w-4" />
@@ -1052,12 +1040,12 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                             ) : (
                                 <Button
                                     type="submit"
-                                    className="bg-[#FFD700] text-[#232323] hover:bg-[#FFC700] font-bold shadow-md"
+                                    className="bg-primary text-primary-foreground hover:bg-accent font-bold shadow-md"
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting ? (
                                         <>
-                                            <div className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-[#232323] border-t-transparent"></div>
+                                            <div className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent"></div>
                                             Submitting...
                                         </>
                                     ) : (
@@ -1069,8 +1057,8 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                     </form>
                 </CardContent>
 
-                <CardFooter className="flex justify-center border-t border-[#FFD700]/10 pt-6">
-                    <p className="text-xs text-gray-400 text-center max-w-lg">
+                <CardFooter className="flex justify-center border-t border-primary/10 pt-6">
+                    <p className="text-xs text-muted-foreground text-center max-w-lg">
                         By registering your business, you agree to Paymesa's Terms of Service and Privacy Policy. Your information will be securely stored and processed in accordance with PCI DSS standards.
                     </p>
                 </CardFooter>

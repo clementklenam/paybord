@@ -21,8 +21,8 @@ export default function StorePreview() {
     description: "Welcome to our store. Browse our products and services.",
     logo: null,
     banner: null,
-    primaryColor: "#0A2C73",
-    accentColor: "#2979FF",
+    primaryColor: "#FFD700",
+    accentColor: "#FFC700",
   });
 
   const [products, ] = useState<Product[]>([

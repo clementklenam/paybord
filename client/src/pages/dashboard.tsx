@@ -6,7 +6,6 @@ import analyticsService from "@/services/analytics.service";
 import {useToast} from "@/components/ui/use-toast";
 import {useCurrency} from "@/contexts/CurrencyContext";
 import {usePaymentContext} from "@/contexts/PaymentContext";
-import {BusinessRegistrationCheck} from "@/components/business/BusinessRegistrationCheck";
 
 // Import dashboard components
 import {TimeRangeSelector} from "@/components/dashboard/TimeRangeSelector";
@@ -152,8 +151,7 @@ export default function DashboardPage() {
   
   return (
     <DashboardLayout>
-      <BusinessRegistrationCheck>
-        <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white">
           {/* Verification Banner */}
           <div className="bg-gradient-to-r from-[#FFD700] via-[#FFC700] to-[#FFD700] border-b-4 border-[#2d5a5a] shadow-lg">
             <div className="px-6 py-4">
@@ -422,7 +420,6 @@ export default function DashboardPage() {
             onAddWidget={handleAddWidget} 
           />
         </div>
-      </BusinessRegistrationCheck>
     </DashboardLayout>
   );
 } 

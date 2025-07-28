@@ -89,13 +89,13 @@ export function ThemeSelector({ selectedTheme, onThemeSelect }: ThemeSelectorPro
 
       {/* Theme Comparison */}
       {compareMode && compareThemes.length > 0 && (
-        <div className="bg-gray-50 rounded-lg p-4">
-          <h4 className="font-medium mb-3">Theme Comparison</h4>
+        <div className="bg-muted rounded-lg p-4">
+          <h4 className="font-medium mb-3 text-card-foreground">Theme Comparison</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {compareThemes.map((theme) => (
-              <div key={theme.id} className="bg-white rounded-lg p-4 border">
-                <div className="flex items-center justify-between mb-2">
-                  <h5 className="font-medium text-sm">{theme.name}</h5>
+              <div key={theme.id} className="bg-card rounded-lg p-4 border border-border">
+                                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="font-medium text-sm text-card-foreground">{theme.name}</h5>
                   <Button
                     size="sm"
                     variant={selectedTheme?.id === theme.id ? "default" : "outline"}
@@ -104,12 +104,12 @@ export function ThemeSelector({ selectedTheme, onThemeSelect }: ThemeSelectorPro
                     {selectedTheme?.id === theme.id ? "Selected" : "Select"}
                   </Button>
                 </div>
-                <div className="space-y-2 text-xs">
+                <div className="space-y-2 text-xs text-muted-foreground">
                   <div>
-                    <span className="font-medium">Layout:</span> {theme.layout.type} ({theme.layout.columns} cols)
+                    <span className="font-medium text-card-foreground">Layout:</span> {theme.layout.type} ({theme.layout.columns} cols)
                   </div>
                   <div>
-                    <span className="font-medium">Colors:</span>
+                    <span className="font-medium text-card-foreground">Colors:</span>
                     <div className="flex gap-1 mt-1">
                       <div 
                         className="w-3 h-3 rounded-full"
@@ -122,7 +122,7 @@ export function ThemeSelector({ selectedTheme, onThemeSelect }: ThemeSelectorPro
                     </div>
                   </div>
                   <div>
-                    <span className="font-medium">Features:</span> {theme.features.slice(0, 2).join(', ')}
+                    <span className="font-medium text-card-foreground">Features:</span> {theme.features.slice(0, 2).join(', ')}
                   </div>
                 </div>
               </div>
@@ -255,10 +255,10 @@ function ThemeCard({ theme, isSelected, onSelect, compareMode, isInCompare, onTo
     <Card 
       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
         isSelected 
-          ? 'ring-2 ring-blue-500 border-blue-500 bg-blue-50' 
+          ? 'ring-2 ring-primary border-primary bg-primary/10' 
           : isInCompare
           ? 'ring-2 ring-green-500 border-green-500 bg-green-50'
-          : 'hover:border-gray-300'
+          : 'hover:border-primary/30'
       }`}
       onClick={onSelect}
     >
@@ -272,7 +272,7 @@ function ThemeCard({ theme, isSelected, onSelect, compareMode, isInCompare, onTo
           />
           {isSelected && (
             <div className="absolute top-2 right-2">
-              <div className="bg-blue-500 text-white rounded-full p-1">
+              <div className="bg-primary text-primary-foreground rounded-full p-1">
                 <Check className="h-4 w-4" />
               </div>
             </div>
@@ -311,37 +311,37 @@ function ThemeCard({ theme, isSelected, onSelect, compareMode, isInCompare, onTo
         <div className="p-4">
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h4 className="font-medium text-sm">{theme.name}</h4>
-              <p className="text-xs text-gray-600 mt-1">{theme.description}</p>
+                              <h4 className="font-medium text-sm text-card-foreground">{theme.name}</h4>
+              <p className="text-xs text-muted-foreground mt-1">{theme.description}</p>
             </div>
           </div>
 
           {/* Color Palette Preview */}
           <div className="flex gap-1 mb-3">
             <div 
-              className="w-4 h-4 rounded-full border border-gray-200"
+              className="w-4 h-4 rounded-full border border-border"
               style={{ backgroundColor: theme.colors.primary }}
               title="Primary"
             />
             <div 
-              className="w-4 h-4 rounded-full border border-gray-200"
+              className="w-4 h-4 rounded-full border border-border"
               style={{ backgroundColor: theme.colors.secondary }}
               title="Secondary"
             />
             <div 
-              className="w-4 h-4 rounded-full border border-gray-200"
+              className="w-4 h-4 rounded-full border border-border"
               style={{ backgroundColor: theme.colors.accent }}
               title="Accent"
             />
             <div 
-              className="w-4 h-4 rounded-full border border-gray-200"
+              className="w-4 h-4 rounded-full border border-border"
               style={{ backgroundColor: theme.colors.background }}
               title="Background"
             />
           </div>
 
           {/* Layout Info */}
-          <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+          <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
             <span className="capitalize">{theme.layout.type}</span>
             <span>{theme.layout.columns} cols</span>
           </div>

@@ -20,6 +20,7 @@ import Home from "@/pages/Home";
 import PaymentPage from "@/pages/payment/[id]";
 import PaymentLinkViewPage from "@/pages/payment-link/[id]";
 import TestTopCustomersPage from "@/pages/test-top-customers";
+import {BusinessRegistrationForm} from "@/components/business/BusinessRegistrationForm";
 
 // Component to handle the redirect from /pl/:id to /payment/:id
 function PaymentLinkRedirect({ params }: { params: { id: string } }) {
@@ -40,6 +41,13 @@ export function AppRouter() {
 
       {/* Home Page */}
       <Route path="/home" component={Home} />
+
+      {/* Business Registration Route */}
+      <Route path="/business/register">
+        <ProtectedRoute skipBusinessCheck={true}>
+          <BusinessRegistrationForm />
+        </ProtectedRoute>
+      </Route>
 
       {/* Protected Routes */}
       <Route path="/dashboard">
