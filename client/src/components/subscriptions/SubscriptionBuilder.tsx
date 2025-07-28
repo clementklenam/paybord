@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Calendar } from "@/components/ui/calendar";
+import { StripeCalendar } from "@/components/ui/stripe-calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -31,7 +31,8 @@ import CustomerService, { Customer } from "@/services/customer.service";
 import SubscriptionService, { Subscription } from "@/services/subscription.service";
 import BusinessService from "@/services/business.service";
 import { useToast } from "@/components/ui/use-toast";
-import { AddCustomerModal } from "./AddCustomerModal";
+import { CustomerForm } from "@/components/customers/CustomerForm";
+import { ProductForm } from "@/components/products/ProductForm";
 import { cn } from "@/lib/utils";
 
 interface SubscriptionBuilderProps {
@@ -71,7 +72,6 @@ interface SubscriptionFormData {
   collectTax: boolean;
   
   // Advanced
-  metadata: Record<string, string>;
   description: string;
   invoiceMemo: string;
   invoiceFooter: string;
@@ -122,7 +122,6 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
     trialDays: 0,
     autoCharge: true,
     collectTax: false,
-    metadata: {},
     description: '',
     invoiceMemo: '',
     invoiceFooter: '',
@@ -133,6 +132,8 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
   const [products, setProducts] = useState<Product[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
+  const [showAddProduct, setShowAddProduct] = useState(false);
+  const [isCreatingProduct, setIsCreatingProduct] = useState(false);
   const [businessId, setBusinessId] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState<string>('');
   const [previewTab, setPreviewTab] = useState<'summary' | 'invoice' | 'code'>('invoice');
@@ -233,7 +234,6 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
         startDate: formData.startDate.toISOString(),
         endDate: formData.forever ? undefined : formData.endDate?.toISOString(),
         metadata: {
-          ...formData.metadata,
           description: formData.description,
           invoiceMemo: formData.invoiceMemo,
           trialDays: formData.trialDays,
@@ -275,7 +275,6 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
         trialDays: 0,
         autoCharge: true,
         collectTax: false,
-        metadata: {},
         description: '',
         invoiceMemo: '',
         invoiceFooter: '',
@@ -462,21 +461,20 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                 {getDurationText()}
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
+                            <PopoverContent className="w-auto p-0 mr-4" align="start">
                               <div className="flex">
-                                <Calendar
-                                  mode="single"
-                                  selected={formData.startDate}
-                                  onSelect={(date) => date && setFormData(prev => ({ ...prev, startDate: date }))}
-                                  initialFocus
-                                  className="rounded-md border"
-                                />
-                                <div className="border-l p-4 w-48">
-                                  <h4 className="font-medium mb-2">Shortcuts</h4>
-                                  <div className="space-y-2">
+                                <div className="p-6">
+                                  <StripeCalendar
+                                    selected={formData.startDate}
+                                    onSelect={(date: Date) => setFormData(prev => ({ ...prev, startDate: date }))}
+                                  />
+                                </div>
+                                <div className="border-l p-4 pr-10 w-48 bg-gray-50">
+                                  <h4 className="font-medium mb-3 text-sm text-gray-700">Shortcuts</h4>
+                                  <div className="space-y-1">
                                     <Button
                                       variant="ghost"
-                                      className="w-full justify-start"
+                                      className="w-full justify-start text-[#2d5a5a] hover:text-[#1f4a4a] hover:bg-[#2d5a5a]/5 text-sm py-2 px-3 rounded-md"
                                       onClick={() => {
                                         setFormData(prev => ({ ...prev, forever: true, endDate: undefined }));
                                         setShowDurationPicker(false);
@@ -486,7 +484,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                     </Button>
                                     <Button
                                       variant="ghost"
-                                      className="w-full justify-start"
+                                      className="w-full justify-start text-sm py-2 px-3 rounded-md hover:bg-gray-100"
                                       onClick={() => {
                                         const endDate = new Date(formData.startDate);
                                         endDate.setMonth(endDate.getMonth() + 1);
@@ -494,11 +492,11 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                         setShowDurationPicker(false);
                                       }}
                                     >
-                                      1 cycle ({formatDate(new Date(formData.startDate.getTime() + 30 * 24 * 60 * 60 * 1000))})
+                                      1 month ({formatDate(new Date(formData.startDate.getTime() + 30 * 24 * 60 * 60 * 1000))})
                                     </Button>
                                     <Button
                                       variant="ghost"
-                                      className="w-full justify-start"
+                                      className="w-full justify-start text-sm py-2 px-3 rounded-md hover:bg-gray-100"
                                       onClick={() => {
                                         const endDate = new Date(formData.startDate);
                                         endDate.setMonth(endDate.getMonth() + 2);
@@ -506,11 +504,11 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                         setShowDurationPicker(false);
                                       }}
                                     >
-                                      2 cycles ({formatDate(new Date(formData.startDate.getTime() + 60 * 24 * 60 * 60 * 1000))})
+                                      2 months ({formatDate(new Date(formData.startDate.getTime() + 60 * 24 * 60 * 60 * 1000))})
                                     </Button>
                                     <Button
                                       variant="ghost"
-                                      className="w-full justify-start"
+                                      className="w-full justify-start text-sm py-2 px-3 rounded-md hover:bg-gray-100"
                                       onClick={() => {
                                         const endDate = new Date(formData.startDate);
                                         endDate.setMonth(endDate.getMonth() + 3);
@@ -518,11 +516,11 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                         setShowDurationPicker(false);
                                       }}
                                     >
-                                      3 cycles ({formatDate(new Date(formData.startDate.getTime() + 90 * 24 * 60 * 60 * 1000))})
+                                      3 months ({formatDate(new Date(formData.startDate.getTime() + 90 * 24 * 60 * 60 * 1000))})
                                     </Button>
                                     <Button
                                       variant="ghost"
-                                      className="w-full justify-start"
+                                      className="w-full justify-start text-sm py-2 px-3 rounded-md hover:bg-gray-100"
                                       onClick={() => {
                                         const endDate = new Date(formData.startDate);
                                         endDate.setMonth(endDate.getMonth() + 6);
@@ -530,11 +528,11 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                         setShowDurationPicker(false);
                                       }}
                                     >
-                                      6 cycles ({formatDate(new Date(formData.startDate.getTime() + 180 * 24 * 60 * 60 * 1000))})
+                                      6 months ({formatDate(new Date(formData.startDate.getTime() + 180 * 24 * 60 * 60 * 1000))})
                                     </Button>
                                     <Button
                                       variant="ghost"
-                                      className="w-full justify-start"
+                                      className="w-full justify-start text-sm py-2 px-3 rounded-md hover:bg-gray-100"
                                       onClick={() => {
                                         const endDate = new Date(formData.startDate);
                                         endDate.setFullYear(endDate.getFullYear() + 1);
@@ -542,11 +540,11 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                         setShowDurationPicker(false);
                                       }}
                                     >
-                                      12 cycles ({formatDate(new Date(formData.startDate.getTime() + 365 * 24 * 60 * 60 * 1000))})
+                                      12 months ({formatDate(new Date(formData.startDate.getTime() + 365 * 24 * 60 * 60 * 1000))})
                                     </Button>
                                     <Button
                                       variant="ghost"
-                                      className="w-full justify-start"
+                                      className="w-full justify-start text-[#2d5a5a] hover:text-[#1f4a4a] hover:bg-[#2d5a5a]/5 text-sm py-2 px-3 rounded-md"
                                       onClick={() => {
                                         setFormData(prev => ({ ...prev, forever: false }));
                                         setShowDurationPicker(false);
@@ -610,14 +608,18 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                             </div>
                           </div>
                           
-                          <div className="flex space-x-4 text-sm">
-                            <Button variant="link" className="p-0 h-auto text-blue-600">
-                              Add product
-                            </Button>
-                            <Button variant="link" className="p-0 h-auto text-blue-600">
-                              Add coupon
-                            </Button>
-                          </div>
+                                                      <div className="flex space-x-4 text-sm">
+                              <Button 
+                                variant="link" 
+                                className="p-0 h-auto text-[#2d5a5a] hover:text-[#1f4a4a]"
+                                onClick={() => setShowAddProduct(true)}
+                              >
+                                Add product
+                              </Button>
+                              <Button variant="link" className="p-0 h-auto text-[#2d5a5a] hover:text-[#1f4a4a]">
+                                Add coupon
+                              </Button>
+                            </div>
                           
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
@@ -656,13 +658,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                           </Button>
                           </div>
                           
-                          <div>
-                            <h4 className="font-medium mb-2">Metadata</h4>
-                                                      <Button variant="outline" className="w-full justify-start border-[#2d5a5a] text-[#2d5a5a] hover:bg-[#2d5a5a]/10">
-                            <Plus className="h-4 w-4 mr-2" />
-                            Add metadata
-                          </Button>
-                          </div>
+
                         </div>
                       )}
 
@@ -904,12 +900,12 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
               )}
 
               {previewTab === 'invoice' && (
-                <div className="bg-white border rounded-lg p-6 space-y-6 max-w-lg mx-auto">
+                <div className="bg-white border rounded-lg p-8 space-y-8 max-w-2xl mx-auto">
                   {/* Invoice Header */}
                   <div className="flex justify-between items-start">
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900">Invoice</h2>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <h2 className="text-3xl font-bold text-gray-900">Invoice</h2>
+                      <p className="text-sm text-gray-600 mt-2">
                         Invoice number {generateInvoiceNumber()}
                       </p>
                       <p className="text-sm text-gray-600">
@@ -917,22 +913,22 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="font-semibold text-gray-900">{businessName}</div>
+                      <div className="text-xl font-semibold text-gray-700">{businessName}</div>
                       <div className="text-sm text-gray-600">United States</div>
                     </div>
                   </div>
 
-                  {/* Amount Due */}
-                  <div className="text-center py-4">
-                    <div className="text-3xl font-bold text-gray-900">
+                  {/* Amount Due - Prominent Display */}
+                  <div className="text-center py-6 border-b">
+                    <div className="text-4xl font-bold text-gray-900">
                       {getCurrencySymbol()}{calculateTotal()} due {formatDate(formData.startDate)}
                     </div>
                   </div>
 
-                  {/* Billing Info */}
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  {/* Billing Info - Two Column Layout */}
+                  <div className="grid grid-cols-2 gap-8 text-sm">
                     <div>
-                      <div className="font-semibold text-gray-900 mb-2">Bill to</div>
+                      <div className="font-semibold text-gray-900 mb-3 text-base">Bill to</div>
                       <div className="space-y-1 text-gray-600">
                         <div>{formData.customerName || 'Customer Name'}</div>
                         <div>Ghana</div>
@@ -947,7 +943,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                       </div>
                     </div>
                     <div>
-                      <div className="font-semibold text-gray-900 mb-2">Ship to</div>
+                      <div className="font-semibold text-gray-900 mb-3 text-base">Ship to</div>
                       <div className="space-y-1 text-gray-600">
                         <div>{formData.customerName || 'Customer Name'}</div>
                         <div>Ghana</div>
@@ -959,49 +955,49 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                     </div>
                   </div>
 
-                  {/* Line Items */}
-                  <div className="border-t pt-4">
-                    <div className="grid grid-cols-3 gap-3 text-sm font-medium text-gray-500 border-b pb-2">
+                  {/* Line Items Table */}
+                  <div className="border-t pt-6">
+                    <div className="grid grid-cols-4 gap-4 text-sm font-medium text-gray-500 border-b pb-3">
                       <div>Description</div>
                       <div className="text-center">Qty</div>
+                      <div className="text-center">Unit price</div>
                       <div className="text-right">Amount</div>
                     </div>
                     
-                    <div className="grid grid-cols-3 gap-3 py-3 text-sm">
+                    <div className="grid grid-cols-4 gap-4 py-4 text-sm border-b">
                       <div>
-                        <div className="font-medium">{formData.productName || 'Product Name'}</div>
-                        <div className="text-gray-500 text-xs">
-                          {formatDate(formData.startDate)} - {getEndDate()}
+                        <div className="font-medium text-gray-900">{formData.productName || 'Product Name'}</div>
+                        <div className="text-gray-500 text-xs mt-1">
+                          {formatDate(formData.startDate)} – {getEndDate()}
                         </div>
                       </div>
                       <div className="text-center">{formData.quantity}</div>
-                      <div className="text-right">{getCurrencySymbol()}{calculateTotal()}</div>
+                      <div className="text-center">{getCurrencySymbol()}{formData.price}</div>
+                      <div className="text-right font-medium">{getCurrencySymbol()}{calculateTotal()}</div>
                     </div>
                   </div>
 
-                  {/* Totals */}
-                  <div className="border-t pt-4">
-                    <div className="flex justify-end">
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between space-x-8">
-                          <span>Subtotal</span>
-                          <span>{getCurrencySymbol()}{calculateTotal()}</span>
-                        </div>
-                        <div className="flex justify-between space-x-8 font-semibold">
-                          <span>Total</span>
-                          <span>{getCurrencySymbol()}{calculateTotal()}</span>
-                        </div>
-                        <div className="flex justify-between space-x-8 font-bold text-lg">
-                          <span>Amount due</span>
-                          <span>{getCurrencySymbol()}{calculateTotal()}</span>
-                        </div>
+                  {/* Totals Section */}
+                  <div className="flex justify-end">
+                    <div className="space-y-3 text-sm w-48">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Subtotal</span>
+                        <span>{getCurrencySymbol()}{calculateTotal()}</span>
+                      </div>
+                      <div className="flex justify-between font-semibold">
+                        <span>Total</span>
+                        <span>{getCurrencySymbol()}{calculateTotal()}</span>
+                      </div>
+                      <div className="flex justify-between font-bold text-lg border-t pt-2">
+                        <span>Amount due</span>
+                        <span>{getCurrencySymbol()}{calculateTotal()}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Footer */}
-                  <div className="border-t pt-4 text-center text-xs text-gray-500">
-                    {generateInvoiceNumber()} {getCurrencySymbol()}{calculateTotal()} due {formatDate(formData.startDate)}
+                  <div className="border-t pt-4 text-left text-xs text-gray-500">
+                    {generateInvoiceNumber()} · {getCurrencySymbol()}{calculateTotal()} due {formatDate(formData.startDate)}
                   </div>
                 </div>
               )}
@@ -1017,23 +1013,128 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
         </div>
       </DialogContent>
       
-      {/* Add Customer Modal */}
-      <AddCustomerModal
-        open={showAddCustomer}
-        onOpenChange={setShowAddCustomer}
-        onAdd={(customer) => {
-          setCustomers(prev => [...prev, customer]);
-          setFormData(prev => ({
-            ...prev,
-            customerId: customer._id,
-            customerName: customer.name,
-            customerEmail: customer.email,
-            customerPhone: customer.phone || ''
-          }));
-          setShowAddCustomer(false);
-        }}
-        businessId={businessId || ''}
-      />
+      {/* Add Customer Dialog */}
+      <Dialog open={showAddCustomer} onOpenChange={setShowAddCustomer}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="flex justify-between items-center pb-4 border-b">
+            <div>
+              <h2 className="text-xl font-semibold">New Customer</h2>
+              <p className="text-sm text-muted-foreground">
+                Create a new customer for this subscription. Fill in the required information below.
+              </p>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setShowAddCustomer(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <CustomerForm
+            onSubmit={async (customerData) => {
+              try {
+                // Transform CustomerFormData to CustomerCreationData
+                const apiData = {
+                  name: customerData.name,
+                  email: customerData.email,
+                  phone: customerData.phone,
+                  description: customerData.description,
+                  billingAddress: customerData.billingAddress,
+                  shippingAddress: customerData.shippingAddress,
+                  metadata: {
+                    ...customerData.metadata,
+                    phoneCountry: customerData.phoneCountry,
+                    useShippingAsBilling: customerData.useShippingAsBilling.toString()
+                  },
+                  businessId: businessId || ''
+                };
+                
+                console.log('Sending customer data to API:', apiData);
+                
+                // Create customer using CustomerService
+                const customerService = new CustomerService();
+                const createdCustomer = await customerService.createCustomer(apiData);
+                
+                setCustomers(prev => [...prev, createdCustomer]);
+                setFormData(prev => ({
+                  ...prev,
+                  customerId: createdCustomer._id || '',
+                  customerName: createdCustomer.name,
+                  customerEmail: createdCustomer.email,
+                  customerPhone: createdCustomer.phone || ''
+                }));
+                setShowAddCustomer(false);
+                
+                toast({
+                  title: "Success!",
+                  description: "Customer created successfully",
+                });
+              } catch (error) {
+                console.error('Customer creation error:', error);
+                toast({
+                  title: "Error",
+                  description: "Failed to create customer. Please try again.",
+                  variant: "destructive"
+                });
+              }
+            }}
+            onCancel={() => setShowAddCustomer(false)}
+            isLoading={false}
+          />
+        </DialogContent>
+      </Dialog>
+      
+      {/* Add Product Dialog */}
+      <Dialog open={showAddProduct} onOpenChange={setShowAddProduct}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="flex justify-between items-center pb-4 border-b">
+            <div>
+              <h2 className="text-xl font-semibold">New Product</h2>
+              <p className="text-sm text-muted-foreground">
+                Create a new product for this subscription. Fill in the required information below.
+              </p>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setShowAddProduct(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <ProductForm
+            businessId={businessId || ''}
+            onSubmit={(createdProduct) => {
+              setProducts(prev => [...prev, createdProduct]);
+              setFormData(prev => ({
+                ...prev,
+                productId: createdProduct._id || createdProduct.id || '',
+                productName: createdProduct.name,
+                price: createdProduct.price,
+                currency: createdProduct.currency || 'USD'
+              }));
+              setShowAddProduct(false);
+              
+              toast({
+                title: "Success!",
+                description: "Product created successfully",
+              });
+            }}
+            onCancel={() => setShowAddProduct(false)}
+            onPreview={() => {
+              // Handle preview functionality
+              toast({
+                title: "Preview",
+                description: "Product preview functionality coming soon",
+              });
+            }}
+            isLoading={isCreatingProduct}
+          />
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 } 

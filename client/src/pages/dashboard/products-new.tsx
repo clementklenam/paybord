@@ -941,7 +941,7 @@ export default function ProductsPage() {
                     </>
                   ) : (
                     <>
-                      <Eye className="h-3.5 w-3.5 mr-1.5" /> Preview
+                      <Eye className="h-3.5 w-3.5 mr-1.5" /> Previews
                     </>
                   )}
                 </Button>

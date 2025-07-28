@@ -238,10 +238,17 @@ export function CustomerForm({ onSubmit, onCancel, initialData, isLoading = fals
       return;
     }
     
-    // Prepare data for submission
+    // Prepare data for submission - fix phone number construction
+    let phoneNumber = formData.phone;
+    if (phoneNumber && !phoneNumber.startsWith('+')) {
+      // Remove any existing country code from the phone input
+      const cleanPhone = phoneNumber.replace(/^\+?\d{1,4}\s?/, '');
+      phoneNumber = formData.phoneCountry + ' ' + cleanPhone;
+    }
+    
     const submitData = {
       ...formData,
-      phone: formData.phoneCountry + ' ' + formData.phone
+      phone: phoneNumber
     };
     
     onSubmit(submitData);
