@@ -45,10 +45,15 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 // Rate limiting
+const isDevelopment = process.env.NODE_ENV === 'development';
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again after 15 minutes'
+    max: isDevelopment ? 5000 : 1000, // More lenient in development
+    message: 'Too many requests from this IP, please try again after 15 minutes',
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    skipSuccessfulRequests: true, // Don't count successful requests
+    skipFailedRequests: false // Count failed requests
 });
 
 // Apply rate limiting to API routes (except webhooks which may need higher limits)
