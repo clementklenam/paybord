@@ -148,6 +148,16 @@ export default function DashboardPage() {
     };
     setCustomWidgets([...customWidgets, newWidget]);
   };
+
+  const handleVerifyLater = () => {
+    // Placeholder: implement navigation or logic as needed
+    // For now, just show a toast
+    toast({
+      title: "Verification Skipped",
+      description: "You can verify your account later from the dashboard.",
+      variant: "default"
+    });
+  };
   
   return (
     <DashboardLayout>
@@ -171,9 +181,9 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-all duration-200 font-semibold"
+                    variant="outline"
+                    className="border-[#FFD700] text-[#FFD700] bg-[#232323] hover:bg-[#FFD700] hover:text-[#232323] hover:border-[#FFD700]"
+                    onClick={handleVerifyLater}
                   >
                     Verify Later
                   </Button>
@@ -199,7 +209,7 @@ export default function DashboardPage() {
                   onClick={() => setIsAddingWidget(true)} 
                   variant="outline"
                   size="sm"
-                  className="border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a]/5 transition-all duration-200"
+                  className="bg-[#FFD700] text-[#2d5a5a] border-[#FFD700] hover:bg-[#2d5a5a] hover:text-[#FFD700] hover:border-[#FFD700] font-semibold"
                 >
                   <Plus className="mr-2 h-4 w-4" /> Add widget
                 </Button>

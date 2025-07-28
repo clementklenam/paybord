@@ -123,9 +123,9 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
 
   if (isLoading) {
     return (
-      <Card className={className}>
+      <Card className={`bg-white ${className || ''}`}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-black">
             <ExternalLink className="h-5 w-5" />
             Payment Sources
           </CardTitle>
@@ -161,16 +161,16 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
 
   if (error) {
     return (
-      <Card className={className}>
+      <Card className={`bg-white ${className || ''}`}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-black">
             <ExternalLink className="h-5 w-5" />
             Payment Sources
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
+            <p className="text-red-600 dark:text-red-400 mb-4 text-black">{error}</p>
             <Button onClick={fetchTransactions} variant="outline" size="sm">
               Try Again
             </Button>
@@ -181,10 +181,10 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
   }
 
   return (
-    <Card className={className}>
+    <Card className={`bg-white ${className || ''}`}>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-black">
             <ExternalLink className="h-5 w-5" />
             Payment Sources
           </CardTitle>
@@ -193,7 +193,7 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
           </Button>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="text-black">
         {transactions.length === 0 ? (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <ExternalLink className="h-12 w-12 mx-auto mb-4 opacity-50" />
@@ -243,7 +243,11 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
         
         {transactions.length > 0 && (
           <div className="mt-4 pt-4 border-t">
-            <Button variant="outline" size="sm" className="w-full">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full bg-[#2d5a5a] text-white hover:bg-[#244949] border-none"
+            >
               View All Transactions
             </Button>
           </div>

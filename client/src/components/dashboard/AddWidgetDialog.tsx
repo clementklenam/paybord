@@ -56,23 +56,23 @@ export function AddWidgetDialog({ open, onOpenChange, onAddWidget }: AddWidgetDi
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] bg-[#232323] border border-[#FFD700] text-white">
         <DialogHeader>
-          <DialogTitle>Add Widget</DialogTitle>
+          <DialogTitle className="text-[#FFD700]">Add Widget</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           {widgetOptions.map((option) => (
             <div
               key={option.id}
-              className="flex items-center p-3 rounded-lg hover:bg-gray-100 cursor-pointer"
+              className="flex items-center p-3 rounded-lg hover:bg-[#FFD700]/10 cursor-pointer border border-[#FFD700]"
               onClick={() => handleAddWidget(option.id)}
             >
-              <div className="mr-4 p-2 rounded-full bg-primary/10">
+              <div className="mr-4 p-2 rounded-full bg-[#FFD700]/20 text-[#FFD700]">
                 {option.icon}
               </div>
               <div>
-                <h3 className="font-medium">{option.name}</h3>
-                <p className="text-sm text-gray-500">{option.description}</p>
+                <h3 className="font-medium text-white">{option.name}</h3>
+                <p className="text-sm text-[#FFD700]">{option.description}</p>
               </div>
             </div>
           ))}

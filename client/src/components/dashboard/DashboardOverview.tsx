@@ -359,13 +359,13 @@ function DashboardOverview() {
       )}
 
       {/* Section 4: Custom Widgets */}
-      <section>
+      <section className="rounded-lg bg-[#2d5a5a] p-6 mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Custom Widgets</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-white">Track your business performance</h2>
           <Button
             variant="outline"
             size="sm"
-            className="h-8 border-[#1e8449] text-[#1e8449] hover:bg-[#1e8449]/5"
+            className="h-8 bg-[#FFD700] text-[#2d5a5a] border-[#FFD700] hover:bg-[#2d5a5a] hover:text-[#FFD700] hover:border-[#FFD700] font-semibold"
             onClick={() => setIsAddingWidget(true)}
           >
             <Plus className="h-4 w-4 mr-1" />
