@@ -313,7 +313,7 @@ function DashboardOverview() {
               previousPeriod: safeNumber(analytics.newCustomers.previousCount),
               trend: analytics.newCustomers.chart,
               lastUpdated: new Date(analytics.lastUpdated).toLocaleTimeString()
-            }} />
+            }} className="" />
             
             <FailedPaymentsWidget />
             

@@ -14,7 +14,7 @@ interface TopCustomersWidgetProps {
 }
 
 export function TopCustomersWidget({ customers = [], currency = 'GHS' }: TopCustomersWidgetProps) {
-  const getCurrencySymbol = (currency) => {
+  const getCurrencySymbol = (currency: string) => {
     if (currency === 'USD') return '$';
     if (currency === 'GHS') return '₵';
     return currency;

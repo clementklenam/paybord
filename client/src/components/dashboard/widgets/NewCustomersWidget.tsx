@@ -1,22 +1,18 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Users} from "lucide-react";
 
-interface NewCustomersData {
-  count: number;
-  previousPeriod: number;
-  trend: Array<{
-    name: string;
-    value: number;
-  }>;
-  lastUpdated: string;
-}
-
 interface NewCustomersWidgetProps {
-  data: NewCustomersData;
+  data: {
+    count: number;
+    previousPeriod: number;
+    trend: Array<{ name: string; value: number }>;
+    lastUpdated: string;
+  };
+  className?: string;
 }
 
-export const NewCustomersWidget = ({ data, className }) => (
-  <Card className={`border-white text-[#232323] ${className}`}>
+export const NewCustomersWidget = ({ data, className }: NewCustomersWidgetProps) => (
+  <Card className={`border-white text-[#232323] ${className || ''}`}>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-semibold text-[#232323]">
         New Customers
