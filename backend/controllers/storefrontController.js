@@ -313,8 +313,8 @@ exports.getPublicStorefrontById = async (req, res) => {
                 .populate('business', 'businessName currency')
                 .populate({
                     path: 'products',
-                    select: 'name description price image currency isActive',
-                    match: { isActive: true }  // Only show active products
+                    select: 'name description price image currency active',
+                    match: { active: true }  // Only show active products
                 })
                 .lean();
         } else {
@@ -325,8 +325,8 @@ exports.getPublicStorefrontById = async (req, res) => {
                 .populate('business', 'businessName currency')
                 .populate({
                     path: 'products',
-                    select: 'name description price image currency isActive',
-                    match: { isActive: true }  // Only show active products
+                    select: 'name description price image currency active',
+                    match: { active: true }  // Only show active products
                 })
                 .lean();
         }
@@ -336,6 +336,47 @@ exports.getPublicStorefrontById = async (req, res) => {
             return res.status(404).json({
                 success: false,
                 message: 'Storefront not found or not active'
+            });
+        }
+
+        console.log('[DEBUG] Public storefront found:', {
+            id: storefront._id,
+            name: storefront.name,
+            status: storefront.status,
+            productsCount: storefront.products ? storefront.products.length : 0,
+            products: storefront.products
+        });
+
+        // If no active products found, try to get all products
+        if (!storefront.products || storefront.products.length === 0) {
+            console.log('[DEBUG] No active products found, trying to get all products');
+            if (isValidObjectId) {
+                storefront = await Storefront.findOne({
+                    _id: id,
+                    status: 'active'
+                })
+                    .populate('business', 'businessName currency')
+                    .populate({
+                        path: 'products',
+                        select: 'name description price image currency active'
+                    })
+                    .lean();
+            } else {
+                storefront = await Storefront.findOne({
+                    customId: id,
+                    status: 'active'
+                })
+                    .populate('business', 'businessName currency')
+                    .populate({
+                        path: 'products',
+                        select: 'name description price image currency active'
+                    })
+                    .lean();
+            }
+            
+            console.log('[DEBUG] After fallback - products found:', {
+                productsCount: storefront.products ? storefront.products.length : 0,
+                products: storefront.products
             });
         }
 

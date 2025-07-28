@@ -907,6 +907,9 @@ export default function StorefrontPreview() {
 
   useEffect(() => {
     if (storefront?.products) {
+      console.log('[DEBUG] Storefront products:', storefront.products);
+      console.log('[DEBUG] Search query:', searchQuery);
+      
       const filtered = storefront.products.filter((product: ExtendedProduct) => {
         if (!searchQuery) return true;
         const query = searchQuery.toLowerCase();
@@ -915,8 +918,11 @@ export default function StorefrontPreview() {
           product.description?.toLowerCase().includes(query)
         );
       });
+      
+      console.log('[DEBUG] Filtered products:', filtered);
       setFilteredProducts(filtered);
     } else {
+      console.log('[DEBUG] No products in storefront:', storefront);
       setFilteredProducts([]);
     }
   }, [storefront, searchQuery]);
