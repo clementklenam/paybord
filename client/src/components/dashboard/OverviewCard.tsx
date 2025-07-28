@@ -32,7 +32,7 @@ export function OverviewCard({ title, value, previousValue, data, lastUpdated }:
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-300 mb-1">{title}</p>
+          <p className="text-sm font-medium text-white mb-1">{title}</p>
           <div className="flex items-baseline space-x-3">
             <p className="text-2xl font-semibold text-white">{value}</p>
             <div className={`flex items-center text-xs font-medium px-2 py-1 rounded-full ${
@@ -48,11 +48,11 @@ export function OverviewCard({ title, value, previousValue, data, lastUpdated }:
               {isPositive ? '+' : ''}{percentChange.toFixed(1)}%
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-1">Previous: {previousValue}</p>
+          <p className="text-xs text-white mt-1">Previous: {previousValue}</p>
         </div>
       </div>
       
-      <div className="h-[140px] bg-white rounded-lg p-3 border border-gray-200">
+      <div className="h-[140px] bg-white rounded-lg p-3 border border-white">
         <DashboardChart 
           data={chartData} 
           color={chartColor}
@@ -61,7 +61,7 @@ export function OverviewCard({ title, value, previousValue, data, lastUpdated }:
         />
       </div>
       
-      <p className="text-xs text-gray-400">Last updated: {lastUpdated}</p>
+      <p className="text-xs text-white">Last updated: {lastUpdated}</p>
     </div>
   );
 }

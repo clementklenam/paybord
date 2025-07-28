@@ -40,12 +40,12 @@ const WidgetCard = ({
   icon: React.ElementType;
   className?: string;
 }) => (
-  <Card className={`bg-[#232323] border border-[#FFD700] shadow-lg hover:shadow-xl transition-all ${className}`}>
+  <Card className={`bg-[#232323] border border-white shadow-lg hover:shadow-xl transition-all ${className}`}>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-semibold text-white">
         {title}
       </CardTitle>
-      {Icon && <Icon className="h-4 w-4 text-[#FFD700]" />}
+      {Icon && <Icon className="h-4 w-4 text-white" />}
     </CardHeader>
     <CardContent>
       <div className="space-y-3">

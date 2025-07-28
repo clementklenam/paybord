@@ -36,31 +36,31 @@ export function ShopifyStatsCard({ title, value, change, changeLabel, icon, tren
         return {
           iconBg: 'bg-[#FFD700]/20',
           iconColor: 'text-[#FFD700]',
-          borderColor: 'border-[#FFD700]/30'
+          borderColor: 'border-white'
         };
       case 'blue':
         return {
           iconBg: 'bg-blue-500/20',
           iconColor: 'text-blue-500',
-          borderColor: 'border-blue-500/30'
+          borderColor: 'border-white'
         };
       case 'green':
         return {
           iconBg: 'bg-green-500/20',
           iconColor: 'text-green-500',
-          borderColor: 'border-green-500/30'
+          borderColor: 'border-white'
         };
       case 'purple':
         return {
           iconBg: 'bg-purple-500/20',
           iconColor: 'text-purple-500',
-          borderColor: 'border-purple-500/30'
+          borderColor: 'border-white'
         };
       default:
         return {
           iconBg: 'bg-[#FFD700]/20',
           iconColor: 'text-[#FFD700]',
-          borderColor: 'border-[#FFD700]/30'
+          borderColor: 'border-white'
         };
     }
   };

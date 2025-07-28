@@ -13,7 +13,7 @@ interface DashboardCardProps {
 
 export function DashboardCard({ title, value, description, trend, icon, gradient }: DashboardCardProps) {
   return (
-    <Card className={`overflow-hidden bg-gradient-to-br ${gradient || 'from-white to-gray-50/50'} border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1`}>
+    <Card className={`overflow-hidden bg-gradient-to-br ${gradient || 'from-white to-gray-50/50'} border-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1`}>
       <CardContent className="p-6">
         <div className="flex flex-col space-y-4">
           <div className="flex items-center justify-between">
@@ -23,7 +23,7 @@ export function DashboardCard({ title, value, description, trend, icon, gradient
                   {icon}
                 </div>
               )}
-              <p className="text-sm font-medium text-white/90">{title}</p>
+              <p className="text-sm font-medium text-white">{title}</p>
             </div>
             {trend !== null && (
               <div className={`flex items-center text-xs font-medium px-2 py-1 rounded-full ${
@@ -43,7 +43,7 @@ export function DashboardCard({ title, value, description, trend, icon, gradient
           
           <div className="space-y-2">
             <p className="text-3xl font-bold text-white">{value}</p>
-            <p className="text-xs text-white/70">{description}</p>
+            <p className="text-xs text-white">{description}</p>
           </div>
         </div>
       </CardContent>
