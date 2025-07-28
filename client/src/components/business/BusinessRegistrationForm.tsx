@@ -18,7 +18,6 @@ import {
     CardHeader,
     CardTitle
 } from "@/components/ui/card";
-import {Checkbox} from "@/components/ui/checkbox";
 import {
     BusinessRegistrationData,
     BUSINESS_TYPE_OPTIONS,
@@ -146,40 +145,6 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
             setFormData((prev) => ({
                 ...prev,
                 [name]: value
-            }));
-        }
-    };
-
-    const handleCheckboxChange = (checked: boolean, name: string) => {
-        // Handle nested objects
-        if (name.includes('.')) {
-            const parts = name.split('.');
-            if (parts.length === 2) {
-                const [parent, child] = parts;
-                setFormData((prev) => ({
-                    ...prev,
-                    [parent]: {
-                        ...(prev[parent as keyof BusinessRegistrationData] as Record<string, any> || {}),
-                        [child]: checked
-                    }
-                }));
-            } else if (parts.length === 3) {
-                const [parent, child, grandchild] = parts;
-                setFormData((prev) => ({
-                    ...prev,
-                    [parent]: {
-                        ...(prev[parent as keyof BusinessRegistrationData] as Record<string, any> || {}),
-                        [child]: {
-                            ...(((prev[parent as keyof BusinessRegistrationData] as Record<string, any>)[child]) || {}),
-                            [grandchild]: checked
-                        }
-                    }
-                }));
-            }
-        } else {
-            setFormData((prev) => ({
-                ...prev,
-                [name]: checked
             }));
         }
     };
