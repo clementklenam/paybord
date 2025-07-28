@@ -1,4 +1,4 @@
-import api from './api';
+import { api, API_URL } from './api';
 import {Business, BusinessRegistrationData, VerificationDocument} from '../types/business';
 
 export default class BusinessService {
@@ -63,7 +63,7 @@ export default class BusinessService {
             // Use a more direct approach with fetch instead of axios
             const token = localStorage.getItem('token');
             // Include the documentType in the URL path
-            const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:5002/api'}/business/upload-document/${encodeURIComponent(documentType)}`;
+            const apiUrl = `${API_URL}/business/upload-document/${encodeURIComponent(documentType)}`;
             
             console.log(`Sending request to: ${apiUrl}`);
             
@@ -128,7 +128,7 @@ export default class BusinessService {
             await new Promise(resolve => setTimeout(resolve, 200));
             
             // Make a silent fetch request
-            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/business/profile`, {
+            const response = await fetch(`${API_URL}/business/profile`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,

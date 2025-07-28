@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {getAuthHeader} from './auth-header';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { API_URL } from './api';
 
 export interface PaymentMethod {
     id: string;
@@ -72,6 +71,7 @@ export type CustomerCreationData = {
     metadata?: Record<string, string>;
     billingAddress?: Address;
     shippingAddress?: Address;
+    businessId?: string;
 };
 
 export default class CustomerService {

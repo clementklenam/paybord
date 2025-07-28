@@ -207,7 +207,17 @@ export default function CustomersPage() {
   const handleCreateCustomer = async (data: CustomerCreationData) => {
     setIsCreatingCustomer(true);
     try {
-      const newCustomer = await customerService.createCustomer(data);
+      // Add businessId to the customer data
+      const customerData = {
+        ...data,
+        businessId: businessId
+      };
+      
+      if (!businessId) {
+        throw new Error('Business ID is required to create a customer');
+      }
+      
+      const newCustomer = await customerService.createCustomer(customerData);
       setIsCreateCustomerOpen(false);
       fetchCustomers();
       toast({
@@ -219,7 +229,7 @@ export default function CustomersPage() {
       console.error('Error creating customer:', err);
       toast({
         title: "Error Creating Customer",
-        description: "There was a problem creating the customer. Please try again.",
+        description: err instanceof Error ? err.message : "There was a problem creating the customer. Please try again.",
         variant: "destructive",
       });
     } finally {

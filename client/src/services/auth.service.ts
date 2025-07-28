@@ -1,4 +1,4 @@
-import api from './api';
+import { api } from './api';
 import {AuthResponse, SignupData, LoginData, OtpVerificationData, KycData} from '../types/auth';
 
 export default class AuthService {

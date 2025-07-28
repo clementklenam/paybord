@@ -30,6 +30,7 @@ export function AddCustomerModal({ open, onOpenChange, onAdd, businessId }: { op
         name,
         email,
         phone,
+        businessId,
         billingAddress: billing ? { line1: billing } : undefined
       });
       onAdd(customer);

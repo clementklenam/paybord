@@ -4,17 +4,20 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Badge} from "@/components/ui/badge";
-import {Plus, Download, Info, ArrowRight} from "lucide-react";
-import {CreateSubscriptionDrawer} from "@/components/subscriptions/CreateSubscriptionDrawer";
+import {Card, CardContent} from "@/components/ui/card";
+import {Plus, Download, Info, ArrowRight, Sparkles, Users, TrendingUp, Clock, DollarSign, Shield} from "lucide-react";
+import {SubscriptionBuilder} from "@/components/subscriptions/SubscriptionBuilder";
 import SubscriptionService, { Subscription } from '@/services/subscription.service';
+import { useToast } from "@/components/ui/use-toast";
 
 export default function SubscriptionsPage() {
   const [activeTab, setActiveTab] = useState("all");
   const [showBanner, setShowBanner] = useState(true);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [builderOpen, setBuilderOpen] = useState(false);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     async function fetchSubscriptions() {
@@ -30,7 +33,7 @@ export default function SubscriptionsPage() {
       }
     }
     fetchSubscriptions();
-  }, [drawerOpen]); // refetch when drawer closes (new sub created)
+  }, [builderOpen]); // refetch when builder closes (new sub created)
 
   return (
     <DashboardLayout>
@@ -39,7 +42,7 @@ export default function SubscriptionsPage() {
         <div className="max-w-7xl mx-auto px-0 pt-2 pb-2">
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold text-gray-900">Subscriptions</h1>
-            <Button variant="default" size="lg" onClick={() => setDrawerOpen(true)}>
+            <Button variant="default" size="lg" onClick={() => setBuilderOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Create subscription
             </Button>
@@ -52,6 +55,8 @@ export default function SubscriptionsPage() {
             </TabsList>
           </Tabs>
         </div>
+
+
 
         {/* Info Banner */}
         {showBanner && (
@@ -106,49 +111,216 @@ export default function SubscriptionsPage() {
           </div>
         </div>
 
-        {/* Empty State */}
-        <div className="max-w-7xl mx-auto px-0 pt-12 pb-24 flex flex-col items-center justify-center">
+        {/* Stats Cards */}
+        <div className="max-w-7xl mx-auto px-0 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-blue-100 text-sm font-medium">Total Subscriptions</p>
+                    <p className="text-3xl font-bold">{subscriptions.length}</p>
+                  </div>
+                  <Users className="h-8 w-8 text-blue-200" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-green-100 text-sm font-medium">Active</p>
+                    <p className="text-3xl font-bold">
+                      {subscriptions.filter(s => s.status === 'active').length}
+                    </p>
+                  </div>
+                  <TrendingUp className="h-8 w-8 text-green-200" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-purple-100 text-sm font-medium">Monthly Revenue</p>
+                    <p className="text-3xl font-bold">
+                      ${subscriptions
+                        .filter(s => s.status === 'active' && s.interval === 'month')
+                        .reduce((sum, s) => sum + s.price, 0)
+                        .toFixed(2)}
+                    </p>
+                  </div>
+                  <DollarSign className="h-8 w-8 text-purple-200" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-orange-100 text-sm font-medium">Trial Period</p>
+                    <p className="text-3xl font-bold">
+                      {subscriptions.filter(s => s.status === 'trialing').length}
+                    </p>
+                  </div>
+                  <Clock className="h-8 w-8 text-orange-200" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Subscriptions List */}
+        <div className="max-w-7xl mx-auto px-0">
           {loading ? (
-            <div className="text-gray-600">Loading subscriptions...</div>
+            <div className="flex items-center justify-center py-12">
+              <div className="flex items-center space-x-2">
+                <Sparkles className="h-5 w-5 animate-spin text-primary" />
+                <span className="text-gray-600">Loading subscriptions...</span>
+              </div>
+            </div>
           ) : error ? (
-            <div className="text-red-600">{error}</div>
+            <div className="text-center py-12">
+              <div className="text-red-600 mb-2">Error loading subscriptions</div>
+              <div className="text-sm text-gray-500">{error}</div>
+            </div>
           ) : subscriptions.length === 0 ? (
-            <div className="flex flex-col items-center">
-              <div className="bg-gray-100 rounded-full p-6 mb-4">
-                <svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" fill="#F3F4F6"/><path d="M16 10v8m0 0v2m0-2h2m-2 0h-2" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <div className="flex flex-col items-center py-16">
+              <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-full p-8 mb-6">
+                <Users className="h-12 w-12 text-primary" />
               </div>
-              <div className="text-xl font-semibold text-gray-900 mb-2">Create your first subscription</div>
-              <div className="text-gray-600 mb-4 text-center max-w-md">
-                Collect recurring payments with any pricing model, including flat rate, seat-based, tiered, and usage-based.
+              <div className="text-2xl font-bold text-gray-900 mb-3">Create your first subscription</div>
+              <div className="text-gray-600 mb-8 text-center max-w-lg">
+                Start collecting recurring payments with flexible pricing models. 
+                Support flat rate, seat-based, tiered, and usage-based billing.
               </div>
-              <Button variant="default" className="font-semibold px-5 py-2 rounded-lg shadow" onClick={() => setDrawerOpen(true)}>
-                + Create a subscription
-              </Button>
+              <div className="flex items-center space-x-4">
+                <Button 
+                  variant="default" 
+                  size="lg"
+                  className="font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200" 
+                  onClick={() => setBuilderOpen(true)}
+                >
+                  <Plus className="h-5 w-5 mr-2" />
+                  Create Subscription
+                </Button>
+                <Button variant="outline" size="lg" className="px-6 py-3">
+                  View Documentation
+                </Button>
+              </div>
+              
+              {/* Feature highlights */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 w-full max-w-4xl">
+                <Card className="text-center p-6 border-2 border-dashed border-gray-200 hover:border-primary/30 transition-colors">
+                  <CardContent className="p-0">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <TrendingUp className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Flexible Pricing</h3>
+                    <p className="text-sm text-gray-600">
+                      Support multiple pricing models and billing intervals
+                    </p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="text-center p-6 border-2 border-dashed border-gray-200 hover:border-primary/30 transition-colors">
+                  <CardContent className="p-0">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Shield className="h-6 w-6 text-green-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Secure Payments</h3>
+                    <p className="text-sm text-gray-600">
+                      PCI-compliant payment processing with encryption
+                    </p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="text-center p-6 border-2 border-dashed border-gray-200 hover:border-primary/30 transition-colors">
+                  <CardContent className="p-0">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Clock className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Automated Billing</h3>
+                    <p className="text-sm text-gray-600">
+                      Automatic recurring charges and invoice generation
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           ) : (
-            <div className="w-full max-w-4xl mx-auto">
-              <h2 className="text-lg font-semibold mb-4">All Subscriptions</h2>
-              <div className="grid grid-cols-1 gap-4">
+            <div className="w-full">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-gray-900">All Subscriptions</h2>
+                <Badge variant="outline" className="px-3 py-1">
+                  {subscriptions.length} total
+                </Badge>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                 {subscriptions.map(sub => (
-                  <div key={sub._id} className="bg-white rounded-lg shadow border p-6 flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <div className="font-semibold text-gray-900">{sub.product}</div>
-                      <div className="text-xs text-gray-500">Customer: {sub.customer}</div>
-                      <div className="text-xs text-gray-500">Interval: {sub.interval}</div>
-                      <div className="text-xs text-gray-500">Status: {sub.status}</div>
-                    </div>
-                    <div className="mt-4 md:mt-0 md:text-right">
-                      <div className="text-lg font-bold text-primary">{sub.currency} {sub.price}</div>
-                      <div className="text-xs text-gray-400">Start: {sub.startDate ? new Date(sub.startDate).toLocaleDateString() : '-'}</div>
-                    </div>
-                  </div>
+                  <Card key={sub._id} className="hover:shadow-lg transition-shadow duration-200">
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900 mb-1">{sub.product}</h3>
+                          <p className="text-sm text-gray-500 mb-2">Customer: {sub.customer}</p>
+                          <div className="flex items-center space-x-2">
+                            <Badge 
+                              variant={sub.status === 'active' ? 'default' : 'secondary'}
+                              className="text-xs"
+                            >
+                              {sub.status || 'pending'}
+                            </Badge>
+                            <Badge variant="outline" className="text-xs capitalize">
+                              {sub.interval}
+                            </Badge>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-primary">
+                            {sub.currency} {sub.price}
+                          </div>
+                          <div className="text-xs text-gray-400">per {sub.interval}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="border-t pt-4">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-500">Started</span>
+                          <span className="font-medium">
+                            {sub.startDate ? new Date(sub.startDate).toLocaleDateString() : 'N/A'}
+                          </span>
+                        </div>
+                        {sub.nextBillingDate && (
+                          <div className="flex items-center justify-between text-sm mt-1">
+                            <span className="text-gray-500">Next billing</span>
+                            <span className="font-medium">
+                              {new Date(sub.nextBillingDate).toLocaleDateString()}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </div>
           )}
         </div>
       </div>
-      <CreateSubscriptionDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
+      <SubscriptionBuilder 
+        open={builderOpen} 
+        onOpenChange={setBuilderOpen}
+        onSuccess={(subscription) => {
+          toast({
+            title: "Success!",
+            description: "Subscription created successfully",
+          });
+        }}
+      />
     </DashboardLayout>
   );
 } 
