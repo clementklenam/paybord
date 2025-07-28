@@ -123,9 +123,9 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
 
   if (isLoading) {
     return (
-      <Card className={`bg-white ${className || ''}`}>
+      <Card className={`bg-white border-white text-[#232323] ${className || ''}`}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-black">
+          <CardTitle className="flex items-center gap-2 text-[#232323]">
             <ExternalLink className="h-5 w-5" />
             Payment Sources
           </CardTitle>
@@ -161,16 +161,16 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
 
   if (error) {
     return (
-      <Card className={`bg-white ${className || ''}`}>
+      <Card className={`bg-white border-white text-[#232323] ${className || ''}`}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-black">
+          <CardTitle className="flex items-center gap-2 text-[#232323]">
             <ExternalLink className="h-5 w-5" />
             Payment Sources
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <p className="text-red-600 dark:text-red-400 mb-4 text-black">{error}</p>
+            <p className="text-red-600 dark:text-red-400 mb-4 text-[#232323]">{error}</p>
             <Button onClick={fetchTransactions} variant="outline" size="sm">
               Try Again
             </Button>
@@ -181,10 +181,10 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
   }
 
   return (
-    <Card className={`bg-white ${className || ''}`}>
+    <Card className={`bg-white border-white text-[#232323] ${className || ''}`}>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-black">
+          <CardTitle className="flex items-center gap-2 text-[#232323]">
             <ExternalLink className="h-5 w-5" />
             Payment Sources
           </CardTitle>
@@ -193,7 +193,7 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="text-black">
+      <CardContent className="text-[#232323]">
         {transactions.length === 0 ? (
           <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             <ExternalLink className="h-12 w-12 mx-auto mb-4 opacity-50" />

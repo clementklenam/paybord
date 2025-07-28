@@ -1,5 +1,5 @@
-import {Card} from "@/components/ui/card";
-import {LineChart} from "@/components/ui/line-chart";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Users} from "lucide-react";
 
 interface NewCustomersData {
   count: number;
@@ -15,34 +15,20 @@ interface NewCustomersWidgetProps {
   data: NewCustomersData;
 }
 
-export function NewCustomersWidget({ data }: NewCustomersWidgetProps) {
-  const growthPercentage = data.previousPeriod > 0
-    ? ((data.count - data.previousPeriod) / data.previousPeriod) * 100
-    : 0;
-
-  return (
-    <Card className="p-6">
-      <div className="flex flex-col space-y-4">
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="text-sm font-medium text-muted-foreground">New customers</h3>
-            <div className="flex items-baseline gap-2">
-              <p className="text-2xl font-semibold">{data.count}</p>
-              {growthPercentage !== 0 && (
-                <p className={`text-sm ${growthPercentage > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {growthPercentage > 0 ? '+' : ''}{growthPercentage.toFixed(1)}%
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="text-xs text-muted-foreground">
-            Updated {data.lastUpdated}
-          </div>
-        </div>
-        <div className="h-[80px]">
-          <LineChart data={data.trend} />
+export const NewCustomersWidget = ({ data, className }) => (
+  <Card className={`border-white text-[#232323] ${className}`}>
+    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardTitle className="text-sm font-semibold text-[#232323]">
+        New Customers
+      </CardTitle>
+      <Users className="h-4 w-4 text-[#232323]" />
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="text-2xl font-extrabold text-[#232323] drop-shadow-lg">{data.count || 0}</div>
         </div>
       </div>
-    </Card>
-  );
-}
+    </CardContent>
+  </Card>
+);

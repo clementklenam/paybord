@@ -40,19 +40,19 @@ const WidgetCard = ({
   icon: React.ElementType;
   className?: string;
 }) => (
-  <Card className={`bg-[#232323] border border-white shadow-lg hover:shadow-xl transition-all ${className}`}>
+  <Card className={`bg-[#232323] border border-white text-[#232323] shadow-lg hover:shadow-xl transition-all ${className}`}>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-semibold text-white">
+      <CardTitle className="text-sm font-semibold text-[#232323]">
         {title}
       </CardTitle>
-      {Icon && <Icon className="h-4 w-4 text-white" />}
+      {Icon && <Icon className="h-4 w-4 text-[#232323]" />}
     </CardHeader>
     <CardContent>
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <div className="text-2xl font-extrabold text-white drop-shadow-lg">{value}</div>
+          <div className="text-2xl font-extrabold text-[#232323] drop-shadow-lg">{value}</div>
           {trend && (
-            <span className={`text-xs font-bold px-2 py-1 rounded-full shadow ${trend.value >= 0 ? 'text-green-100 bg-green-600/80' : 'text-red-100 bg-red-600/80'}`}>{trend.value >= 0 ? '+' : ''}{trend.value}% {trend.label}</span>
+            <span className={`text-xs font-bold px-2 py-1 rounded-full shadow ${trend.value >= 0 ? 'text-green-700 bg-green-200' : 'text-red-700 bg-red-200'}`}>{trend.value >= 0 ? '+' : ''}{trend.value}% {trend.label}</span>
           )}
         </div>
       </div>
