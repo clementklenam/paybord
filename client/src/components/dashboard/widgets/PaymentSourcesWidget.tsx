@@ -195,9 +195,9 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
       </CardHeader>
       <CardContent className="text-[#232323]">
         {transactions.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-[#232323]">
             <ExternalLink className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>No recent transactions found</p>
+            <p className="text-[#232323]">No recent transactions found</p>
           </div>
         ) : (
           <div className="max-h-80 overflow-y-auto pr-2 pb-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
@@ -223,7 +223,7 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
                         {getSourceLabel(transaction.paymentType)}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-2 text-xs text-[#232323]">
                       <span>{formatDate(transaction.createdAt)}</span>
                       <Badge className={`text-xs ${getStatusColor(transaction.status)}`}>
                         {transaction.status}

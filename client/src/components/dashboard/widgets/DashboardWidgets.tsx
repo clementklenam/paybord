@@ -136,18 +136,18 @@ interface TopCustomersWidgetData {
 export const TopCustomersWidget = ({ data, className }: { data: TopCustomersWidgetData; className?: string }) => (
   <Card className={`bg-gradient-to-br from-gray-50/50 to-gray-100/30 hover:from-gray-100/50 hover:to-gray-200/40 transition-all border-gray-200 hover:border-gray-300 ${className}`}>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium text-gray-700">Top Customers</CardTitle>
-      <TrendingUp className="h-4 w-4 text-gray-600" />
+      <CardTitle className="text-sm font-medium text-[#232323]">Top Customers</CardTitle>
+      <TrendingUp className="h-4 w-4 text-[#232323]" />
     </CardHeader>
     <CardContent>
       <div className="space-y-4">
         {data.customers.map((customer) => (
           <div key={customer.id} className="flex items-center justify-between">
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">{customer.name}</p>
-              <p className="text-sm text-muted-foreground">{customer.email}</p>
+              <p className="text-sm font-medium leading-none text-[#232323]">{customer.name}</p>
+              <p className="text-sm text-[#232323]">{customer.email}</p>
             </div>
-            <div className="text-sm font-medium text-gray-900">${customer.spend.toLocaleString()}</div>
+            <div className="text-sm font-medium text-[#232323]">${customer.spend.toLocaleString()}</div>
           </div>
         ))}
       </div>
