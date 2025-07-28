@@ -4,74 +4,74 @@
 
 @layer base {
   :root {
-    --background: 0 0% 10%;              /* #1a1a1a - Dark charcoal background */
-    --foreground: 0 0% 98%;              /* Light text for dark background */
-    --card: 0 0% 14%;                    /* #232323 - Slightly lighter card background */
-    --card-foreground: 0 0% 98%;         /* Light text for cards */
-    --popover: 0 0% 14%;                 /* #232323 - Popover background */
-    --popover-foreground: 0 0% 98%;      /* Light text for popovers */
-    --primary: 45 100% 51%;              /* #FFD700 - Bright yellow primary */
-    --primary-foreground: 0 0% 10%;      /* Dark text on yellow background */
-    --secondary: 0 0% 16%;               /* #2a2a2a - Secondary background */
-    --secondary-foreground: 0 0% 98%;    /* Light text for secondary */
-    --muted: 0 0% 16%;                   /* #2a2a2a - Muted background */
-    --muted-foreground: 0 0% 63.9%;      /* Muted text color */
-    --accent: 45 100% 45%;               /* #FFC700 - Darker yellow accent */
-    --accent-foreground: 0 0% 10%;       /* Dark text on accent */
-    --destructive: 0 84% 60%;            /* Red for destructive actions */
-    --destructive-foreground: 0 0% 98%;  /* Light text on destructive */
-    --border: 45 100% 51% 0.2;           /* Yellow border with opacity */
-    --input: 0 0% 16%;                   /* Input background */
-    --ring: 45 100% 51%;                 /* Yellow ring for focus */
+    --background: 0 0% 100%;              /* #FFFFFF - White background */
+    --foreground: 0 0% 10%;               /* Dark text for light background */
+    --card: 0 0% 100%;                    /* #FFFFFF - White card background */
+    --card-foreground: 0 0% 10%;          /* Dark text for cards */
+    --popover: 0 0% 100%;                 /* #FFFFFF - Popover background */
+    --popover-foreground: 0 0% 10%;       /* Dark text for popovers */
+    --primary: 45 100% 51%;               /* #FFD700 - Bright yellow primary */
+    --primary-foreground: 0 0% 10%;       /* Dark text on yellow background */
+    --secondary: 0 0% 96%;                /* #F5F5F5 - Light gray secondary */
+    --secondary-foreground: 0 0% 10%;     /* Dark text for secondary */
+    --muted: 0 0% 96%;                    /* #F5F5F5 - Muted background */
+    --muted-foreground: 0 0% 45%;         /* Muted text color */
+    --accent: 45 100% 45%;                /* #FFC700 - Darker yellow accent */
+    --accent-foreground: 0 0% 10%;        /* Dark text on accent */
+    --destructive: 0 84% 60%;             /* Red for destructive actions */
+    --destructive-foreground: 0 0% 98%;   /* Light text on destructive */
+    --border: 0 0% 90%;                   /* Light gray border */
+    --input: 0 0% 100%;                   /* White input background */
+    --ring: 45 100% 51%;                  /* Yellow ring for focus */
     --radius: 0.5rem;
-    --chart-1: 45 100% 51%;              /* Yellow for charts */
-    --chart-2: 45 100% 45%;              /* Darker yellow for charts */
-    --chart-3: 0 0% 98%;                 /* Light color for charts */
-    --chart-4: 0 0% 20%;                 /* Dark color for charts */
-    --chart-5: 0 0% 16%;                 /* Secondary dark for charts */
+    --chart-1: 45 100% 51%;               /* Yellow for charts */
+    --chart-2: 45 100% 45%;               /* Darker yellow for charts */
+    --chart-3: 0 0% 98%;                  /* Light color for charts */
+    --chart-4: 0 0% 20%;                  /* Dark color for charts */
+    --chart-5: 0 0% 16%;                  /* Secondary dark for charts */
     
     /* Custom Paymesa Color Scheme */
-    --paymesa-primary: 45 100% 51%;      /* #FFD700 - Bright yellow */
-    --paymesa-accent: 45 100% 45%;       /* #FFC700 - Darker yellow */
-    --paymesa-soft-blue: 0 0% 10%;       /* #1a1a1a - Dark charcoal */
-    --paymesa-dark-grey: 0 0% 16%;       /* #2a2a2a - Medium charcoal */
-    --paymesa-light-grey: 0 0% 20%;      /* #333333 - Light charcoal */
-    --paymesa-white: 0 0% 100%;          /* #FFFFFF - White */
+    --paymesa-primary: 45 100% 51%;       /* #FFD700 - Bright yellow */
+    --paymesa-accent: 45 100% 45%;        /* #FFC700 - Darker yellow */
+    --paymesa-soft-blue: 0 0% 100%;       /* #FFFFFF - White */
+    --paymesa-dark-grey: 0 0% 10%;        /* #1a1a1a - Dark text */
+    --paymesa-light-grey: 0 0% 96%;       /* #F5F5F5 - Light gray */
+    --paymesa-white: 0 0% 100%;           /* #FFFFFF - White */
   }
  
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 45 100% 51%;              /* Keep yellow primary in dark mode */
-    --primary-foreground: 0 0% 10%;      /* Dark text on yellow */
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 45 100% 45%;               /* Keep yellow accent in dark mode */
-    --accent-foreground: 0 0% 10%;       /* Dark text on accent */
+    --background: 0 0% 10%;               /* #1a1a1a - Dark charcoal background */
+    --foreground: 0 0% 98%;               /* Light text for dark background */
+    --card: 0 0% 14%;                     /* #232323 - Slightly lighter card background */
+    --card-foreground: 0 0% 98%;          /* Light text for cards */
+    --popover: 0 0% 14%;                  /* #232323 - Popover background */
+    --popover-foreground: 0 0% 98%;       /* Light text for popovers */
+    --primary: 45 100% 51%;               /* #FFD700 - Bright yellow primary */
+    --primary-foreground: 0 0% 10%;       /* Dark text on yellow */
+    --secondary: 0 0% 16%;                /* #2a2a2a - Secondary background */
+    --secondary-foreground: 0 0% 98%;     /* Light text for secondary */
+    --muted: 0 0% 16%;                    /* #2a2a2a - Muted background */
+    --muted-foreground: 0 0% 63.9%;       /* Muted text color */
+    --accent: 45 100% 45%;                /* #FFC700 - Darker yellow accent */
+    --accent-foreground: 0 0% 10%;        /* Dark text on accent */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 45 100% 51% 0.2;           /* Yellow border with opacity */
-    --input: 0 0% 14.9%;
-    --ring: 45 100% 51%;                 /* Yellow ring for focus */
-    --chart-1: 45 100% 51%;              /* Yellow for charts */
-    --chart-2: 45 100% 45%;              /* Darker yellow for charts */
-    --chart-3: 0 0% 98%;                 /* Light color for charts */
-    --chart-4: 0 0% 14.9%;               /* Dark color for charts */
-    --chart-5: 0 0% 96%;                 /* Secondary light for charts */
+    --border: 45 100% 51% 0.2;            /* Yellow border with opacity */
+    --input: 0 0% 16%;                    /* Input background */
+    --ring: 45 100% 51%;                  /* Yellow ring for focus */
+    --chart-1: 45 100% 51%;               /* Yellow for charts */
+    --chart-2: 45 100% 45%;               /* Darker yellow for charts */
+    --chart-3: 0 0% 98%;                  /* Light color for charts */
+    --chart-4: 0 0% 14.9%;                /* Dark color for charts */
+    --chart-5: 0 0% 96%;                  /* Secondary light for charts */
     
     /* Custom Paymesa Color Scheme - Dark Mode */
-    --paymesa-primary: 45 100% 51%;      /* #FFD700 - Bright yellow for dark mode */
-    --paymesa-accent: 45 100% 45%;       /* #FFC700 - Darker yellow for dark mode */
-    --paymesa-soft-blue: 0 0% 3.9%;      /* Dark background for dark mode */
-    --paymesa-dark-grey: 0 0% 98%;       /* Light text for dark mode */
-    --paymesa-light-grey: 0 0% 14.9%;    /* Dark grey for dark mode */
-    --paymesa-white: 0 0% 98%;           /* Light color for dark mode */
+    --paymesa-primary: 45 100% 51%;       /* #FFD700 - Bright yellow for dark mode */
+    --paymesa-accent: 45 100% 45%;        /* #FFC700 - Darker yellow for dark mode */
+    --paymesa-soft-blue: 0 0% 3.9%;       /* Dark background for dark mode */
+    --paymesa-dark-grey: 0 0% 98%;        /* Light text for dark mode */
+    --paymesa-light-grey: 0 0% 14.9%;     /* Dark grey for dark mode */
+    --paymesa-white: 0 0% 98%;            /* Light color for dark mode */
   }
 
   * {

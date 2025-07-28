@@ -437,17 +437,17 @@ export default function ProductsPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Product Catalog</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-semibold text-[#232323]">Product Catalog</h1>
+          <p className="text-sm text-gray-600 mt-1">
             Manage your products and services
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="h-9">
+          <Button variant="outline" size="sm" className="h-9 border-gray-300 text-gray-700 hover:bg-gray-50">
             <Download className="h-4 w-4 mr-2" />
             <span>Export</span>
           </Button>
-          <Button variant="default" size="sm" className="h-9" onClick={() => setIsCreateModalOpen(true)}>
+          <Button variant="default" size="sm" className="h-9 bg-[#FFD700] text-[#232323] hover:bg-[#FFC700] border-[#FFD700]" onClick={() => setIsCreateModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             <span>Add product</span>
           </Button>
@@ -455,17 +455,17 @@ export default function ProductsPage() {
       </div>
       
       {/* Main Content */}
-      <Card>
-        <CardHeader className="pb-2">
+      <Card className="bg-white border-gray-200">
+        <CardHeader className="pb-2 bg-white">
           <div className="flex items-center justify-between">
-            <CardTitle>Products</CardTitle>
+            <CardTitle className="text-[#232323]">Products</CardTitle>
               <div className="flex items-center gap-2">
                 <div className="relative w-64">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                   <Input
                     type="search"
                     placeholder="Search products..."
-                    className="pl-8 h-9"
+                    className="pl-8 h-9 border-gray-300 focus:border-[#FFD700] focus:ring-[#FFD700]"
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
@@ -482,7 +482,7 @@ export default function ProductsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-9 gap-1"
+                  className="h-9 gap-1 border-gray-300 text-gray-700 hover:bg-gray-50"
                   onClick={() => setIsFiltersOpen(!isFiltersOpen)}
                 >
                   <Filter className="h-4 w-4" />
@@ -493,16 +493,16 @@ export default function ProductsPage() {
           </div>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="bg-white">
           {/* Products Table */}
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-[250px]">Product</TableHead>
-                <TableHead>Pricing</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Updated</TableHead>
+              <TableRow className="bg-gray-50">
+                <TableHead className="w-[250px] text-[#232323] font-semibold">Product</TableHead>
+                <TableHead className="text-[#232323] font-semibold">Pricing</TableHead>
+                <TableHead className="text-[#232323] font-semibold">Status</TableHead>
+                <TableHead className="text-[#232323] font-semibold">Created</TableHead>
+                <TableHead className="text-[#232323] font-semibold">Updated</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -511,8 +511,8 @@ export default function ProductsPage() {
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-8">
                     <div className="flex flex-col items-center justify-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mb-2"></div>
-                      <p className="text-gray-500">Loading products...</p>
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFD700] mb-2"></div>
+                      <p className="text-gray-600">Loading products...</p>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -520,16 +520,16 @@ export default function ProductsPage() {
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-8">
                     <div className="flex flex-col items-center justify-center">
-                      <Package className="h-12 w-12 text-gray-300 mb-2" />
-                      <p className="text-gray-500 mb-1">No products found</p>
-                      <p className="text-gray-400 text-sm">Add your first product to get started</p>
+                      <Package className="h-12 w-12 text-gray-400 mb-2" />
+                      <p className="text-gray-600 mb-1">No products found</p>
+                      <p className="text-gray-500 text-sm">Add your first product to get started</p>
                     </div>
                   </TableCell>
                 </TableRow>
               ) : products.map((product) => (
                 <TableRow 
                   key={product.id || product._id}
-                  className="hover:bg-gray-50/80 cursor-pointer transition-colors"
+                  className="hover:bg-gray-50 cursor-pointer transition-colors border-gray-100"
                   onClick={() => {
                     // Convert the product to the format expected by the preview dialog
                     const formattedProduct = {
@@ -555,37 +555,37 @@ export default function ProductsPage() {
                         {product.image ? (
                           <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
                         ) : (
-                          <Package className="h-5 w-5 text-gray-400" />
+                          <Package className="h-5 w-5 text-gray-500" />
                         )}
                       </div>
                       <div>
-                        <div className="font-medium">{product.name}</div>
-                        <div className="text-sm text-gray-500 truncate max-w-[200px]">{product.description}</div>
+                        <div className="font-medium text-[#232323]">{product.name}</div>
+                        <div className="text-sm text-gray-600 truncate max-w-[200px]">{product.description}</div>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="font-medium">
+                    <div className="font-medium text-[#232323]">
                       {formatCurrency(product.price || 0)}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-600">
                       {product.billingPeriod ? 
                         `${getBillingPeriodText(product.billingPeriod)}` : 
                         "One-time payment"}
                     </div>
                   </TableCell>
                   <TableCell>{getStatusBadge(product.active ? 'active' : 'inactive')}</TableCell>
-                  <TableCell className="text-sm text-gray-600">
+                  <TableCell className="text-sm text-gray-700">
                     {formatDate(product.createdAt || new Date().toISOString())}
                   </TableCell>
-                  <TableCell className="text-sm text-gray-600">
+                  <TableCell className="text-sm text-gray-700">
                     {formatDate(product.updatedAt || product.createdAt || new Date().toISOString())}
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 text-gray-600 hover:text-[#232323] hover:bg-gray-100"
                     >
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
@@ -598,13 +598,14 @@ export default function ProductsPage() {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between mt-4 px-2">
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-600">
                 Page {currentPage} of {totalPages}
               </div>
               <div className="flex items-center gap-2">
                 <Button 
                   variant="outline" 
                   size="sm"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
                   onClick={() => {
                     if (currentPage > 1) {
                       setCurrentPage(prev => prev - 1);
@@ -619,6 +620,7 @@ export default function ProductsPage() {
                 <Button 
                   variant="outline" 
                   size="sm"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
                   onClick={() => {
                     if (currentPage < totalPages) {
                       setCurrentPage(prev => prev + 1);
