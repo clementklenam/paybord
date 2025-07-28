@@ -959,36 +959,6 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
         );
     };
 
-    const renderStepIndicator = () => {
-        return (
-            <div className="flex items-center justify-center space-x-2 mb-8">
-                {steps.map((step, index) => (
-                    <div key={step.id} className="flex items-center">
-                        <div
-                            className={`flex items-center justify-center w-8 h-8 rounded-full ${index < currentStep
-                                    ? "bg-green-500 text-white"
-                                    : index === currentStep
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-gray-200 text-gray-500"
-                                }`}
-                        >
-                            {index < currentStep ? (
-                                <Check className="h-5 w-5" />
-                            ) : (
-                                <span>{index + 1}</span>
-                            )}
-                        </div>
-                        {index < steps.length - 1 && (
-                            <div
-                                className={`w-10 h-1 ${index < currentStep ? "bg-green-500" : "bg-gray-200"}`}
-                            />
-                        )}
-                    </div>
-                ))}
-            </div>
-        );
-    };
-
     const renderCurrentStep = () => {
         switch (currentStep) {
             case 0:
@@ -1023,12 +993,12 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                             {steps.map((step, index) => (
                                 <div key={step.id} className="flex items-center">
                                     <div
-                                        className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${index < currentStep
-                                                ? "bg-[#FFD700] text-[#232323] border-[#FFD700]"
-                                                : index === currentStep
-                                                    ? "bg-[#232323] text-[#FFD700] border-[#FFD700]"
-                                                    : "bg-[#2a2a2a] text-gray-500 border-gray-700"
-                                            }`}
+                                        className={`flex items-center justify-center w-8 h-8 rounded-full ${index < currentStep
+                                    ? "bg-green-500 text-white"
+                                    : index === currentStep
+                                        ? "bg-blue-500 text-white"
+                                        : "bg-gray-200 text-gray-500"
+                                }`}
                                     >
                                         {index < currentStep ? (
                                             <Check className="h-5 w-5" />
@@ -1038,7 +1008,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                                     </div>
                                     {index < steps.length - 1 && (
                                         <div
-                                            className={`w-10 h-1 ${index < currentStep ? "bg-[#FFD700]" : "bg-gray-700"}`}
+                                            className={`w-10 h-1 ${index < currentStep ? "bg-green-500" : "bg-gray-200"}`}
                                         />
                                     )}
                                 </div>
