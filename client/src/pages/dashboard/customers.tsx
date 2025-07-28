@@ -207,15 +207,15 @@ export default function CustomersPage() {
   const handleCreateCustomer = async (data: CustomerCreationData) => {
     setIsCreatingCustomer(true);
     try {
+      if (!businessId) {
+        throw new Error('Business ID is required to create a customer');
+      }
+      
       // Add businessId to the customer data
       const customerData = {
         ...data,
         businessId: businessId
       };
-      
-      if (!businessId) {
-        throw new Error('Business ID is required to create a customer');
-      }
       
       const newCustomer = await customerService.createCustomer(customerData);
       setIsCreateCustomerOpen(false);

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getAuthHeader } from './auth-header';
 
 // Auto-detect environment and set appropriate API URL
 const getApiUrl = () => {

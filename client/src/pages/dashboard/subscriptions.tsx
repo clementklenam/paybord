@@ -314,7 +314,7 @@ export default function SubscriptionsPage() {
       <SubscriptionBuilder 
         open={builderOpen} 
         onOpenChange={setBuilderOpen}
-        onSuccess={(subscription) => {
+        onSuccess={() => {
           toast({
             title: "Success!",
             description: "Subscription created successfully",

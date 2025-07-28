@@ -15,7 +15,6 @@ import {
   User, 
   Package, 
   CreditCard, 
-  Calendar as CalendarIcon, 
   Settings, 
   CheckCircle, 
   ArrowRight, 
@@ -26,9 +25,7 @@ import {
   DollarSign,
   Clock,
   Users,
-  Zap,
-  Shield,
-  TrendingUp
+  Zap
 } from "lucide-react";
 import { Product, ProductService } from "@/services/product.service";
 import CustomerService, { Customer } from "@/services/customer.service";
@@ -122,10 +119,8 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
 
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [showAddCustomer, setShowAddCustomer] = useState(false);
-  const [showAddProduct, setShowAddProduct] = useState(false);
   const [businessId, setBusinessId] = useState<string | null>(null);
   
   const { toast } = useToast();
@@ -436,11 +431,11 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                       
                       <Button 
                         variant="outline" 
-                        onClick={() => setShowAddProduct(true)}
                         className="w-full"
+                        disabled
                       >
                         <Plus className="h-4 w-4 mr-2" />
-                        Create New Product
+                        Create New Product (Coming Soon)
                       </Button>
                     </div>
                   </div>
