@@ -1007,27 +1007,52 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
     };
 
     return (
-        <div className="max-w-3xl mx-auto">
-            <Card className="shadow-lg">
+        <div className="max-w-3xl mx-auto bg-[#1a1a1a] min-h-screen flex items-center justify-center py-12">
+            <Card className="shadow-lg bg-[#232323] border border-[#FFD700]/20 text-white">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Register Your Business</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-2xl text-[#FFD700]">Register Your Business</CardTitle>
+                    <CardDescription className="text-gray-300">
                         Complete the form below to register your business with Paymesa
                     </CardDescription>
                 </CardHeader>
 
                 <CardContent>
                     <form onSubmit={handleSubmit}>
-                        {renderStepIndicator()}
+                        {/* Step Indicator */}
+                        <div className="flex items-center justify-center space-x-2 mb-8">
+                            {steps.map((step, index) => (
+                                <div key={step.id} className="flex items-center">
+                                    <div
+                                        className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${index < currentStep
+                                                ? "bg-[#FFD700] text-[#232323] border-[#FFD700]"
+                                                : index === currentStep
+                                                    ? "bg-[#232323] text-[#FFD700] border-[#FFD700]"
+                                                    : "bg-[#2a2a2a] text-gray-500 border-gray-700"
+                                            }`}
+                                    >
+                                        {index < currentStep ? (
+                                            <Check className="h-5 w-5" />
+                                        ) : (
+                                            <span>{index + 1}</span>
+                                        )}
+                                    </div>
+                                    {index < steps.length - 1 && (
+                                        <div
+                                            className={`w-10 h-1 ${index < currentStep ? "bg-[#FFD700]" : "bg-gray-700"}`}
+                                        />
+                                    )}
+                                </div>
+                            ))}
+                        </div>
 
                         <div className="mb-6">
                             <div className="flex items-center mb-4">
-                                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <div className="w-10 h-10 rounded-full bg-[#FFD700]/10 flex items-center justify-center mr-3 border border-[#FFD700]/30">
                                     {steps[currentStep].icon}
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-semibold">{steps[currentStep].title}</h2>
-                                    <p className="text-sm text-gray-500">{steps[currentStep].description}</p>
+                                    <h2 className="text-xl font-semibold text-[#FFD700]">{steps[currentStep].title}</h2>
+                                    <p className="text-sm text-gray-400">{steps[currentStep].description}</p>
                                 </div>
                             </div>
 
@@ -1040,6 +1065,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                                 variant="outline"
                                 onClick={prevStep}
                                 disabled={currentStep === 0}
+                                className="border border-gray-700 text-gray-300 bg-[#232323] hover:bg-[#2a2a2a]"
                             >
                                 Previous
                             </Button>
@@ -1048,7 +1074,7 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                                 <Button
                                     type="button"
                                     onClick={nextStep}
-                                    className="bg-blue-500 hover:bg-blue-600"
+                                    className="bg-[#FFD700] text-[#232323] hover:bg-[#FFC700] font-bold shadow-md"
                                 >
                                     Next
                                     <ChevronRight className="ml-2 h-4 w-4" />
@@ -1056,12 +1082,12 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                             ) : (
                                 <Button
                                     type="submit"
-                                    className="bg-green-500 hover:bg-green-600"
+                                    className="bg-[#FFD700] text-[#232323] hover:bg-[#FFC700] font-bold shadow-md"
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting ? (
                                         <>
-                                            <div className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                                            <div className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-[#232323] border-t-transparent"></div>
                                             Submitting...
                                         </>
                                     ) : (
@@ -1073,8 +1099,8 @@ export function BusinessRegistrationForm({ onSuccess }: BusinessRegistrationForm
                     </form>
                 </CardContent>
 
-                <CardFooter className="flex justify-center border-t pt-6">
-                    <p className="text-xs text-gray-500 text-center max-w-lg">
+                <CardFooter className="flex justify-center border-t border-[#FFD700]/10 pt-6">
+                    <p className="text-xs text-gray-400 text-center max-w-lg">
                         By registering your business, you agree to Paymesa's Terms of Service and Privacy Policy. Your information will be securely stored and processed in accordance with PCI DSS standards.
                     </p>
                 </CardFooter>
