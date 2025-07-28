@@ -30,11 +30,36 @@ export function ShopifyStatsCard({ title, value, change, changeLabel, icon, tren
     return 'bg-gray-100';
   };
 
+  // Theme color mapping
+  const colorMap = {
+    yellow: {
+      border: 'border-[#FFD700]',
+      iconBg: 'bg-[#FFD700]/20',
+      icon: 'text-[#FFD700]'
+    },
+    blue: {
+      border: 'border-blue-500',
+      iconBg: 'bg-blue-500/20',
+      icon: 'text-blue-500'
+    },
+    green: {
+      border: 'border-green-500',
+      iconBg: 'bg-green-500/20',
+      icon: 'text-green-500'
+    },
+    purple: {
+      border: 'border-purple-500',
+      iconBg: 'bg-purple-500/20',
+      icon: 'text-purple-500'
+    }
+  };
+  const theme = colorMap[color] || colorMap.yellow;
+
   return (
-    <div className="bg-white rounded-xl border border-[#FFD700] p-6 shadow hover:shadow-lg transition-all duration-300 hover:scale-[1.02] group">
+    <div className={`bg-white rounded-xl border ${theme.border} p-6 shadow hover:shadow-lg transition-all duration-300 hover:scale-[1.02] group`}>
       <div className="flex items-center justify-between mb-4">
-        <div className="p-3 bg-[#FFD700]/20 rounded-xl">
-          <div className="text-[#FFD700] transform transition-transform duration-300 group-hover:scale-110">
+        <div className={`p-3 ${theme.iconBg} rounded-xl`}>
+          <div className={`${theme.icon} transform transition-transform duration-300 group-hover:scale-110`}>
             {icon}
           </div>
         </div>
