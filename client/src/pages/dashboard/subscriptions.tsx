@@ -265,8 +265,12 @@ export default function SubscriptionsPage() {
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 mb-1">{sub.product}</h3>
-                          <p className="text-sm text-gray-500 mb-2">Customer: {sub.customer}</p>
+                          <h3 className="font-semibold text-gray-900 mb-1">
+                            {typeof sub.product === 'object' ? (sub.product as any).name || 'Unknown Product' : sub.product}
+                          </h3>
+                          <p className="text-sm text-gray-500 mb-2">
+                            Customer: {typeof sub.customer === 'object' ? (sub.customer as any).name || 'Unknown Customer' : sub.customer}
+                          </p>
                           <div className="flex items-center space-x-2">
                             <Badge 
                               variant={sub.status === 'active' ? 'default' : 'secondary'}

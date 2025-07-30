@@ -76,7 +76,7 @@ function Navbar() {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
-            <WouterLink to="/login">
+            <WouterLink to="/signin">
               <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white/10 px-6 py-2.5 text-sm font-semibold rounded-full transition-all duration-300">
                 Login
               </Button>

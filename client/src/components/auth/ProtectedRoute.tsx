@@ -29,12 +29,11 @@ export function ProtectedRoute({ children, skipBusinessCheck = false }: Protecte
     }
   }, [user, loading, setLocation]);
 
-  // Show loading spinner while checking authentication
+  // Minimal loading state
   if (isChecking || loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
-        <p className="text-muted-foreground">Verifying your credentials...</p>
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
       </div>
     );
   }
