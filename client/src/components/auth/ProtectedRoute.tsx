@@ -1,7 +1,6 @@
 import {useAuth} from "@/contexts/AuthContext";
 import {useLocation} from "wouter";
-import {useEffect, useState} from "react";
-import {Loader2} from "lucide-react";
+import {useEffect} from "react";
 import {BusinessRegistrationCheck} from "@/components/business/BusinessRegistrationCheck";
 
 interface ProtectedRouteProps {
@@ -12,7 +11,6 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children, skipBusinessCheck = false }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
   const [, setLocation] = useLocation();
-  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
     // Check if there's a token in localStorage
@@ -22,20 +20,12 @@ export function ProtectedRoute({ children, skipBusinessCheck = false }: Protecte
     if (!token && !loading) {
       setLocation("/signin");
     }
-    
-    // If we have completed the auth check
-    if (!loading) {
-      setIsChecking(false);
-    }
   }, [user, loading, setLocation]);
 
-  // Minimal loading state
-  if (isChecking || loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-      </div>
-    );
+  // No loading state - redirect immediately if no token
+  if (!localStorage.getItem('token') && !loading) {
+    setLocation("/signin");
+    return null;
   }
 
   // If user is authenticated but we need to check business registration
