@@ -12,6 +12,7 @@ import CustomerService from '@/services/customer.service';
 import BusinessService from '@/services/business.service';
 import {Calendar} from '@/components/ui/calendar';
 import {Checkbox} from '@/components/ui/checkbox';
+import { safeRender } from '@/utils/safeRender';
 
 const productService = new ProductService();
 
@@ -63,7 +64,22 @@ export function CreateSubscriptionDrawer({ open, onOpenChange }: { open: boolean
     async function fetchBusinessId() {
       try {
         const business = await new BusinessService().getBusinessProfile();
-        setBusinessId(typeof business._id === 'string' ? business._id : undefined);
+        
+        // Sanitize the business profile to prevent React errors
+        const sanitizedBusiness = {
+          _id: safeRender(business._id),
+          businessName: safeRender(business.businessName),
+          businessType: safeRender(business.businessType),
+          registrationNumber: safeRender(business.registrationNumber),
+          taxId: safeRender(business.taxId),
+          industry: safeRender(business.industry),
+          website: safeRender(business.website),
+          email: safeRender(business.email),
+          phone: safeRender(business.phone),
+          currency: safeRender(business.currency)
+        };
+        
+        setBusinessId(typeof sanitizedBusiness._id === 'string' ? sanitizedBusiness._id : undefined);
       } catch (err) {
         setBusinessId(undefined);
       }

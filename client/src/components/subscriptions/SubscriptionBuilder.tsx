@@ -34,6 +34,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { CustomerForm } from "@/components/customers/CustomerForm";
 import { ProductForm } from "@/components/products/ProductForm";
 import { cn } from "@/lib/utils";
+import { safeRender, sanitizeArray } from "@/utils/safeRender";
 
 interface SubscriptionBuilderProps {
   open: boolean;
@@ -101,6 +102,8 @@ const SECTIONS = [
   { id: 'settings', title: 'Subscription Settings', icon: Settings, required: false }
 ];
 
+
+
 export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: SubscriptionBuilderProps) {
   const [formData, setFormData] = useState<SubscriptionFormData>({
     customerId: '',
@@ -110,7 +113,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
     productId: '',
     productName: '',
     price: 0,
-    currency: 'USD',
+            currency: '',
     quantity: 1,
     interval: 'month',
     startDate: new Date(),
@@ -154,8 +157,23 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
   const loadBusinessId = async () => {
     try {
       const businessService = new BusinessService();
-      const business = await businessService.getBusinessProfile();
-      setBusinessId(business._id);
+              const business = await businessService.getBusinessProfile();
+        
+        // Sanitize the business profile to prevent React errors
+        const sanitizedBusiness = {
+          _id: safeRender(business._id),
+          businessName: safeRender(business.businessName),
+          businessType: safeRender(business.businessType),
+          registrationNumber: safeRender(business.registrationNumber),
+          taxId: safeRender(business.taxId),
+          industry: safeRender(business.industry),
+          website: safeRender(business.website),
+          email: safeRender(business.email),
+          phone: safeRender(business.phone),
+          currency: safeRender(business.currency)
+        };
+        
+        setBusinessId(sanitizedBusiness._id);
       setBusinessName(business.businessName || 'Your Business');
     } catch (error) {
       console.error('Failed to load business ID:', error);
@@ -171,7 +189,11 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
     try {
       const customerService = new CustomerService();
       const customersList = await customerService.getCustomers();
-      setCustomers(customersList.customers || []);
+      
+      // Sanitize customer data to prevent React errors
+      const sanitizedCustomers = sanitizeArray(customersList.customers || []);
+      
+      setCustomers(sanitizedCustomers as Customer[]);
     } catch (error) {
       console.error('Failed to load customers:', error);
     }
@@ -181,7 +203,11 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
     try {
       const productService = new ProductService();
       const productsList = await productService.getProducts({ active: true });
-      setProducts(productsList.data || []);
+      
+      // Sanitize product data to prevent React errors
+      const sanitizedProducts = sanitizeArray(productsList.data || []);
+      
+      setProducts(sanitizedProducts as Product[]);
     } catch (error) {
       console.error('Failed to load products:', error);
     }
@@ -246,10 +272,27 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
 
       const subscription = await SubscriptionService.createSubscription(subscriptionData);
       
-      toast({
-        title: "Success!",
-        description: "Subscription created successfully",
-      });
+      // After creating subscription, send invoice
+      try {
+        const { paymentLink } = await SubscriptionService.sendInvoice(subscription._id!);
+        
+        toast({
+          title: "Success!",
+          description: `Subscription created and invoice sent to ${formData.customerEmail}`,
+        });
+
+        // Show payment link in a new window
+        if (paymentLink) {
+          window.open(paymentLink, '_blank');
+        }
+      } catch (invoiceError: any) {
+        console.error('Invoice sending error:', invoiceError);
+        toast({
+          title: "Partial Success",
+          description: "Subscription created but failed to send invoice. You can send it manually later.",
+          variant: "default",
+        });
+      }
 
       onSuccess?.(subscription);
       onOpenChange(false);
@@ -263,7 +306,7 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
         productId: '',
         productName: '',
         price: 0,
-        currency: 'USD',
+        currency: '',
         quantity: 1,
         interval: 'month',
         startDate: new Date(),
@@ -296,7 +339,8 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
   };
 
   const getCurrencySymbol = () => {
-    return CURRENCIES.find(c => c.value === formData.currency)?.symbol || '$';
+    if (!formData.currency) return '';
+    return CURRENCIES.find(c => c.value === formData.currency)?.symbol || formData.currency;
   };
 
   const generateInvoiceNumber = () => {
@@ -409,8 +453,8 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                               {customers.map(customer => (
                                 <SelectItem key={customer._id} value={customer._id || ''}>
                                   <div className="flex flex-col">
-                                    <span className="font-medium">{customer.name}</span>
-                                    <span className="text-sm text-gray-500">{customer.email}</span>
+                                    <span className="font-medium">{safeRender(customer.name)}</span>
+                                    <span className="text-sm text-gray-500">{safeRender(customer.email)}</span>
                                   </div>
                                 </SelectItem>
                               ))}
@@ -436,8 +480,8 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                   onClick={() => handleCustomerSelect(customer._id || '')}
                                 >
                                   <div>
-                                    <div className="font-medium">{customer.name}</div>
-                                    <div className="text-sm text-gray-500">{customer.email}</div>
+                                    <div className="font-medium">{safeRender(customer.name)}</div>
+                                    <div className="text-sm text-gray-500">{safeRender(customer.email)}</div>
                                   </div>
                                   {formData.customerId === customer._id && (
                                     <CheckCircle className="h-5 w-5 text-green-500" />
@@ -578,9 +622,9 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                                   {products.map(product => (
                                     <SelectItem key={product._id} value={product._id || ''}>
                                       <div className="flex items-center justify-between w-full">
-                                        <span>{product.name}</span>
+                                        <span>{safeRender(product.name)}</span>
                                         <span className="text-sm text-gray-500">
-                                          {product.currency} {product.price}
+                                          {safeRender(product.currency)} {safeRender(product.price)}
                                         </span>
                                       </div>
                                     </SelectItem>
@@ -966,13 +1010,13 @@ export function SubscriptionBuilder({ open, onOpenChange, onSuccess }: Subscript
                     
                     <div className="grid grid-cols-4 gap-4 py-4 text-sm border-b">
                       <div>
-                        <div className="font-medium text-gray-900">{formData.productName || 'Product Name'}</div>
+                        <div className="font-medium text-gray-900">{safeRender(formData.productName)}</div>
                         <div className="text-gray-500 text-xs mt-1">
                           {formatDate(formData.startDate)} – {getEndDate()}
                         </div>
                       </div>
                       <div className="text-center">{formData.quantity}</div>
-                      <div className="text-center">{getCurrencySymbol()}{formData.price}</div>
+                      <div className="text-center">{getCurrencySymbol()}{safeRender(formData.price)}</div>
                       <div className="text-right font-medium">{getCurrencySymbol()}{calculateTotal()}</div>
                     </div>
                   </div>

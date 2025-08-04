@@ -6,6 +6,17 @@ import {ExternalLink, Store, Link as LinkIcon} from "lucide-react";
 import {getAuthHeader} from "@/services/auth-header";
 import axios from "axios";
 
+// Helper to safely render any value
+function safeRender(val: any) {
+  if (val == null) return '';
+  if (typeof val === 'object') {
+    // Don't stringify React elements
+    if (val.$$typeof) return null;
+    return JSON.stringify(val);
+  }
+  return val;
+}
+
 // For Vite-based React apps, use import.meta.env instead of process.env
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -213,27 +224,27 @@ export function PaymentSourcesWidget({ className }: PaymentSourcesWidgetProps) {
                 } hover:bg-gray-50 dark:hover:bg-gray-800/50`}
               >
                 <div className="flex items-center gap-3">
-                  {getSourceIcon(transaction.paymentType)}
+                  {getSourceIcon(safeRender(transaction.paymentType))}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-sm">
                         {getSourceName(transaction)}
                       </span>
                       <Badge variant="outline" className="text-xs">
-                        {getSourceLabel(transaction.paymentType)}
+                        {getSourceLabel(safeRender(transaction.paymentType))}
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-[#232323]">
-                      <span>{formatDate(transaction.createdAt)}</span>
-                      <Badge className={`text-xs ${getStatusColor(transaction.status)}`}>
-                        {transaction.status}
+                      <span>{safeRender(formatDate(transaction.createdAt))}</span>
+                      <Badge className={`text-xs ${getStatusColor(safeRender(transaction.status))}`}>
+                        {safeRender(transaction.status)}
                       </Badge>
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="font-semibold text-sm">
-                    {formatAmount(transaction.amount, transaction.currency)}
+                    {safeRender(formatAmount(transaction.amount, transaction.currency))}
                   </div>
                 </div>
               </div>

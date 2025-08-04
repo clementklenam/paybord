@@ -11,6 +11,7 @@ import {StorefrontWizard} from "@/components/storefront/StorefrontWizard";
 import {StorefrontService, Storefront, StorefrontCreateData} from "@/services/storefront.service";
 import businessService from "@/services/business.service";
 import {Filter, Loader2, Plus, Search} from "lucide-react";
+import { safeRender } from "@/utils/safeRender";
 
 export default function StorefrontPage() {
     const { toast } = useToast();
@@ -57,9 +58,24 @@ export default function StorefrontPage() {
     const fetchBusinesses = async () => {
         try {
             const businessProfile = await businessServiceInstance.getBusinessProfile();
+            
+            // Sanitize the business profile to prevent React errors
+            const sanitizedBusinessProfile = {
+                _id: safeRender(businessProfile._id),
+                businessName: safeRender(businessProfile.businessName),
+                businessType: safeRender(businessProfile.businessType),
+                registrationNumber: safeRender(businessProfile.registrationNumber),
+                taxId: safeRender(businessProfile.taxId),
+                industry: safeRender(businessProfile.industry),
+                website: safeRender(businessProfile.website),
+                email: safeRender(businessProfile.email),
+                phone: safeRender(businessProfile.phone),
+                currency: safeRender(businessProfile.currency)
+            };
+            
             setBusinesses([{
-                _id: businessProfile._id,
-                businessName: businessProfile.businessName || 'My Business'
+                _id: sanitizedBusinessProfile._id,
+                businessName: sanitizedBusinessProfile.businessName || 'My Business'
             }]);
         } catch (error) {
             console.error("Error fetching businesses:", error);

@@ -18,6 +18,7 @@ import StorefrontPreview from "@/pages/storefront/[id]";
 import KycPage from "@/pages/kyc";
 import Home from "@/pages/Home";
 import PaymentPage from "@/pages/payment/[id]";
+import PaymentSuccessPage from "@/pages/payment/success";
 import PaymentLinkViewPage from "@/pages/payment-link/[id]";
 import TestTopCustomersPage from "@/pages/test-top-customers";
 import {BusinessRegistrationForm} from "@/components/business/BusinessRegistrationForm";
@@ -36,6 +37,7 @@ export function AppRouter() {
       <Route path="/store/:id" component={StorePreview} />
       <Route path="/storefront/:id" component={StorefrontPreview} />
       <Route path="/payment/:id" component={PaymentPage} />
+      <Route path="/payment/success" component={PaymentSuccessPage} />
       <Route path="/payment-link/:id" component={PaymentLinkViewPage} />
       <Route path="/pl/:id" component={PaymentLinkRedirect} />
 

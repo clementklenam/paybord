@@ -1,15 +1,16 @@
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {
-  AlertCircle,
-  AlertTriangle,
-  CheckCircle,
-  DollarSign,
-  LineChart as LineChartIcon,
-  Shield,
-  TrendingUp,
-  Users
-} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TrendingUp, DollarSign, Users, AlertTriangle, Shield, CheckCircle, LineChart as LineChartIcon } from "lucide-react";
 
+// Helper to safely render any value
+function safeRender(val: any) {
+  if (val == null) return '';
+  if (typeof val === 'object') {
+    // Don't stringify React elements
+    if (val.$$typeof) return null;
+    return JSON.stringify(val);
+  }
+  return val;
+}
 
 interface NetVolumeWidgetProps {
   data: {
@@ -18,6 +19,7 @@ interface NetVolumeWidgetProps {
     lastUpdated: string;
   };
 }
+
 interface NewCustomersWidgetProps {
   data: {
     count: number;
@@ -40,22 +42,18 @@ const WidgetCard = ({
   icon: React.ElementType;
   className?: string;
 }) => (
-  <Card className={`bg-[#232323] border border-white text-[#232323] shadow-lg hover:shadow-xl transition-all ${className}`}>
+  <Card className={`bg-gradient-to-br from-gray-50/50 to-gray-100/30 hover:from-gray-100/50 hover:to-gray-200/40 transition-all border-gray-200 hover:border-gray-300 ${className}`}>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-semibold text-[#232323]">
-        {title}
-      </CardTitle>
-      {Icon && <Icon className="h-4 w-4 text-[#232323]" />}
+      <CardTitle className="text-sm font-medium text-[#232323]">{title}</CardTitle>
+      <Icon className="h-4 w-4 text-[#232323]" />
     </CardHeader>
     <CardContent>
-      <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <div className="text-2xl font-extrabold text-[#232323] drop-shadow-lg">{value}</div>
-          {trend && (
-            <span className={`text-xs font-bold px-2 py-1 rounded-full shadow ${trend.value >= 0 ? 'text-green-700 bg-green-200' : 'text-red-700 bg-red-200'}`}>{trend.value >= 0 ? '+' : ''}{trend.value}% {trend.label}</span>
-          )}
+      <div className="text-2xl font-bold text-[#232323]">{safeRender(value)}</div>
+      {trend && (
+        <div className="flex items-center gap-2 mt-2">
+          <span className={`text-xs font-bold px-2 py-1 rounded-full shadow ${trend.value >= 0 ? 'text-green-700 bg-green-200' : 'text-red-700 bg-red-200'}`}>{trend.value >= 0 ? '+' : ''}{safeRender(trend.value)}% {safeRender(trend.label)}</span>
         </div>
-      </div>
+      )}
     </CardContent>
   </Card>
 );
@@ -65,7 +63,7 @@ export const DisputeActivityWidget = ({ data, className }: { data: { total: numb
     title="Dispute Activity"
     value={data.total || 0}
     trend={data.trend}
-    icon={AlertCircle}
+    icon={AlertTriangle}
     className={className}
   />
 );
@@ -144,10 +142,10 @@ export const TopCustomersWidget = ({ data, className }: { data: TopCustomersWidg
         {data.customers.map((customer) => (
           <div key={customer.id} className="flex items-center justify-between">
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none text-[#232323]">{customer.name}</p>
-              <p className="text-sm text-[#232323]">{customer.email}</p>
+              <p className="text-sm font-medium leading-none text-[#232323]">{safeRender(customer.name)}</p>
+              <p className="text-sm text-[#232323]">{safeRender(customer.email)}</p>
             </div>
-            <div className="text-sm font-medium text-[#232323]">${customer.spend.toLocaleString()}</div>
+            <div className="text-sm font-medium text-[#232323]">${safeRender(customer.spend?.toLocaleString() || '0')}</div>
           </div>
         ))}
       </div>

@@ -32,6 +32,7 @@ import {
   Globe,
   Clock
 } from "lucide-react";
+import { safeRender, sanitizeArray } from "@/utils/safeRender";
 
 // Main Customers Page Component
 export default function CustomersPage() {
@@ -80,7 +81,22 @@ export default function CustomersPage() {
     async function fetchBusinessId() {
       try {
         const business = await businessService.getBusinessProfile();
-        setBusinessId(business._id);
+        
+        // Sanitize the business profile to prevent React errors
+        const sanitizedBusiness = {
+          _id: safeRender(business._id),
+          businessName: safeRender(business.businessName),
+          businessType: safeRender(business.businessType),
+          registrationNumber: safeRender(business.registrationNumber),
+          taxId: safeRender(business.taxId),
+          industry: safeRender(business.industry),
+          website: safeRender(business.website),
+          email: safeRender(business.email),
+          phone: safeRender(business.phone),
+          currency: safeRender(business.currency)
+        };
+        
+        setBusinessId(sanitizedBusiness._id);
       } catch (err) {
         setBusinessId(null);
       }
@@ -95,7 +111,12 @@ export default function CustomersPage() {
     setError(null);
     try {
       const customers = await customerService.getCustomersByBusiness(businessId);
-      setCustomers(customers);
+      
+      // Sanitize customers to prevent React errors
+      const sanitizedCustomers = sanitizeArray(customers);
+      console.log('Sanitized customers:', sanitizedCustomers);
+      
+      setCustomers(sanitizedCustomers as Customer[]);
       setTotalItems(customers.length);
       setTotalPages(1);
       setIsLoading(false);
@@ -494,7 +515,7 @@ export default function CustomersPage() {
               </TableHeader>
               <TableBody>
                 {customers.map((customer) => (
-                  <TableRow key={customer.customerId}>
+                  <TableRow key={customer._id || customer.customerId}>
                     <TableCell>
                       <Checkbox />
                     </TableCell>
@@ -502,13 +523,13 @@ export default function CustomersPage() {
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
                           <AvatarFallback className="bg-primary/10 text-primary">
-                            {customer.name.split(' ').map(n => n[0]).join('')}
+                            {safeRender(customer.name && typeof customer.name === 'string' ? customer.name.split(' ').map(n => n[0]).join('') : customer.name)}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <div className="font-medium">{customer.name}</div>
+                          <div className="font-medium">{safeRender(customer.name)}</div>
                           <div className="text-sm text-gray-500 truncate max-w-[200px]">
-                            {customer.description || 'No description'}
+                            {safeRender(customer.description || 'No description')}
                           </div>
                         </div>
                       </div>
@@ -516,17 +537,17 @@ export default function CustomersPage() {
                     <TableCell>
                       <div className="flex items-center gap-1">
                         <Mail className="h-3.5 w-3.5 text-gray-500" />
-                        <span>{customer.email}</span>
+                        <span>{safeRender(customer.email)}</span>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
                         <Phone className="h-3.5 w-3.5 text-gray-500" />
-                        <span>{customer.phone || 'N/A'}</span>
+                        <span>{safeRender(customer.phone || 'N/A')}</span>
                       </div>
                     </TableCell>
                     <TableCell>
-                      {formatDate(customer.createdAt)}
+                      {safeRender(formatDate(customer.createdAt))}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-1">
@@ -535,7 +556,7 @@ export default function CustomersPage() {
                           size="icon"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleViewCustomer(customer.customerId);
+                            handleViewCustomer(customer._id || customer.customerId);
                           }}
                           title="View details"
                         >
@@ -774,17 +795,17 @@ export default function CustomersPage() {
                                   <div>
                                     <div className="font-medium">
                                       {method.type === 'card' 
-                                        ? `${(method.details as any).brand} ending in ${(method.details as any).last4}` 
+                                        ? `${method.details && typeof method.details === 'object' ? (method.details as any).brand || 'Card' : 'Card'} ending in ${method.details && typeof method.details === 'object' ? (method.details as any).last4 || '****' : '****'}` 
                                         : method.type === 'bank_account'
-                                          ? `${(method.details as any).bankName} (${(method.details as any).accountType})`
+                                          ? `${method.details && typeof method.details === 'object' ? (method.details as any).bankName || 'Bank' : 'Bank'} (${method.details && typeof method.details === 'object' ? (method.details as any).accountType || 'Account' : 'Account'})`
                                           : 'Wallet'}
                                     </div>
                                     <div className="text-xs text-gray-500">
                                       {method.type === 'card' 
-                                        ? `Expires ${(method.details as any).expMonth}/${(method.details as any).expYear}` 
+                                        ? `Expires ${method.details && typeof method.details === 'object' ? (method.details as any).expMonth || 'MM' : 'MM'}/${method.details && typeof method.details === 'object' ? (method.details as any).expYear || 'YY' : 'YY'}` 
                                         : method.type === 'bank_account'
-                                          ? `Account ${(method.details as any).accountNumber}`
-                                          : (method.details as any).provider}
+                                          ? `Account ${method.details && typeof method.details === 'object' ? (method.details as any).accountNumber || '****' : '****'}`
+                                          : method.details && typeof method.details === 'object' ? (method.details as any).provider || 'Provider' : 'Provider'}
                                     </div>
                                   </div>
                                 </div>

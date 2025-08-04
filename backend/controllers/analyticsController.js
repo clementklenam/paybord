@@ -1367,6 +1367,209 @@ exports.testDataIsolation = async (req, res) => {
 };
 
 /**
+ * Test subscription analytics (no auth required for debugging)
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
+exports.testSubscriptionAnalytics = async (req, res) => {
+  try {
+    console.log('Test subscription analytics called');
+    
+    // Get all subscription transactions without user filtering
+    const allSubscriptionTransactions = await Transaction.find({
+      paymentType: 'subscription',
+      status: { $in: ['success', 'succeeded'] }
+    }).sort({ createdAt: -1 });
+    
+    console.log('All subscription transactions found:', allSubscriptionTransactions.length);
+    
+    // Get all businesses
+    const allBusinesses = await Business.find({});
+    
+    // Group transactions by business
+    const transactionsByBusiness = {};
+    for (const transaction of allSubscriptionTransactions) {
+      if (transaction.businessId) {
+        if (!transactionsByBusiness[transaction.businessId]) {
+          transactionsByBusiness[transaction.businessId] = [];
+        }
+        transactionsByBusiness[transaction.businessId].push(transaction);
+      }
+    }
+    
+    // Get business details for each business
+    const businessDetails = {};
+    for (const business of allBusinesses) {
+      businessDetails[business._id.toString()] = {
+        id: business._id.toString(),
+        name: business.businessName,
+        user: business.user.toString(),
+        transactionCount: transactionsByBusiness[business._id.toString()]?.length || 0
+      };
+    }
+    
+    res.json({
+      success: true,
+      totalSubscriptionTransactions: allSubscriptionTransactions.length,
+      transactionsByBusiness,
+      businessDetails,
+      allTransactions: allSubscriptionTransactions.map(t => ({
+        id: t._id.toString(),
+        businessId: t.businessId,
+        customerEmail: t.customerEmail,
+        amount: t.amount,
+        createdAt: t.createdAt,
+        metadata: t.metadata
+      }))
+    });
+    
+  } catch (error) {
+    console.error('Test subscription analytics error:', error);
+    res.status(500).json({ error: 'Failed to fetch test subscription analytics: ' + error.message });
+  }
+};
+
+/**
+ * Get subscription analytics
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
+exports.getSubscriptionAnalytics = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const timeRange = req.query.timeRange || 'last7days';
+    
+    // Find all businesses for this user
+    const businesses = await Business.find({ user: userId.toString() });
+    if (!businesses || businesses.length === 0) {
+      return res.status(404).json({ error: 'No businesses found for this user' });
+    }
+    
+    const businessIds = businesses.map(b => b._id);
+    const business = businesses[0]; // Use first business for currency
+    
+    // Calculate date range
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    let startDate, endDate;
+    switch (timeRange) {
+      case 'today':
+        startDate = new Date(today);
+        endDate = new Date(today);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case 'last7days':
+        startDate = new Date(today);
+        startDate.setDate(startDate.getDate() - 7);
+        endDate = new Date(today);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      case 'last30days':
+        startDate = new Date(today);
+        startDate.setDate(startDate.getDate() - 30);
+        endDate = new Date(today);
+        endDate.setHours(23, 59, 59, 999);
+        break;
+      default:
+        startDate = new Date(today);
+        startDate.setDate(startDate.getDate() - 7);
+        endDate = new Date(today);
+        endDate.setHours(23, 59, 59, 999);
+    }
+    
+    console.log('Subscription Analytics: User isolation check:', {
+      userId: userId.toString(),
+      businessIds: businessIds.map(id => id.toString()),
+      businessNames: businesses.map(b => b.businessName)
+    });
+    
+    // Get subscription transactions
+    const subscriptionTransactions = await Transaction.find({
+      businessId: { $in: businessIds.map(id => id.toString()) },
+      paymentType: 'subscription',
+      status: { $in: ['success', 'succeeded'] },
+      createdAt: { $gte: startDate, $lte: endDate }
+    }).sort({ createdAt: -1 });
+    
+    console.log('Subscription Analytics: Found transactions:', {
+      totalTransactions: subscriptionTransactions.length,
+      transactions: subscriptionTransactions.map(t => ({
+        id: t._id.toString(),
+        businessId: t.businessId,
+        customerEmail: t.customerEmail,
+        amount: t.amount,
+        createdAt: t.createdAt
+      }))
+    });
+    
+    // Calculate metrics
+    const totalSubscriptionRevenue = subscriptionTransactions.reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+    const totalSubscriptions = subscriptionTransactions.length;
+    const uniqueSubscriptionCustomers = [...new Set(subscriptionTransactions.map(t => t.customerEmail))].length;
+    
+    // Group by payment method
+    const paymentMethodBreakdown = subscriptionTransactions.reduce((acc, t) => {
+      const method = t.paymentMethod || 'other';
+      acc[method] = (acc[method] || 0) + 1;
+      return acc;
+    }, {});
+    
+    // Group by currency
+    const currencyBreakdown = subscriptionTransactions.reduce((acc, t) => {
+      const currency = t.currency || 'GHS';
+      acc[currency] = (acc[currency] || 0) + (Number(t.amount) || 0);
+      return acc;
+    }, {});
+    
+    // Daily breakdown
+    const dailyBreakdown = {};
+    subscriptionTransactions.forEach(t => {
+      const date = t.createdAt.toISOString().split('T')[0];
+      if (!dailyBreakdown[date]) {
+        dailyBreakdown[date] = {
+          revenue: 0,
+          count: 0
+        };
+      }
+      dailyBreakdown[date].revenue += Number(t.amount) || 0;
+      dailyBreakdown[date].count += 1;
+    });
+    
+    res.json({
+      success: true,
+      analytics: {
+        totalSubscriptionRevenue,
+        totalSubscriptions,
+        uniqueSubscriptionCustomers,
+        averageSubscriptionValue: totalSubscriptions > 0 ? totalSubscriptionRevenue / totalSubscriptions : 0,
+        paymentMethodBreakdown,
+        currencyBreakdown,
+        dailyBreakdown,
+        recentTransactions: subscriptionTransactions.slice(0, 10).map(t => ({
+          id: t._id,
+          amount: t.amount,
+          currency: t.currency,
+          customerName: t.customerName,
+          customerEmail: t.customerEmail,
+          paymentMethod: t.paymentMethod,
+          createdAt: t.createdAt,
+          metadata: t.metadata
+        }))
+      },
+      timeRange: {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString()
+      }
+    });
+    
+  } catch (error) {
+    console.error('Subscription analytics error:', error);
+    res.status(500).json({ error: 'Failed to fetch subscription analytics: ' + error.message });
+  }
+};
+
+/**
  * Check and fix transactions that might be missing businessId
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object

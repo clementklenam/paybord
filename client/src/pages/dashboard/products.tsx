@@ -38,6 +38,7 @@ import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
+import { safeRender, sanitizeArray } from "@/utils/safeRender";
 
 export default function ProductsPage() {
   // Service instance
@@ -175,7 +176,11 @@ export default function ProductsPage() {
         console.log('API products response:', response);
         
         if (response && response.data) {
-          setProducts(response.data);
+          // Sanitize products to prevent React errors
+          const sanitizedProducts = sanitizeArray(response.data);
+          console.log('Sanitized API products:', sanitizedProducts);
+          
+          setProducts(sanitizedProducts as Product[]);
           setTotalPages(response.pages || 1);
           console.log('Successfully loaded products from API');
           return; // Exit early on success
@@ -239,8 +244,12 @@ export default function ProductsPage() {
       
       console.log('Filtered products:', paginatedProducts.length, 'of', totalItems);
       
+      // Sanitize products to prevent React errors
+      const sanitizedProducts = sanitizeArray(paginatedProducts);
+      console.log('Sanitized localStorage products:', sanitizedProducts);
+      
       // Update state
-      setProducts(paginatedProducts);
+      setProducts(sanitizedProducts as Product[]);
       setTotalPages(totalPages);
       console.log('Successfully loaded products from localStorage');
     } catch (error) {
@@ -559,27 +568,27 @@ export default function ProductsPage() {
                         )}
                       </div>
                       <div>
-                        <div className="font-medium text-[#232323]">{product.name}</div>
-                        <div className="text-sm text-gray-600 truncate max-w-[200px]">{product.description}</div>
+                        <div className="font-medium text-[#232323]">{safeRender(product.name)}</div>
+                        <div className="text-sm text-gray-600 truncate max-w-[200px]">{safeRender(product.description)}</div>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="font-medium text-[#232323]">
-                      {formatCurrency(product.price || 0)}
+                      {safeRender(formatCurrency(product.price || 0))}
                     </div>
                     <div className="text-xs text-gray-600">
-                      {product.billingPeriod ? 
+                      {safeRender(product.billingPeriod ? 
                         `${getBillingPeriodText(product.billingPeriod)}` : 
-                        "One-time payment"}
+                        "One-time payment")}
                     </div>
                   </TableCell>
-                  <TableCell>{getStatusBadge(product.active ? 'active' : 'inactive')}</TableCell>
+                  <TableCell>{getStatusBadge(safeRender(product.active) ? 'active' : 'inactive')}</TableCell>
                   <TableCell className="text-sm text-gray-700">
-                    {formatDate(product.createdAt || new Date().toISOString())}
+                    {safeRender(formatDate(product.createdAt || new Date().toISOString()))}
                   </TableCell>
                   <TableCell className="text-sm text-gray-700">
-                    {formatDate(product.updatedAt || product.createdAt || new Date().toISOString())}
+                    {safeRender(formatDate(product.updatedAt || product.createdAt || new Date().toISOString()))}
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <Button 

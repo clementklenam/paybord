@@ -25,6 +25,9 @@ import {useState, useEffect, useRef} from "react";
 import BusinessService from "@/services/business.service";
 import {useAuth} from "@/contexts/AuthContext";
 import {useLocation} from "wouter";
+import { safeRender } from "@/utils/safeRender";
+
+
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -137,8 +140,22 @@ export function Sidebar() {
             const profile = await businessService.getBusinessProfile();
             console.log('Fetched business profile:', profile);
             
-            if (profile && profile.businessName) {
-              setBusinessName(profile.businessName);
+            // Sanitize the business profile to prevent React errors
+            const sanitizedProfile = {
+              _id: safeRender(profile._id),
+              businessName: safeRender(profile.businessName),
+              businessType: safeRender(profile.businessType),
+              registrationNumber: safeRender(profile.registrationNumber),
+              taxId: safeRender(profile.taxId),
+              industry: safeRender(profile.industry),
+              website: safeRender(profile.website),
+              email: safeRender(profile.email),
+              phone: safeRender(profile.phone),
+              currency: safeRender(profile.currency)
+            };
+            
+            if (sanitizedProfile.businessName) {
+              setBusinessName(sanitizedProfile.businessName);
               // Mark that we've fetched the profile
               profileFetchedRef.current = true;
               
@@ -207,9 +224,9 @@ export function Sidebar() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full p-0">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="" alt={user ? `${user.firstName} ${user.lastName}` : 'User'} />
+                    <AvatarImage src="" alt={user ? `${safeRender(user.firstName)} ${safeRender(user.lastName)}` : 'User'} />
                     <AvatarFallback className="bg-[#FFD700] text-black text-xs">
-                      {user ? user.firstName.charAt(0).toUpperCase() : 'U'}
+                      {user ? safeRender(user.firstName?.charAt(0)?.toUpperCase()) : 'U'}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -218,10 +235,10 @@ export function Sidebar() {
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">
-                      {user ? `${user.firstName} ${user.lastName}` : 'User'}
+                      {user ? `${safeRender(user.firstName)} ${safeRender(user.lastName)}` : 'User'}
                     </p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      {user?.email || 'user@example.com'}
+                      {safeRender(user?.email) || 'user@example.com'}
                     </p>
                   </div>
                 </DropdownMenuLabel>
@@ -243,10 +260,10 @@ export function Sidebar() {
             </DropdownMenu>
                           <div className="flex-1 ml-3">
                 <p className="text-sm font-medium text-white">
-                  {user ? `${user.firstName} ${user.lastName}` : 'User'}
+                  {user ? `${safeRender(user.firstName)} ${safeRender(user.lastName)}` : 'User'}
                 </p>
                 <p className="text-xs text-gray-400">
-                  {user?.email || 'user@example.com'}
+                  {safeRender(user?.email) || 'user@example.com'}
                 </p>
               </div>
           </div>
@@ -255,7 +272,7 @@ export function Sidebar() {
         {/* Business Selector */}
         <div className="flex items-center space-x-2 px-4 mb-6">
           <select className="text-sm font-semibold text-white bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer">
-            <option className="bg-[#2d5a5a] text-white">{isLoading ? "Loading..." : businessName || "My Business"}</option>
+            <option className="bg-[#2d5a5a] text-white">{isLoading ? "Loading..." : safeRender(businessName) || "My Business"}</option>
           </select>
           <ChevronDownIcon className="w-4 h-4 text-gray-400" />
         </div>

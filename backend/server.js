@@ -20,6 +20,7 @@ const testRoutes = require('./routes/testRoutes');
 const paymentLinkRoutes = require('./routes/paymentLinkRoutes');
 const paystackRoutes = require('./routes/paystackRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
+const paystackSubscriptionRoutes = require('./routes/paystackSubscriptionRoutes');
 const couponRoutes = require('./routes/couponRoutes');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -120,6 +121,7 @@ app.use('/api/payment-links', paymentLinkRoutes);
 app.use('/api/paystack', paystackRoutes);
 app.use('/api/test', testRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
+app.use('/api/paystack-subscriptions', paystackSubscriptionRoutes);
 app.use('/api/coupons', couponRoutes);
 
 // Error handling middleware

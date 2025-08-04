@@ -1,6 +1,17 @@
 import {Card} from "@/components/ui/card";
 import {UserCircle} from "lucide-react";
 
+// Helper to safely render any value
+function safeRender(val: any) {
+  if (val == null) return '';
+  if (typeof val === 'object') {
+    // Don't stringify React elements
+    if (val.$$typeof) return null;
+    return JSON.stringify(val);
+  }
+  return val;
+}
+
 interface Customer {
   name: string;
   email: string;
@@ -39,9 +50,9 @@ export function TopCustomersWidget({ customers = [], currency = 'GHS' }: TopCust
                   <div key={index} className="flex items-center gap-3">
                     <UserCircle className="h-8 w-8 text-[#232323]" />
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-[#232323]">{customer.name || 'Unknown'}</p>
+                      <p className="text-sm font-medium text-[#232323]">{safeRender(customer.name || 'Unknown')}</p>
                       <p className="text-sm text-[#232323]">
-                        {getCurrencySymbol(currency)}{customer.spend.toFixed(2)} • {customer.transactions} orders
+                        {getCurrencySymbol(currency)}{safeRender(customer.spend?.toFixed(2) || '0.00')} • {safeRender(customer.transactions || 0)} orders
                       </p>
                     </div>
                   </div>

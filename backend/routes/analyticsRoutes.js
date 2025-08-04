@@ -15,6 +15,9 @@ router.get('/test-main-dashboard', analyticsController.testMainDashboard);
 // Test balance endpoint (no auth for debugging) - must be before protect middleware
 router.get('/test-balance-and-payout', analyticsController.getBalanceAndPayout);
 
+// Test subscription analytics endpoint (no auth for debugging) - must be before protect middleware
+router.get('/test-subscription-analytics', analyticsController.testSubscriptionAnalytics);
+
 // Apply authentication middleware to all routes
 router.use(protect);
 
@@ -46,5 +49,6 @@ router.get('/top-customers', analyticsController.getTopCustomers);
 router.get('/failed-payments', analyticsController.getFailedPayments);
 router.get('/product-analytics', analyticsController.getProductAnalytics);
 router.get('/customer-analytics', analyticsController.getCustomerAnalytics);
+router.get('/subscription-analytics', analyticsController.getSubscriptionAnalytics);
 
 module.exports = router;

@@ -17,7 +17,7 @@ const subscriptionSchema = new mongoose.Schema({
   },
   currency: {
     type: String,
-    default: 'USD',
+    default: 'NGN',
     required: true
   },
   interval: {
@@ -28,8 +28,8 @@ const subscriptionSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'canceled', 'past_due', 'unpaid', 'trialing', 'paused', 'completed'],
-    default: 'active'
+    enum: ['pending', 'active', 'canceled', 'past_due', 'unpaid', 'trialing', 'paused', 'completed'],
+    default: 'pending'
   },
   startDate: {
     type: Date,
@@ -40,6 +40,49 @@ const subscriptionSchema = new mongoose.Schema({
   },
   nextBillingDate: {
     type: Date
+  },
+  // Paystack-specific fields
+  paystackSubscriptionId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  paystackCustomerId: {
+    type: String
+  },
+  paystackPlanId: {
+    type: String
+  },
+  paymentMethodId: {
+    type: String
+  },
+  trialEnd: {
+    type: Date
+  },
+  currentPeriodStart: {
+    type: Date
+  },
+  currentPeriodEnd: {
+    type: Date
+  },
+  // Invoice fields
+  invoiceId: {
+    type: String,
+    unique: true
+  },
+  invoiceStatus: {
+    type: String,
+    enum: ['draft', 'sent', 'paid', 'overdue', 'cancelled'],
+    default: 'draft'
+  },
+  invoiceSentAt: {
+    type: Date
+  },
+  invoiceDueDate: {
+    type: Date
+  },
+  paymentLink: {
+    type: String
   },
   metadata: {
     type: mongoose.Schema.Types.Mixed,

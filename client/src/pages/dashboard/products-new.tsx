@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { safeRender, sanitizeArray } from "@/utils/safeRender";
 
 export default function ProductsPage() {
 
@@ -77,11 +78,25 @@ export default function ProductsPage() {
           
           if (hasRegistered) {
             // Fetch the business profile
-            const businessProfile = await businessService.getBusinessProfile();
-            console.log('Fetched business profile:', businessProfile);
-            
-            if (businessProfile && businessProfile._id) {
-              const userBusinessId = businessProfile._id;
+                    const businessProfile = await businessService.getBusinessProfile();
+        console.log('Fetched business profile:', businessProfile);
+        
+        // Sanitize the business profile to prevent React errors
+        const sanitizedBusinessProfile = {
+          _id: safeRender(businessProfile._id),
+          businessName: safeRender(businessProfile.businessName),
+          businessType: safeRender(businessProfile.businessType),
+          registrationNumber: safeRender(businessProfile.registrationNumber),
+          taxId: safeRender(businessProfile.taxId),
+          industry: safeRender(businessProfile.industry),
+          website: safeRender(businessProfile.website),
+          email: safeRender(businessProfile.email),
+          phone: safeRender(businessProfile.phone),
+          currency: safeRender(businessProfile.currency)
+        };
+        
+        if (sanitizedBusinessProfile._id) {
+          const userBusinessId = sanitizedBusinessProfile._id;
               console.log('Using business ID:', userBusinessId);
               
               // Store the business ID in localStorage for persistence
@@ -195,7 +210,11 @@ export default function ProductsPage() {
       
       console.log('Combined products:', allProducts);
       
-      setProducts(allProducts);
+      // Sanitize products to prevent React errors
+      const sanitizedProducts = sanitizeArray(allProducts);
+      console.log('Sanitized products:', sanitizedProducts);
+      
+      setProducts(sanitizedProducts as Product[]);
       setTotalPages(Math.ceil(allProducts.length / 10) || 1);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -204,9 +223,12 @@ export default function ProductsPage() {
       try {
         const userProductsJSON = localStorage.getItem('user_products');
         if (userProductsJSON) {
-          const userProducts = JSON.parse(userProductsJSON);
-          console.log('Fallback: Using products from localStorage:', userProducts);
-          setProducts(userProducts);
+                  const userProducts = JSON.parse(userProductsJSON);
+        console.log('Fallback: Using products from localStorage:', userProducts);
+        
+        // Sanitize user products to prevent React errors
+        const sanitizedUserProducts = sanitizeArray(userProducts);
+        setProducts(sanitizedUserProducts as Product[]);
           setTotalPages(Math.ceil(userProducts.length / 10) || 1);
         } else {
           setProducts([]);
@@ -941,7 +963,7 @@ export default function ProductsPage() {
                     </>
                   ) : (
                     <>
-                      <Eye className="h-3.5 w-3.5 mr-1.5" /> Previews
+                      <Eye className="h-3.5 w-3.5 mr-1.5" /> Preview
                     </>
                   )}
                 </Button>

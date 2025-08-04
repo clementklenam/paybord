@@ -31,6 +31,7 @@
     "mongoose": "^8.15.0",
     "morgan": "^1.10.0",
     "nanoid": "^5.0.6",
+    "nodemailer": "^7.0.5",
     "paystack": "^2.0.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",

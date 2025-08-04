@@ -221,7 +221,9 @@ function ProductDetailModal({
   );
 }
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '');
+const stripePromise = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY 
+  ? loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 function StripeCheckoutModal({
   open,
@@ -1379,27 +1381,29 @@ export default function StorefrontPreview() {
       )}
 
       {/* Stripe Payment Modal */}
-      <Elements stripe={stripePromise}>
-        <StripeCheckoutModal
-          open={showStripeModal}
-          onClose={() => setShowStripeModal(false)}
-          amount={totalAmountBase}
-          currency="usd"
-          onSuccess={async () => {
-            console.log('Stripe payment succeeded, calling recordTransaction');
-            await recordTransaction({
-              amount: totalAmountBase,
-              currency: 'USD',
-              customerInfo,
-              provider: 'stripe',
-              status: 'success'
-            });
-            setCart([]);
-          }}
-          businessId={storefront?.businessId || (storefront as any)?.business}
-          storefrontId={storefront.id}
-        />
-      </Elements>
+      {stripePromise && (
+        <Elements stripe={stripePromise}>
+          <StripeCheckoutModal
+            open={showStripeModal}
+            onClose={() => setShowStripeModal(false)}
+            amount={totalAmountBase}
+            currency="usd"
+            onSuccess={async () => {
+              console.log('Stripe payment succeeded, calling recordTransaction');
+              await recordTransaction({
+                amount: totalAmountBase,
+                currency: 'USD',
+                customerInfo,
+                provider: 'stripe',
+                status: 'success'
+              });
+              setCart([]);
+            }}
+            businessId={storefront?.businessId || (storefront as any)?.business}
+            storefrontId={storefront.id}
+          />
+        </Elements>
+      )}
 
       {/* Paystack Payment Modal */}
       <PaystackCheckoutModal

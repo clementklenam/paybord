@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import BusinessService from '@/services/business.service';
 import {CURRENCY_OPTIONS} from '@/types/business';
+import { safeRender } from '@/utils/safeRender';
 
 interface CurrencyContextType {
   currency: string;
@@ -45,7 +46,29 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
       
       if (hasBusiness) {
         const businessProfile = await businessService.getBusinessProfile();
-        const businessCurrency = businessProfile.currency || 'GHS';
+        
+        // Sanitize the business profile to prevent React errors
+        const sanitizedBusinessProfile = {
+          _id: safeRender(businessProfile._id),
+          businessName: safeRender(businessProfile.businessName),
+          businessType: safeRender(businessProfile.businessType),
+          registrationNumber: safeRender(businessProfile.registrationNumber),
+          taxId: safeRender(businessProfile.taxId),
+          industry: safeRender(businessProfile.industry),
+          website: safeRender(businessProfile.website),
+          email: safeRender(businessProfile.email),
+          phone: safeRender(businessProfile.phone),
+          currency: safeRender(businessProfile.currency),
+          address: businessProfile.address ? {
+            street: safeRender(businessProfile.address.street),
+            city: safeRender(businessProfile.address.city),
+            state: safeRender(businessProfile.address.state),
+            postalCode: safeRender(businessProfile.address.postalCode),
+            country: safeRender(businessProfile.address.country)
+          } : null
+        };
+        
+        const businessCurrency = sanitizedBusinessProfile.currency || 'GHS';
         
         setCurrency(businessCurrency);
         const { symbol, logo } = getCurrencyInfo(businessCurrency);
@@ -62,7 +85,7 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
       }
     } catch (err: unknown) {
       console.error('Error fetching business currency:', err);
-      setError((err as any)?.message || 'Failed to load currency');
+      setError(safeRender((err as any)?.message || 'Failed to load currency'));
       // Fallback to default
       setCurrency('GHS');
       setCurrencySymbol('₵');
