@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -7,9 +7,6 @@ import {
   Users, 
   CreditCard, 
   DollarSign, 
-  Calendar,
-  ArrowUpRight,
-  ArrowDownRight,
   RefreshCw
 } from 'lucide-react';
 import { formatCurrency } from '@/utils/currency';

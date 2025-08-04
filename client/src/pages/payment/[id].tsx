@@ -10,9 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { 
   CreditCard, 
   User, 
-  Mail, 
   Phone, 
-  MapPin, 
   Calendar,
   DollarSign,
   Clock,
@@ -23,16 +21,11 @@ import {
   Search,
   Download,
   ArrowRight,
-  ChevronDown,
-  ChevronUp,
   Eye,
   EyeOff,
   Shield,
   Lock,
-  Sparkles,
-  Zap,
-  Star,
-  Heart
+  Sparkles
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import SubscriptionService from '@/services/subscription.service';

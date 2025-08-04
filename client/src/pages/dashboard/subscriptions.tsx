@@ -7,7 +7,7 @@ import {Plus, Sparkles, Users, TrendingUp, Clock, DollarSign, Shield, MoreHorizo
 import {SubscriptionBuilder} from "@/components/subscriptions/SubscriptionBuilder";
 import SubscriptionService, { Subscription } from '@/services/subscription.service';
 import { useToast } from "@/components/ui/use-toast";
-import { safeRender, sanitizeArray, validateNoObjects } from "@/utils/safeRender";
+import { safeRender, validateNoObjects } from "@/utils/safeRender";
 
 // Global error handler to catch React errors
 if (typeof window !== 'undefined') {
@@ -286,7 +286,7 @@ export default function SubscriptionsPage() {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {safeSubscriptions.map((sub, index) => {
+                        {safeSubscriptions.map((sub) => {
                           const createdDate = sub.createdAt ? 
                             new Date(sub.createdAt).toLocaleDateString('en-US', { 
                               day: 'numeric', 

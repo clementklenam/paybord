@@ -21,7 +21,7 @@ export const getCurrencySymbol = (currency: string = 'USD'): string => {
 };
 
 // Format amount without currency symbol
-export const formatAmount = (amount: number, currency: string = 'USD'): string => {
+export const formatAmount = (amount: number): string => {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

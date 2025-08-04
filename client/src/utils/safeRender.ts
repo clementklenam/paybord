@@ -136,7 +136,7 @@ export const safeRender = (val: any): string => {
 
 // Sanitize arrays of objects (like products, customers, etc.)
 export const sanitizeArray = <T extends Record<string, any>>(array: T[]): T[] => {
-  return array.map((item, index) => {
+  return array.map((item) => {
     const sanitized = deepSanitize(item);
     
     // Ensure all properties are safe for rendering
